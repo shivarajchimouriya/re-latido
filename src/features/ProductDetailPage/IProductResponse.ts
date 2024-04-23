@@ -62,7 +62,7 @@ interface AssociatedBlog {
 export interface IProductResponse {
   productDetail: {
     _id: string;
-    secondary_image: string | null;
+    secondary_image: string[] | null;
     gender: string;
     level: number;
     hardware: string[];
@@ -81,7 +81,7 @@ export interface IProductResponse {
       title: string;
     };
     description: string;
-    product_specifications: ProductSpecification[];
+    product_specification: ProductSpecification[];
     slug: string;
     pattern_package: PatternPackage;
     find_my_jacket: FindMyJacket[];
