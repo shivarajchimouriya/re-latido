@@ -2,5 +2,12 @@
   "extends": ["next/core-web-vitals", "airbnb", "airbnb-typescript"],
   "parserOptions": {
     "project": "./tsconfig.json"
-  }
+  },
+  "react/function-component-definition": [
+    2,
+    {
+      "namedComponents": ["arrow-function", "function-declaration"],
+      "unnamedComponents": "arrow-function"
+    }
+  ]
 }
