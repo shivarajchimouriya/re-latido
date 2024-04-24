@@ -8,3 +8,8 @@ export const collectionImages = {
     cha: "/images/collections/cha.png"
 
 }
+
+
+export const jacketImages = {
+    sheep: '/images/jackets/jacket.avif'
+}
