@@ -22,4 +22,11 @@ html,body{
 
 .swiper-slide{
   width: fit-content !important;
+  height: fit-content !important;
+}
+
+.collection  .swiper-wrapper{
+
+/* gap: 2.5rem !important; */
+
 }

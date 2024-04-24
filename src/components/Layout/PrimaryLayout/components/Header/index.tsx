@@ -11,9 +11,15 @@ const Header = () => {
       justify="space-between"
       align="center"
       p="2rem"
+      position={"sticky"}
+      top="0"
+      backdropFilter="auto"
+      backdropBlur="10px"
       py="1rem"
       shadow="xl"
-      borderBottom="1px solid red"
+      bg="rgba(255,255,255,0.3)"
+      zIndex={100}
+      borderBottom="1px solid gray"
     >
       <BackButton />
       <Logo />
