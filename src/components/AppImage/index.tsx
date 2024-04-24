@@ -4,10 +4,11 @@ import React, { ComponentProps } from "react";
 interface IProps extends ImageProps {
   height: number;
   width: number;
+  rounded?: string;
 }
 
 const AppImage = ({ ...rest }: IProps) => {
-  return <Image {...rest} />;
+  return <Image style={{ borderRadius: rest.rounded }} {...rest} />;
 };
 
 export default AppImage;

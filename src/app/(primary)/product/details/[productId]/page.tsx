@@ -1,4 +1,4 @@
-import ProductDetailPage from '@/features/ProductDetailPage';
+import ProductDetailPage from '@/features/ProductDetailPage/ProductDetail';
 import React from 'react';
 import { ProductDetailProvider } from '@/contexts/ProductDetailContext';
 import IProps from './IProps';
