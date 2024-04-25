@@ -18,7 +18,7 @@ const CollectionSwiper = ({ collection }: IProps) => {
       px="1rem"
       sx={{
         "mask-image":
-          "linear-gradient(to right, transparent 0%, rgb(24, 23, 23) 5%,  rgb(24, 23, 23) 75%, transparent 100%);"
+          "linear-gradient(to right, transparent 0%, rgb(24, 23, 23) 5%,  rgb(24, 23, 23) 85%, transparent 100%);"
       }}
     >
       <Swiper
