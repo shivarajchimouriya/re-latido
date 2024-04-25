@@ -32,7 +32,7 @@ const Navbar = () => {
   return (
     <Flex
       position="fixed"
-      bottom="2rem"
+      bottom="1.2rem"
       backdropFilter="auto"
       color="white"
       backdropBlur="10px"

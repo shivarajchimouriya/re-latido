@@ -17,7 +17,7 @@ const Header = () => {
       top="0"
       backdropFilter="auto"
       backdropBlur="10px"
-      py="1rem"
+      py=".3rem"
       shadow="xl"
       bg="rgba(255,255,255,0.3)"
       zIndex={100}
