@@ -1,9 +1,11 @@
 import {
-  Box, Button, HStack, Text, VStack,
+  Button, HStack, Text, VStack,
 } from '@chakra-ui/react';
 import React from 'react';
 import Image from 'next/image';
 import { IProductNameProps } from './IProductNameProps';
+import { IoIosShareAlt } from "react-icons/io";
+
 
 export default function ProductName({ productName, category, productId }: IProductNameProps) {
   return (
@@ -14,7 +16,7 @@ export default function ProductName({ productName, category, productId }: IProdu
       </VStack>
       <VStack>
         <Button>
-          <Image src="/icon_share.svg" alt="share" width={24} height={24} />
+          <IoIosShareAlt fontSize="2.5rem" />
         </Button>
       </VStack>
     </HStack>

@@ -22,7 +22,8 @@ export default {
 
   client_id: process.env.REACT_APP_APP_CLIENT_ID,
   fonepay_base_url: process.env.REACT_APP_FONEPAY_BASE_URL,
-
+  
+  client_bucket_url: process.env.NEXT_PUBLIC_BUCKET_URL,
   product_mutation_token: process.env.REACT_APP_PRODUCT_MUTATION_TOKEN,
   size_module_base_url: process.env.REACT_APP_SIZE_MODULE_BASE_URL,
   google_api_key: process.env.REACT_APP_GOOGLE_API_KEY,
