@@ -7,19 +7,19 @@
   --black: #2b2b2b;
 }
 
-
-*,*::after,*::before{
-margin: 0;
-padding: 0;
- -webkit-tap-highlight-color: transparent;
-    -webkit-touch-callout: none;
-    -webkit-user-select: none;
-    -khtml-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-
-
+*,
+*::after,
+*::before {
+  margin: 0;
+  padding: 0;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
 
 html,
 body {
@@ -31,7 +31,8 @@ body {
 
 .swiper-slide {
   width: fit-content !important;
-   height: fit-content !important;
+  height: fit-content !important;
+}
 
 .avatar {
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.15) !important;
