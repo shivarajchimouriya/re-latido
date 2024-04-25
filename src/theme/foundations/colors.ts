@@ -3,5 +3,6 @@ export const appColor = {
     border: "var(--border)",
     base: "var(--base)",
     textPrimary: "var(--text-primary)",
-    black: "var(--black)"
+    black: "var(--black)",
+    background: "var(--background)"
 }
