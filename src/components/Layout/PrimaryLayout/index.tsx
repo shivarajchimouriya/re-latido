@@ -1,6 +1,7 @@
 import { Box, Center, VStack } from "@chakra-ui/react";
 import React, { ReactNode } from "react";
 import Header from "./components/Header";
+import Navbar from "./components/Navbar";
 
 interface IProps {
   children: ReactNode;
@@ -12,6 +13,7 @@ const PrimaryLayout = ({ children }: IProps) => {
       <Box w="100%" maxW="50rem">
         <Header />
         {children}
+        <Navbar />
       </Box>
     </VStack>
   );

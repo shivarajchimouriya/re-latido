@@ -39,4 +39,57 @@ export const mockProducts: IProduct[] = [
         name: "Sheep",
         price: 35000
     },
+
+    {
+        image: [jacketImages.sheep],
+        name: "Sheep",
+        price: 35000
+    },
+
+    {
+        image: [jacketImages.sheep],
+        name: "Sheep",
+        price: 35000
+    },
+    {
+        image: [jacketImages.sheep],
+        name: "Sheep",
+        price: 35000
+    },
+    {
+        image: [jacketImages.sheep],
+        name: "Sheep",
+        price: 35000
+    },
+    {
+        image: [jacketImages.sheep],
+        name: "Sheep",
+        price: 35000
+    },
+    {
+        image: [jacketImages.sheep],
+        name: "Sheep",
+        price: 35000
+    },
+
+    {
+        image: [jacketImages.sheep],
+        name: "Sheep",
+        price: 35000
+    },
+    {
+        image: [jacketImages.sheep],
+        name: "Sheep",
+        price: 35000
+    },
+    {
+        image: [jacketImages.sheep],
+        name: "Sheep",
+        price: 35000
+    },
+    {
+        image: [jacketImages.sheep],
+        name: "Sheep",
+        price: 35000
+    },
 ]

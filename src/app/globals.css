@@ -9,6 +9,13 @@
 *,*::after,*::before{
 margin: 0;
 padding: 0;
+ -webkit-tap-highlight-color: transparent;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
 
 }
 
@@ -18,8 +25,17 @@ padding: 0;
 html,body{
   height: 100%;
   width: 100%;
+  overscroll-behavior: contain;
+  overflow: auto;
 }
 
 .swiper-slide{
   width: fit-content !important;
+  height: fit-content !important;
+}
+
+.collection  .swiper-wrapper{
+
+/* gap: 2.5rem !important; */
+
 }
