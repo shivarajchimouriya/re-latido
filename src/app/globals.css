@@ -1,3 +1,5 @@
+@import "react-spring-bottom-sheet/dist/style.css";
+
 :root {
   font-size: 62.5%;
   --primary: #bababa;
@@ -5,6 +7,11 @@
   --border: #f7665f;
   --text-primary: #707580;
   --black: #2b2b2b;
+  --background: #ebecf2;
+
+  /* react bottom sheet variables */
+  --rsbs-bg: #ebecf2;
+  /* --rsbs-handle-bg */
 }
 
 *,
@@ -53,7 +60,7 @@ body {
   color: var(--base);
   background-clip: padding-box, border-box;
 }
-.body-button {
+.primary-button {
   color: white !important;
   height: 42px;
   background: linear-gradient(313.32deg, #262626 8.79%, #707580 93.86%);
@@ -61,4 +68,60 @@ body {
   border-radius: 4px;
   text-transform: uppercase;
   font-weight: bold;
+}
+.secondary-button {
+  border: 1px solid var(--black);
+  color: var(--black) !important;
+  height: 42px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+  border-radius: 4px;
+  text-transform: uppercase;
+  font-weight: bold;
+}
+.fitting-card-container {
+  padding-bottom: 10rem;
+}
+
+.fitting-card-label {
+  font-size: 1.6rem;
+  text-transform: uppercase;
+  color: var(--text-primary);
+}
+
+.fitting-card-input-group {
+  display: grid;
+  align-items: center;
+  gap: 1.6rem;
+}
+.fitting-card-input {
+  width: calc(100% - 2rem);
+  border-radius: 0.4rem;
+  padding: 0 1rem;
+  height: 4rem;
+  text-align: center;
+  font-size: 1.6rem;
+  color: var(--black);
+  font-weight: bold;
+  text-transform: uppercase;
+  outline: none;
+  text-align: center;
+}
+.fitting-card-input-group {
+  background: white;
+  border-radius: 0.4rem;
+  position: relative;
+  display: flex;
+  gap: 0rem;
+  width: 7rem !important;
+  align-items: center;
+  justify-content: start;
+}
+.fitting-card-postfix {
+  position: absolute;
+  margin-right: 0.4rem;
+  right: 0;
+  font-size: 1.6rem;
+  color: var(--text-primary);
+  outline: none;
+  text-align: center;
 }
