@@ -5,5 +5,8 @@ export const appColor = {
     textPrimary: "var(--text-primary)",
     textSecondary: "var(--text-secondary)",
     black: "var(--black)",
-    background: "var(--background)"
+    background: "var(--background)",
+    progressBackground: "var(--progress-background)",
+    success: "var(--success)",
+    error: "var(--error)"
 }
