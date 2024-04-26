@@ -16,11 +16,12 @@ import AppImage from "@/components/AppImage";
 import { appColor } from "@/theme/foundations/colors";
 import { AddSpaceOnPhone } from "@/lib/AddSpaceOnPhone";
 import { DateDifference, EpochToRedable } from "@/lib/DateModeling";
+import Link from "next/link";
 
 export default function ProfilePage() {
   const { data } = profileData;
   return (
-    <Container width={"100%"}>
+    <Grid width={"100%"} placeItems={"center"}>
       <Flex
         justifyContent={"start"}
         alignItems={"center"}
@@ -79,28 +80,36 @@ export default function ProfilePage() {
         fontWeight={"bold"}
         color={"textPrimary"}
         mt={"3rem"}
+        width={"inherit"}
         p={8}
-        width={"100%"}
       >
-        <Button width={"100%"} px={"1rem"} py={"1rem"} rounded={"0.4rem"} fontWeight={"bold"}>
-          <Flex width={"80%"} gap={"2rem"} left={0} alignItems={"center"}>
+        <Link href="/orders">
+        <Button px={"1rem"} py={"1rem"} rounded={"0.4rem"} fontWeight={"bold"} justifyContent={"flex-start"}>
+          <Flex  gap={"2rem"} left={0} alignItems={"center"}>
           <TbShoppingBagCheck fontSize={"3rem"} />
           Orders
           </Flex>
-        </Button>
-        <Button width={"100%"} px={"1rem"} py={"1rem"} rounded={"0.4rem"} fontWeight={"bold"}>
-          <Flex width={"80%"} gap={"2rem"} left={0} alignItems={"center"}>
+          </Button>
+        </Link>
+
+        <Link href="/digital-invoice">
+        <Button px={"1rem"} py={"1rem"} rounded={"0.4rem"} fontWeight={"bold"} justifyContent={"flex-start"}>
+          <Flex gap={"2rem"} left={0} alignItems={"center"}>
           <TbFileInvoice fontSize={"3rem"} style={{marginLeft: "-0.3rem"}} />
           Invoice
           </Flex>
-        </Button>
-        <Button width={"100%"} px={"1rem"} py={"1rem"} rounded={"0.4rem"} fontWeight={"bold"}>
-          <Flex width={"80%"} gap={"2rem"} left={0} alignItems={"center"}>
+          </Button>
+        </Link>
+
+        <Link href={"/auth/logout"}>
+        <Button px={"1rem"} py={"1rem"} rounded={"0.4rem"} fontWeight={"bold"} justifyContent={"flex-start"}>
+          <Flex gap={"2rem"} left={0} alignItems={"center"}>
           <TbLogout fontSize={"3rem"} />
           Logout
           </Flex>
-        </Button>
+          </Button>
+        </Link>
       </ButtonGroup>
-    </Container>
+    </Grid>
   );
 }
