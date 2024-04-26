@@ -1,8 +1,10 @@
 "use client";
-import { Box, Center, IconButton, Text, useDisclosure } from "@chakra-ui/react";
+import { Box, Center, IconButton, Text, VStack, useDisclosure } from "@chakra-ui/react";
 import { AnimatePresence, PanInfo, motion } from "framer-motion";
 import React, { useEffect } from "react";
 import { RiMenu4Fill } from "react-icons/ri";
+import NavItems from "./components/NavItem";
+import NavItem from "./components/NavItem";
 
 const HamburgerMenu = () => {
   const { isOpen, onClose, onOpen } = useDisclosure();
@@ -24,6 +26,8 @@ const HamburgerMenu = () => {
   return (
     <>
     <Box
+    h='100%'
+    py='1rem'
     as={motion.div}
        onPan={(e:PointerEvent, info:PanInfo) => {
           console.log("info", info);
@@ -76,7 +80,7 @@ const HamburgerMenu = () => {
       </AnimatePresence>
       <Box
         as={motion.div}
-        transform={`translateX(${isOpen ? "-25%" : "-100%"})`}
+        transform={`translateX(${isOpen ? "0%" : "-100%"})`}
         position="fixed"
         transitionDuration=".4s"
         onPan={(e:PointerEvent, info:PanInfo) => {
@@ -90,12 +94,17 @@ const HamburgerMenu = () => {
         }}
         inset="0"
         zIndex={1000}
-        w="100%"
+        w="70%"
         h="100dvh"
         bg='rgba(255,255,255,1)'
       >
-        <Center>
-          <Text>HEllo</Text>
+        <Center h='100%'  w='100%' >
+          <VStack  align='start'  w='100%'  pl='2rem'  gap='2rem' >
+     <NavItem name="Home" link="/home"  />
+     <NavItem name="privacy policy" link="/home"  />
+     <NavItem name="contact us" link="/home"  />
+     <NavItem name="about us" link="/home"  />
+</VStack>
         </Center>
       </Box>
       </>
