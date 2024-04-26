@@ -22,11 +22,13 @@ const Appendix = ({ ...rest }: IProps) => {
       left="1rem"
       {...rest}
       as={motion.div}
-      layoutId="b"
-      exit={{ y: -200 }}
+      initial={{ y: 200 }}
+      animate={{ y: 0, transition: { bounce: false, duration: 0.4 } }}
+      exit={{ y: 200 }}
+      _hover={{ scale: 1.1 }}
     >
       <IconButton
-        bg="rgba(0,0,0,0.4)"
+        bg="rgba(0,0,0,0.5)"
         backdropFilter="auto"
         backdropBlur="10px"
         rounded="4rem"

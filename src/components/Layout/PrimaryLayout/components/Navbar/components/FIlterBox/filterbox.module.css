@@ -1,0 +1,37 @@
+.bullet{
+    background: white;
+    height: .5rem;
+    width: .5rem;
+    transition: all .4s linear;
+    border-radius: .4rem;
+    cursor: pointer;
+}
+
+.bullet:hover{
+transform: scale(1.5);
+}
+
+.bullet_container{
+    width: fit-content !important;
+    justify-self: center;
+    display: flex;
+    justify-content: center;
+    gap:1rem;
+    padding: .4rem .7rem ;
+
+    /* backdrop-filter: blur(10px); */
+    background: transparent !important;
+    bottom: 0rem !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    height: fit-content !important;
+    border-radius: 1rem !important;
+
+}
+.bullet_active{
+    width: 2rem;
+    background: white;
+}
+.bullet_active:hover{
+    transform: scale(1);
+}

@@ -1,16 +1,14 @@
 "use client";
-import { Box, Circle, Flex, IconButton, VStack, useDisclosure } from "@chakra-ui/react";
-import { AnimatePresence, motion } from "framer-motion";
+import { Box, Circle, Flex, HStack, IconButton, VStack, useDisclosure } from "@chakra-ui/react";
+import { AnimatePresence, PanInfo, motion } from "framer-motion";
 import React, { ReactElement, ReactNode, useState } from "react";
 import { AiOutlineThunderbolt } from "react-icons/ai";
 import { GoPerson } from "react-icons/go";
-import { HiChat } from "react-icons/hi";
-import { HiHome } from "react-icons/hi2";
-import { MdPerson } from "react-icons/md";
 import { RiSearch2Line } from "react-icons/ri";
-import { RxPerson } from "react-icons/rx";
 import Appendix from "./components/Appendix";
 import FilterBox from "./components/FIlterBox";
+import GenderCard from "./components/GenderCard";
+import { BiMaleSign } from "react-icons/bi";
 
 const Navbar = () => {
   interface INavItem {
@@ -34,33 +32,36 @@ const Navbar = () => {
 
   return (
     <>
-    <AnimatePresence>
-      <Flex
-        position="fixed"
-        bottom="1.2rem"
-        zIndex={10}
-        transform="translateX(-50%)"
-        left="55%"
-        fontSize="2.4rem"
-        px="2rem"
-        color="white"
-        gap='1rem'
-      >
+      <AnimatePresence>
         <Flex
-          as={motion.div}
-
-          bg="rgba(0,0,0,0.4)"
-          rounded="4rem"
-          backdropFilter="auto"
-          backdropBlur="10px"
-          transitionDuration='.4s'
-
+          position="fixed"
+          bottom="1.2rem"
+          zIndex={10}
+          transform="translateX(-50%)"
+          left="55%"
+          fontSize="2.4rem"
+          px="2rem"
+          color="white"
+          gap='1rem'
         >
-          {navItems.map(el => {
-            const isActive = el.name === activeNav;
+          <Flex
+            as={motion.div}
+            // layoutId="b"
+            exit={{ opacity: 0 }}
 
-            return (
-              <AnimatePresence>
+            initial={{y:400}}
+            animate={{y:0}}
+            bg="rgba(0,0,0,0.5)"
+            rounded="4rem"
+            backdropFilter="auto"
+            backdropBlur="7px"
+            transitionDuration='.4s'
+            
+
+          >
+            {navItems.map(el => {
+              const isActive = el.name === activeNav;
+              return (
                 <VStack
                   as={motion.div}
                   position="relative"
@@ -91,26 +92,16 @@ const Navbar = () => {
                       bg="white"
                     />}
                 </VStack>
-              </AnimatePresence>
-            );
-          })}
+              );
+            })}
+          </Flex>
+          <Appendix
+            onClick={onOpen}
+          />
         </Flex>
-        <AnimatePresence>
-        <Appendix   
-        
-        
-        onClick={onOpen}
-        
-        
-        
-        />
 
-</AnimatePresence>
 
-      </Flex>
-
-      <AnimatePresence>
-
+        <AnimatePresence> 
         {isOpen &&
 
           <>
@@ -121,29 +112,56 @@ const Navbar = () => {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
 
-              position='fixed' inset='0' zIndex={10000} width='100%' height='100%' bg='rgba(0,0,0,.1)' onClick={onClose} >
+              position='fixed' inset='0'
+
+              zIndex={10000} width='100%' height='100%' bg='rgba(0,0,0,.1)' onClick={onClose} >
 
 
             </Box>
 
-            <VStack position='fixed' zIndex={10000} bottom='0' width='100%' height='40rem' py='2rem' pb='1rem'  >
-              <VStack w='90%' h='100%'
+            <VStack
+              as={motion.div}
+              position='fixed'
+
+              animate={{ transition: { duration: 2 } }}
+              zIndex={10000} bottom='0' width='100%' height='45rem' py='2rem' pb='1rem'
+              onPan={(e: PointerEvent, info: PanInfo) => {
+
+                if (info.delta.y > 7 && info.delta.x === 0) {
+                  onClose()
+                }
+
+
+              }}
+            >
+                             <VStack w='95%' h='100%'
+                position='relative'
+                overflow='hidden'
                 as={motion.div}
-                backdropFilter='auto' backdropBlur='10px'
+                backdropFilter='auto' backdropBlur='15px'
                 rounded='2rem'
                 layoutId="b"
-                layout='preserve-aspect'
+                initial={{ y: '100%' }}
+                animate={{ y: 0, transition: { duration:.3, damping:4,  bounce: true } }}
+                exit={{ y: '100%',transition:{duration:.4,  bounce:false,type:"just",} }}
+                bg="rgba(0,0,0,.7)"
 
-                bg="white"
 
               >
-<Box w='5rem' h='.7rem' mt='1rem' rounded='5rem' bg='whitesmoke'  />
+                <Box w='3rem' h='.3rem' mt='1rem' rounded='5rem' bg='whitesmoke' />
 
 
-                <FilterBox />
+                <FilterBox onClose={onClose}  />
 
               </VStack>
+
             </VStack>
+
+
+
+
+
+
           </>
 
 
@@ -151,9 +169,9 @@ const Navbar = () => {
 
 
 
-        }
+}
+</AnimatePresence>
 
-      </AnimatePresence>
       </AnimatePresence>
     </>
   );
