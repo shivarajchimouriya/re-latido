@@ -11,6 +11,7 @@ import { appColor } from '@/theme/foundations/colors';
 import ButtonComponent from '../Collections/components/Button';
 import Description from '../Collections/components/Description';
 import Blog from '../Collections/components/Blog';
+import environment from '@/config/environment';
 
 export default function ProductDetail({ productId }: IProps) {
   // do api call here
@@ -30,7 +31,7 @@ export default function ProductDetail({ productId }: IProps) {
           secondaryImage={response.productDetail?.product_specification?.[0]?.secondary_image}
         />
         <Box background={appColor.black} width={"100%"} padding={"2rem 0"}>
-        <LeatherSelection />
+        <LeatherSelection urlPrefix={environment?.bucket_url || ''} />
           <FitSelection />
           <ButtonComponent />
         </Box>
