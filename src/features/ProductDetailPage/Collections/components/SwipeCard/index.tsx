@@ -5,7 +5,6 @@ import React from "react";
 import { appColor } from "@/theme/foundations/colors";
 
 export default function SwipeCard({ fit, selectedOne }: { fit: any, selectedOne: boolean }) {
-  console.log('selectedOne', selectedOne)
   return (
     <Box className={selectedOne ? "highlighted-card" : "normal-card"}>
       <AppImage rounded="0.4rem 0.4rem 0 0 " height={307} width={144} alt="fit" src={fit?.front} />

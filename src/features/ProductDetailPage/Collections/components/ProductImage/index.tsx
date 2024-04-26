@@ -5,8 +5,6 @@ import AppImage from '@/components/AppImage';
 import Avatar from '@/components/Avatar';
 
 export default function ProductImage({ primaryImage, secondaryImage }: IProductImageProps) {
-  console.log('image', primaryImage);
-  console.log('secondary image', secondaryImage);
   return (
     <Container paddingBottom="2rem">
       {/* <AppImage src={primaryImage} height={500} width={500} alt="product image" /> */}
