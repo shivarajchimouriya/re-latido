@@ -1,11 +1,22 @@
-import { ChakraTheme } from "@chakra-ui/react";
+import { ChakraTheme, Stepper } from "@chakra-ui/react";
 import { appColor } from "./foundations/colors";
 
 const appTheme: Partial<ChakraTheme> = {
     config: {
         initialColorMode: "light"
     },
-    colors: appColor
+    colors: appColor,
+    components: {
+        Stepper: {
+            baseStyle: {
+                separator: {
+                    bg: "var(--primary)",
+                    width: "4px",
+                    height: "30px"
+                }
+            }
+        }
+    }
 }
 
 
