@@ -24,7 +24,7 @@ export default function OrderDetailsPage({ orderId }: IProps) {
             textAlign={"right"}
             mb={"0.6rem"}
             textTransform={"uppercase"}
-            fontWeight={"bold"}
+            fontWeight={"600"}
             color={"progressBackground"}
           >
             {diff} days remaining

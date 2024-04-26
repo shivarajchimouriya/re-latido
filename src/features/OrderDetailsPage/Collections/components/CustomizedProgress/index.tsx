@@ -104,7 +104,7 @@ export default function CustomizedProgress({ orderProgress }: IProps) {
               <Box
                 flexShrink="0"
                 fontSize={"1.4rem"}
-                fontWeight={"bold"}
+                fontWeight={"600"}
                 color={
                   index <= activeStep
                     ? "var(--progress-background)"
