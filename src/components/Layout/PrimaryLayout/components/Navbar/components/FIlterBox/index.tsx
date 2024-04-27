@@ -212,6 +212,7 @@ const FilterBox = ({ onClose }: IProps) => {
                 color={isSelected ? "black" : "white"}
                 transitionDuration={".4s"}
                 icon={el.icon}
+                fontWeight={isSelected ? "bold" : "medium"}
               />
 
               {isSelected &&
