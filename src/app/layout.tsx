@@ -6,6 +6,7 @@ import LenisProvider from "@/providers/LenisProvider";
 import PullToRefreshProvider from "@/providers/PullTorefreshProvider";
 import DrawerProvider from "@/providers/DrawerProvider";
 const inter = Inter({ subsets: ["latin"] });
+import 'swiper/css/grid';
 
 export const metadata: Metadata = {
   title: "Latido",
