@@ -10,7 +10,9 @@ const ProductList1 = ({ products }: IProps) => {
   return (
     <VStack w="100%">
       {products.map(el => {
-        return <ProductCard product={el} key={el.name} />;
+        return (
+          <ProductCard product={el} key={el.name} scrollSnapAlign="start" />
+        );
       })}
     </VStack>
   );
