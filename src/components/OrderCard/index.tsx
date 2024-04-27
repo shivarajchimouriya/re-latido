@@ -16,8 +16,8 @@ interface IProps {
   orderId: string;
   deliveryDate: string;
   quantity: number;
-  hideProgress: boolean;
-  hideDaysLeft: boolean;
+  hideProgress?: boolean;
+  hideDaysLeft?: boolean;
 }
 
 export default function OrderCard({
