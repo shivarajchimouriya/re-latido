@@ -1,12 +1,15 @@
 import LogoIcon from "@/components/Icons/Logo";
 import { Box } from "@chakra-ui/react";
+import Link from "next/link";
 import React from "react";
 
 const Logo = () => {
   return (
-    <Box>
-      <LogoIcon />
-    </Box>
+    <Link href="/">
+      <Box>
+        <LogoIcon />
+      </Box>
+    </Link>
   );
 };
 
