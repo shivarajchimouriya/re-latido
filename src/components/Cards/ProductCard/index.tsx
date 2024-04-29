@@ -1,11 +1,14 @@
 "use client";
 import AppImage from "@/components/AppImage";
+import { collectionImages } from "@/constants/images";
 import { IProduct } from "@/data/mock/products";
 import {
   AbsoluteCenter,
   Box,
   Button,
   Center,
+  HStack,
+  IconButton,
   Popover,
   PopoverArrow,
   PopoverBody,
@@ -16,12 +19,15 @@ import {
   PopoverTrigger,
   Portal,
   StackProps,
+  Text,
   VStack,
   position,
   useDisclosure
 } from "@chakra-ui/react";
-import { AnimatePresence, TapInfo, motion } from "framer-motion";
+import { AnimatePresence, TapInfo, Variants, motion } from "framer-motion";
 import React, { useRef, useState } from "react";
+import { AiOutlineShareAlt } from "react-icons/ai";
+import { IoCartOutline, IoCloseOutline, IoEyeOutline, IoShareOutline } from "react-icons/io5";
 import { LongPressEventType, useLongPress } from "use-long-press";
 
 interface IProps extends StackProps {
@@ -66,6 +72,51 @@ const ProductCard = ({ product, ...rest }: IProps) => {
     detect: LongPressEventType.Pointer
   });
   console.log("isopen", isLongPress);
+
+const utilsVariant:Variants={
+
+hidden:{
+y:30
+},
+show:{
+y:0,
+transition:{
+  staggerChildren:0.01,
+}
+
+}
+,
+exit:{
+y:30
+}
+
+}
+
+
+const iconVariant:Variants={
+  hidden:{
+    y:30,
+    x:30,
+    opacity:0
+  },
+  show:{
+    y:0,
+    x:0,
+    opacity:1,
+
+transition:{
+  bounce:false
+
+}
+  },
+  exit:{
+    y:0,
+    x:30,
+    opacity:0
+  }
+}
+
+
   return (
     <>
       <AnimatePresence>
@@ -78,7 +129,7 @@ const ProductCard = ({ product, ...rest }: IProps) => {
           inset='0'
           w='100vw'
           h='100vh'
-          bg='rgba(255,255,255,0.3)'
+          bg='rgba(0,0,0,0.3)'
           zIndex={100}
           onClick={() => setIsLongPress(false)}
         >
@@ -87,33 +138,100 @@ const ProductCard = ({ product, ...rest }: IProps) => {
 
 
 
-          <Popover isOpen placement="top-end" >
+          <Popover isOpen placement="top" >
 
-            <PopoverTrigger>
+            <PopoverTrigger >
               <Box h={'5rem'}
                 w='5rem'
-                 backdropFilter='auto' 
-                 backdropBlur='5p'
+                backdropFilter='auto'
+                backdropBlur='5p'
                 background='rgba(255,255,255,0.4)' rounded='10rem'
                 position='fixed'
                 zIndex={10000000}
                 left={position.x - 25}
                 top={position.y - 25}    >
+
+
+                <Center h='100%' w='100%'  >
+
+                  <IconButton
+                  as={motion.button}
+                  exit={{scale:0}}
+                  aria-label="utlity" fontSize='3rem' icon={<IoCloseOutline />} />
+                </Center>
               </Box>
             </PopoverTrigger>
 
             <Box zIndex={100000} >
-              <PopoverContent h='15rem' w='15rem' zIndex={10000} >
+              <PopoverContent zIndex={10000}  outline='none' >
                 <Center as={motion.div}
 
-                  bg='purple'
                   onMouseOver={() => console.log("mouse over")}
                 >
 
+                  <HStack
+                  variants={utilsVariant}
 
-                  <Button w='100%' h='15rem' bg='yellow' as={motion.div} _hover={{ bg: 'red' }}  >share</Button>
-                  <Button>view</Button>
-                  <Button>buy</Button>
+                  initial='hidden'
+                  animate='show'
+                  exit='exit'
+                  as={motion.div}
+                  color='white' align='center' gap='1.5rem' fontSize='2.6rem' p='1rem' px='1rem' rounded='2rem'  >
+                    <IconButton 
+                    
+                    as={motion.button}
+                    variants={iconVariant}
+                        initial={{x:70,y:30}}
+                    animate={{x:0,y:0}}
+                    exit={{x:70,y:30}}
+                    
+                    aria-label="view" icon={<IoEyeOutline />} 
+                    
+                    bg='rgba(0,0,0,0.3)' 
+                    backdropFilter='auto'
+                    backdropBlur='10px'
+                    
+                    p='1rem' rounded='100%' />
+                  
+                  
+                  
+                    <IconButton aria-label="share "
+                    as={motion.button}
+                    variants={iconVariant}
+
+                       initial={{y:40}}
+                    animate={{y:0}}
+                    exit={{y:40}}
+                    
+                      p='1rem'
+                      icon={<AiOutlineShareAlt />}
+
+                                          bg='rgba(0,0,0,0.3)' 
+                                           
+                    backdropFilter='auto'
+                    backdropBlur='10px'
+rounded='100%'
+                      position='relative' bottom='2rem' />
+                    <IconButton aria-label="buy" icon={<IoCartOutline />}
+
+                    as={motion.button}
+                    variants={iconVariant}
+                                        initial={{x:-70,y:30}}
+                    animate={{x:0,y:0}}
+                    exit={{x:-70,y:30}}
+
+                    
+                      p='1rem'
+                                          bg='rgba(0,0,0,0.3)' 
+                                            backdropFilter='auto'
+                    backdropBlur='10px'
+rounded='100%'
+                    />
+
+
+
+
+                  </HStack>
 
 
                 </Center>
@@ -147,6 +265,7 @@ const ProductCard = ({ product, ...rest }: IProps) => {
       <VStack
         as={motion.div}
         w="100%"
+        align='start'
         p="1rem"
         rounded="1rem"
         overflow="hidden"
@@ -156,13 +275,13 @@ const ProductCard = ({ product, ...rest }: IProps) => {
           event.stopPropagation();
           return false;
         }}
-        
+
         {...rest}
         {...bind()}
         scrollSnapAlign='start'
         scrollSnapStop={'always'}
         style={{
-        height: "calc(-230px + 100dvh)"
+          height: "calc(-230px + 100dvh)"
 
         }}
 
@@ -177,6 +296,27 @@ const ProductCard = ({ product, ...rest }: IProps) => {
             style={{ objectFit: "contain", width: "100%", height: "100%" }}
           />
         </Box>
+
+<HStack   rounded='2rem'  p='.3rem' pl='1rem'  pr='2rem'  justifySelf='start' w='fit-content' bg='rgba(0,0,0,0.1)'  backdropFilter='auto' backdropBlur='4px'  >  
+    <Box w="3rem" h='3rem'  overflow="hidden"  rounded='100%'   border='1px solid gray'  >
+          <AppImage
+            alt={product.name}
+            src={collectionImages.kha}
+            height={1000}
+            width={1000}
+            quality={100}
+            style={{ objectFit: "contain", width: "100%", height: "100%" }}
+          />
+        </Box>
+<VStack   align='start' gap='0'>
+  <Text fontSize='1.6rem'  fontWeight='bold'  textTransform='capitalize'   > bardiya  </Text>
+  <Text>   Rs.2000 </Text>
+  </VStack>
+  
+
+
+</HStack>
+
       </VStack>
     </>
   );

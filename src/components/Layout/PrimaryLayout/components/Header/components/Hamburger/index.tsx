@@ -2,7 +2,7 @@
 import { Box, Center, IconButton, Text, VStack, useDisclosure } from "@chakra-ui/react";
 import { AnimatePresence, PanInfo, motion } from "framer-motion";
 import React, { useEffect } from "react";
-import { RiMenu4Fill } from "react-icons/ri";
+import { RiMenu2Line, RiMenu4Fill } from "react-icons/ri";
 import NavItems from "./components/NavItem";
 import NavItem from "./components/NavItem";
 
@@ -41,7 +41,7 @@ const HamburgerMenu = () => {
     >
       <IconButton
       as={motion.button}
-        icon={<RiMenu4Fill />}
+        icon={<RiMenu2Line />}
         aria-label="chat"
         fontSize="2rem"
         onClick={onOpen}
