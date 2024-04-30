@@ -4,9 +4,11 @@ import { Box, Center, StackProps, Text, VStack } from "@chakra-ui/react";
 import React from "react";
 import AnimatedCircle from "../AnimatedCircle";
 import { AnimatePresence } from "framer-motion";
+import { ICategory } from "@/resources/Category/interface";
+import { attachWithS3BaseUrl } from "@/utils/misc";
 
 interface IProps extends StackProps {
-  collection: IMockCollection;
+  collection: ICategory;
   isActive?: boolean;
 }
 
@@ -26,8 +28,8 @@ const CollectionCard = ({ collection, isActive, ...rest }: IProps) => {
 
         <Center height="90%" width="90%" rounded="100%" overflow="hidden">
           <AppImage
-            alt={collection.name}
-            src={collection.image}
+            alt={collection.title}
+            src={attachWithS3BaseUrl(collection.image)}
             height={500}
             style={{ objectFit: "cover", width: "100%", height: "100%" }}
             width={500}
@@ -41,7 +43,7 @@ const CollectionCard = ({ collection, isActive, ...rest }: IProps) => {
         transitionDuration=".4s"
         fontWeight={isActive ? "bold" : "semibold"}
       >
-        {" "}{collection.name}{" "}
+        {" "}{collection.title}{" "}
       </Text>
     </VStack>
   );

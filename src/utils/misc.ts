@@ -57,3 +57,12 @@ export const extractImagesFromHTML = (content: string): string[] => {
     });
     return images;
 };
+
+
+export const attachWithS3BaseUrl = (path: string) => {
+
+    const baseURL = process.env.S3_BASE_URL || process.env.NEXT_PUBLIC_S3_BASE_URL || ''
+    return baseURL + path
+
+
+}

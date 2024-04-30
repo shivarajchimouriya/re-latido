@@ -1,10 +1,10 @@
 "use client";
 import ProductCard from "@/components/Cards/ProductCard";
-import { IProduct } from "@/data/mock/products";
 import { VStack } from "@chakra-ui/react";
 import React from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
+import { IProduct } from "@/resources/Product/interface";
 
 interface IProps {
   products: IProduct[];

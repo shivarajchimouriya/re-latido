@@ -6,6 +6,7 @@ export const apiURLs = {
     },
     category: {
         all: "/categories"
-    }
+    },
+    homepage: "/mobile_home?page=1&limit=1&gender=male&priceLowerLimit=0&priceUpperLimit=10000"
 
 }

@@ -5,12 +5,13 @@ import React, { useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import CollectionCard from "../CollectionCard";
 import "swiper/css";
+import { ICategory } from "@/resources/Category/interface";
 interface IProps {
-  collection: IMockCollection[];
+  collection: ICategory[];
 }
 
 const CollectionSwiper = ({ collection }: IProps) => {
-  const [activeCategory, setactiveCategory] = useState("all");
+  const [activeCategory, setactiveCategory] = useState(collection[0]?._id);
 
   const handleCatgoryClick = (category: string) => {
     setactiveCategory(category);
@@ -35,14 +36,15 @@ const CollectionSwiper = ({ collection }: IProps) => {
           currentTarget.classList.remove("collection");
         }}
       >
+        
         {collection.map(el => {
-          const isActive = el.name === activeCategory;
+          const isActive = el._id === activeCategory;
           return (
-            <SwiperSlide key={el.name}>
+            <SwiperSlide key={el.title}>
               <CollectionCard
                 collection={el}
                 isActive={isActive}
-                onClick={() => handleCatgoryClick(el.name)}
+                onClick={() => handleCatgoryClick(el._id)}
               />
             </SwiperSlide>
           );
