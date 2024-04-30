@@ -1,5 +1,5 @@
 import ProductCard from "@/components/Cards/ProductCard";
-import { IProduct } from "@/data/mock/products";
+import { IProduct } from "@/resources/Product/interface";
 import { VStack } from "@chakra-ui/react";
 import React from "react";
 

@@ -1,0 +1,33 @@
+.animated_circle{
+    stroke: #FE3F61;
+    animation: stroke-draw 5s ease-out alternate;
+stroke-width: .7rem;
+    stroke-linecap: round;
+
+
+}
+@keyframes stroke-draw {
+    0% {
+    stroke: #fe3f61;
+    stroke-dasharray: 8;
+}
+30% {
+    stroke: #fea259;
+    transform: rotate(180deg);
+    stroke-dasharray: 12;
+}
+100% {
+    stroke: #fe3f61;
+    transform: rotate(180deg);
+    stroke-dasharray: 0;
+}
+}
+
+.circle{
+    fill: none;
+    stroke-linecap: round;
+    stroke-width: 8;
+
+    stroke-dasharray: 0;
+    stroke-dashoffset: 0;
+}
