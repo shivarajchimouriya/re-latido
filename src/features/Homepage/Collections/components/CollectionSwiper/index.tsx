@@ -1,16 +1,21 @@
 "use client";
 import { IMockCollection } from "@/data/mock/collection";
 import { Flex } from "@chakra-ui/react";
-import React from "react";
+import React, { useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import CollectionCard from "../CollectionCard";
 import "swiper/css";
-
 interface IProps {
   collection: IMockCollection[];
 }
 
 const CollectionSwiper = ({ collection }: IProps) => {
+  const [activeCategory, setactiveCategory] = useState("all");
+
+  const handleCatgoryClick = (category: string) => {
+    setactiveCategory(category);
+  };
+
   return (
     <Flex
       w="100%"
@@ -31,9 +36,14 @@ const CollectionSwiper = ({ collection }: IProps) => {
         }}
       >
         {collection.map(el => {
+          const isActive = el.name === activeCategory;
           return (
             <SwiperSlide key={el.name}>
-              <CollectionCard collection={el} />
+              <CollectionCard
+                collection={el}
+                isActive={isActive}
+                onClick={() => handleCatgoryClick(el.name)}
+              />
             </SwiperSlide>
           );
         })}

@@ -141,7 +141,7 @@ const Navbar = () => {
                 rounded='2rem'
                 layoutId="b"
                 initial={{ y: '100%' }}
-                animate={{ y: 0, transition: { duration:.3, damping:4,  bounce: true } }}
+                animate={{ y: 0, transition: { duration:.1, damping:4,  bounce: true } }}
                 exit={{ y: '100%',transition:{duration:.4,  bounce:false,type:"just",} }}
                 bg="rgba(0,0,0,.7)"
 

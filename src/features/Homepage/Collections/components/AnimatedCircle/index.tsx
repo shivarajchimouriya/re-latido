@@ -1,27 +1,34 @@
 import { Box } from "@chakra-ui/react";
 import React from "react";
-import { motion } from "framer-motion";
-const AnimatedCircle = () => {
+import { AnimatePresence, motion } from "framer-motion";
+import styles from "./animatedCircle.module.css";
+interface IProps {
+  isActive: boolean;
+}
+
+const AnimatedCircle = ({ isActive }: IProps) => {
   return (
-    <Box
-      className="circle"
-      position="absolute"
-      width="120%"
-      height="120%"
-      zIndex={-10}
-      isolation="isolate"
-    >
-      <motion.svg
-        fill="none"
-        strokeWidth=".6rem"
-        stroke="red"
-        className="jss1155"
-        viewBox="0 0 192  192"
-        xmlns="http://www.w3.org/2000/svg"
+    <AnimatePresence>
+      {" "}<Box
+        position="absolute"
+        width="110%"
+        height="110%"
+        zIndex={-10}
+        isolation="isolate"
+        as={motion.div}
+        exit={{ opacity: 0 }}
       >
-        <circle cx="96" cy="96" r="80" />
-      </motion.svg>
-    </Box>
+        <motion.svg
+          layoutId="circle"
+          fill="none"
+          className={isActive ? styles.animated_circle : styles.circle}
+          viewBox="0 0 192  192"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <circle cx="96" cy="96" r="80" />
+        </motion.svg>
+      </Box>
+    </AnimatePresence>
   );
 };
 
