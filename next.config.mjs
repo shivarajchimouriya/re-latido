@@ -7,6 +7,7 @@ const nextConfig = {
     }
   },
   images: {
+    formats: ["image/avif", "image/webp"],
     // allow images form all domains
     remotePatterns: [
       {

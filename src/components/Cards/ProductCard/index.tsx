@@ -293,7 +293,7 @@ const ProductCard = ({ product, ...rest }: IProps) => {
             src={product.primary_image}
             height={1000}
             width={1000}
-            quality={100}
+            // quality={100}
             style={{ objectFit: "contain", width: "100%", height: "100%" }}
           />
         </Box>
