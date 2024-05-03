@@ -20,21 +20,8 @@ const ProductListings = async () => {
 const productList=products?.data.data;
 if(!productList) return null;
   return (
-    <VStack
-      w="100%"
-      maxW="50rem"
-      overflow="auto"
-      rounded="1rem"
-      p="2rem"
-      style={{
-        scrollSnapType: "y mandatory",
-        scrollSnapStop: "always",
-        scrollBehavior: "smooth",
-        height: "calc(-230px + 100dvh)"
-      }}
-    >
+  
       <HomepageProductLists products={productList} viewType={1} />
-    </VStack>
   );
 };
 

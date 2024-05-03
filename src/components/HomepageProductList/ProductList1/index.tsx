@@ -8,12 +8,26 @@ interface IProps {
 }
 const ProductList1 = ({ products }: IProps) => {
   return (
-    <VStack w="100%">
-      {products.map(el => {
-        return (
-          <ProductCard product={el} key={el.name} scrollSnapAlign="start" />
-        );
-      })}
+    <VStack
+      w="100%"
+      maxW="50rem"
+      overflow="auto"
+      rounded="1rem"
+      p="2rem"
+      style={{
+        scrollSnapType: "y mandatory",
+        scrollSnapStop: "always",
+        scrollBehavior: "smooth",
+        height: "calc(-230px + 100dvh)"
+      }}
+    >
+      <VStack w="100%">
+        {products.map(el => {
+          return (
+            <ProductCard product={el} key={el.name} scrollSnapAlign="start" />
+          );
+        })}
+      </VStack>
     </VStack>
   );
 };

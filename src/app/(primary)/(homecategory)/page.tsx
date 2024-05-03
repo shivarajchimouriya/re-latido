@@ -6,7 +6,6 @@ import Image from "next/image";
 export default function Home() {
   return (
     <VStack h="full">
-      <Collections />
       <ProductListings />
     </VStack>
   );
