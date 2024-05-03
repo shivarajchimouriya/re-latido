@@ -267,7 +267,6 @@ const ProductCard = ({ product, ...rest }: IProps) => {
         position='relative'
         w="100%"
         align='start'
-        p="1rem"
         rounded="1rem"
         overflow="hidden"
         bg="rgba(0,0,0,0.03)"
@@ -284,21 +283,21 @@ const ProductCard = ({ product, ...rest }: IProps) => {
         style={{
           height: "calc(-230px + 100dvh)"
 
-        }}
+        }} 
 
       >
-        <Box w="100%" overflow="hidden">
+        <Box w="100%" overflow="hidden" h='100%' >
           <AppImage
             alt={product.name}
             src={product.primary_image}
             height={1000}
             width={1000}
             // quality={100}
-            style={{ objectFit: "contain", width: "100%", height: "100%" }}
+            style={{ objectFit: "cover", width: "100%", height: "100%" }}
           />
         </Box>
 
-        <HStack  position={'absolute'}  bottom={'1rem'} left='1rem'   rounded='2rem' p='.3rem' pl='2rem' pr='2rem' justifySelf='start' w='fit-content' bg='rgba(255,255,255,.8)' backdropFilter='auto' backdropBlur='4px'  >
+        <HStack  position={'absolute'}  bottom={'1rem'} left='1rem'   rounded='2rem' p='.3rem' pl='2rem' pr='2rem' justifySelf='start' w='fit-content' bg='rgba(255,255,255,.7)' backdropFilter='auto' backdropBlur='4px'  >
      
           <VStack align='start' gap='0'>
             <Text fontSize='1.6rem' fontWeight='bold' textTransform='capitalize'   > {product.name}  </Text>

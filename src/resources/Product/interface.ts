@@ -100,3 +100,5 @@ interface FetchResponse {
         category: Category[];
     };
 }
+
+export interface IResponseProductByCategory extends IProductResponse { }
