@@ -27,7 +27,7 @@ import { MdBusAlert, MdDoneOutline, MdOutlineDone } from "react-icons/md";
 import { useForm } from "react-hook-form";
 import { logger } from "@/utils/logger";
 import { IProductFilterReq } from "@/resources/Product/interface";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useCategories } from "@/hooks/server/useCategories";
 
 interface IProps {
@@ -37,17 +37,25 @@ interface IProps {
 const FilterBox = ({ onClose }: IProps) => {
   const {data}=useCategories();
   const categories=data || [];
+
+  logger.log("categories",categories)
   const sliderLenth = Array.from({ length: Math.ceil(categories?.length / 2) });
+  const searchParams=useSearchParams();
+const activeCategory=searchParams.get("collections");
+const lowerLimit=Number(searchParams.get("priceLowerLimit")) ?? 0;
+const upperLimit=Number(searchParams.get("priceUpperLimit")) ?? 0;
+const searchedGender=searchParams.get("gender") as 'male'|'female'
+  logger.log("Slider length", sliderLenth)
 const router=useRouter()
-  const [rangeValues, setRangeValues] = useState([0, 90000]);
-  const [activeCat, setActiveCat] = useState("");
+  const [rangeValues, setRangeValues] = useState([lowerLimit, upperLimit]);
+  const [activeCat, setActiveCat] = useState(activeCategory|| "");
   const storedGender = localStorage.getItem("gender") as
     | "male"
     | "female"
     | null;
 
   const [SelectedGender, setSelectedGender] = useState<"male" | "female">(
-    storedGender ?? "female"
+    searchedGender ?? storedGender ?? "female"
   );
 
   const handleCatClick = (catName: string) => {
@@ -73,7 +81,10 @@ const data:IProductFilterReq={
   gender:SelectedGender,
   priceLowerLimit:`${rangeValues[0]}` || '0',
   priceUpperLimit:`${rangeValues[1]}` || '90000',
-  collections:activeCat
+  collections:activeCat,
+  limit:1000,
+  page:1
+
 }
 const queryString = Object.entries(data)
   .map(([key, value]) => `${encodeURIComponent(key)}=${encodeURIComponent(value)}`)
@@ -85,7 +96,7 @@ onClose()
 }
 
   return (
-    <VStack gap="2rem" w="100%" px="2rem">
+    <VStack gap="2rem" w="100%" px="2rem" overflow='auto' >
       <Box w="full" position="relative" color="white" h="110%" py="2rem">
         <Swiper
           slidesPerView={"auto"}
@@ -153,7 +164,7 @@ onClose()
           onChange={val => {
             setRangeValues(val);
           }}
-          defaultValue={[0, 90000]}
+          defaultValue={[rangeValues[0], rangeValues[1]]}
           min={0}
           max={90000}
           step={1000}
@@ -287,3 +298,7 @@ onClose()
 };
 
 export default FilterBox;
+
+// https://isydwbl5r3.execute-api.ap-south-1.amazonaws.com/prod/mobile_home?page=1&limit=1&gender=male&priceLowerLimit=0&priceUpperLimit=10000
+// https://isydwbl5r3.execute-api.ap-south-1.amazonaws.com/prod/mobile_home?gender=male&priceLowerLimit=0&priceUpperLimit=89000&collections=637c9f9abed49a0008ce0dcb?page=1&limit=10000
+// https://isydwbl5r3.execute-api.ap-south-1.amazonaws.com/prod/client_product?gender=female&priceLowerLimit=21000&priceUpperLimit=64000&collections=637de6398ed77c00088b4df5

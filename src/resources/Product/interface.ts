@@ -1,3 +1,4 @@
+import { ICategory } from "../Category/interface";
 
 export interface IProductResponse {
     message: string,
@@ -102,12 +103,27 @@ interface FetchResponse {
 }
 
 export interface IResponseProductByCategory extends IProductResponse { }
-export interface IResposneFIlteredProduct extends IProductResponse { }
-
+export interface IResposneFIlteredProduct {
+    message: string,
+    data: {
+        product: {
+            data: IProduct[],
+            success: boolean,
+            msg: string,
+            page: string,
+            size: string,
+            totalData: number
+        },
+        category: ICategory[]
+    }
+}
 export interface IProductFilterReq {
 
     collections: string;
     gender: string;
     priceLowerLimit: string;
     priceUpperLimit: string;
+    page: number,
+    limit: number,
+
 }
