@@ -102,3 +102,12 @@ interface FetchResponse {
 }
 
 export interface IResponseProductByCategory extends IProductResponse { }
+export interface IResposneFIlteredProduct extends IProductResponse { }
+
+export interface IProductFilterReq {
+
+    collections: string;
+    gender: string;
+    priceLowerLimit: string;
+    priceUpperLimit: string;
+}

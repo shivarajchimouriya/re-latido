@@ -8,6 +8,7 @@ export const apiURLs = {
         all: "/categories"
     },
     homepage: "/mobile_home?page=1&limit=1&gender=male&priceLowerLimit=0&priceUpperLimit=10000",
+    filter: "/client_product"
 
 
 }

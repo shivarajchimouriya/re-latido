@@ -7,6 +7,7 @@ import PullToRefreshProvider from "@/providers/PullTorefreshProvider";
 import DrawerProvider from "@/providers/DrawerProvider";
 const inter = Inter({ subsets: ["latin"] });
 import 'swiper/css/grid';
+import AppQueryProvider from "@/providers/QueryProvider";
 
 export const metadata: Metadata = {
   title: "Latido",
@@ -21,14 +22,16 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <DrawerProvider>
-        <LenisProvider>
-        <AppThemeProvider>
-        {children}
-        </AppThemeProvider>
-        </LenisProvider>
-        </DrawerProvider>
-        </body>
+        <AppQueryProvider>
+          <DrawerProvider>
+            <LenisProvider>
+              <AppThemeProvider>
+                {children}
+              </AppThemeProvider>
+            </LenisProvider>
+          </DrawerProvider>
+        </AppQueryProvider>
+      </body>
     </html>
   );
 }
