@@ -127,3 +127,5 @@ export interface IProductFilterReq {
     limit: number,
 
 }
+
+export interface ISearchResponse extends IProductResponse { }

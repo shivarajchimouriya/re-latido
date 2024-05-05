@@ -1,3 +1,4 @@
 export const queryKeys = {
-    CATEGORIES: "caegories"
+    CATEGORIES: "categories",
+    TOP_RATED: "topRated"
 }

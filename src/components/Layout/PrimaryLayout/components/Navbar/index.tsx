@@ -9,6 +9,7 @@ import Appendix from "./components/Appendix";
 import FilterBox from "./components/FIlterBox";
 import GenderCard from "./components/GenderCard";
 import { BiMaleSign } from "react-icons/bi";
+import Link from "next/link";
 
 const Navbar = () => {
   interface INavItem {
@@ -18,7 +19,7 @@ const Navbar = () => {
   }
 
   const navItems: INavItem[] = [
-    { icon: <AiOutlineThunderbolt />, link: "/home", name: "home" },
+    { icon: <AiOutlineThunderbolt />, link: "/", name: "home" },
     { icon: <RiSearch2Line />, link: "/search", name: "search" },
     { icon: <GoPerson />, link: "/account", name: "account" }
   ];
@@ -59,6 +60,10 @@ const Navbar = () => {
             {navItems.map(el => {
               const isActive = el.name === activeNav;
               return (
+                <Link
+                href={el.link}
+                key={el.name}
+                >
                 <VStack
                   as={motion.div}
                   position="relative"
@@ -89,6 +94,7 @@ const Navbar = () => {
                       bg="white"
                     />}
                 </VStack>
+                </Link>
               );
             })}
           </Flex>
