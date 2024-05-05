@@ -1,17 +1,10 @@
 import HomepageProductLists from "@/components/HomepageProductList";
+import CategoryResult from "@/features/CategoryResult";
 import ProductListings from "@/features/Homepage/ProductListings";
+import { APPError } from "@/lib/exception";
 import { API } from "@/resources";
 import { logger } from "@/utils/logger";
-import React from "react";
-
-const getProductsByCategory = async (id: string) => {
-  try {
-    const res = await API.Product.byCategory(id);
-    return res;
-  } catch (err) {
-    logger.log("error fetching products by category");
-  }
-};
+import React, { Suspense } from "react";
 
 interface IProps {
   params: {
@@ -21,12 +14,11 @@ interface IProps {
 
 const Page = async ({ params }: IProps) => {
   const id = params.id as string;
-
-  const productsByCategory = await getProductsByCategory(id);
-  const products=productsByCategory?.data.data;
-  if(!products) return null;
-  return    <HomepageProductLists products={products} viewType={1} />
-
+  return (
+    <Suspense fallback="loading">
+      <CategoryResult id={id} />
+    </Suspense>
+  );
 };
 
 export default Page;

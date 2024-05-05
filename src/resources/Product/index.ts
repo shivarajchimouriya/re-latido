@@ -1,6 +1,6 @@
 import { apiURLs } from "@/constants/apiUrls";
-import { APIService, apiService } from "@/lib/requester";
-import { IProduct, IProductResponse, IResponseProductByCategory } from "./interface";
+import { APIService, IApiRequestOptions, IFetchOptions, apiService } from "@/lib/requester";
+import { IProduct, IProductFilterReq, IProductResponse, IResponseProductByCategory, IResposneFIlteredProduct, ISearchResponse } from "./interface";
 
 class Product {
 
@@ -12,6 +12,14 @@ class Product {
     }
     byCategory(id: string) {
         return this.apiService.get<IResponseProductByCategory>({ url: apiURLs.product.byId(id) })
+
+    }
+    filter(filter: IProductFilterReq) {
+        return this.apiService.get<IResposneFIlteredProduct>({ url: apiURLs.filter, options: { params: { ...filter } } })
+    }
+    getTopRated(options: IFetchOptions) {
+
+        return this.apiService.get<ISearchResponse>({ url: apiURLs.search, options })
 
     }
 

@@ -66,3 +66,26 @@ export const attachWithS3BaseUrl = (path: string) => {
 
 
 }
+
+export function debounce<F extends (...args: any[]) => any>(
+    func: F,
+    wait: number,
+    immediate: boolean = false
+): F {
+    let timeout: ReturnType<typeof setTimeout> | null = null;
+
+    return function (this: any, ...args: any[]) {
+        const later = () => {
+            timeout = null;
+            if (!immediate) func.apply(this, args);
+        };
+
+        const callNow = immediate && !timeout;
+
+        clearTimeout(timeout as ReturnType<typeof setTimeout>);
+
+        timeout = setTimeout(later, wait);
+
+        if (callNow) func.apply(this, args);
+    } as F;
+}

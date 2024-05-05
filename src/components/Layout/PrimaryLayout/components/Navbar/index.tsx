@@ -9,6 +9,7 @@ import Appendix from "./components/Appendix";
 import FilterBox from "./components/FIlterBox";
 import GenderCard from "./components/GenderCard";
 import { BiMaleSign } from "react-icons/bi";
+import Link from "next/link";
 
 const Navbar = () => {
   interface INavItem {
@@ -18,18 +19,15 @@ const Navbar = () => {
   }
 
   const navItems: INavItem[] = [
-    { icon: <AiOutlineThunderbolt />, link: "/home", name: "home" },
+    { icon: <AiOutlineThunderbolt />, link: "/", name: "home" },
     { icon: <RiSearch2Line />, link: "/search", name: "search" },
     { icon: <GoPerson />, link: "/account", name: "account" }
   ];
-
   const [activeNav, setActiveNav] = useState<string>("home");
   const { isOpen, onClose, onOpen } = useDisclosure()
-
   const handleNavClick = (navName: string) => {
     setActiveNav(navName);
   };
-
   return (
     <>
       <AnimatePresence>
@@ -62,6 +60,10 @@ const Navbar = () => {
             {navItems.map(el => {
               const isActive = el.name === activeNav;
               return (
+                <Link
+                href={el.link}
+                key={el.name}
+                >
                 <VStack
                   as={motion.div}
                   position="relative"
@@ -92,6 +94,7 @@ const Navbar = () => {
                       bg="white"
                     />}
                 </VStack>
+                </Link>
               );
             })}
           </Flex>
@@ -107,18 +110,12 @@ const Navbar = () => {
           <>
             <Box
               as={motion.div}
-
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-
               position='fixed' inset='0'
-
               zIndex={10000} width='100%' height='100%' bg='rgba(0,0,0,.1)' onClick={onClose} >
-
-
             </Box>
-
             <VStack
               as={motion.div}
               position='fixed'
@@ -130,10 +127,9 @@ const Navbar = () => {
                   onClose()
                 }
 
-
               }}
             >
-                             <VStack w='95%' h='100%'
+              <VStack w='95%' h='100%'
                 position='relative'
                 overflow='hidden'
                 as={motion.div}
@@ -144,28 +140,14 @@ const Navbar = () => {
                 animate={{ y: 0, transition: { duration:.1, damping:4,  bounce: true } }}
                 exit={{ y: '100%',transition:{duration:.4,  bounce:false,type:"just",} }}
                 bg="rgba(0,0,0,.7)"
-
-
               >
                 <Box w='3rem' h='.3rem' mt='1rem' rounded='5rem' bg='whitesmoke' />
-
-
                 <FilterBox onClose={onClose}  />
-
               </VStack>
 
             </VStack>
 
-
-
-
-
-
           </>
-
-
-
-
 
 
 }

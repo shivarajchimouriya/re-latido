@@ -18,3 +18,6 @@ const HomepageProductLists = ({ products, viewType }: IProps) => {
 };
 
 export default HomepageProductLists;
+
+// https://isydwbl5r3.execute-api.ap-south-1.amazonaws.com/prod/mobile_home?page=1&limit=1&gender=male&priceLowerLimit=0&priceUpperLimit=10000
+// https://isydwbl5r3.execute-api.ap-south-1.amazonaws.com/prod/mobile_home?page=1&limit=1&gender=female&priceLowerLimit=0&priceUpperLimit=64000&collections=637de6398ed77c00088b4df5

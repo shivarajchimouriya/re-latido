@@ -178,6 +178,7 @@ export class APIService implements IFetchRequest {
 
     async get<T>({ options, url }: RequestInterfaceClient): Promise<T> {
 
+        logger.log('get options', options)
         const res = await this.fetchWrapper<T>({ url, data: undefined, options: { options: { next: {} }, ...options, }, method: "GET", });
         return res
     }

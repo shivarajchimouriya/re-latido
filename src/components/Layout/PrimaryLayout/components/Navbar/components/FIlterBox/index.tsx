@@ -24,19 +24,38 @@ import { motion } from "framer-motion";
 import GenderCard from "../GenderCard";
 import { BiFemaleSign, BiMaleSign } from "react-icons/bi";
 import { MdBusAlert, MdDoneOutline, MdOutlineDone } from "react-icons/md";
+import { useForm } from "react-hook-form";
+import { logger } from "@/utils/logger";
+import { IProductFilterReq } from "@/resources/Product/interface";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useCategories } from "@/hooks/server/useCategories";
 
 interface IProps {
   onClose: () => void;
 }
 
 const FilterBox = ({ onClose }: IProps) => {
-  const categories = mockCollections;
-  const sliderLenth = Array.from({ length: Math.ceil(categories.length / 2) });
+  const {data}=useCategories();
+  const categories=data || [];
 
-  const [rangeValues, setRangeValues] = useState([0, 0]);
-  const [activeCat, setActiveCat] = useState("");
+  logger.log("categories",categories)
+  const sliderLenth = Array.from({ length: Math.ceil(categories?.length / 2) });
+  const searchParams=useSearchParams();
+const activeCategory=searchParams.get("collections");
+const lowerLimit=Number(searchParams.get("priceLowerLimit")) ?? 0;
+const upperLimit=Number(searchParams.get("priceUpperLimit")) ?? 0;
+const searchedGender=searchParams.get("gender") as 'male'|'female'
+  logger.log("Slider length", sliderLenth)
+const router=useRouter()
+  const [rangeValues, setRangeValues] = useState([lowerLimit, upperLimit]);
+  const [activeCat, setActiveCat] = useState(activeCategory|| "");
+  const storedGender = localStorage.getItem("gender") as
+    | "male"
+    | "female"
+    | null;
+
   const [SelectedGender, setSelectedGender] = useState<"male" | "female">(
-    "male"
+    searchedGender ?? storedGender ?? "female"
   );
 
   const handleCatClick = (catName: string) => {
@@ -54,8 +73,30 @@ const FilterBox = ({ onClose }: IProps) => {
     }
   ];
 
+
+const handleApply=()=>{
+
+
+const data:IProductFilterReq={
+  gender:SelectedGender,
+  priceLowerLimit:`${rangeValues[0]}` || '0',
+  priceUpperLimit:`${rangeValues[1]}` || '90000',
+  collections:activeCat,
+  limit:1000,
+  page:1
+
+}
+const queryString = Object.entries(data)
+  .map(([key, value]) => `${encodeURIComponent(key)}=${encodeURIComponent(value)}`)
+  .join('&');
+
+
+router.push(`/filter?${queryString}`);
+onClose()
+}
+
   return (
-    <VStack gap="2rem" w="100%" px="2rem">
+    <VStack gap="2rem" w="100%" px="2rem" overflow='auto' >
       <Box w="full" position="relative" color="white" h="110%" py="2rem">
         <Swiper
           slidesPerView={"auto"}
@@ -77,11 +118,11 @@ const FilterBox = ({ onClose }: IProps) => {
               <SwiperSlide key={i}>
                 <VStack w="8rem" gap="1rem">
                   {articlesToShow.map((el, j) => {
-                    const isActive = activeCat === el.name;
+                    const isActive = activeCat === el._id;
                     return (
                       <Box position="relative" w="100%">
                         <Center
-                          onClick={() => handleCatClick(el.name)}
+                          onClick={() => handleCatClick(el._id)}
                           bg={"rgba(0,0,0,0.1)"}
                           transitionDuration=".4s"
                           w="100%"
@@ -93,7 +134,7 @@ const FilterBox = ({ onClose }: IProps) => {
                           fontWeight={isActive ? "bold" : "medium"}
                           border={".1px  solid rgba(255,255,255,.4)"}
                         >
-                          {el.name}
+                          {el.title}
                         </Center>
                         {isActive &&
                           <Box
@@ -118,15 +159,15 @@ const FilterBox = ({ onClose }: IProps) => {
           })}
         </Swiper>
       </Box>
-      <Box w="100%" mt="3rem" as={motion.div}>
+      <Box w="90%" mt="3rem"   as={motion.div}>
         <RangeSlider
           onChange={val => {
             setRangeValues(val);
           }}
-          defaultValue={[25000, 45000]}
-          min={5000}
+          defaultValue={[rangeValues[0], rangeValues[1]]}
+          min={0}
           max={90000}
-          step={0}
+          step={1000}
           h="auto"
         >
           <RangeSliderTrack bg="rgba(0,0,0,0.1)" h=".2rem">
@@ -240,8 +281,10 @@ const FilterBox = ({ onClose }: IProps) => {
           px="2rem"
           bg="white"
           color="black"
+          fontSize="1.4rem"
           rounded="4rem"
           gap="1rem"
+          onClick={handleApply}
           rightIcon={<MdOutlineDone fontSize="1.5rem" />}
         >
           {" "}Apply{" "}
@@ -255,3 +298,7 @@ const FilterBox = ({ onClose }: IProps) => {
 };
 
 export default FilterBox;
+
+// https://isydwbl5r3.execute-api.ap-south-1.amazonaws.com/prod/mobile_home?page=1&limit=1&gender=male&priceLowerLimit=0&priceUpperLimit=10000
+// https://isydwbl5r3.execute-api.ap-south-1.amazonaws.com/prod/mobile_home?gender=male&priceLowerLimit=0&priceUpperLimit=89000&collections=637c9f9abed49a0008ce0dcb?page=1&limit=10000
+// https://isydwbl5r3.execute-api.ap-south-1.amazonaws.com/prod/client_product?gender=female&priceLowerLimit=21000&priceUpperLimit=64000&collections=637de6398ed77c00088b4df5
