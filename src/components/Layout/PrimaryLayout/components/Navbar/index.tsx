@@ -21,7 +21,7 @@ const Navbar = () => {
   const navItems: INavItem[] = [
     { icon: <AiOutlineThunderbolt />, link: "/", name: "home" },
     { icon: <RiSearch2Line />, link: "/search", name: "search" },
-    { icon: <GoPerson />, link: "/account", name: "account" }
+    { icon: <GoPerson />, link: "/profile", name: "account" }
   ];
   const [activeNav, setActiveNav] = useState<string>("home");
   const { isOpen, onClose, onOpen } = useDisclosure()

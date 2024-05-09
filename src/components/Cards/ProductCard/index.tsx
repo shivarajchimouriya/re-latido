@@ -25,6 +25,7 @@ import {
   useDisclosure
 } from "@chakra-ui/react";
 import { AnimatePresence, TapInfo, Variants, motion } from "framer-motion";
+import Link from "next/link";
 import React, { useRef, useState } from "react";
 import { AiOutlineShareAlt } from "react-icons/ai";
 import { IoCartOutline, IoCloseOutline, IoEyeOutline, IoShareOutline } from "react-icons/io5";
@@ -262,6 +263,7 @@ const ProductCard = ({ product, ...rest }: IProps) => {
 
         }
       </AnimatePresence>
+      <Link href={`/product/details/${product._id}`}  >
       <VStack
         as={motion.div}
         position='relative'
@@ -309,6 +311,7 @@ const ProductCard = ({ product, ...rest }: IProps) => {
         </HStack>
 
       </VStack>
+      </Link>
     </>
   );
 };
