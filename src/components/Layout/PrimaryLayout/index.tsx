@@ -12,7 +12,9 @@ const PrimaryLayout = ({ children }: IProps) => {
     <VStack w="full" justify="center" align="center">
       <Box w="100%" maxW="50rem">
         <Header />
-        {children}
+        <Box h="80vh">
+          {children}
+        </Box>
         <Navbar />
       </Box>
     </VStack>

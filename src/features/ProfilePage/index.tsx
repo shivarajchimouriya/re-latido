@@ -9,7 +9,7 @@ import {
   Grid,
   HStack,
   Text,
-  VStack,
+  VStack
 } from "@chakra-ui/react";
 import { TbFileInvoice, TbLogout, TbShoppingBagCheck } from "react-icons/tb";
 import AppImage from "@/components/AppImage";
@@ -46,13 +46,19 @@ export default function ProfilePage() {
             {data.name}
           </Text>
           <Box fontSize={"1.4rem"} color="textSecondary">
-            <Text>{AddSpaceOnPhone(data.phone)}</Text>
-            <Text>{data.email}</Text>
+            <Text>
+              {AddSpaceOnPhone(data.phone)}
+            </Text>
+            <Text>
+              {data.email}
+            </Text>
           </Box>
         </Grid>
       </Flex>
       <Flex p={8} gap={"2rem"} color={"textPrimary"} alignItems={"center"}>
         <Button
+          as={Link}
+          href={`/profile/edit`}
           px={"1rem"}
           py={"0.3rem"}
           fontWeight={"bold"}
@@ -84,29 +90,50 @@ export default function ProfilePage() {
         p={8}
       >
         <Link href="/orders">
-        <Button px={"1rem"} py={"1rem"} rounded={"0.4rem"} fontWeight={"bold"} justifyContent={"flex-start"}>
-          <Flex  gap={"2rem"} left={0} alignItems={"center"}>
-          <TbShoppingBagCheck fontSize={"3rem"} />
-          Orders
-          </Flex>
+          <Button
+            px={"1rem"}
+            py={"1rem"}
+            rounded={"0.4rem"}
+            fontWeight={"bold"}
+            justifyContent={"flex-start"}
+          >
+            <Flex gap={"2rem"} left={0} alignItems={"center"}>
+              <TbShoppingBagCheck fontSize={"3rem"} />
+              Orders
+            </Flex>
           </Button>
         </Link>
 
         <Link href="/digital-invoice">
-        <Button px={"1rem"} py={"1rem"} rounded={"0.4rem"} fontWeight={"bold"} justifyContent={"flex-start"}>
-          <Flex gap={"2rem"} left={0} alignItems={"center"}>
-          <TbFileInvoice fontSize={"3rem"} style={{marginLeft: "-0.3rem"}} />
-          Invoice
-          </Flex>
+          <Button
+            px={"1rem"}
+            py={"1rem"}
+            rounded={"0.4rem"}
+            fontWeight={"bold"}
+            justifyContent={"flex-start"}
+          >
+            <Flex gap={"2rem"} left={0} alignItems={"center"}>
+              <TbFileInvoice
+                fontSize={"3rem"}
+                style={{ marginLeft: "-0.3rem" }}
+              />
+              Invoice
+            </Flex>
           </Button>
         </Link>
 
         <Link href={"/auth/logout"}>
-        <Button px={"1rem"} py={"1rem"} rounded={"0.4rem"} fontWeight={"bold"} justifyContent={"flex-start"}>
-          <Flex gap={"2rem"} left={0} alignItems={"center"}>
-          <TbLogout fontSize={"3rem"} />
-          Logout
-          </Flex>
+          <Button
+            px={"1rem"}
+            py={"1rem"}
+            rounded={"0.4rem"}
+            fontWeight={"bold"}
+            justifyContent={"flex-start"}
+          >
+            <Flex gap={"2rem"} left={0} alignItems={"center"}>
+              <TbLogout fontSize={"3rem"} />
+              Logout
+            </Flex>
           </Button>
         </Link>
       </ButtonGroup>

@@ -1,6 +1,6 @@
 import FilterResults from "@/features/FilterResults";
 import { IProductFilterReq } from "@/resources/Product/interface";
-import React from "react";
+import React, { Suspense } from "react";
 export const dynamic = "force-dynamic";
 interface IProps {
   searchParams: IProductFilterReq;
@@ -9,7 +9,11 @@ interface IProps {
 const Page = ({ searchParams }: IProps) => {
   const constrains = searchParams;
 
-  return <FilterResults filter={constrains} />;
+  return (
+    <Suspense fallback="loading">
+      <FilterResults filter={constrains} />
+    </Suspense>
+  );
 };
 
 export default Page;

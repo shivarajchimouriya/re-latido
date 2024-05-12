@@ -7,6 +7,9 @@ const appTheme: Partial<ChakraTheme> = extendBaseTheme({
         initialColorMode: "light"
     },
     colors: appColor,
+    fontSizes: {
+        'fl': "1.2rem" //form  label
+    },
     components: {
         Stepper: {
             baseStyle: {
@@ -17,7 +20,8 @@ const appTheme: Partial<ChakraTheme> = extendBaseTheme({
                 }
             }
         },
-        Input: inputTheme
+        Input: inputTheme,
+
     }
 })
 
