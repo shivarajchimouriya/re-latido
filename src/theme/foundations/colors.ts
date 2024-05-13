@@ -8,5 +8,6 @@ export const appColor = {
     background: "var(--background)",
     progressBackground: "var(--progress-background)",
     success: "var(--success)",
-    error: "var(--error)"
+    error: "var(--error)",
+    dark_bg: "var(--dark-bg)"
 }

@@ -101,7 +101,7 @@ const HamburgerMenu = () => {
         <Center h='100%'  w='100%' >
           <VStack  align='start'  w='100%'  pl='2rem'  gap='2rem' >
      <NavItem name="Home" link="/home"  />
-     <NavItem name="privacy policy" link="/home"  />
+     <NavItem name="policy" link="/home"  />
      <NavItem name="contact us" link="/home"  />
      <NavItem name="about us" link="/home"  />
 </VStack>
