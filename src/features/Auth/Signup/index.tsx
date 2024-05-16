@@ -35,6 +35,10 @@ const Signup = () => {
   } = useForm();
   const [activeGender, setActiveGender] = useState("male");
   const { isOpen, onClose, onOpen } = useDisclosure();
+
+
+
+  
   const genders: Array<"male" | "female" | "other"> = [
     "male",
     "female",
@@ -51,7 +55,7 @@ const Signup = () => {
   return (
     <VStack w="full" p="2rem">
       <Text fontSize="3rem" fontWeight={"bold"} w="full" py="2rem">
-        Login /Signup
+        Signup
       </Text>
 
       <VStack w="full" gap="3rem">

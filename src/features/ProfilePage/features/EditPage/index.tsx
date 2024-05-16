@@ -50,13 +50,16 @@ const EditPage = () => {
           border="1px solid gray"
           rounded="100%"
         />
-        <IconButton
-          icon={<MdOutlineModeEdit />}
-          aria-label="edit"
-          position="absolute"
-          bottom="0"
-          fontSize="2rem"
-        />
+        <Input name="profile" id="profile" type="file" display="none" />
+        <Box as="label" bg="red" w="full" h="full" htmlFor="profile">
+          <IconButton
+            icon={<MdOutlineModeEdit />}
+            aria-label="edit"
+            position="absolute"
+            bottom="0"
+            fontSize="2rem"
+          />
+        </Box>
       </Box>
       <Flex
         direction="column"

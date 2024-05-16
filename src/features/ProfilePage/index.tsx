@@ -17,15 +17,16 @@ import { appColor } from "@/theme/foundations/colors";
 import { AddSpaceOnPhone } from "@/lib/AddSpaceOnPhone";
 import { DateDifference, EpochToRedable } from "@/lib/DateModeling";
 import Link from "next/link";
+import { FaFileInvoiceDollar } from "react-icons/fa";
 
 export default function ProfilePage() {
   const { data } = profileData;
   return (
-    <Grid width={"100%"} placeItems={"center"}>
+    <Grid width={"100%"}>
       <Flex
         justifyContent={"start"}
         alignItems={"center"}
-        p={8}
+        p={"1rem"}
         gap={"2rem"}
         mt={"2.5rem"}
       >
@@ -98,7 +99,7 @@ export default function ProfilePage() {
             justifyContent={"flex-start"}
           >
             <Flex gap={"2rem"} left={0} alignItems={"center"}>
-              <TbShoppingBagCheck fontSize={"3rem"} />
+              <TbShoppingBagCheck fontSize={"2rem"} />
               Orders
             </Flex>
           </Button>
@@ -113,8 +114,8 @@ export default function ProfilePage() {
             justifyContent={"flex-start"}
           >
             <Flex gap={"2rem"} left={0} alignItems={"center"}>
-              <TbFileInvoice
-                fontSize={"3rem"}
+              <FaFileInvoiceDollar
+                fontSize={"2rem"}
                 style={{ marginLeft: "-0.3rem" }}
               />
               Invoice
@@ -130,8 +131,8 @@ export default function ProfilePage() {
             fontWeight={"bold"}
             justifyContent={"flex-start"}
           >
-            <Flex gap={"2rem"} left={0} alignItems={"center"}>
-              <TbLogout fontSize={"3rem"} />
+            <Flex gap={"2rem"} left={0} alignItems={"center"} color="red.500">
+              <TbLogout fontSize={"2rem"} />
               Logout
             </Flex>
           </Button>

@@ -1,21 +1,44 @@
 "use client";
+import { API } from "@/resources";
+import { logger } from "@/utils/logger";
 import {
+  Box,
   Button,
   FormControl,
+  FormErrorMessage,
   FormLabel,
   Input,
   Text,
   VStack
 } from "@chakra-ui/react";
+import { redirect, useRouter } from "next/navigation";
 import React from "react";
-import { useForm } from "react-hook-form";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { useUserrCheck } from "./hooks/useFormSubmit";
 
 const Entry = () => {
+  interface IFormValues {
+    username: string;
+  }
+
   const {
-    handleSubmit,
+  handleSubmit,
     register,
+    setError,
     formState: { errors, isSubmitting }
-  } = useForm();
+  } = useForm<IFormValues>();
+  const router = useRouter();
+  const { mutateAsync, isPending } = useUserrCheck();
+  const onSubmit: SubmitHandler<IFormValues> = async data => {
+    logger.log("data", data);
+    try {
+      const res = await mutateAsync({ username: data.username });
+      logger.log("res", res);
+    } catch (error) {
+      router.push("/auth/signup");
+    }
+  };
+  logger.log("erors", errors);
 
   return (
     <VStack w="full" p="2rem" alignItems="center" gap="2rem">
@@ -28,27 +51,33 @@ const Entry = () => {
         Latido’s platform, and if you already have an account here please enter
         your Username to login.
       </Text>
+      <Box w="full" as="form" onSubmit={handleSubmit(onSubmit)}>
+        <FormControl w="full">
+          <FormLabel htmlFor="name" textTransform="capitalize">
+            username
+          </FormLabel>
+          <Input variant="underline" id="name" {...register("username")} />
+          <Text color={"red"}>
+            {" "}{errors.username && errors.username.message}
+          </Text>
+        </FormControl>
 
-      <FormControl w="full">
-        <FormLabel htmlFor="name" textTransform="capitalize">
-          username
-        </FormLabel>
-        <Input variant="underline" id="name" {...register("name")} />
-      </FormControl>
-
-      <Button
-        mt="3rem"
-        p="1rem"
-        w="100%"
-        border="1px solid black"
-        rounded="md"
-        fontWeight="bold"
-        fontSize="1.4rem"
-        bg="black"
-        color="white"
-      >
-        proceed
-      </Button>
+        <Button
+          mt="3rem"
+          p="1rem"
+          w="100%"
+          border="1px solid black"
+          rounded="md"
+          fontWeight="bold"
+          fontSize="1.4rem"
+          type="submit"
+          bg="black"
+          color="white"
+          isLoading={isPending}
+        >
+          proceed
+        </Button>
+      </Box>
     </VStack>
   );
 };
