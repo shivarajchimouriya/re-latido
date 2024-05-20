@@ -9,5 +9,17 @@ export const appColor = {
     progressBackground: "var(--progress-background)",
     success: "var(--success)",
     error: "var(--error)",
-    dark_bg: "var(--dark-bg)"
+    dark_bg: "var(--dark-bg)",
+    fb: "var(--fb-color)",
+    whatsapp: "var(--whatsapp-color)",
+    messenger: "var( --messenger-color)",
+    x: "var(--x-color)",
+    discord: "var(--discord-color)",
+    reddit: "var(--reddit-color)",
+    viber: "var(--viber-color)",
+    teams: "var(--teams-color)",
+    pinterest: "var(--pinterest-color)",
+    linkedin: "var(--linkedin-color)",
+    instagram: "var(--instagram-color)",
+    telegram: "var(--telegram-color)"
 }

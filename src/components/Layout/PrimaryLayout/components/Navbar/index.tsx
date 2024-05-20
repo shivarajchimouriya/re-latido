@@ -33,7 +33,7 @@ const Navbar = () => {
       <AnimatePresence>
         <Flex
           position="fixed"
-          bottom="1.2rem"
+          bottom=".2rem"
           zIndex={10}
           transform="translateX(-50%)"
           left="55%"

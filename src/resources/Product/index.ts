@@ -22,6 +22,9 @@ class Product {
         return this.apiService.get<ISearchResponse>({ url: apiURLs.search, options })
 
     }
+    byID(id: string) {
+        return this.apiService.get<IProduct>({ url: apiURLs.product.byId(id) })
+    }
 
 
 };
