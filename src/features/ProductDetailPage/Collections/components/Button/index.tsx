@@ -1,42 +1,38 @@
 "use client";
-
-import React from "react";
-import { Button, Container, Grid } from "@chakra-ui/react";
-import { BottomSheet } from "react-spring-bottom-sheet";
-import SizeFrom from "../SizeForm";
+import React, { useEffect } from "react";
+import {
+  Button,
+  Grid,
+  useDisclosure,
+} from "@chakra-ui/react";
+import SizeModal from "@/features/ProductDetailPage/Collections/components/SizeModal"
 
 export default function ButtonComponent() {
-  const [open, setOpen] = React.useState(false);
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
-  const handleClick = () => {
-    setOpen(!open);
+  const heightOptions = () => {
+    const height = [];
+    for (let heightFit = 1; heightFit <= 8; heightFit++) {
+      for (let heightIn = 0; heightIn <= 12; heightIn++) {
+        height.push(`${heightFit}'${heightIn}"`);
+      }
+    }
+    return height;
   };
-  const handleClose = () => {
-    setOpen(false);
-  }
-  const BottomSheetUi = () => {
-    return (
-      <BottomSheet className="bottom-sheet" open={open} onDismiss={handleClose}>
-            <Container className="bottom-sheet-container" padding={2}>
-                <SizeFrom handleClose={handleClose} />
-        </Container>
-      </BottomSheet>
-    );
-  };
+
 
   return (
-    <Grid width="100%" margin={"4rem 0"} placeItems="center">
+    <Grid width="100%" margin={"2rem 0"} placeItems="center">
       <Button
         padding={"1rem 2rem"}
         fontWeight={"bold"}
         fontSize={"1.4rem"}
         className="primary-button"
-        onClick={handleClick}
+        onClick={onOpen}
       >
         Enter Body Details
       </Button>
-
-      <BottomSheetUi />
+        <SizeModal heightOptions={heightOptions} isOpen={isOpen} onClose={onClose} />
     </Grid>
   );
 }
