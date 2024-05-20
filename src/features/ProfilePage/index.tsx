@@ -18,9 +18,14 @@ import { AddSpaceOnPhone } from "@/lib/AddSpaceOnPhone";
 import { DateDifference, EpochToRedable } from "@/lib/DateModeling";
 import Link from "next/link";
 import { FaFileInvoiceDollar } from "react-icons/fa";
+import { getCurrentUser } from "aws-amplify/auth";
+import { logger } from "@/utils/logger";
 
-export default function ProfilePage() {
+export default async function ProfilePage() {
   const { data } = profileData;
+
+  const user = await getCurrentUser();
+  logger.log("user", user.userId);
   return (
     <Grid width={"100%"}>
       <Flex
