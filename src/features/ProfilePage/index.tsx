@@ -20,12 +20,19 @@ import Link from "next/link";
 import { FaFileInvoiceDollar } from "react-icons/fa";
 import { getCurrentUser } from "aws-amplify/auth";
 import { logger } from "@/utils/logger";
+import ProfileClient from "./ProfileClient";
 
 export default async function ProfilePage() {
   const { data } = profileData;
-
-  const user = await getCurrentUser();
-  logger.log("user", user.userId);
+  let userDta = null;
+  try {
+    const user = await getCurrentUser();
+    logger.log("user", user.userId);
+    userDta = user;
+  } catch (err) {
+    logger.log("error", err);
+    userDta = err;
+  }
   return (
     <Grid width={"100%"}>
       <Flex
@@ -141,6 +148,7 @@ export default async function ProfilePage() {
               Logout
             </Flex>
           </Button>
+          <ProfileClient data={userDta} />
         </Link>
       </ButtonGroup>
     </Grid>
