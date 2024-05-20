@@ -10,6 +10,7 @@ import 'swiper/css/grid';
 import 'react-date-range/dist/styles.css'; // main style file
 import 'react-date-range/dist/theme/default.css';
 import AppQueryProvider from "@/providers/QueryProvider";
+import AuthProvider from "@/providers/AuthProvider";
 
 export const metadata: Metadata = {
   title: "Latido",
@@ -28,7 +29,9 @@ export default function RootLayout({
           <DrawerProvider>
             <LenisProvider>
               <AppThemeProvider>
+        <AuthProvider>
                 {children}
+        </AuthProvider>
               </AppThemeProvider>
             </LenisProvider>
           </DrawerProvider>

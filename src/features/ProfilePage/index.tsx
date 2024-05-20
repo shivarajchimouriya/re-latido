@@ -18,9 +18,21 @@ import { AddSpaceOnPhone } from "@/lib/AddSpaceOnPhone";
 import { DateDifference, EpochToRedable } from "@/lib/DateModeling";
 import Link from "next/link";
 import { FaFileInvoiceDollar } from "react-icons/fa";
+import { getCurrentUser } from "aws-amplify/auth";
+import { logger } from "@/utils/logger";
+import ProfileClient from "./ProfileClient";
 
-export default function ProfilePage() {
+export default async function ProfilePage() {
   const { data } = profileData;
+  let userDta = null;
+  try {
+    const user = await getCurrentUser();
+    logger.log("user", user.userId);
+    userDta = user;
+  } catch (err) {
+    logger.log("error", err);
+    userDta = err;
+  }
   return (
     <Grid width={"100%"}>
       <Flex
@@ -136,6 +148,7 @@ export default function ProfilePage() {
               Logout
             </Flex>
           </Button>
+          <ProfileClient data={userDta} />
         </Link>
       </ButtonGroup>
     </Grid>
