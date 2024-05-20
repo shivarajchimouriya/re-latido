@@ -12,18 +12,36 @@ import ButtonComponent from '../Collections/components/Button';
 import Description from '../Collections/components/Description';
 import Blog from '../Collections/components/Blog';
 import environment from '@/config/environment';
+import { API } from '@/resources';
+import { logger } from '@/utils/logger';
 
-export default function ProductDetail({ productId }: IProps) {
+
+const getProductDetail=async(id:string)=>{
+
+
+  try {
+    const res=await API.Product.byID(id);
+    return res
+  } catch (error) {
+    logger.log("Error",error)
+  }
+
+
+}
+
+export default async function ProductDetail({ productId }: IProps) {
   // do api call here
 
+  const productDetail=await getProductDetail(productId);
+  logger.log('prodcut detail',productDetail)
   const response: IProductResponse = data;
-
+if(!productDetail) return null;
   return (
     <Container>
       <VStack width="100%">
         <ProductName
-          productName={response.productDetail.name}
-          category={response.productDetail.category.title}
+          productName={productDetail.name}
+          category={productDetail.category?.title}
           productId={productId}
         />
         <ProductImage

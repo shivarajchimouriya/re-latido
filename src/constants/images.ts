@@ -9,6 +9,9 @@ export const collectionImages = {
 
 }
 
+export const brandLogo = '/'
+
+
 
 export const jacketImages = {
     sheep: '/images/jackets/jacket.avif'

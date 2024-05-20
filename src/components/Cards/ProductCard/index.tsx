@@ -25,6 +25,7 @@ import {
   useDisclosure
 } from "@chakra-ui/react";
 import { AnimatePresence, TapInfo, Variants, motion } from "framer-motion";
+import Link from "next/link";
 import React, { useRef, useState } from "react";
 import { AiOutlineShareAlt } from "react-icons/ai";
 import { IoCartOutline, IoCloseOutline, IoEyeOutline, IoShareOutline } from "react-icons/io5";
@@ -187,9 +188,7 @@ const ProductCard = ({ product, ...rest }: IProps) => {
 
                       aria-label="view" icon={<IoEyeOutline />}
 
-                      bg='rgba(0,0,0,0.3)'
-                      backdropFilter='auto'
-                      backdropBlur='10px'
+                      bg='rgba(0,0,0,0.6)'
 
                       p='1rem' rounded='100%' />
 
@@ -206,10 +205,9 @@ const ProductCard = ({ product, ...rest }: IProps) => {
                       p='1rem'
                       icon={<AiOutlineShareAlt />}
 
-                      bg='rgba(0,0,0,0.3)'
+                      bg='rgba(0,0,0,0.6)'
 
-                      backdropFilter='auto'
-                      backdropBlur='10px'
+                
                       rounded='100%'
                       position='relative' bottom='2rem' />
                     <IconButton aria-label="buy" icon={<IoCartOutline />}
@@ -222,9 +220,7 @@ const ProductCard = ({ product, ...rest }: IProps) => {
 
 
                       p='1rem'
-                      bg='rgba(0,0,0,0.3)'
-                      backdropFilter='auto'
-                      backdropBlur='10px'
+                      bg='rgba(0,0,0,0.6)'
                       rounded='100%'
                     />
 
@@ -262,6 +258,7 @@ const ProductCard = ({ product, ...rest }: IProps) => {
 
         }
       </AnimatePresence>
+      <Link href={`/product/details/${product._id}`}  >
       <VStack
         as={motion.div}
         position='relative'
@@ -309,6 +306,7 @@ const ProductCard = ({ product, ...rest }: IProps) => {
         </HStack>
 
       </VStack>
+      </Link>
     </>
   );
 };

@@ -12,10 +12,30 @@
   --progress-background: #4693ee;
   --success: #32a964;
   --error: #eb5757;
+  --dark-bg:#2B2B2B;
 
   /* react bottom sheet variables */
   --rsbs-bg: #ebecf2;
+
+
+
   /* --rsbs-handle-bg */
+  
+
+  --fb-color: #3b5998;
+  --whatsapp-color:#25D366;
+  --messenger-color:#0084FF;
+  --x-color:black;
+  --discord-color: #7289DA;
+--reddit-color: #FF4500;
+--viber-color: #665CAC;
+--teams-color: #6264A7;
+--pinterest-color: #E60023;
+--telegram-color: #0088CC;
+--linkedin-color: #0077B5;
+--instagram-color: #E4405F;
+
+
 }
 
 *,

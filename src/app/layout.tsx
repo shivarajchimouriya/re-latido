@@ -7,6 +7,8 @@ import PullToRefreshProvider from "@/providers/PullTorefreshProvider";
 import DrawerProvider from "@/providers/DrawerProvider";
 const inter = Inter({ subsets: ["latin"] });
 import 'swiper/css/grid';
+import 'react-date-range/dist/styles.css'; // main style file
+import 'react-date-range/dist/theme/default.css';
 import AppQueryProvider from "@/providers/QueryProvider";
 
 export const metadata: Metadata = {

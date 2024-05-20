@@ -1,8 +1,8 @@
 "use client";
 import { IMockCollection } from "@/data/mock/collection";
 import { Flex } from "@chakra-ui/react";
-import React, { useState } from "react";
-import { Swiper, SwiperSlide } from "swiper/react";
+import React, { useEffect, useRef, useState } from "react";
+import { Swiper, SwiperRef, SwiperSlide } from "swiper/react";
 import CollectionCard from "../CollectionCard";
 import "swiper/css";
 import { ICategory } from "@/resources/Category/interface";
@@ -15,14 +15,23 @@ interface IProps {
 }
 
 const CollectionSwiper = ({ collection }: IProps) => {
+  const params = useParams();
+  const swiperRef = useRef<SwiperRef | null>(null);
+  const category = params.id as string;
 
-const params=useParams();
+const [showMask, setShowMask] = useState(true)
+useEffect(()=>{
 
-const category=params.id as string;
-  const [activeCategory, setactiveCategory] = useState(collection[0]?._id);
-  const handleCatgoryClick = (category: string) => {
-    setactiveCategory(category);
-  };
+swiperRef.current?.swiper.on("slideChange",(val)=>{
+const d=val.isEnd  
+setShowMask(d)
+
+});
+
+
+
+},[swiperRef.current?.swiper])
+
 
   return (
     <Flex
@@ -31,10 +40,11 @@ const category=params.id as string;
       px="1rem"
       sx={{
         "mask-image":
-          "linear-gradient(to right, transparent 0%, rgb(24, 23, 23) 5%,  rgb(24, 23, 23) 85%, transparent 100%);"
+        showMask? "linear-gradient(to right, transparent 0%, rgb(24, 23, 23) 5%,  rgb(24, 23, 23) 85%, transparent 100%);":""
       }}
     >
       <Swiper
+        ref={swiperRef}
         spaceBetween={20}
         slidesPerView={"auto"}
         className="collection"
@@ -43,29 +53,24 @@ const category=params.id as string;
           currentTarget.classList.remove("collection");
         }}
       >
-            <SwiperSlide key={'all'}>
-        
-            <CollectionCard
-              image={collectionImages.latido}
-              link={`/`}
-              title={"All "}
-              isActive={!category}
-              onClick={() => handleCatgoryClick('all')
+        <SwiperSlide key={"all"}>
+          <CollectionCard
+            image={collectionImages.latido}
+            link={`/`}
+            title={"All "}
+            isActive={!category}
+          />
+        </SwiperSlide>
 
-              }
-              />
-              </SwiperSlide>
-        
         {collection.map(el => {
           const isActive = el._id === category;
           return (
             <SwiperSlide key={el.title}>
               <CollectionCard
-              image={(attachWithS3BaseUrl(el.image))}
-              link={`/category/${el._id}`}
-              title={el.title}
-              isActive={isActive}
-              onClick={() => handleCatgoryClick(el._id)}
+                image={attachWithS3BaseUrl(el.image)}
+                link={`/category/${el._id}`}
+                title={el.title}
+                isActive={isActive}
               />
             </SwiperSlide>
           );
