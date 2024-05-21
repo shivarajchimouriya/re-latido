@@ -1,11 +1,7 @@
 "use client";
 import React, { useEffect } from "react";
-import {
-  Button,
-  Grid,
-  useDisclosure,
-} from "@chakra-ui/react";
-import SizeModal from "@/features/ProductDetailPage/Collections/components/SizeModal"
+import { Button, Grid, useDisclosure } from "@chakra-ui/react";
+import SizeModal from "@/features/ProductDetailPage/Collections/components/SizeModal";
 
 export default function ButtonComponent() {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -20,7 +16,6 @@ export default function ButtonComponent() {
     return height;
   };
 
-
   return (
     <Grid width="100%" margin={"2rem 0"} placeItems="center">
       <Button
@@ -32,7 +27,11 @@ export default function ButtonComponent() {
       >
         Enter Body Details
       </Button>
-        <SizeModal heightOptions={heightOptions} isOpen={isOpen} onClose={onClose} />
+      <SizeModal
+        heightOptions={heightOptions}
+        isOpen={isOpen}
+        onClose={onClose}
+      />
     </Grid>
   );
 }
