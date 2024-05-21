@@ -174,3 +174,22 @@ body {
   font-weight: bold;
   color: var(--black);
 }
+
+
+.google_places_autocomplete{
+  width: 100%;
+  border-bottom: 1px solid black;
+  padding: 1rem 0;
+  background: transparent;
+  
+
+}
+.google_places_autocomplete:active{
+  outline: none;
+  
+}
+
+.google_places_autocomplete:focus{
+  outline: none;
+  border-bottom-width: 2px;
+}

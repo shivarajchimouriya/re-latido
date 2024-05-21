@@ -7,9 +7,9 @@ export const configureAmplify = () => {
 
                 Cognito: {
 
-                    userPoolId: "ap-northeast-2_pzBOzAW5e",
-                    userPoolClientId: "2b6ominc6cn0r709tot0tofurj",
-                    identityPoolId: "ap-northeast-2:4a38cf31-13eb-48ee-95b7-eab774c659e8",
+                    userPoolId: (process.env.POOL_ID || process.env.NEXT_PUBLIC_POOL_ID) as string,
+                    userPoolClientId: (process.env.CLIENT_ID || process.env.NEXT_PUBLIC_CLIENT_ID) as string,
+                    identityPoolId: process.env.IDENTITY_POOL_ID as string || process.env.NEXT_PUBLIC_IDENTITY_POOL_ID as string,
                     signUpVerificationMethod: "code",
 
                     loginWith: {
@@ -18,7 +18,7 @@ export const configureAmplify = () => {
                             domain: "test-latido.auth.ap-northeast-2.amazoncognito.com",
                             redirectSignIn: ["https://localhost:3000?signedin=true"],
                             redirectSignOut: ["https://localhost:3000/"],
-                            scopes: ["profile", "openid", "email", "phone", "email", "aws.cognito.signin.user.admin", "profile"],
+                            scopes: ["profile", "openid", "email", "phone", "aws.cognito.signin.user.admin", "profile"],
                             responseType: "code"
                         }
                     }
