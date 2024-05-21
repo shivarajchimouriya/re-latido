@@ -24,6 +24,7 @@ import ProfileClient from "./ProfileClient";
 
 export default async function ProfilePage() {
   const { data } = profileData;
+
   let userDta = null;
   try {
     const user = await getCurrentUser();
@@ -148,7 +149,7 @@ export default async function ProfilePage() {
               Logout
             </Flex>
           </Button>
-          <ProfileClient data={userDta} />
+          <ProfileClient />
         </Link>
       </ButtonGroup>
     </Grid>

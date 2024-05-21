@@ -1,7 +1,6 @@
 "use client";
 import { logger } from "@/utils/logger";
 import { signUp } from "aws-amplify/auth";
-
 import {
   Box,
   Button,
@@ -21,13 +20,24 @@ import {
   useDisclosure
 } from "@chakra-ui/react";
 import { AnimatePresence, motion } from "framer-motion";
-import React, { useState } from "react";
+import React, { RefObject, useState } from "react";
 import { Calendar } from "react-date-range";
 import { Controller, Form, useForm } from "react-hook-form";
 import { BiCalendar } from "react-icons/bi";
 import { MdEditNotifications } from "react-icons/md";
 import AuthProvider from "@/providers/AuthProvider";
-
+import Autocomplete, { usePlacesWidget } from "react-google-autocomplete";
+import { env } from "@/config/environment";
+import { ISignupForm, signupSchema } from "./schema";
+import { zodResolver } from "@hookform/resolvers/zod";
+interface IForm {
+  full_name: string;
+  address: string;
+  gender: string;
+  date_of_birth: string;
+  phone_number: string;
+  email: string;
+}
 const Signup = () => {
   const {
     handleSubmit,
@@ -35,7 +45,12 @@ const Signup = () => {
     getValues,
     register,
     formState: { errors, isSubmitting }
-  } = useForm();
+  } = useForm<ISignupForm>({
+    resolver: zodResolver(signupSchema),
+    defaultValues: {
+      gender: "male"
+    }
+  });
   const [activeGender, setActiveGender] = useState("male");
   const { isOpen, onClose, onOpen } = useDisclosure();
 
@@ -64,6 +79,11 @@ const Signup = () => {
     });
   };
 
+  const { ref } = usePlacesWidget({
+    apiKey: env.GOOGLE_API_KEY,
+    onPlaceSelected: place => console.log(place)
+  });
+
   return (
     <AuthProvider>
       <VStack w="full" p="2rem">
@@ -81,14 +101,19 @@ const Signup = () => {
             <FormLabel htmlFor="name" fontSize="fl" textTransform="uppercase">
               fullname
             </FormLabel>
-            <Input variant="underline" id="name" {...register("name")} />
+            <Input variant="underline" id="name" {...register("full_name")} />
           </FormControl>
 
           <FormControl w="full">
             <FormLabel fontSize="fl" htmlFor="name" textTransform="uppercase">
               address
             </FormLabel>
-            <Input variant="underline" id="name" {...register("name")} />
+            <Input
+              variant="underline"
+              id="name"
+              // {...register("address")}
+              ref={(ref as unknown) as RefObject<HTMLInputElement>}
+            />
           </FormControl>
 
           <FormControl w="full">
@@ -161,7 +186,9 @@ const Signup = () => {
             >
               <PopoverTrigger>
                 <HStack w="full" justify="space-between">
-                  <Text fontSize="1.2rem">2023/05/90</Text>{" "}
+                  <Text fontSize="1.2rem">
+                    {" "}{getValues("date_of_birth")}{" "}
+                  </Text>{" "}
                   <IconButton
                     fontSize="2rem"
                     icon={<BiCalendar />}
@@ -202,7 +229,11 @@ const Signup = () => {
             <FormLabel htmlFor="name" fontSize="fl" textTransform="uppercase">
               phone number
             </FormLabel>
-            <Input variant="underline" id="name" {...register("name")} />
+            <Input
+              variant="underline"
+              id="name"
+              {...register("phone_number")}
+            />
           </FormControl>
 
           <Button
