@@ -10,6 +10,7 @@ import FilterBox from "./components/FIlterBox";
 import GenderCard from "./components/GenderCard";
 import { BiMaleSign } from "react-icons/bi";
 import Link from "next/link";
+import { logger } from "@/utils/logger";
 
 const Navbar = () => {
   interface INavItem {
@@ -47,10 +48,10 @@ const Navbar = () => {
             // layoutId="b"
             exit={{ opacity: 0 }}
 
-            initial={{y:400}}
-            animate={{y:0}}
+            // initial={{y:400}}
+            // animate={{y:0}}
             bg="rgba(0,0,0,0.5)"
-            rounded="4rem"
+            rounded="2rem"
             backdropFilter="auto"
             backdropBlur="7px"
             transitionDuration='.4s'
@@ -122,7 +123,8 @@ const Navbar = () => {
 
               zIndex={10000} bottom='0' width='100%' height='45rem' py='2rem' pb='1rem'
               onPan={(e: PointerEvent, info: PanInfo) => {
-                if (info.delta.y > 7 && info.delta.x === 0) {
+                logger.log("info",info)
+                if ((info.delta.y > 2 || info.velocity.y>40 ) && info.delta.x === 0   ) {
                   onClose()
                 }
 

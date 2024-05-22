@@ -22,16 +22,16 @@ const Appendix = ({ ...rest }: IProps) => {
       left="1rem"
       {...rest}
       as={motion.div}
-      initial={{ y: 200 }}
-      animate={{ y: 0, transition: { bounce: false, duration: 0.4 } }}
-      exit={{ y: 200 }}
+      // initial={{ y: 200 }}
+      // animate={{ y: 0, transition: { bounce: false, duration: 0.4 } }}
+      // exit={{ y: 200 }}
       _hover={{ scale: 1.1 }}
     >
       <IconButton
         bg="rgba(0,0,0,0.5)"
         backdropFilter="auto"
         backdropBlur="10px"
-        rounded="4rem"
+        rounded="1.5rem"
         height="5.5rem"
         width="5.5rem"
         icon={<IoFilterOutline />}

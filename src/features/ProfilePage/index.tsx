@@ -1,3 +1,4 @@
+"use client";
 import React from "react";
 import { profileData } from "@/data/mock/profileData";
 import {
@@ -21,19 +22,12 @@ import { FaFileInvoiceDollar } from "react-icons/fa";
 import { getCurrentUser } from "aws-amplify/auth";
 import { logger } from "@/utils/logger";
 import ProfileClient from "./ProfileClient";
+import { useForm } from "react-hook-form";
+import { IEditForm, editFormSchema } from "./features/EditPage/schema";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 export default async function ProfilePage() {
   const { data } = profileData;
-
-  let userDta = null;
-  try {
-    const user = await getCurrentUser();
-    logger.log("user", user.userId);
-    userDta = user;
-  } catch (err) {
-    logger.log("error", err);
-    userDta = err;
-  }
   return (
     <Grid width={"100%"}>
       <Flex
@@ -149,7 +143,6 @@ export default async function ProfilePage() {
               Logout
             </Flex>
           </Button>
-          <ProfileClient />
         </Link>
       </ButtonGroup>
     </Grid>

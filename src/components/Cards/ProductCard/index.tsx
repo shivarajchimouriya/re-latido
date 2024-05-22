@@ -258,13 +258,13 @@ const ProductCard = ({ product, ...rest }: IProps) => {
 
         }
       </AnimatePresence>
-      <Link href={`/product/details/${product._id}`}  >
+      <Link href={`/product/details/${product._id}`}   style={{width:"100%"}}  >
       <VStack
         as={motion.div}
         position='relative'
         w="100%"
         align='start'
-        rounded="1rem"
+        rounded="0rem"
         overflow="hidden"
         bg="rgba(0,0,0,0.03)"
         onContextMenu={event => {
@@ -278,7 +278,7 @@ const ProductCard = ({ product, ...rest }: IProps) => {
         scrollSnapAlign='start'
         scrollSnapStop={'always'}
         style={{
-          height: "calc(-230px + 100dvh)"
+          height: "calc(-220px + 100dvh)"
 
         }} 
 
@@ -289,12 +289,13 @@ const ProductCard = ({ product, ...rest }: IProps) => {
             src={product.primary_image}
             height={1000}
             width={1000}
+            loading="lazy"
             // quality={100}
             style={{ objectFit: "cover", width: "100%", height: "100%" }}
           />
         </Box>
 
-        <HStack  position={'absolute'}  bottom={'1rem'} left='1rem'   rounded='2rem' p='.3rem' pl='2rem' pr='2rem' justifySelf='start' w='fit-content' bg='rgba(255,255,255,.7)' backdropFilter='auto' backdropBlur='4px'  >
+        <HStack  position={'absolute'}  bottom={'1rem'} left='1rem'   rounded='0.4rem' p='.3rem' pl='2rem' pr='2rem' justifySelf='start' w='fit-content' bg='rgba(255,255,255,.5)' backdropFilter='auto' backdropBlur='4px'  >
      
           <VStack align='start' gap='0'>
             <Text fontSize='1.6rem' fontWeight='bold' textTransform='capitalize'   > {product.name}  </Text>

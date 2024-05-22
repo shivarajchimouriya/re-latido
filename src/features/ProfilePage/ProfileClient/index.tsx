@@ -7,10 +7,6 @@ interface IProps {
 }
 
 const ProfileClient = () => {
-  fetchAuthSession().then(val => {
-    logger.log("val", val);
-  });
-
   return <div>ProfileClient</div>;
 };
 

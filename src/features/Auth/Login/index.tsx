@@ -40,6 +40,7 @@ const Login = ({ userName }: IProps) => {
         username: userName,
         password: data.passoword
       });
+      logger.log("success");
       router.push("/");
     } catch (err) {
       logger.log("Error", err);

@@ -17,29 +17,50 @@ import {
   PopoverContent,
   PopoverHeader,
   PopoverTrigger,
+  Portal,
   Text,
-  VStack
+  VStack,
+  useDisclosure
 } from "@chakra-ui/react";
 import React, { useState } from "react";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import { MdOutlineModeEdit } from "react-icons/md";
 import { register } from "swiper/element";
 import { Calendar } from "react-date-range";
+import { zodResolver } from "@hookform/resolvers/zod";
+
 import { BiCalendar } from "react-icons/bi";
 import { AnimatePresence, motion } from "framer-motion";
+import { IEditForm, editFormSchema } from "./schema";
+import dayjs from "dayjs";
+import { logger } from "@/utils/logger";
 const EditPage = () => {
+  const { isOpen, onClose, onOpen } = useDisclosure();
+
   const {
-    handleSubmit,
     register,
-    formState: { errors, isSubmitting }
-  } = useForm();
+    handleSubmit,
+    control,
+    getValues,
+    formState: { errors }
+  } = useForm<IEditForm>({
+    resolver: zodResolver(editFormSchema),
+    defaultValues: {
+      address: "",
+      dob: "",
+      email: "cyferaj@gmail.com",
+      gender: "male",
+      name: "shiv",
+      phone: "9803300085"
+    }
+  });
   const [activeGender, setActiveGender] = useState("male");
-  const onSubmit = (values: unknown) => {};
-  const genders: Array<"male" | "female"> = ["male", "female"];
-  const handleCalendarSelect = () => {};
-  const handleGender = (gender: "male" | "female") => {
-    setActiveGender(gender);
+  const onSubmit = (values: IEditForm) => {
+    logger.log("values", values);
   };
+  const genders: Array<"male" | "female"> = ["male", "female"];
+
+  logger.log("errorr", errors);
   return (
     <VStack w="100%" p="3">
       <Box position="relative" m="3rem">
@@ -49,6 +70,8 @@ const EditPage = () => {
           h="10rem"
           border="1px solid gray"
           rounded="100%"
+          fontSize="3rem"
+          color="gray.600"
         />
         <Input name="profile" id="profile" type="file" display="none" />
         <Box as="label" bg="red" w="full" h="full" htmlFor="profile">
@@ -87,20 +110,40 @@ const EditPage = () => {
           </FormLabel>
           <HStack w="100%" justify="space-between" my="1rem">
             <Text fontWeight="normal" fontSize="1.4rem">
-              10/02/2005
+              {getValues("dob") || <Text color="gray.600"> Enter DOB </Text>}
             </Text>
 
-            <Popover>
+            <Popover isOpen={isOpen} onClose={onClose}>
               <PopoverTrigger>
                 <IconButton
+                  onClick={onOpen}
                   fontSize="2rem"
                   icon={<BiCalendar />}
                   aria-label="calendar"
                 />
               </PopoverTrigger>
-              <PopoverContent>
-                <Calendar date={new Date()} onChange={handleCalendarSelect} />
-              </PopoverContent>
+              <Portal>
+                {" "}<Box position="relative" zIndex="10000" w="full" h="full">
+                  {" "}<PopoverContent>
+                    <Controller
+                      control={control}
+                      name="dob"
+                      render={({ field: { onChange } }) => {
+                        return (
+                          <Calendar
+                            date={new Date()}
+                            onChange={val => {
+                              const formatted = dayjs(val).format("MM/DD/YYYY");
+                              onChange(formatted);
+                              onClose();
+                            }}
+                          />
+                        );
+                      }}
+                    />
+                  </PopoverContent>
+                </Box>
+              </Portal>
             </Popover>
           </HStack>
         </FormControl>
@@ -109,46 +152,55 @@ const EditPage = () => {
           <FormLabel htmlFor="name" textTransform="uppercase">
             Gender
           </FormLabel>
-          <HStack
-            mt="1rem"
-            gap="1rem"
-            textTransform="uppercase"
-            fontSize="1.2rem"
-          >
-            {genders.map(el => {
-              const isActive = el === activeGender;
+          <Controller
+            name="gender"
+            control={control}
+            render={({ field: { onChange, value } }) => {
               return (
-                <Box
-                  position="relative"
-                  p=".5rem"
-                  px="2rem"
-                  onClick={() => handleGender(el)}
+                <HStack
+                  mt="1rem"
+                  gap="1rem"
+                  textTransform="uppercase"
+                  fontSize="1.2rem"
                 >
-                  <Text
-                    color={isActive ? "white" : ""}
-                    transitionDuration=".4s"
-                  >
-                    {el}
-                  </Text>
-                  <AnimatePresence>
-                    {isActive &&
+                  {genders.map(el => {
+                    const isActive = el === value;
+                    return (
                       <Box
-                        layoutId="gender"
-                        rounded="md"
-                        as={motion.div}
-                        position="absolute"
-                        inset="0"
-                        w="full"
-                        h="full"
-                        bg="black"
-                        isolation="isolate"
-                        zIndex="-1"
-                      />}
-                  </AnimatePresence>
-                </Box>
+                        position="relative"
+                        p=".5rem"
+                        px="2rem"
+                        zIndex={0}
+                        onClick={() => onChange(el)}
+                      >
+                        <Text
+                          color={isActive ? "white" : ""}
+                          transitionDuration=".4s"
+                        >
+                          {el}
+                        </Text>
+                        <AnimatePresence>
+                          {isActive &&
+                            <Box
+                              layoutId="gender"
+                              rounded="md"
+                              as={motion.div}
+                              position="absolute"
+                              inset="0"
+                              w="full"
+                              h="full"
+                              bg="black"
+                              isolation="isolate"
+                              zIndex="-1"
+                            />}
+                        </AnimatePresence>
+                      </Box>
+                    );
+                  })}
+                </HStack>
               );
-            })}
-          </HStack>
+            }}
+          />
         </FormControl>
 
         <FormControl>
@@ -160,7 +212,7 @@ const EditPage = () => {
             id="name"
             w="100%"
             placeholder="Address"
-            {...register("name")}
+            {...register("address")}
           />
         </FormControl>
 
@@ -172,7 +224,7 @@ const EditPage = () => {
             variant="underline"
             id="name"
             placeholder="phone number"
-            {...register("name")}
+            {...register("phone")}
           />
         </FormControl>
         <FormControl isDisabled>
@@ -181,14 +233,14 @@ const EditPage = () => {
           </FormLabel>
           <Input
             variant="underline"
-            id="name"
             placeholder="cyferaj2gmail.com"
-            {...register("name")}
+            {...register("email")}
           />
         </FormControl>
 
         <Button
           p="1rem"
+          type="submit"
           w="100%"
           border="1px solid black"
           rounded="md"

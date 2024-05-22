@@ -12,13 +12,13 @@ const ProductList1 = ({ products }: IProps) => {
       w="100%"
       maxW="50rem"
       overflow="auto"
-      rounded="1rem"
-      p="2rem"
+      rounded="0"
+      p=".5rem"
       style={{
         scrollSnapType: "y mandatory",
         scrollSnapStop: "always",
         scrollBehavior: "smooth",
-        height: "calc(-230px + 100dvh)"
+        height: "calc(-220px + 100dvh)"
       }}
     >
       <VStack w="100%">
