@@ -9,6 +9,6 @@ export const signupSchema = z.object({
     email: z.string().email('Invalid email address'),
     password: z.string(),
     confirm_password: z.string()
-});
+}).refine((data) => data.password === data.confirm_password, { message: "two passwords do not match", path: ["confirm_password"] });
 
 export interface ISignupForm extends z.infer<typeof signupSchema> { }

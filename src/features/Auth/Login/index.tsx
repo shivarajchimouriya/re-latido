@@ -19,6 +19,8 @@ import AuthProvider from "@/providers/AuthProvider";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ISigninForm, signInFormSchema } from "./schema";
 import { ISignupForm } from "../Signup/schema";
+import { logger } from "@/utils/logger";
+import { useRouter } from "next/navigation";
 
 interface IProps {
   userName: string;
@@ -31,12 +33,17 @@ const Login = ({ userName }: IProps) => {
   } = useForm<ISigninForm>({
     resolver: zodResolver(signInFormSchema)
   });
-
-  const login = (data: ISigninForm) => {
-    signIn({
-      username: userName,
-      password: data.passoword
-    });
+  const router = useRouter();
+  const login = async (data: ISigninForm) => {
+    try {
+      const res = await signIn({
+        username: userName,
+        password: data.passoword
+      });
+      router.push("/");
+    } catch (err) {
+      logger.log("Error", err);
+    }
   };
 
   const { isOpen, onClose, onToggle } = useDisclosure();
