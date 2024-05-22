@@ -11,6 +11,7 @@ import GenderCard from "./components/GenderCard";
 import { BiMaleSign } from "react-icons/bi";
 import Link from "next/link";
 import { logger } from "@/utils/logger";
+import { useCategories } from "@/hooks/server/useCategories";
 
 const Navbar = () => {
   interface INavItem {
@@ -29,6 +30,8 @@ const Navbar = () => {
   const handleNavClick = (navName: string) => {
     setActiveNav(navName);
   };
+  useCategories();
+
   return (
     <>
       <AnimatePresence>

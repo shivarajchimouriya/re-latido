@@ -13,7 +13,7 @@ const ProductList1 = ({ products }: IProps) => {
       maxW="50rem"
       overflow="auto"
       rounded="0"
-      p=".5rem"
+      p="0"
       style={{
         scrollSnapType: "y mandatory",
         scrollSnapStop: "always",

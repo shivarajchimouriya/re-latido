@@ -62,7 +62,7 @@ const EditPage = () => {
 
   logger.log("errorr", errors);
   return (
-    <VStack w="100%" p="3">
+    <VStack w="100%" p="1rem">
       <Box position="relative" m="3rem">
         <Avatar
           name="Civ raj"
@@ -90,7 +90,7 @@ const EditPage = () => {
         as={"form"}
         onSubmit={handleSubmit(onSubmit)}
         w="100%"
-        p="2rem"
+        p="1rem"
       >
         <FormControl>
           <FormLabel htmlFor="name" textTransform="uppercase">
@@ -246,6 +246,7 @@ const EditPage = () => {
           rounded="md"
           fontWeight="bold"
           fontSize="1.4rem"
+          variant="submit"
         >
           save
         </Button>

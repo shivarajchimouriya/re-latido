@@ -1,6 +1,7 @@
 "use client";
 import AppImage from "@/components/AppImage";
 import { collectionImages } from "@/constants/images";
+import ShareBlock from "@/features/ShareBlock";
 import { IProduct } from "@/resources/Product/interface";
 import {
   AbsoluteCenter,
@@ -26,6 +27,7 @@ import {
 } from "@chakra-ui/react";
 import { AnimatePresence, TapInfo, Variants, motion } from "framer-motion";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import React, { useRef, useState } from "react";
 import { AiOutlineShareAlt } from "react-icons/ai";
 import { IoCartOutline, IoCloseOutline, IoEyeOutline, IoShareOutline } from "react-icons/io5";
@@ -39,7 +41,7 @@ const ProductCard = ({ product, ...rest }: IProps) => {
   const { isOpen, onClose, onOpen } = useDisclosure();
   const [isLongPress, setIsLongPress] = useState(false);
   const [position, setposition] = useState({ x: 0, y: 0 })
-
+  const { isOpen: isShareOpen, onClose: onShareClose, onOpen: onShareOpen } = useDisclosure()
 
   const bind = useLongPress((e) => {
     const event = e as unknown as PointerEvent
@@ -93,7 +95,6 @@ const ProductCard = ({ product, ...rest }: IProps) => {
 
   }
 
-
   const iconVariant: Variants = {
     hidden: {
       y: 30,
@@ -104,10 +105,8 @@ const ProductCard = ({ product, ...rest }: IProps) => {
       y: 0,
       x: 0,
       opacity: 1,
-
       transition: {
         bounce: false
-
       }
     },
     exit: {
@@ -117,9 +116,21 @@ const ProductCard = ({ product, ...rest }: IProps) => {
     }
   }
 
+  const router = useRouter()
+  const baseURL = window.location.host
+
+
+  const view = () => {
+
+
+    router.push(`/product/details/${product._id}`)
+  }
+
+
 
   return (
     <>
+      <ShareBlock url={`${baseURL}/product/detail/${product._id}`} title={product.name} isOpen={isShareOpen} onClose={onShareClose} />
       <AnimatePresence>
         {isLongPress && <Box
           as={motion.div}
@@ -134,10 +145,6 @@ const ProductCard = ({ product, ...rest }: IProps) => {
           zIndex={100}
           onClick={() => setIsLongPress(false)}
         >
-
-
-
-
 
           <Popover isOpen placement="top" >
 
@@ -179,25 +186,28 @@ const ProductCard = ({ product, ...rest }: IProps) => {
                     as={motion.div}
                     color='white' align='center' gap='1.5rem' fontSize='2.6rem' p='1rem' px='1rem' rounded='2rem'  >
                     <IconButton
-
                       as={motion.button}
                       variants={iconVariant}
                       initial={{ x: 70, y: 30 }}
                       animate={{ x: 0, y: 0 }}
                       exit={{ x: 70, y: 30 }}
+                      onClick={view}
 
                       aria-label="view" icon={<IoEyeOutline />}
 
                       bg='rgba(0,0,0,0.6)'
 
-                      p='1rem' rounded='100%' />
+                      p='1rem' rounded='100%'
+
+
+                    />
 
 
 
                     <IconButton aria-label="share "
                       as={motion.button}
                       variants={iconVariant}
-
+                      onClick={onShareOpen}
                       initial={{ y: 40 }}
                       animate={{ y: 0 }}
                       exit={{ y: 40 }}
@@ -207,11 +217,11 @@ const ProductCard = ({ product, ...rest }: IProps) => {
 
                       bg='rgba(0,0,0,0.6)'
 
-                
+
                       rounded='100%'
                       position='relative' bottom='2rem' />
                     <IconButton aria-label="buy" icon={<IoCartOutline />}
-
+                      onClick={view}
                       as={motion.button}
                       variants={iconVariant}
                       initial={{ x: -70, y: 30 }}
@@ -236,77 +246,61 @@ const ProductCard = ({ product, ...rest }: IProps) => {
             </Box>
           </Popover>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
         </Box>
 
 
 
         }
       </AnimatePresence>
-      <Link href={`/product/details/${product._id}`}   style={{width:"100%"}}  >
-      <VStack
-        as={motion.div}
-        position='relative'
-        w="100%"
-        align='start'
-        rounded="0rem"
-        overflow="hidden"
-        bg="rgba(0,0,0,0.03)"
-        onContextMenu={event => {
-          event.preventDefault();
-          event.stopPropagation();
-          return false;
-        }}
+      <Link href={`/product/details/${product._id}`} style={{ width: "100%" }}  >
+        <VStack
+          as={motion.div}
+          position='relative'
+          w="100%"
+          align='start'
+          rounded="0rem"
+          overflow="hidden"
+          bg="rgba(0,0,0,0.03)"
+          onContextMenu={event => {
+            event.preventDefault();
+            event.stopPropagation();
+            return false;
+          }}
 
-        {...rest}
-        {...bind()}
-        scrollSnapAlign='start'
-        scrollSnapStop={'always'}
-        style={{
-          height: "calc(-220px + 100dvh)"
+          {...rest}
+          {...bind()}
+          scrollSnapAlign='start'
+          scrollSnapStop={'always'}
+          style={{
+            height: "calc(-220px + 100dvh)"
 
-        }} 
+          }}
 
-      >
-        <Box w="100%" overflow="hidden" h='100%' >
-          <AppImage
-            alt={product.name}
-            src={product.primary_image}
-            height={1000}
-            width={1000}
-            loading="lazy"
-            // quality={100}
-            style={{ objectFit: "cover", width: "100%", height: "100%" }}
-          />
-        </Box>
+        >
+          <Box w="100%" overflow="hidden" h='100%' >
+            <AppImage
+              alt={product.name}
+              src={product.primary_image}
+              height={1000}
+              width={1000}
+              loading="lazy"
+              // quality={100}
+              style={{ objectFit: "cover", width: "100%", height: "100%" }}
+            />
+          </Box>
 
-        <HStack  position={'absolute'}  bottom={'1rem'} left='1rem'   rounded='0.4rem' p='.3rem' pl='2rem' pr='2rem' justifySelf='start' w='fit-content' bg='rgba(255,255,255,.5)' backdropFilter='auto' backdropBlur='4px'  >
-     
-          <VStack align='start' gap='0'>
-            <Text fontSize='1.6rem' fontWeight='bold' textTransform='capitalize'   > {product.name}  </Text>
-            <Text>   Rs. {product.pricing || "N/A" } </Text>
-          </VStack>
+          <HStack position={'absolute'} bottom={'1rem'} left='1rem' rounded='0.4rem' p='.3rem' pl='2rem' pr='2rem' justifySelf='start' w='fit-content' bg='rgba(255,255,255,.5)' backdropFilter='auto' backdropBlur='4px'  >
+
+            <VStack align='start' gap='0'>
+              <Text fontSize='1.6rem' fontWeight='bold' textTransform='capitalize'   > {product.name}  </Text>
+              <Text>   Rs. {product.pricing || "N/A"} </Text>
+            </VStack>
 
 
 
-        </HStack>
+          </HStack>
 
-      </VStack>
+        </VStack>
       </Link>
     </>
   );
