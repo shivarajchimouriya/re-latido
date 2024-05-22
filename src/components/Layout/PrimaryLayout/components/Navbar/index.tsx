@@ -120,7 +120,6 @@ const Navbar = () => {
               as={motion.div}
               position='fixed'
 
-              animate={{ transition: { duration: 2 } }}
               zIndex={10000} bottom='0' width='100%' height='45rem' py='2rem' pb='1rem'
               onPan={(e: PointerEvent, info: PanInfo) => {
                 if (info.delta.y > 7 && info.delta.x === 0) {

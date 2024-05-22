@@ -159,7 +159,7 @@ onClose()
           })}
         </Swiper>
       </Box>
-      <Box w="90%" mt="3rem"   as={motion.div}>
+      <Box w="90%" mt="3rem" as={motion.div}>
         <RangeSlider
           onChange={val => {
             setRangeValues(val);

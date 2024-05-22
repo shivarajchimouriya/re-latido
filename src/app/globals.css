@@ -58,6 +58,7 @@ body {
   width: 100%;
   overscroll-behavior: contain;
   overflow: auto;
+  scroll-behavior: smooth;
 }
 
 .swiper-slide {
@@ -83,6 +84,14 @@ body {
   background-origin: border-box;
   color: var(--base);
   background-clip: padding-box, border-box;
+}
+.outline-button{
+  height: 42px;
+  border: 1px solid #000;;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+  border-radius: 4px;
+  text-transform: uppercase;
+  font-weight: bold;
 }
 .primary-button {
   color: white !important;
@@ -174,22 +183,18 @@ body {
   font-weight: bold;
   color: var(--black);
 }
-
-
-.google_places_autocomplete{
-  width: 100%;
-  border-bottom: 1px solid black;
-  padding: 1rem 0;
-  background: transparent;
-  
-
+/* chakra modal override start */
+.css-1oxhx2p{
+  align-items: center;
 }
-.google_places_autocomplete:active{
-  outline: none;
-  
+/* chakra modal overried end */
+
+
+/* swiper js style overrides start */
+
+.swiper{
+  z-index: 0 !important;
 }
 
-.google_places_autocomplete:focus{
-  outline: none;
-  border-bottom-width: 2px;
-}
+
+/* swiper js style overrides end */

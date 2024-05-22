@@ -10,10 +10,33 @@ export interface AvatarProps {
   selected?: boolean;
 }
 
-export default function Avatar({ alt, src, width = 50, height = 50, selected }: AvatarProps) {
+export default function Avatar({
+  alt,
+  src,
+  width = 40,
+  height = 40,
+  selected,
+}: AvatarProps) {
   return (
-    <Box borderRadius="100%" className="avatar" overflow="hidden" outline={selected ? `4px solid ${appColor.border}` : "none"} width={width+30} height={height+30} display="grid" placeItems="center">
-      <Image alt={alt ? alt : "avatar"} src={src ? src : ""} width={width} height={height} />
-    </Box>
+    <>
+      <Box
+        borderRadius="100%"
+        className="avatar"
+        overflow="hidden"
+        outline={selected ? `3px solid ${appColor.border}` : "none"}
+        p={"1rem"}
+        height={height}
+        width={width}
+        display="grid"
+        placeItems="center"
+      >
+        <Image
+          alt={alt ? alt : "avatar"}
+          src={src ? src : ""}
+          width={width}
+          height={height}
+        />
+      </Box>
+    </>
   );
 }
