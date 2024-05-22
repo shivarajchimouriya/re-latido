@@ -1,9 +1,9 @@
-"use client"
-import React from 'react';
-import TouchSweep from 'touchsweep';
-import { Text } from '@chakra-ui/react';
+"use client";
+import React, { useEffect } from "react";
+import TouchSweep from "touchsweep";
+import { Text } from "@chakra-ui/react";
 import "./index.css";
-import AppImage from '@/components/AppImage';
+import AppImage from "@/components/AppImage";
 
 export interface CarouselItem {
   alt?: string;
@@ -29,9 +29,12 @@ export const Carousel: React.FC<any> = (props: any) => {
   const theta = 360 / len;
 
   const ref = React.useRef<HTMLDivElement>(null);
-  const [selectedIndex, setSelectedIndex] = React.useState(0);
-
-  const [itemSelected, setItemSelected] = React.useState(0);
+  const [selectedIndex, setSelectedIndex] = React.useState(
+    props.selectedIndex || 0
+  );
+  const [itemSelected, setItemSelected] = React.useState(
+    props.selectedIndex || 0
+  );
 
   const getSlideStyle = (index: number): React.CSSProperties => {
     const style: React.CSSProperties = {};
@@ -44,7 +47,7 @@ export const Carousel: React.FC<any> = (props: any) => {
       style.transform = `rotateY(${cellAngle}deg) translateZ(${radius}px)`;
     } else {
       style.opacity = 0;
-      style.transform = 'none';
+      style.transform = "none";
     }
 
     return style;
@@ -53,26 +56,26 @@ export const Carousel: React.FC<any> = (props: any) => {
   const getItemStyle = (): React.CSSProperties => {
     const angle = theta * selectedIndex * -1;
     return {
-      transform: `translateZ(${
-        -1 * radius
-      }px) rotateX(${len < 10 ? -15: -7}deg) rotateY(${angle}deg) `,
+      transform: `translateZ(${-1 * radius}px) rotateX(${
+        len < 10 ? -15 : -7
+      }deg) rotateY(${angle}deg) `,
     };
   };
 
   const getClassName = (parts: string | string[]) =>
     Array.isArray(parts)
-      ? parts.map((part: string) => `${props.classNamePrefix}${part}`).join(' ')
+      ? parts.map((part: string) => `${props.classNamePrefix}${part}`).join(" ")
       : `${props.classNamePrefix}${parts}`;
 
   const prev = () => {
     setItemSelected(
-      itemSelected === 0 ? props?.items?.length - 1 : itemSelected - 1,
+      itemSelected === 0 ? props?.items?.length - 1 : itemSelected - 1
     );
     setSelectedIndex(selectedIndex - 1);
   };
   const next = () => {
     setItemSelected(
-      itemSelected === props?.items?.length - 1 ? 0 : itemSelected + 1,
+      itemSelected === props?.items?.length - 1 ? 0 : itemSelected + 1
     );
     setSelectedIndex(selectedIndex + 1);
   };
@@ -82,14 +85,14 @@ export const Carousel: React.FC<any> = (props: any) => {
     const area = ref?.current;
     const touchsweep = new TouchSweep(area || undefined);
 
-    area?.addEventListener('swipeleft', next);
-    area?.addEventListener('swiperight', prev);
+    area?.addEventListener("swipeleft", next);
+    area?.addEventListener("swiperight", prev);
 
     return () => {
       touchsweep.unbind();
 
-      area?.removeEventListener('swipeleft', next);
-      area?.removeEventListener('swiperight', prev);
+      area?.removeEventListener("swipeleft", next);
+      area?.removeEventListener("swiperight", prev);
     };
   });
 
@@ -99,23 +102,29 @@ export const Carousel: React.FC<any> = (props: any) => {
 
   return (
     <>
-      <div className={getClassName('')} ref={ref}>
-        <div className={getClassName('__container')} style={getItemStyle()}>
+      <div className={getClassName("")} ref={ref}>
+        <div className={getClassName("__container")} style={getItemStyle()}>
           {props.items.map((item: CarouselItem, index: number) => {
             return (
               <div
-                className={getClassName('__slide')}
+                className={getClassName("__slide")}
                 key={index}
-                style={getSlideStyle(index)}>
+                style={getSlideStyle(index)}
+              >
                 {/* <img src={item.image} alt={item.alt} /> */}
-                <AppImage src={item.image} height={400} width={400} alt="leather image" />
+                <AppImage
+                  src={item.image}
+                  height={400}
+                  width={400}
+                  alt="leather image"
+                />
                 {itemSelected === index && (
-                        <Text
-                            align='center'
-                            fontWeight='bold'
-                            color='base'
-                            fontSize={'1.6rem'}
-                        >
+                  <Text
+                    align="center"
+                    fontWeight="bold"
+                    color="base"
+                    fontSize={"1.6rem"}
+                  >
                     {item.title}
                   </Text>
                 )}
@@ -128,16 +137,18 @@ export const Carousel: React.FC<any> = (props: any) => {
       </div>
 
       {props.showControls && (
-        <div className={getClassName('__controls')}>
+        <div className={getClassName("__controls")}>
           <button
-            className={getClassName(['__control', '__control--prev'])}
-            onClick={prev}>
+            className={getClassName(["__control", "__control--prev"])}
+            onClick={prev}
+          >
             {props.prevButtonContent}
           </button>
 
           <button
-            className={getClassName(['__control', '__control--next'])}
-            onClick={next}>
+            className={getClassName(["__control", "__control--next"])}
+            onClick={next}
+          >
             {props.nextButtonContent}
           </button>
         </div>
@@ -149,9 +160,9 @@ export const Carousel: React.FC<any> = (props: any) => {
 Carousel.defaultProps = {
   itemWidth: 210,
   showControls: true,
-  classNamePrefix: 'carousel',
-  prevButtonContent: 'Previous',
-  nextButtonContent: 'Next',
+  classNamePrefix: "carousel",
+  prevButtonContent: "Previous",
+  nextButtonContent: "Next",
 };
 
 export default Carousel;

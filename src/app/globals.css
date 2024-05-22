@@ -58,6 +58,7 @@ body {
   width: 100%;
   overscroll-behavior: contain;
   overflow: auto;
+  scroll-behavior: smooth;
 }
 
 .swiper-slide {
@@ -182,6 +183,11 @@ body {
   font-weight: bold;
   color: var(--black);
 }
+/* chakra modal override start */
+.css-1oxhx2p{
+  align-items: center;
+}
+/* chakra modal overried end */
 
 
 /* swiper js style overrides start */
