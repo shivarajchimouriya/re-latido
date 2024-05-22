@@ -37,6 +37,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { dateToMonthDayYear } from "@/utils/date";
 import DetailsForm from "./DetailsForm";
 import PasswordForm from "./PasswordForm";
+import { useRouter } from "next/navigation";
 interface IForm {
   full_name: string;
   address: string;
@@ -45,7 +46,13 @@ interface IForm {
   phone_number: string;
   email: string;
 }
-const Signup = () => {
+
+interface IProps {
+  username: string;
+}
+
+const Signup = ({ username }: IProps) => {
+  const router = useRouter();
   const methods = useForm<ISignupForm>({
     resolver: zodResolver(signupSchema),
     defaultValues: {
@@ -70,40 +77,26 @@ const Signup = () => {
   };
 
   const formSubmit = async (data: ISignupForm) => {
-    // ClientId
-    // :
-    // "c0f061ojpla6oltmf985v6kq7"
-    // Password
-    // :
-    // "Axios@123"
-    // UserAttributes
-    // :
-    // [{Name: "name", Value: "dsdds"}, {Name: "email", Value: "yuri@gmail"},…]
-    // Username
-    // :
-    // "ewtwet"
-    // ValidationData
-    // :
-    // null
+    try {
+      const res = await signUp({
+        username: username,
+        password: data.password,
 
-    logger.log("data", data);
-    const res = await signUp({
-      username: data.full_name,
-      password: data.password,
-
-      options: {
-        userAttributes: {
-          name: data.full_name,
-          phone_number: data.phone_number,
-          birthdate: data.date_of_birth,
-          gender: data.gender,
-          given_name: data.full_name,
-          email: data.email,
-          address: data.address
+        options: {
+          userAttributes: {
+            name: data.full_name,
+            phone_number: data.phone_number,
+            birthdate: data.date_of_birth,
+            gender: data.gender,
+            given_name: data.full_name,
+            email: data.email,
+            address: data.address
+          }
         }
-      }
-    });
-    logger.log("sign up data", res);
+      });
+      logger.log("sign up data", res);
+      router.push(`/auth/confirm-email?username=${username}`);
+    } catch (err) {}
   };
 
   const changeView = (view: number) => {

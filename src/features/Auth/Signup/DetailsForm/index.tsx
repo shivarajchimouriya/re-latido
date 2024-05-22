@@ -74,18 +74,6 @@ const DetailsForm = ({changeView}:IProps) => {
     logger.log("values", values);
   };
 
-  const formSubmit = (data:ISignupForm) => {
-    logger.log("data",data)
-    signUp({
-      username: "shivraaz45@gmail.com",
-      password: "Axios@123",
-      options: {
-        userAttributes: {
-          name: "shiv"
-        }
-      }
-    });
-  };
 
   const { ref } = usePlacesWidget({
     apiKey: env.GOOGLE_API_KEY,
@@ -100,7 +88,7 @@ const DetailsForm = ({changeView}:IProps) => {
         <Text fontSize="3rem" fontWeight={"bold"} w="full" py="2rem">
           Signup
         </Text>
-        <VStack w="full" gap="3rem" as="form" onSubmit={handleSubmit(formSubmit)}>
+        <VStack w="full" gap="3rem" >
           <FormControl w="full">
             <FormLabel htmlFor="name" fontSize="fl" textTransform="uppercase">
               fullname

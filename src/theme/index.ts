@@ -31,24 +31,3 @@ const appTheme: Partial<ChakraTheme> = extendBaseTheme({
 export const theme = appTheme
 
 
-
-
-// { Name: "name", Value: "dsdds" }
-// 1
-// :
-// { Name: "email", Value: "yuri@gmail" }
-// 2
-// :
-// { Name: "phone_number", Value: "+9779803300085" }
-// 3
-// :
-// { Name: "birthdate", Value: "05/18/2024" }
-// 4
-// :
-// { Name: "address", Value: "Las Vegas, NV, USA" }
-// 5
-// :
-// { Name: "gender", Value: "female" }
-// 6
-// :
-// { Name: "given_name", Value: "ewtwet" }

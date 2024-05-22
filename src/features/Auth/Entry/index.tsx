@@ -22,7 +22,7 @@ const Entry = () => {
   }
 
   const {
-  handleSubmit,
+    handleSubmit,
     register,
     setError,
     formState: { errors, isSubmitting }
@@ -34,11 +34,11 @@ const Entry = () => {
     try {
       const res = await mutateAsync({ username: data.username });
       logger.log("res", res);
+      router.push(`/auth/login?username=${data.username}`);
     } catch (error) {
-      router.push("/auth/signup");
+      router.push(`/auth/signup?username=${data.username}`);
     }
   };
-  logger.log("erors", errors);
 
   return (
     <VStack w="full" p="2rem" alignItems="center" gap="2rem">

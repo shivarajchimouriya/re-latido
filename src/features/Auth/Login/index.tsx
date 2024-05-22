@@ -16,28 +16,43 @@ import { register } from "swiper/element";
 import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
 import { signIn } from "aws-amplify/auth";
 import AuthProvider from "@/providers/AuthProvider";
-const Login = () => {
+import { zodResolver } from "@hookform/resolvers/zod";
+import { ISigninForm, signInFormSchema } from "./schema";
+import { ISignupForm } from "../Signup/schema";
+
+interface IProps {
+  userName: string;
+}
+const Login = ({ userName }: IProps) => {
   const {
     handleSubmit,
     register,
     formState: { errors, isSubmitting }
-  } = useForm();
+  } = useForm<ISigninForm>({
+    resolver: zodResolver(signInFormSchema)
+  });
 
-  const login = () => {
+  const login = (data: ISigninForm) => {
     signIn({
-      username: "shivraaz45@gmail.com",
-      password: "Axios@123"
+      username: userName,
+      password: data.passoword
     });
   };
 
   const { isOpen, onClose, onToggle } = useDisclosure();
   return (
     <AuthProvider>
-      <VStack w="full" p="2rem" alignItems="center" gap="2rem">
+      <VStack
+        w="full"
+        p="2rem"
+        alignItems="center"
+        gap="2rem"
+        as="form"
+        onSubmit={handleSubmit(login)}
+      >
         <Text fontSize="3rem" fontWeight={"bold"} w="full">
           Login
         </Text>
-        <Button onClick={login}> log me in </Button>
         <Text fontSize="1.2rem" color="#707580">
           Hi Civ, you already have an account here, please fill in the password
           to login to Latido
@@ -53,7 +68,7 @@ const Login = () => {
                 id="password"
                 fontSize="1.4rem"
                 type="password"
-                {...register("name")}
+                {...register("passoword")}
               />
               <InputRightElement onClick={onToggle} h="full">
                 {isOpen
@@ -74,17 +89,7 @@ const Login = () => {
           </Text>
         </VStack>
 
-        <Button
-          mt="3rem"
-          p="1rem"
-          w="100%"
-          border="1px solid black"
-          rounded="md"
-          fontWeight="bold"
-          fontSize="1.4rem"
-          bg="black"
-          color="white"
-        >
+        <Button variant="submit" type="submit">
           proceed
         </Button>
       </VStack>
