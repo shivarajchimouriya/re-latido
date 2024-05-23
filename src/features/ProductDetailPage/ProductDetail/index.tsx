@@ -57,7 +57,7 @@ export default async function ProductDetail({ productId }: IProps) {
             productDetail={productDetail}
             urlPrefix={environment?.bucket_url || ""}
           />
-          <SizeModuleSection productId={productId} />
+          <SizeModuleSection productName={productDetail?.name} productDetail={productDetail} productId={productId} />
         </Box>
         <Description description={productDetail.description} />
         <Box
