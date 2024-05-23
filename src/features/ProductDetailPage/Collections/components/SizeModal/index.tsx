@@ -1,4 +1,5 @@
-import React from "react";
+"use client";
+import React, { useRef, useState } from "react";
 import {
   Box,
   Button,
@@ -10,7 +11,6 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
-  Text,
 } from "@chakra-ui/react";
 
 import Wheel from "../Wheel/index";
@@ -19,10 +19,69 @@ import { appColor } from "@/theme/foundations/colors";
 interface IProps {
   isOpen: boolean;
   onClose: () => void;
-  heightOptions: () => string[];
+  heightOptions: string[];
+  findHeight?: (index: number) => string;
+  productName?: string;
+  productId?: string;
+  setSizeDetails?: (prev: any) => void;
+  sizeDetailSubmit?: () => void;
+}
+interface ISizeDetails {
+  age: number;
+  height: string;
+  weight: number;
 }
 
-export default function SizeModal({ isOpen, onClose, heightOptions }: IProps) {
+interface IScrollValues {
+  abs: number;
+  length: number;
+  max: number;
+  maxIdx: number;
+  min: number;
+  minIdx: number;
+  position: number;
+  progress: number;
+  rel: number;
+  slides: any;
+  slidesLength: number;
+}
+
+export interface FitOptionsProps {
+  label?: any;
+  back?: any;
+  front?: any;
+}
+
+export default function SizeModal({
+  isOpen,
+  onClose,
+  heightOptions,
+  findHeight,
+  productId,
+  setSizeDetails,
+  sizeDetailSubmit,
+}: IProps) {
+  const onAgeChange = (val: any) => {
+    setSizeDetails &&
+      setSizeDetails((prev: ISizeDetails) => {
+        return { ...prev, age: val.abs };
+      });
+  };
+  const onHeightChange = (val: any) => {
+    const height = heightOptions[val.abs];
+    const formatedHeight = height.replace(/[d']/g, ".").replace(/[d"]/g, "");
+    setSizeDetails &&
+      setSizeDetails((prev: ISizeDetails) => {
+        return { ...prev, height: formatedHeight };
+      });
+  };
+  const onWeightChange = (val: any) => {
+    setSizeDetails &&
+      setSizeDetails((prev: ISizeDetails) => {
+        return { ...prev, weight: val.abs };
+      });
+  };
+
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
       <ModalOverlay bg={"rgba(0, 0, 0, 0.8)"} />
@@ -48,9 +107,16 @@ export default function SizeModal({ isOpen, onClose, heightOptions }: IProps) {
             <ModalCloseButton />
           </Flex>
           <ModalBody>
-            <Flex mt={"4rem"} justifyContent={"space-between"}>
+            <Flex mt={"4rem"} w={"full"} justifyContent={"space-evenly"}>
               <Box width={40} height={"20rem"}>
-                <Wheel default={24} label="Age" loop length={200} width={40} />
+                <Wheel
+                  onChange={onAgeChange}
+                  default={24}
+                  label="Age"
+                  loop
+                  length={200}
+                  width={40}
+                />
               </Box>
               <Box width={40} height={"20rem"}>
                 <Wheel
@@ -59,13 +125,15 @@ export default function SizeModal({ isOpen, onClose, heightOptions }: IProps) {
                   loop
                   length={104}
                   width={40}
-                  setValue={heightOptions()}
+                  onChange={onHeightChange}
+                  setValue={heightOptions}
                 />
               </Box>
               <Box width={40} height={"20rem"}>
                 <Wheel
                   default={70}
                   label="Weight"
+                  onChange={onWeightChange}
                   loop
                   length={200}
                   width={40}
@@ -80,6 +148,8 @@ export default function SizeModal({ isOpen, onClose, heightOptions }: IProps) {
               fontSize={"1.4rem"}
               className="primary-button"
               w={"full"}
+              type="submit"
+              onClick={sizeDetailSubmit}
             >
               Submit
             </Button>
