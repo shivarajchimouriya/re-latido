@@ -117,7 +117,7 @@ const ProductCard = ({ product, ...rest }: IProps) => {
   }
 
   const router = useRouter()
-  const baseURL = window.location.host
+  const baseURL =  typeof window==='undefined'?"":  window?.location?.host
 
 
   const view = () => {
