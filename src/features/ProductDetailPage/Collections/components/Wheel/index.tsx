@@ -5,6 +5,7 @@ import {
   TrackDetails,
 } from "keen-slider/react";
 import "./wheel.css";
+import { logger } from "@/utils/logger";
 interface IProps {
   loop: boolean;
   length: number;
@@ -12,6 +13,7 @@ interface IProps {
   setValue?: string[];
   label?: string;
   default: number;
+  onChange: (val: number) => void;
 }
 interface IRefProps {
   size: number;
@@ -24,6 +26,7 @@ export default function Wheel(props: IProps) {
   const slideDegree = 360 / wheelSize;
   const slidesPerView = props.loop ? 9 : 1;
   const [sliderState, setSliderState] = useState<TrackDetails | null>(null);
+
   const size = useRef(0);
   const options = useRef<KeenSliderOptions>({
     slides: {
@@ -50,6 +53,7 @@ export default function Wheel(props: IProps) {
       size.current = s.size;
     },
     detailsChanged: (s: any) => {
+      props.onChange(s.track.details);
       setSliderState(s.track.details);
     },
     rubberband: !props.loop,
