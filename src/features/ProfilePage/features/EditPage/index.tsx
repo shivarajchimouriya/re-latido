@@ -34,9 +34,14 @@ import { AnimatePresence, motion } from "framer-motion";
 import { IEditForm, editFormSchema } from "./schema";
 import dayjs from "dayjs";
 import { logger } from "@/utils/logger";
+import { useFetchProfile, useUpdateProfile } from "../../data/useProfile";
+import { profile } from "console";
+import { IUserProfile } from "@/resources/User/interface";
 const EditPage = () => {
   const { isOpen, onClose, onOpen } = useDisclosure();
-
+const {data}=useFetchProfile();
+   const {mutate,isPending,mutateAsync}=useUpdateProfile()
+const profileData=data?.data;
   const {
     register,
     handleSubmit,
@@ -45,27 +50,54 @@ const EditPage = () => {
     formState: { errors }
   } = useForm<IEditForm>({
     resolver: zodResolver(editFormSchema),
+    
     defaultValues: {
-      address: "",
-      dob: "",
-      email: "cyferaj@gmail.com",
-      gender: "male",
-      name: "shiv",
-      phone: "9803300085"
+      address: profileData?.address,
+      dob: profileData?.DOB,
+      email: profileData?.email,
+      gender: profileData?.gender as 'Male'|'Female',
+      name: profileData?.name,
+      phone: profileData?.phone
+    },
+    values:{
+
+      address: profileData?.address as string,
+      dob: profileData?.DOB as string,
+      email: profileData?.email  as string,
+      gender: profileData?.gender as 'Male'|'Female',
+      name: profileData?.name  as string,
+      phone: profileData?.phone as string
     }
   });
-  const [activeGender, setActiveGender] = useState("male");
-  const onSubmit = (values: IEditForm) => {
+  const onSubmit = async(values: IEditForm) => {
     logger.log("values", values);
+    const data:Partial<IUserProfile>={
+      address:values.address,
+      DOB:values.dob,
+      name:values.name,
+      phone:values.phone,
+
+
+    }
+    
+    try{
+   const res= await mutateAsync(data)
+  
+  
+  }
+
+    catch(err){
+
+    }
   };
-  const genders: Array<"male" | "female"> = ["male", "female"];
+  const genders: Array<"Male" | "Female"> = ["Male", "Female"];
 
   logger.log("errorr", errors);
   return (
     <VStack w="100%" p="1rem">
       <Box position="relative" m="3rem">
         <Avatar
-          name="Civ raj"
+          name={profileData?.name}
           w="10rem"
           h="10rem"
           border="1px solid gray"
@@ -110,7 +142,7 @@ const EditPage = () => {
           </FormLabel>
           <HStack w="100%" justify="space-between" my="1rem">
             <Text fontWeight="normal" fontSize="1.4rem">
-              {getValues("dob") || <Text color="gray.600"> Enter DOB </Text>}
+              {dayjs(getValues("dob") ).format("MM/DD/YYYY")|| <Text color="gray.600"> Enter DOB </Text>}
             </Text>
 
             <Popover isOpen={isOpen} onClose={onClose}>
@@ -133,7 +165,7 @@ const EditPage = () => {
                           <Calendar
                             date={new Date()}
                             onChange={val => {
-                              const formatted = dayjs(val).format("MM/DD/YYYY");
+                              const formatted = dayjs(val).format('YYYY-MM-DDTHH:mm:ss.SSSZ');
                               onChange(formatted);
                               onClose();
                             }}
@@ -239,6 +271,7 @@ const EditPage = () => {
         </FormControl>
 
         <Button
+        isLoading={isPending}
           p="1rem"
           type="submit"
           w="100%"

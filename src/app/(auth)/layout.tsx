@@ -1,4 +1,5 @@
 import { AuthLayout } from "@/components/Layout/AuthLayout";
+import PreventAuthScreens from "@/components/Layout/PreventAuthScreens";
 import React, { ReactNode } from "react";
 
 interface IProps {
@@ -7,9 +8,9 @@ interface IProps {
 
 const Layout = ({ children }: IProps) => {
   return (
-    <AuthLayout>
+    <PreventAuthScreens>
       {children}
-    </AuthLayout>
+    </PreventAuthScreens>
   );
 };
 

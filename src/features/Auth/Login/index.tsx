@@ -8,7 +8,10 @@ import {
   Text,
   InputRightElement,
   useDisclosure,
-  InputGroup
+  InputGroup,
+  useToast,
+  HStack,
+  Icon
 } from "@chakra-ui/react";
 import React from "react";
 import { useForm } from "react-hook-form";
@@ -21,20 +24,36 @@ import { ISigninForm, signInFormSchema } from "./schema";
 import { ISignupForm } from "../Signup/schema";
 import { logger } from "@/utils/logger";
 import { useRouter } from "next/navigation";
+import { CgClose } from "react-icons/cg";
+import { unknown } from "zod";
+import PasswordField from "@/components/Form/PasswordField/index.";
+import { useLoader } from "@/hooks/client/useLoader";
 
 interface IProps {
   userName: string;
 }
+
+class ErrorWithMessage{
+  constructor(private message:string){
+
+  }
+}
+
 const Login = ({ userName }: IProps) => {
   const {
     handleSubmit,
     register,
+    setError,
     formState: { errors, isSubmitting }
   } = useForm<ISigninForm>({
     resolver: zodResolver(signInFormSchema)
   });
+
+  const toast = useToast();
   const router = useRouter();
+  const {isLoading,startLoading,stopLoading}=   useLoader()
   const login = async (data: ISigninForm) => {
+    startLoading()
     try {
       const res = await signIn({
         username: userName,
@@ -43,11 +62,39 @@ const Login = ({ userName }: IProps) => {
       logger.log("success");
       router.push("/");
     } catch (err) {
-      logger.log("Error", err);
+      
+     let message="username or password is incorrect"
+
+      setError("passoword", { message });
+      // toast({
+      //   status: "error",
+      //   position: "top",
+      //   render: props => {
+      //     return (
+      //       <HStack
+      //         w="full"
+      //         h="4rem"
+      //         shadow="2xl"
+      //         justify="center"
+      //         border="thin"
+      //         bg="white"
+      //       >
+      //         <CgClose />
+      //         <Text color="red" fontSize="1.3rem" fontWeight="semibold">
+      //           User name or password is incorrect{" "}
+      //         </Text>
+      //       </HStack>
+      //     );
+      //   }
+      // });
+    }
+    finally{
+      stopLoading()
     }
   };
 
   const { isOpen, onClose, onToggle } = useDisclosure();
+  const hasError=!!errors.passoword?.message
   return (
     <AuthProvider>
       <VStack
@@ -66,24 +113,13 @@ const Login = ({ userName }: IProps) => {
           to login to Latido
         </Text>
         <VStack w="full">
-          <FormControl w="full">
-            <FormLabel htmlFor="name" textTransform="capitalize">
-              password
-            </FormLabel>
-            <InputGroup display="flex   " alignItems="center">
-              <Input
-                variant="underline"
+          <FormControl w="full" isInvalid={hasError} >
+            <PasswordField  label="password"  
+                variant={ hasError?"error": "underline"}
                 id="password"
                 fontSize="1.4rem"
-                type="password"
-                {...register("passoword")}
-              />
-              <InputRightElement onClick={onToggle} h="full">
-                {isOpen
-                  ? <FaRegEyeSlash fontSize="2rem" />
-                  : <FaRegEye fontSize="2rem" />}
-              </InputRightElement>
-            </InputGroup>
+                error={errors.passoword?.message}
+                {...register("passoword")}  />
           </FormControl>
 
           <Text
@@ -97,7 +133,7 @@ const Login = ({ userName }: IProps) => {
           </Text>
         </VStack>
 
-        <Button variant="submit" type="submit">
+        <Button variant="submit" type="submit" isLoading={isLoading} >
           proceed
         </Button>
       </VStack>

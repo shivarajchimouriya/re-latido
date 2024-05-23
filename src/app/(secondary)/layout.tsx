@@ -1,3 +1,4 @@
+import ProtectedLayout from "@/components/Layout/ProtectedLayout";
 import SecondaryLayout from "@/components/Layout/SecondaryLayout";
 import AuthProvider from "@/providers/AuthProvider";
 import React, { ReactNode } from "react";
@@ -7,9 +8,11 @@ interface IProps {
 
 const Layout = ({ children }: IProps) => {
   return (
-    <SecondaryLayout>
-      {children}
-    </SecondaryLayout>
+    <ProtectedLayout>
+      <SecondaryLayout>
+        {children}
+      </SecondaryLayout>
+    </ProtectedLayout>
   );
 };
 

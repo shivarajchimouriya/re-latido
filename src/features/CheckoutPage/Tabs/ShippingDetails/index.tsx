@@ -140,7 +140,7 @@ logger.log(errors)
             onChange={onChange}
             onPlaceSelected={(place)=>{
               const formattedPlace=place?.formatted_address;
-              logger.log("place",place)
+             if(formattedPlace)
               onChange(formattedPlace||"")
             }}  />
           }}
