@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import data from "@/data/product/productDetailResponse";
 import { Box, Container, VStack } from "@chakra-ui/react";
 import { IProps } from "./IProps";
@@ -9,11 +9,18 @@ import LeatherSelection from "../Collections/components/LeatherSelection";
 import FitSelection from "../Collections/components/FitSelection";
 import { appColor } from "@/theme/foundations/colors";
 import ButtonComponent from "../Collections/components/Button";
-import Description from "../Collections/components/Description";
 import Blog from "../Collections/components/Blog";
+import Description from "../Collections/components/Description";
 import environment from "@/config/environment";
 import { API } from "@/resources";
+import {
+  ProductListDocument,
+  useGetNodesLazyQuery,
+  useProductListQuery,
+} from "@/GraphQl/Generated/graphql";
 import { logger } from "@/utils/logger";
+import { FIT_ENUM } from "../Collections/components/SizeModal/FitEnums";
+import SizeModuleSection from "../Collections/components/SizeModuleSection";
 
 const getProductDetail = async (id: string) => {
   try {
@@ -26,11 +33,13 @@ const getProductDetail = async (id: string) => {
 
 export default async function ProductDetail({ productId }: IProps) {
   const data = await getProductDetail(productId);
+
   let productDetail = null;
   if (data) {
     productDetail = data?.data?.productDetail;
   }
   if (!productDetail) return null;
+
   return (
     <Container>
       <VStack width="100%">
@@ -48,8 +57,7 @@ export default async function ProductDetail({ productId }: IProps) {
             productDetail={productDetail}
             urlPrefix={environment?.bucket_url || ""}
           />
-          <FitSelection />
-          <ButtonComponent />
+          <SizeModuleSection productId={productId} />
         </Box>
         <Description description={productDetail.description} />
         <Box
