@@ -1,4 +1,5 @@
 @import "react-spring-bottom-sheet/dist/style.css";
+@import "react-international-phone/style.css";
 
 :root {
   font-size: 62.5%;
@@ -198,3 +199,17 @@ body {
 
 
 /* swiper js style overrides end */
+
+
+.google_autocomplete{
+ 
+  width: 100% !important;
+  border: none !important;
+  border-bottom: 1px solid black !important;
+
+}
+.google_autocomplete:focus,.google_autocomplete:active{
+  outline: none !important;
+  box-shadow: none !important;
+
+}

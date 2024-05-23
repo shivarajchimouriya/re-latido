@@ -29,6 +29,9 @@ dependencies:
   '@tanstack/react-query':
     specifier: ^5.32.1
     version: 5.32.1(react@18.2.0)
+  '@types/google-libphonenumber':
+    specifier: ^7.4.30
+    version: 7.4.30
   '@types/react-date-range':
     specifier: ^1.4.9
     version: 1.4.9
@@ -47,6 +50,9 @@ dependencies:
   framer-motion:
     specifier: ^11.1.7
     version: 11.1.7(react-dom@18.2.0)(react@18.2.0)
+  google-libphonenumber:
+    specifier: ^3.2.34
+    version: 3.2.34
   html-react-parser:
     specifier: ^5.1.10
     version: 5.1.10(@types/react@18.2.79)(react@18.2.0)
@@ -74,6 +80,9 @@ dependencies:
   react-icons:
     specifier: ^5.1.0
     version: 5.1.0(react@18.2.0)
+  react-international-phone:
+    specifier: ^4.3.0
+    version: 4.3.0(react@18.2.0)
   react-spring-bottom-sheet:
     specifier: ^3.4.1
     version: 3.4.1(@types/react@18.2.79)(react-dom@18.2.0)(react@18.2.0)
@@ -2741,6 +2750,10 @@ packages:
     resolution: {integrity: sha512-YNFwzVarXAOXkjuFxONyDw1vgRNzyH8AuyN19s0bM+ChSu/bzxb5XPxYFLXoqoM+tvgzwR3k7fXcEOW125yJxg==}
     dev: false
 
+  /@types/google-libphonenumber@7.4.30:
+    resolution: {integrity: sha512-Td1X1ayRxePEm6/jPHUBs2tT6TzW1lrVB6ZX7ViPGellyzO/0xMNi+wx5nH6jEitjznq276VGIqjK5qAju0XVw==}
+    dev: false
+
   /@types/json-schema@7.0.15:
     resolution: {integrity: sha512-5+fP8P8MFNC+AyZCDxrB2pkZFPGzqQWUzpSeuuVLvm8VMcorNYavBqoFcxK8bQz4Qsbn4oUEEem4wDLfcysGHA==}
     dev: true
@@ -4299,6 +4312,11 @@ packages:
       slash: 3.0.0
     dev: true
 
+  /google-libphonenumber@3.2.34:
+    resolution: {integrity: sha512-CLwkp0lZvMywh6dCh0T3Fm8XsfJhLAupc8AECwYkJNQBPW8wQPrv/tV0oFKCs8FMw+pTQyNPZoycgBzYjqtTZQ==}
+    engines: {node: '>=0.10'}
+    dev: false
+
   /gopd@1.0.1:
     resolution: {integrity: sha512-d65bNlIadxvpb/A2abVdlqKqV563juRnZ1Wtk6s1sIR8uNsXR70xqIzVqxVf1eTqDunwT2MkczEeaezCKTZhwA==}
     dependencies:
@@ -5157,6 +5175,14 @@ packages:
     resolution: {integrity: sha512-D3zug1270S4hbSlIRJ0CUS97QE1yNNKDjzQe3HqY0aefp2CBn9VgzgES27sRR2gOvFK+0CNx/BW0ggOESp6fqQ==}
     peerDependencies:
       react: '*'
+    dependencies:
+      react: 18.2.0
+    dev: false
+
+  /react-international-phone@4.3.0(react@18.2.0):
+    resolution: {integrity: sha512-lIntIkwq2j0m3j4RsRiGJl/buHMLBd+mQ9S9RfiX3KbiUCUtbawoPCV2r8BvyeRMZI0cDtovoukBCuZ+70QzJA==}
+    peerDependencies:
+      react: ^16.8.0 || ^17.0.0 || ^18.0.0
     dependencies:
       react: 18.2.0
     dev: false

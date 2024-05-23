@@ -8,7 +8,7 @@ const CheckoutContainer = () => {
   return (
     <VStack w="full">
       <TabHeader />
-      <PaymentDetails />
+      <ShippingDetails />
     </VStack>
   );
 };

@@ -33,6 +33,8 @@ import { dateToMonthDayYear } from "@/utils/date";
 import { ISignupForm, signupSchema } from "../schema";
 import { CgArrowRight } from "react-icons/cg";
 import dayjs from "dayjs";
+import { PhoneInput } from "react-international-phone";
+import { isValidPhone } from "@/utils/misc";
 interface IForm {
   full_name: string;
   address: string;
@@ -55,6 +57,8 @@ const DetailsForm = ({changeView}:IProps) => {
     getValues,
     setValue,
     register,
+    setError,
+    trigger,
     formState: { errors, isSubmitting }
   } = useFormContext<ISignupForm>();
   const [activeGender, setActiveGender] = useState("male");
@@ -70,19 +74,24 @@ const DetailsForm = ({changeView}:IProps) => {
     setActiveGender(gender);
   };
 
-  const handleCalendarChange = (values: Date) => {
-    logger.log("values", values);
-  };
-
-
-  const { ref } = usePlacesWidget({
-    apiKey: env.GOOGLE_API_KEY,
-    onPlaceSelected: (place) =>{
-      
-      console.log(place)
+  const proceed=()=>{
+    trigger(); 
+const phone=getValues("phone_number");
+const isPhoneValid=isValidPhone(phone);
+if(!isPhoneValid){
+  setError("phone_number",{message:"Phone number is invalid"})
+}
+const formErrors = Object.entries(errors).filter(
+  ([fieldName]) =>
+        fieldName !== "password" && fieldName !== "confirm_password"
+    );
+    logger.log("form errir",formErrors)
+    if (formErrors.length === 0) {
+      changeView(1);
     }
-    // setValue("address",place.formatted_address)}
-  });
+  }
+  logger.log("errors",errors)
+
 
   return    <VStack w="full" p="1rem">
         <Text fontSize="3rem" fontWeight={"bold"} w="full" py="2rem">
@@ -109,7 +118,10 @@ const DetailsForm = ({changeView}:IProps) => {
             name='address'
             render={({field:{onChange,value}})=>
             <Autocomplete
-            className="google_places_autocomplete"
+            style={{
+              padding:"1rem 0"
+            }}
+            className="google_autocomplete"
             
                 
         apiKey={env.GOOGLE_API_KEY}
@@ -117,9 +129,9 @@ const DetailsForm = ({changeView}:IProps) => {
         defaultValue={value}
     
         onPlaceSelected={(place)=>{
-            console.log("place",place.formatted_address)
-        onChange(place.formatted_address)
+        onChange(place?.formatted_address)
         }}
+        onChange={onChange}
         
         />}
             
@@ -202,7 +214,37 @@ const DetailsForm = ({changeView}:IProps) => {
             <FormLabel htmlFor="name" fontSize="fl" textTransform="uppercase">
               phone number
             </FormLabel>
-            <Input variant="underline" id="name" {...register("phone_number")} />
+               <Controller
+            control={control}
+            name="phone_number"
+            render={({ field: { onChange, value } }) => {
+              return (
+                <PhoneInput
+                
+                  style={{ width: "100%", borderRadius: "0" }}
+                  inputStyle={{
+                    width: "100%",
+                    border: "none",
+                    borderBottom: "1px solid black",
+                    borderRadius: "0"
+                  }}
+                  defaultCountry="np"
+                  value={value}
+                  countrySelectorStyleProps={{
+                    buttonStyle: {
+                      border: "none",
+                      borderBottom: "1px solid black",
+                      borderRadius: "0"
+                    }
+                  }}
+                  
+                  onChange={phone => { 
+                    
+                    onChange(phone)}}
+                />
+              );
+            }}
+          />
           
           <Text color="error">
               {" "}{errors?.phone_number?.message}{" "}
@@ -211,7 +253,7 @@ const DetailsForm = ({changeView}:IProps) => {
 
           <IconButton  
           alignSelf='end'
-          onClick={()=>changeView(1)}
+       onClick={proceed}
           aria-label="next"
           icon={<CgArrowRight/>}
            p="1rem" 
