@@ -19,10 +19,13 @@ export interface ISizeDetails {
 export default function SizeModuleSection({
   productId,
   productName,
+  productDetail,
 }: {
   productId: string;
   productName: string;
+  productDetail: any;
 }) {
+  logger.log("product detail: ", productDetail);
   const router = useRouter();
   const searchParams = useSearchParams();
 
@@ -30,8 +33,18 @@ export default function SizeModuleSection({
   const urlHeight = searchParams.get("height");
   const urlWeight = searchParams.get("weight");
 
+  const psid = searchParams.get("psid");
+
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [heightOptionsValues, setHeightOptionsValues] = useState<string[]>([]);
+  const [recommendedSize, setRecommendedSize] = useState<any>();
+  const [selectedFit, setSelectedFit] = useState("General");
+  const [showSizeSelector, setShowSizeSelector] = useState(false);
+  const [selectedSpecs, setSelectedSpecs] = useState<any>();
+
+  useEffect(() => {
+    console.log("selected fit: ", selectedFit);
+  }, [selectedFit]);
 
   const [sizeDetails, setSizeDetails] = useState<ISizeDetails>({
     height: urlHeight || "4.11",
@@ -67,25 +80,13 @@ export default function SizeModuleSection({
   const [
     getMultipleNodes,
     { data: multipleNodeData, loading: multipleNodeQueryLoading },
-  ] = useGetNodesLazyQuery();
-  const sizeDetailSubmit = () => {
+  ] = useGetNodesLazyQuery({
+    onCompleted() {
+      setShowSizeSelector(true);
+    },
+  });
 
-    const sizeQuery = new URLSearchParams(searchParams);
-    sizeQuery.append("age", sizeDetails.age.toString());
-    sizeQuery.append("height", sizeDetails.height);
-    sizeQuery.append("weight", sizeDetails.weight.toString());
-
-    router.push(`?${sizeQuery}`);
-
-    const queryNodeValues = {
-      product: productName,
-      Weight: sizeDetails.weight.toString(),
-      Height: sizeDetails.height.toString(),
-      Fit: "general",
-      Gender: "male",
-      Age: sizeDetails?.age.toString(),
-    };
-
+  const getNodesCall = (queryNodeValues: any) => {
     getNodes({
       variables: {
         filters: {
@@ -147,7 +148,9 @@ export default function SizeModuleSection({
         },
       },
     });
+  };
 
+  const getMultipleNodesCall = (queryNodeValues: any) => {
     getMultipleNodes({
       variables: {
         filters: {
@@ -200,21 +203,97 @@ export default function SizeModuleSection({
         },
       },
     });
+  };
 
+  const variables = [
+    { key: "age", value: sizeDetails.age.toString() },
+    { key: "height", value: sizeDetails.height },
+    { key: "weight", value: sizeDetails.weight.toString() },
+  ];
+
+  const queryNodeValues = {
+    product: productName,
+    Weight: sizeDetails.weight.toString(),
+    Height: sizeDetails.height.toString(),
+    Fit: selectedFit || "General",
+    Gender: "male",
+    Age: sizeDetails?.age.toString(),
+  };
+
+  const sizeDetailSubmit = () => {
+    const sizeQuery = new URLSearchParams(searchParams);
+    variables.forEach((el) => {
+      if (sizeQuery.has(el.key)) {
+        sizeQuery.set(el.key, el.value);
+      } else {
+        sizeQuery.append(el.key, el.value);
+      }
+    });
+    router.push(`?${sizeQuery}`);
+    getNodesCall(queryNodeValues);
+    getMultipleNodesCall(queryNodeValues);
     onClose();
   };
 
+  const handleFitChange = (e: string) => {
+    setSelectedFit(e);
+    getMultipleNodesCall({ ...queryNodeValues, Fit: e });
+  };
+
+  const fitData = multipleNodeData?.nodes?.data?.map((item: any) => {
+    return {
+      name: item?.attributes.products[0].title,
+      size: item?.attributes.output,
+      nodeID: item?.id,
+      fitType: item?.attributes.attribute_values?.data[0]?.attributes?.valueOne,
+    };
+  });
+
+  // const indexWithComfort =
+  //   nodeData?.nodes?.data.findIndex((el) =>
+  //     el.attributes?.attribute_values?.data.find(
+  //       (item) => item.attributes?.valueOne === selectedFit
+  //     )
+  //   ) || 0;
+
+  useEffect(() => {
+    const exactSelectedSpecs = productDetail?.product_specification?.find(
+      (ps: any) => ps?._id === psid
+    );
+    if (exactSelectedSpecs) {
+      setSelectedSpecs(exactSelectedSpecs)
+    }
+  }, [psid, selectedFit, sizeDetailSubmit]);
+
+
+
+  const filteredSizeRange = productDetail?.product_specification?.filter((el:any) => {
+  return el?._id===psid
+})
+const range=new Set(filteredSizeRange?.[0]?.size_range.map((el:any)=>el.size))
+logger.log("range",range)
   return (
     <>
-      <FitSelection productId={productId} />
-      <ButtonComponent
+      <FitSelection
+        selectedFit={selectedFit}
+        onChange={handleFitChange}
         productId={productId}
-        heightOptionsValues={heightOptionsValues}
-        setSizeDetails={setSizeDetails}
-        sizeDetailSubmit={sizeDetailSubmit}
-        onOpen={onOpen}
-      />
-      <SizeSelector />
+        />
+      {nodeData?.nodes?.data ? (
+        <SizeSelector
+        sizeRange={range}
+          fitData={fitData}
+          recommendation={nodeData?.nodes?.data}
+        />
+      ) : (
+        <ButtonComponent
+          productId={productId}
+          heightOptionsValues={heightOptionsValues}
+          setSizeDetails={setSizeDetails}
+          sizeDetailSubmit={sizeDetailSubmit}
+          onOpen={onOpen}
+        />
+      )}
       <SizeModal
         heightOptions={heightOptionsValues}
         productId={productId}

@@ -9,6 +9,7 @@ import "swiper/css";
 import "swiper/css/free-mode";
 
 import { FreeMode } from "swiper/modules";
+import { logger } from "@/utils/logger";
 
 export interface IFit {
   back: string;
@@ -16,7 +17,7 @@ export interface IFit {
   label: string;
 }
 
-export default function FittingSwiper({ options }: TODO) {
+export default function FittingSwiper({ options, onChange, selectedFit }: TODO) {
   return (
     <Flex className="parent" w="100%" overflow="hidden" padding={"1rem 0"}>
       <Swiper
@@ -29,7 +30,9 @@ export default function FittingSwiper({ options }: TODO) {
         {options?.map((fit: IFit, i: number) => {
           return (
             <SwiperSlide key={i}>
-              <SwipeCard selectedIdx={i === 1 ? true : false} fit={fit} />
+              <div onClick={()=> onChange(fit.label)}>
+              <SwipeCard selectedIdx={selectedFit === fit.label ? true : false} fit={fit} />
+              </div>
             </SwiperSlide>
           );
         })}

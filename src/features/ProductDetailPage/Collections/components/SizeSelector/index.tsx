@@ -1,7 +1,16 @@
 import { appColor } from "@/theme/foundations/colors";
-import { Box, Container, HStack, Text, VStack } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  Container,
+  Grid,
+  HStack,
+  Text,
+  VStack,
+} from "@chakra-ui/react";
 import React from "react";
 import SizeCard from "../SizeCard";
+import { logger } from "@/utils/logger";
 export const availableSizes = [
   {
     name: "XXXS",
@@ -46,9 +55,32 @@ export const availableSizes = [
   },
 ];
 
-export default function SizeSelector() {
+export default function SizeSelector({
+  fitData,
+  recommendation,
+  sizeRange
+}: {
+  fitData: any;
+    recommendation?: any[];
+    sizeRange: any;
+  
+  }) {
+  
+  logger.log("size range",sizeRange)
+  logger.log("recommendaton",recommendation)
+  
+  const intersection = recommendation?.filter((el) => {
+     return sizeRange.has(el.attributes.output)
+
+})
+
+
+
+  
+  logger.log("intersection",intersection)
+  
   return (
-    <Container>
+    <Container my={"2rem"}>
       <VStack>
         <Text
           className="recommended-size-text"
@@ -59,12 +91,35 @@ export default function SizeSelector() {
         >
           Recommended size for you
         </Text>
-        <HStack gap={"1rem"}>
-          {[38, 40, 42, 44].map((size) => {
-            return <SizeCard recommendedSize={size} selected={size === 40} />;
-          })}
-        </HStack>
+
+        <Box>
+          <HStack gap={"1rem"}>
+            {intersection?.map((node: any) => {
+              return (
+                <SizeCard
+                  recommendedSize={node?.attributes?.output}
+                  selected={node?.attributes?.output === fitData?.[0]?.size}
+                />
+              );
+            })}
+          </HStack>
+        </Box>
       </VStack>
+      <Box m="2rem">
+        <Text
+          width={"full"}
+          fontWeight="bold"
+          fontSize={"1.6rem"}
+          color="white"
+        >
+          रु. 3224
+        </Text>
+      </Box>
+      <Grid placeItems="center" mt="4rem" mb="2rem">
+        <Button width={"90%"} fontSize={"1.6rem"} className="primary-button">
+          Buy
+        </Button>
+      </Grid>
     </Container>
   );
 }

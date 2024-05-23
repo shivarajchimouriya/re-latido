@@ -18,7 +18,7 @@ export interface FitOptionsProps {
   front?: any;
 }
 
-export default function FitSelection({ productId }: { productId: string }) {
+export default function FitSelection({ productId, onChange, selectedFit }: { productId: string, onChange: any, selectedFit:string }) {
   const { data: filteredProductsData, loading: filteredProductsLoading } =
     useProductListQuery({
       variables: { filters: { productId: { eq: productId } } },
@@ -43,7 +43,7 @@ export default function FitSelection({ productId }: { productId: string }) {
       >
         Fit Selection
       </Text>
-      <FittingSwiper options={options} />
+      <FittingSwiper selectedFit={selectedFit} onChange={onChange} options={options} />
     </Box>
   );
 }
