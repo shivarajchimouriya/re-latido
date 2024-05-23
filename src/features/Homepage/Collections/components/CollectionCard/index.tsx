@@ -45,7 +45,7 @@ const CollectionCard = ({ isActive, image, link, title, ...rest }: IProps) => {
           textTransform="uppercase"
           fontSize="1.2rem"
           transitionDuration=".4s"
-          fontWeight={isActive ? "bold" : "semibold"}
+          fontWeight={isActive ? "bold" : "medium"}
         >
           {title}
         </Text>

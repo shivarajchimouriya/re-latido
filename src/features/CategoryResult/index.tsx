@@ -8,7 +8,7 @@ const getProductsByCategory = async (id: string) => {
     const res = await API.Product.byCategory(id);
     return res;
   } catch (err) {
-    logger.log("error fetching products by category");
+    logger.log("error fetching products by category",err);
   }
 };
 

@@ -43,7 +43,7 @@ const FilterBox = ({ onClose }: IProps) => {
   const searchParams=useSearchParams();
 const activeCategory=searchParams.get("collections");
 const lowerLimit=Number(searchParams.get("priceLowerLimit")) ?? 0;
-const upperLimit=Number(searchParams.get("priceUpperLimit")) ?? 90;
+const upperLimit=Number(searchParams.get("priceUpperLimit")) || 90000;
 const searchedGender=searchParams.get("gender") as 'male'|'female'
   logger.log("Slider length", sliderLenth)
 const router=useRouter()
@@ -170,7 +170,7 @@ onClose()
           step={1000}
           h="auto"
         >
-          <RangeSliderTrack bg="rgba(0,0,0,0.1)" h=".2rem">
+          <RangeSliderTrack bg="rgba(255,255,255,0.3)" h=".2rem">
             <RangeSliderFilledTrack bg="white" h=".2rem" />
           </RangeSliderTrack>
           <RangeSliderThumb
@@ -274,22 +274,29 @@ onClose()
         })}
       </HStack>
 
-      <HStack w="100%" color="white" mt="2rem">
+      <HStack w="100%" color="white" mt="3rem">
         <Button
-          p="2rem"
+          p="1.5rem"
           w="100%"
           px="2rem"
           bg="white"
           color="black"
           fontSize="1.4rem"
-          rounded="4rem"
+          rounded="1.2rem"
           gap="1rem"
           onClick={handleApply}
-          rightIcon={<MdOutlineDone fontSize="1.5rem" />}
+          rightIcon={<MdOutlineDone fontSize="1.5rem"  color='green.500' />}
         >
           {" "}Apply{" "}
         </Button>
-        <Button w="100%" h="100%" onClick={onClose}>
+        <Button  p="1.5rem"
+          w="100%"
+          px="2rem"
+          bg="rgba(0,0,0,0.4)"
+          color="white"
+          fontSize="1.4rem"
+          rounded="1.2rem"
+          gap="1rem"onClick={onClose}>
           {" "}cancel{" "}
         </Button>
       </HStack>

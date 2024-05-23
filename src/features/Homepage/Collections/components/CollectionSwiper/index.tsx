@@ -22,9 +22,10 @@ const CollectionSwiper = ({ collection }: IProps) => {
 const [showMask, setShowMask] = useState(true)
 useEffect(()=>{
 
-swiperRef.current?.swiper.on("slideChange",(val)=>{
-const d=val.isEnd  
-setShowMask(d)
+swiperRef.current?.swiper.on("reachEnd",(val)=>{
+  logger.log("val",val)
+
+setShowMask(()=>true)
 
 });
 
@@ -37,10 +38,10 @@ setShowMask(d)
     <Flex
       w="100%"
       m="1rem"
-      px="1rem"
+      px=".5rem"
       sx={{
         "mask-image":
-        showMask? "linear-gradient(to right, transparent 0%, rgb(24, 23, 23) 5%,  rgb(24, 23, 23) 85%, transparent 100%);":""
+        !showMask? "linear-gradient(to right, transparent 0%, rgb(24, 23, 23) 0%,  rgb(24, 23, 23) 85%, transparent 100%);":""
       }}
     >
       <Swiper
@@ -48,6 +49,7 @@ setShowMask(d)
         spaceBetween={20}
         slidesPerView={"auto"}
         className="collection"
+        
         onLoad={({ currentTarget }) => {
           console.log("loaded");
           currentTarget.classList.remove("collection");

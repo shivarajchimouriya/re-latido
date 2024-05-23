@@ -3,6 +3,8 @@ import { categoryService } from "./Category";
 import { homepageService } from "./Homepage";
 import { productService } from "./Product";
 import { searchService } from "./Search";
+import { shippingService } from "./Shipping";
+import { userService } from "./User";
 
 
 export const API = {
@@ -10,6 +12,8 @@ export const API = {
     Category: categoryService,
     Homepage: homepageService,
     Search: searchService,
-    Auth: authSevice
+    Auth: authSevice,
+    User: userService,
+    Shipping: shippingService
 };
 

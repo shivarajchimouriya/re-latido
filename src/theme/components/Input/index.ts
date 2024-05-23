@@ -26,8 +26,33 @@ const underline = definePartsStyle({
         }
     }
 })
+
+
+const error = definePartsStyle({
+    field: {
+        transitionDuration: ".4s",
+        w: "full",
+        py: "1rem",
+        bg: 'transparent',
+        borderBottom: "1px solid",
+        borderColor: "error",
+        _active: {
+            outline: "none"
+        },
+        _focus: {
+            outline: "none",
+            borderBottomWidth: "2px"
+
+        }
+    }
+})
+
+
+
+
 export const inputTheme = defineMultiStyleConfig({
     baseStyle, variants: {
-        underline
+        underline,
+        error
     }, defaultProps: { variant: "underline" }
 })

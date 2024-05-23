@@ -1,3 +1,6 @@
+export const env = {
+  GOOGLE_API_KEY: process.env.NEXT_PUBLIC_GOOGLE_API_KEY
+}
 export default {
   generateSourcemap: process.env.GENERATE_SOURCEMAP,
   base_url_dev_staging: process.env.REACT_APP_BASE_URL_DEV_STAGING,
@@ -22,10 +25,10 @@ export default {
 
   client_id: process.env.REACT_APP_APP_CLIENT_ID,
   fonepay_base_url: process.env.REACT_APP_FONEPAY_BASE_URL,
-  
+
   client_bucket_url: process.env.NEXT_PUBLIC_BUCKET_URL,
   product_mutation_token: process.env.REACT_APP_PRODUCT_MUTATION_TOKEN,
-  size_module_base_url: process.env.SIZE_MODULE_BASE_URL || process.env.NEXT_PUBLIC_SIZE_MODULE_BASE_URL ,
+  size_module_base_url: process.env.SIZE_MODULE_BASE_URL || process.env.NEXT_PUBLIC_SIZE_MODULE_BASE_URL,
   google_api_key: process.env.REACT_APP_GOOGLE_API_KEY,
   fonepay_pid: process.env.REACT_APP_FONEPAY_PID,
 };

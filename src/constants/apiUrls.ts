@@ -13,7 +13,11 @@ export const apiURLs = {
     topRated: "/client_product",
     auth: {
         checkUser: "/auth/check"
-    }
+    },
+    user: {
+        profile: "/client_user"
+    },
+    order: "/client_order"
 
 
 }

@@ -1,3 +1,4 @@
+"use client";
 import React from "react";
 import { profileData } from "@/data/mock/profileData";
 import {
@@ -18,21 +19,19 @@ import { AddSpaceOnPhone } from "@/lib/AddSpaceOnPhone";
 import { DateDifference, EpochToRedable } from "@/lib/DateModeling";
 import Link from "next/link";
 import { FaFileInvoiceDollar } from "react-icons/fa";
-import { getCurrentUser } from "aws-amplify/auth";
+import { fetchAuthSession, getCurrentUser } from "aws-amplify/auth";
 import { logger } from "@/utils/logger";
 import ProfileClient from "./ProfileClient";
+import { useForm } from "react-hook-form";
+import { IEditForm, editFormSchema } from "./features/EditPage/schema";
+import { zodResolver } from "@hookform/resolvers/zod";
+import {} from "aws-amplify/auth";
+import { useFetchProfile } from "./data/useProfile";
+import { useGetTokens } from "@/hooks/client/useGetToken";
 
-export default async function ProfilePage() {
-  const { data } = profileData;
-  let userDta = null;
-  try {
-    const user = await getCurrentUser();
-    logger.log("user", user.userId);
-    userDta = user;
-  } catch (err) {
-    logger.log("error", err);
-    userDta = err;
-  }
+export default function ProfilePage() {
+  const {data:profileData} = useFetchProfile();
+const data=profileData?.data;
   return (
     <Grid width={"100%"}>
       <Flex
@@ -44,8 +43,8 @@ export default async function ProfilePage() {
       >
         <AppImage
           style={{ borderRadius: "100%" }}
-          alt={data.name}
-          src={data.profile_image}
+          alt={data?.name}
+          src={data?.profile_image}
           width={90}
           height={90}
         />
@@ -56,14 +55,14 @@ export default async function ProfilePage() {
             color="textPrimary"
             textTransform={"uppercase"}
           >
-            {data.name}
+            {data?.name}
           </Text>
           <Box fontSize={"1.4rem"} color="textSecondary">
             <Text>
-              {AddSpaceOnPhone(data.phone)}
+              {AddSpaceOnPhone(data?.phone || "")}
             </Text>
             <Text>
-              {data.email}
+              {data?.email}
             </Text>
           </Box>
         </Grid>
@@ -89,7 +88,7 @@ export default async function ProfilePage() {
         >
           <Text>With latido since</Text>
           <Text fontWeight={"bold"}>
-            {EpochToRedable(DateDifference(data.createdAt))}
+            {EpochToRedable(DateDifference(data?.createdAt||""))}
           </Text>
         </Flex>
       </Flex>
@@ -148,7 +147,6 @@ export default async function ProfilePage() {
               Logout
             </Flex>
           </Button>
-          <ProfileClient data={userDta} />
         </Link>
       </ButtonGroup>
     </Grid>

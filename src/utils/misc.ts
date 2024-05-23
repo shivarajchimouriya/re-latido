@@ -1,3 +1,4 @@
+import { PhoneNumberUtil } from "google-libphonenumber";
 import { logger } from "./logger";
 
 export const throttle = <T extends (...args: any[]) => void>(
@@ -88,4 +89,16 @@ export function debounce<F extends (...args: any[]) => any>(
 
         if (callNow) func.apply(this, args);
     } as F;
+}
+
+
+export const isValidPhone = (phone: string) => {
+    const phoneUtil = PhoneNumberUtil.getInstance();
+    const isValid = phoneUtil.isValidNumber(phoneUtil.parseAndKeepRawInput(phone))
+    if (!isValid) {
+        return false
+    }
+
+    return true
+
 }
