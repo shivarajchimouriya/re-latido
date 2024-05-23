@@ -16,7 +16,8 @@ export const apiURLs = {
     },
     user: {
         profile: "/client_user"
-    }
+    },
+    order: "/client_order"
 
 
 }

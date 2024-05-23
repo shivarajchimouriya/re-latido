@@ -18,7 +18,12 @@ import ReactGoogleAutocomplete from "react-google-autocomplete";
 import { env } from "@/config/environment";
 import { logger } from "@/utils/logger";
 import { PhoneNumber, PhoneNumberUtil } from 'google-libphonenumber';
+import { useFetchShippingDetails } from "../../data/useFetchShippingDetails";
 const ShippingDetails = () => {
+
+
+ const {mutateAsync}=   useFetchShippingDetails()
+
   const {
     handleSubmit,
     control,
@@ -29,9 +34,12 @@ const ShippingDetails = () => {
   } = useForm<IForm>({ resolver: zodResolver(formSchema) });
 
   const validatePhone=(phone:string)=>{
+    try{
     const phoneUtil = PhoneNumberUtil.getInstance();
      const isValid= phoneUtil.isValidNumber(phoneUtil.parseAndKeepRawInput(phone))
-     if(!isValid){
+    }
+    
+   catch(err){
       setError("phone",{ message: 'phone number is invalid'})
      }
 
@@ -60,7 +68,7 @@ logger.log(errors)
       <VStack spacing="2rem" w="full" p="1rem" as='form'   onSubmit={handleSubmit(onSubmit)} >
         <FormControl w="full">
           <FormLabel fontSize="fl" htmlFor="name" textTransform="uppercase">
-            full name
+            full name *
           </FormLabel>
           <Input variant="underline" id="name" {...register("fullName")} />
           <Text color='error' >{errors.fullName?.message}  </Text>
@@ -69,7 +77,7 @@ logger.log(errors)
 
         <FormControl w="full">
           <FormLabel fontSize="fl" htmlFor="name" textTransform="uppercase">
-            phone
+            phone *
           </FormLabel>
           <Controller
             control={control}
@@ -106,7 +114,7 @@ logger.log(errors)
 
         <FormControl w="full">
           <FormLabel fontSize="fl" htmlFor="name" textTransform="uppercase">
-            country
+            country *
           </FormLabel>
           <Input variant="underline" id="name" {...register("country")} />
           <Text color='error' >{errors.country?.message}  </Text>
@@ -115,16 +123,16 @@ logger.log(errors)
 
         <FormControl w="full">
           <FormLabel fontSize="fl" htmlFor="name" textTransform="uppercase">
-            city
+            city *
           </FormLabel>
-          <Input variant="underline" id="name" {...register("city")} />
+          <Input variant="underline" required id="name" {...register("city",{required:"city is required"})} />
           <Text color='error' >{errors.city?.message}  </Text>
 
         </FormControl>
 
         <FormControl w="full">
           <FormLabel fontSize="fl" htmlFor="name" textTransform="uppercase">
-            address
+            address *
           </FormLabel>
           <Controller
           name="address"
@@ -147,13 +155,15 @@ logger.log(errors)
           
           
           />
+
+          <Text color='error' >  {errors.address?.message}  </Text>
         </FormControl>
 
         <FormControl w="full">
           <FormLabel fontSize="fl" htmlFor="name" textTransform="uppercase">
-            landmark
+            landmark *
           </FormLabel>
-          <Input variant="underline" id="name" {...register("landmark")} />
+          <Input  required variant="underline" id="name" {...register("landmark",{required:{message:"landmark is requuired",value:true}})} />
           <Text color='error' >{errors.landmark?.message}  </Text>
         </FormControl>
 
