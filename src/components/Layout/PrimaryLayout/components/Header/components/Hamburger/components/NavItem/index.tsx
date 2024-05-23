@@ -1,5 +1,6 @@
 import { HStack, StackProps, Text } from "@chakra-ui/react";
 import React from "react";
+import Link from "next/link";
 
 interface IProps extends StackProps {
   link: string;
@@ -8,16 +9,18 @@ interface IProps extends StackProps {
 
 const NavItem = ({ link, name, ...rest }: IProps) => {
   return (
-    <HStack {...rest}>
-      <Text
-        fontSize="2.7rem"
-        textTransform="capitalize"
-        fontWeight="bold"
-        color="gray"
-      >
-        {name}
-      </Text>
-    </HStack>
+    <Link href={link}>
+      {" "}<HStack {...rest}>
+        <Text
+          fontSize="2.7rem"
+          textTransform="capitalize"
+          fontWeight="bold"
+          color="gray"
+        >
+          {name}
+        </Text>
+      </HStack>
+    </Link>
   );
 };
 

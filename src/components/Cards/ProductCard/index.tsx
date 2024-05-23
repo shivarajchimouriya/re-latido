@@ -173,13 +173,11 @@ const ProductCard = ({ product, ...rest }: IProps) => {
             <Box zIndex={100000} >
               <PopoverContent zIndex={10000} outline='none' >
                 <Center as={motion.div}
-
                   onMouseOver={() => console.log("mouse over")}
                 >
 
                   <HStack
                     variants={utilsVariant}
-
                     initial='hidden'
                     animate='show'
                     exit='exit'

@@ -65,7 +65,7 @@ export default function ProductImage({
               setSelectedIndex(val.activeIndex);
             }}
           >
-            {images.map((image: string, index: number) => (
+            {images?.map((image: string, index: number) => (
               <SwiperSlide key={index}>
                 <Box width={"full"} bg="white">
                   <AppImage
