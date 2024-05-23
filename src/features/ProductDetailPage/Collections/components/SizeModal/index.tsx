@@ -15,6 +15,7 @@ import {
 
 import Wheel from "../Wheel/index";
 import { appColor } from "@/theme/foundations/colors";
+import { ISizeDetails } from "../SizeModuleSection";
 
 interface IProps {
   isOpen: boolean;
@@ -25,11 +26,7 @@ interface IProps {
   productId?: string;
   setSizeDetails?: (prev: any) => void;
   sizeDetailSubmit?: () => void;
-}
-interface ISizeDetails {
-  age: number;
-  height: string;
-  weight: number;
+  sizeDetails?: ISizeDetails;
 }
 
 interface IScrollValues {
@@ -60,11 +57,12 @@ export default function SizeModal({
   productId,
   setSizeDetails,
   sizeDetailSubmit,
+  sizeDetails
 }: IProps) {
   const onAgeChange = (val: any) => {
     setSizeDetails &&
       setSizeDetails((prev: ISizeDetails) => {
-        return { ...prev, age: val.abs };
+        return { ...prev, age: val.abs.toString() };
       });
   };
   const onHeightChange = (val: any) => {
@@ -78,7 +76,7 @@ export default function SizeModal({
   const onWeightChange = (val: any) => {
     setSizeDetails &&
       setSizeDetails((prev: ISizeDetails) => {
-        return { ...prev, weight: val.abs };
+        return { ...prev, weight: val.abs.toString() };
       });
   };
 
@@ -111,7 +109,7 @@ export default function SizeModal({
               <Box width={40} height={"20rem"}>
                 <Wheel
                   onChange={onAgeChange}
-                  default={24}
+                  default={Number(sizeDetails?.age)||24}
                   label="Age"
                   loop
                   length={200}
@@ -120,7 +118,7 @@ export default function SizeModal({
               </Box>
               <Box width={40} height={"20rem"}>
                 <Wheel
-                  default={50}
+                  default={heightOptions.indexOf(sizeDetails?.height.split(".").join("'")+'"' ||`5'5"`) || 50}
                   label="Height"
                   loop
                   length={104}
@@ -131,7 +129,7 @@ export default function SizeModal({
               </Box>
               <Box width={40} height={"20rem"}>
                 <Wheel
-                  default={70}
+                  default={Number(sizeDetails?.weight)||70}
                   label="Weight"
                   onChange={onWeightChange}
                   loop
