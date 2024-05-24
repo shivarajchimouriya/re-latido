@@ -19,6 +19,8 @@ import { env } from "@/config/environment";
 import { logger } from "@/utils/logger";
 import { PhoneNumber, PhoneNumberUtil } from 'google-libphonenumber';
 import { useFetchShippingDetails } from "../../data/useFetchShippingDetails";
+import { useRouter } from "next/navigation";
+
 const ShippingDetails = () => {
 
 
@@ -32,7 +34,7 @@ const ShippingDetails = () => {
     setError,
     formState: { errors, isSubmitting }
   } = useForm<IForm>({ resolver: zodResolver(formSchema) });
-
+const router=useRouter()
   const validatePhone=(phone:string)=>{
     try{
     const phoneUtil = PhoneNumberUtil.getInstance();
@@ -46,11 +48,17 @@ const ShippingDetails = () => {
 
 
   }
-const onSubmit=(data:IForm)=>{
+const onSubmit=async(data:IForm)=>{
   const phone=data.phone;
   validatePhone(phone)
+try {
+  const res=await mutateAsync();
 
-logger.log("data",data)
+} catch (error) {
+
+  logger.log("error",error)
+  
+}
 
 }
 

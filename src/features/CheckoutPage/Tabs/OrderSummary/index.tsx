@@ -7,12 +7,14 @@ import { IPaymentLog } from "@/resources/Payment/interface";
 import { logger } from "@/utils/logger";
 import { useGetTokens } from "@/hooks/client/useGetToken";
 import OrderCard from "@/components/OrderCard";
+import { useRouter } from "next/navigation";
 
 const OrderSummary = () => {
   const [paymentLog, setPaymentLog] = useState<null | IPaymentLog>(null);
   const { mutateAsync } = usefetchPaymentLog();
   const { token } = useGetTokens();
   const order = paymentLog;
+  const router = useRouter();
   useEffect(
     () => {
       const fetchPayentLog = async () => {
@@ -39,6 +41,7 @@ const OrderSummary = () => {
           });
           setPaymentLog(res);
         } catch (error) {
+          router.push("/checkout?tab=shipping");
           logger.log("error", error);
         }
       };
