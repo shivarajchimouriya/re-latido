@@ -5,7 +5,7 @@ import React from "react";
 
 const getProductsByCategory = async (id: string) => {
   try {
-    const res = await API.Product.byCategory(id);
+    const res = await API.Product.byCategory(id,{params:{limit:100}});
     return res;
   } catch (err) {
     logger.log("error fetching products by category",err);
@@ -17,6 +17,8 @@ interface IProps {
 }
  
 const CategoryResult = async ({ id }: IProps) => {
+
+
 
   const productsByCategory = await getProductsByCategory(id);
   const products=productsByCategory?.data.data;

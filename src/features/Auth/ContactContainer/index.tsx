@@ -6,13 +6,13 @@ import { FaXTwitter } from "react-icons/fa6";
 
 const ContactContainer = () => {
   const socials = [
-    { link: "facebook.com", icon: <FaFacebook /> },
-    { link: "facebook.com", icon: <FaXTwitter /> },
-    { link: "facebook.com", icon: <FaYoutube /> },
-    { link: "facebook.com", icon: <FaInstagram /> }
+    { link: "https://www.facebook.com/latidocustoms", icon: <FaFacebook /> },
+    { link: "https://x.com/latidonepal", icon: <FaXTwitter /> },
+    { link: "https://www.youtube.com/@latidonepa", icon: <FaYoutube /> },
+    { link: "https://www.instagram.com/latidonepal", icon: <FaInstagram /> }
   ];
   return (
-    <VStack w="100%">
+    <VStack w="100%" h="80vh">
       <Text fontSize="3rem" fontWeight="bold" py="3rem" mb="5rem" p="1rem">
         WE ALWAYS APPRECIATE{"  "}
         <Text as="span" color="white" bg="#2B2B2B">

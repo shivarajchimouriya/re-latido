@@ -37,8 +37,6 @@ interface IProps {
 const FilterBox = ({ onClose }: IProps) => {
   const {data}=useCategories();
   const categories=data || [];
-
-  logger.log("categories",categories)
   const sliderLenth = Array.from({ length: Math.ceil(categories?.length / 2) });
   const searchParams=useSearchParams();
 const activeCategory=searchParams.get("collections");
