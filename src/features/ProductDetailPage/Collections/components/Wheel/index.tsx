@@ -7,7 +7,7 @@ import {
 import "./wheel.css";
 import { logger } from "@/utils/logger";
 interface IProps {
-  loop: boolean;
+  loop?: boolean;
   length: number;
   width: number;
   setValue?: string[];

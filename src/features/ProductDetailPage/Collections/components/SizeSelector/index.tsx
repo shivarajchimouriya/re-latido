@@ -11,6 +11,8 @@ import {
 import React from "react";
 import SizeCard from "../SizeCard";
 import { logger } from "@/utils/logger";
+import EditSizeCard from "../EditSizeCard";
+import { useParams, useSearchParams, useRouter } from "next/navigation";
 export const availableSizes = [
   {
     name: "XXXS",
@@ -58,27 +60,33 @@ export const availableSizes = [
 export default function SizeSelector({
   fitData,
   recommendation,
-  sizeRange
+  sizeRange,
+  onOpen,
+  handleBuyClick,
 }: {
   fitData: any;
-    recommendation?: any[];
-    sizeRange: any;
-  
-  }) {
-  
-  logger.log("size range",sizeRange)
-  logger.log("recommendaton",recommendation)
-  
-  const intersection = recommendation?.filter((el) => {
-     return sizeRange.has(el.attributes.output)
+  recommendation?: any[];
+  sizeRange: any;
+  onOpen: any;
+  handleBuyClick: () => void;
+}) {
+  const params = useSearchParams();
+  const router = useRouter();
 
-})
+  const newUrlSearchParams = new URLSearchParams(params);
+  // const sizeSearchParam =
+  const intersection = recommendation?.map((el) => {
+    if (sizeRange.has(el.attributes.output)) {
+      return {
+        ...el,
+        price: sizeRange.get(el.attributes.output),
+      };
+    }
+    return null;
+  });
 
+  let price;
 
-
-  
-  logger.log("intersection",intersection)
-  
   return (
     <Container my={"2rem"}>
       <VStack>
@@ -94,14 +102,32 @@ export default function SizeSelector({
 
         <Box>
           <HStack gap={"1rem"}>
-            {intersection?.map((node: any) => {
+            {intersection?.map((node: any, i) => {
+              if (node?.attributes?.output === fitData?.[0]?.size) {
+                newUrlSearchParams.set("s", node?.attributes?.output);
+                newUrlSearchParams.set("srid", node?.price._id);
+                newUrlSearchParams.set("p", node?.price?.price?.[0]?.value);
+                newUrlSearchParams.set(
+                  "currency",
+                  node?.price?.price?.[0]?.currency
+                );
+
+                router.push(`?${newUrlSearchParams}`);
+
+                price = node?.price?.price?.[0]?.value;
+              }
+              if (!node?.attributes?.output) {
+                return null;
+              }
               return (
                 <SizeCard
                   recommendedSize={node?.attributes?.output}
                   selected={node?.attributes?.output === fitData?.[0]?.size}
+                  // price={node?.price.value}
                 />
               );
             })}
+            <EditSizeCard onOpen={onOpen} />
           </HStack>
         </Box>
       </VStack>
@@ -112,11 +138,16 @@ export default function SizeSelector({
           fontSize={"1.6rem"}
           color="white"
         >
-          रु. 3224
+          {price ? `रु. ${price}` : null}
         </Text>
       </Box>
       <Grid placeItems="center" mt="4rem" mb="2rem">
-        <Button width={"90%"} fontSize={"1.6rem"} className="primary-button">
+        <Button
+          onClick={handleBuyClick}
+          width={"90%"}
+          fontSize={"1.6rem"}
+          className="primary-button"
+        >
           Buy
         </Button>
       </Grid>
