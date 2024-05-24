@@ -1,4 +1,3 @@
-import environment from "@/config/environment";
 import { CodegenConfig } from "@graphql-codegen/cli";
 
 const config: CodegenConfig = {

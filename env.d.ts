@@ -12,5 +12,7 @@ namespace NodeJS {
         NEXT_PUBLIC_CLIENT_ID: string;
         POOL_ID: string;
         NEXT_PUBLIC_POOL_ID: string;
+        GRAPHQL_API: string;
+        NEXT_PUBLIC_GRAPHQL_API: string
     }
 }
