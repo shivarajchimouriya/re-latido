@@ -1,6 +1,7 @@
 import { authSevice } from "./Auth";
 import { categoryService } from "./Category";
 import { homepageService } from "./Homepage";
+import { orderService } from "./Order";
 import { productService } from "./Product";
 import { searchService } from "./Search";
 import { shippingService } from "./Shipping";
@@ -14,6 +15,7 @@ export const API = {
     Search: searchService,
     Auth: authSevice,
     User: userService,
-    Shipping: shippingService
+    Shipping: shippingService,
+    Order: orderService
 };
 

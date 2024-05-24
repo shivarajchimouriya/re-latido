@@ -28,6 +28,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import {} from "aws-amplify/auth";
 import { useFetchProfile } from "./data/useProfile";
 import { useGetTokens } from "@/hooks/client/useGetToken";
+import Logout from "./features/Logout";
 
 export default function ProfilePage() {
   const {data:profileData} = useFetchProfile();
@@ -134,20 +135,7 @@ const data=profileData?.data;
           </Button>
         </Link>
 
-        <Link href={"/auth/logout"}>
-          <Button
-            px={"1rem"}
-            py={"1rem"}
-            rounded={"0.4rem"}
-            fontWeight={"bold"}
-            justifyContent={"flex-start"}
-          >
-            <Flex gap={"2rem"} left={0} alignItems={"center"} color="red.500">
-              <TbLogout fontSize={"2rem"} />
-              Logout
-            </Flex>
-          </Button>
-        </Link>
+          <Logout/>
       </ButtonGroup>
     </Grid>
   );

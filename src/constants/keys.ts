@@ -3,7 +3,8 @@ export const queryKeys = {
     TOP_RATED: "topRated",
     PROFILE: "profile",
     SHIPPING: "shipping",
-    UPDATE_SHIPPING: "update_shipping"
+    UPDATE_SHIPPING: "update_shipping",
+    ORDERS: "orders"
 
 }
 
