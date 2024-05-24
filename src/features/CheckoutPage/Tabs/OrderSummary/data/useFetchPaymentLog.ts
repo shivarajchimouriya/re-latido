@@ -17,7 +17,7 @@ export const usefetchPaymentLog = () => {
 
     return useMutation({
         mutationKey: [queryKeys.PAYMENT_LOG],
-        mutationFn: ({ token, data }: { token: string | null, data: IPaymentRequestDTO }) => fetchPaymentLog(token, data),
+        mutationFn: ({ token, data }: { token: string | null, data: any }) => fetchPaymentLog(token, data),
         retry: 1
     })
 

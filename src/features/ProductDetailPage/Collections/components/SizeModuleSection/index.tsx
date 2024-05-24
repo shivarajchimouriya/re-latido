@@ -289,7 +289,7 @@ export default function SizeModuleSection({
       size_range_id: srid as string,
       leather_id: leatherDetails?.leather_id._id as string,
       size: Number(s) as number,
-      pattern_package: nodeData?.nodes?.data[indexWithComfort].attributes
+      pattern_package: nodeData?.nodes?.data[indexWithComfort]?.attributes
         ?.outputLevel as string,
     },
     sizing: {

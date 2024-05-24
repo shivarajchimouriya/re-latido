@@ -20,11 +20,14 @@ import { logger } from "@/utils/logger";
 import { PhoneNumber, PhoneNumberUtil } from 'google-libphonenumber';
 import { useFetchShippingDetails } from "../../data/useFetchShippingDetails";
 import { useRouter } from "next/navigation";
+import { IBuyRespose, IOrderData } from "@/resources/Order/interface";
+import { useUpdateShippingDetails } from "../../data/useUpdateShippingDetails";
+import { useGetTokens } from "@/hooks/client/useGetToken";
 
 const ShippingDetails = () => {
 
 
- const {mutateAsync}=   useFetchShippingDetails()
+ const {mutateAsync}=   useUpdateShippingDetails()
 
   const {
     handleSubmit,
@@ -34,7 +37,9 @@ const ShippingDetails = () => {
     setError,
     formState: { errors, isSubmitting }
   } = useForm<IForm>({ resolver: zodResolver(formSchema) });
-const router=useRouter()
+const router=useRouter();
+
+const {token}=useGetTokens()
   const validatePhone=(phone:string)=>{
     try{
     const phoneUtil = PhoneNumberUtil.getInstance();
@@ -42,17 +47,41 @@ const router=useRouter()
     }
     
    catch(err){
-      setError("phone",{ message: 'phone number is invalid'})
+      setError("phone",{ message: 'phone number is invalid'});
+      return 
      }
 
 
 
   }
 const onSubmit=async(data:IForm)=>{
+
   const phone=data.phone;
-  validatePhone(phone)
+  validatePhone(phone);
+  const checkoutData=localStorage.getItem("checkout");
+  if(!checkoutData || !token){
+    return 
+  }
+
+  const productDetail=JSON.parse(checkoutData) as  IOrderData
+  const checkoutId=productDetail.checkout_id;
+  const formReqdata={
+    checkout_id:checkoutId,
+    shipping_details:{
+      address:data.address,
+      city:data.city,
+      country:data.country,
+      full_name:data.fullName,
+      landmark:data.landmark,
+      phone_number:data.phone,
+    },
+    _id:productDetail._id
+  }
 try {
-  const res=await mutateAsync();
+  const res=await mutateAsync({data:formReqdata,token});
+  localStorage.setItem("checkout",JSON.stringify(res.data))
+  
+  router.push("/checkout?tab=payment")
 
 } catch (error) {
 
@@ -186,6 +215,7 @@ logger.log(errors)
           bg="black"
           color="white"
           type="submit"
+          isLoading={isSubmitting}
         >
           next
         </Button>

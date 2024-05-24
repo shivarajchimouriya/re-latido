@@ -39,7 +39,6 @@ const OrderSummary = () => {
               }
             }
           });
-          setPaymentLog(res);
         } catch (error) {
           router.push("/checkout?tab=shipping");
           logger.log("error", error);

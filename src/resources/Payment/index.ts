@@ -1,13 +1,13 @@
 import { apiURLs } from "@/constants/apiUrls";
 import { APIService, IFetchOptions, apiService } from "@/lib/requester";
-import { IPaymentLog } from "./interface";
+import { IPaymentLog, IPaymentResponseData } from "./interface";
 
 class Payment {
 
     constructor(private apiService: APIService) { }
 
     getAllLogs(options: IFetchOptions, data?: any) {
-        return this.apiService.post<IPaymentLog>({ url: apiURLs.payment.log, options, data })
+        return this.apiService.post<IPaymentResponseData>({ url: apiURLs.payment.log, options, data })
     }
 
 

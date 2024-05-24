@@ -10,7 +10,7 @@ const getShippingDetails = (token: string | null, data: IShippingDetails) => {
 
 }
 
-const shippigVar = {
+const shippigVars = {
     "product_specification": {
         "price": {
             "currency": "Nrs",
@@ -67,10 +67,9 @@ const shippigVar = {
 }
 export const useFetchShippingDetails = () => {
     const { token } = useGetTokens();
-
     return useMutation({
         mutationKey: [queryKeys.SHIPPING],
-        mutationFn: () => getShippingDetails(token, shippigVar),
+        mutationFn: ({ data }: { data: IShippingDetails }) => getShippingDetails(token, data),
 
     })
 

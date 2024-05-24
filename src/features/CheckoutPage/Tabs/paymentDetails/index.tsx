@@ -1,3 +1,4 @@
+import { IOrderData } from "@/resources/Order/interface";
 import {
   Box,
   Button,
@@ -14,14 +15,62 @@ import {
   Tr,
   VStack
 } from "@chakra-ui/react";
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { usefetchPaymentLog } from "../OrderSummary/data/useFetchPaymentLog";
+import dayjs from "dayjs";
+import { env } from "@/config/environment";
+import { useGetTokens } from "@/hooks/client/useGetToken";
+import { logger } from "@/utils/logger";
 
 const PaymentDetails = () => {
+    const {mutateAsync}=   usefetchPaymentLog()
+  const [data, setdata] = useState<IOrderData | null>(null);
+ const {token}=  useGetTokens()
+  useEffect(() => {
+    const localData = localStorage.getItem("checkout");
+    if (!localData) return;
+    const parsed = JSON.parse(localData) as IOrderData;
+    setdata(parsed);
+  }, []);
+
   const keyVals = [
-    { key: "product", val: "farooq" },
-    { key: "Amount", val: "NRS 30000" },
-    { key: "payment Method", val: "fonepay" }
-  ];
+    { key: "product", val: data?.product.name },
+    { key: "Amount", val: data?.product_specification.price.value},
+    { key: "payment Method", val: data?.payment_mode }
+  ];  
+const handleProceed=async()=>{
+  const ru = window.location.origin + '/checkout/response/';
+  const checkoutRaw=localStorage.getItem("checkout");
+  if(!checkoutRaw)return;
+  const parsed=JSON.parse(checkoutRaw) as IOrderData
+   
+   const checkoutDataQuery: any = {
+      RU: ru,
+      PID: env.FONEPAY_PID,
+      PRN: dayjs().unix(),
+      AMT: parsed.total_amount || 100,
+      CRN: 'NPR',
+      DT: dayjs().format('MM/DD/YYYY'),
+      R1: 'Payment for Jacket',
+      R2: 'N/A',
+      MD: 'P',
+}
+if(!token) return
+
+try {
+  const res=await mutateAsync({data:{checkout_id:parsed.checkout_id,order:parsed._id,paymentMeta:checkoutDataQuery},token});
+  logger.log("res payment",res)
+  if(res.data){
+    const response=(Array.isArray(res.data.paymentMeta)?res.data.paymentMeta[0]:res.data.paymentMeta) as Record<string,any>
+    const encodedUrl = new URLSearchParams(response).toString()
+      window.location.href=env.FONEPAY_BASE_URL+encodedUrl
+  }
+  
+} catch (error) {
+  
+}
+
+}
 
   return (
     <VStack w="full" p="1rem">
@@ -60,6 +109,7 @@ const PaymentDetails = () => {
         fontSize="1.4rem"
         bg="black"
         color="white"
+        onClick={handleProceed}
       >
         Proceed payment
       </Button>
