@@ -14,15 +14,17 @@ import {
 } from "./interface";
 
 class Product {
-  constructor(private apiService: APIService) {}
+  constructor(private apiService: APIService) { }
 
   getAll() {
     return this.apiService.get<IProductResponse>({ url: apiURLs.product.all });
   }
-  byCategory(id: string) {
+  byCategory(id: string, options: IFetchOptions) {
     return this.apiService.get<IResponseProductByCategory>({
-      url: apiURLs.product.byId(id),
+      url: apiURLs.category.byId(id),
+      options
     });
+
   }
   filter(filter: IProductFilterReq) {
     return this.apiService.get<IResposneFIlteredProduct>({

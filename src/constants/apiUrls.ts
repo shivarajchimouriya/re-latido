@@ -5,7 +5,8 @@ export const apiURLs = {
         byId: (id: string) => `/client_product_detail/${id}/`
     },
     category: {
-        all: "/categories"
+        all: "/categories",
+        byId: (categoryId: string) => `/client_product_by_category/${categoryId}/`
     },
     homepage: "/mobile_home?page=1&limit=1&gender=male&priceLowerLimit=0&priceUpperLimit=10000",
     filter: "/mobile_home",
@@ -17,7 +18,10 @@ export const apiURLs = {
     user: {
         profile: "/client_user"
     },
-    order: "/client_order"
+    order: "/client_order",
+    payment: {
+        log: "/client_order/payment_log"
+    }
 
 
 }

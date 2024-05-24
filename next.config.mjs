@@ -3,6 +3,13 @@ import withPWAInit from "@ducanh2912/next-pwa";
 
 const withPWA = withPWAInit({
   dest: "public",
+  pwa: {
+    dest: 'public',
+    scope: '/',
+
+    disable: true,
+  },
+
 });
 const nextConfig = {
   logging: {

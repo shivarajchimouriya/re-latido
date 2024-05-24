@@ -1,14 +1,28 @@
+"use client"
 import React from "react";
 import { TODO } from "../../../../global";
 import { Grid } from "@chakra-ui/react";
 import OrderCard from "@/components/OrderCard";
+import { useFetchOrders } from "../data/useFetchOrders";
+import { logger } from "@/utils/logger";
 
 interface IProps {
   orders: TODO;
 }
+
+
+
+
+
 export default function OrderListing({ orders }: IProps) {
+
+
+const {data,error,isLoading}=useFetchOrders();
+const order =data?.data.data;
+logger.log('data',order)
+
     return <Grid gap={"1.6rem"} width={"100%"}>
-        {orders?.map((order: TODO) => (
+        {order?.map((order: TODO) => (
             <OrderCard
                 key={order._id} categoryName={order?.product?.category?.title}
                 primaryImage={order?.product?.primary_image}

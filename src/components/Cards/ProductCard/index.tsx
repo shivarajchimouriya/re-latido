@@ -291,7 +291,7 @@ const ProductCard = ({ product, ...rest }: IProps) => {
 
             <VStack align='start' gap='0'>
               <Text fontSize='1.6rem' fontWeight='bold' textTransform='capitalize'   > {product.name}  </Text>
-              <Text>   Rs. {product.pricing || "N/A"} </Text>
+              { product.pricing && <Text>   Rs. {product.pricing || "N/A"} </Text>}
             </VStack>
 
 
