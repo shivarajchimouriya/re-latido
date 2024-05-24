@@ -17,6 +17,7 @@ const SearchContainer = ({ gender, keyword }: IProps) => {
         <Suspense fallback="loading">
           <SearchBar />
         </Suspense>
+
         <Suspense fallback="loading">
           {" "}<TopRatedProduct gender={"male"} keyword={keyword} />
         </Suspense>
