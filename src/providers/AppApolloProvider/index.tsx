@@ -1,17 +1,17 @@
 "use client";
 
-import environment from "@/config/environment";
+import { env } from "@/config/environment";
 import { ApolloLink, HttpLink } from "@apollo/client";
 import {
   NextSSRApolloClient,
   ApolloNextAppProvider,
   NextSSRInMemoryCache,
-  SSRMultipartLink,
+  SSRMultipartLink
 } from "@apollo/experimental-nextjs-app-support/ssr";
 
 function makeClient() {
   const httpLink = new HttpLink({
-    uri: `${environment.size_module_base_url}/graphql`,
+    uri: `${env.GRAPHQL_API}`
   });
 
   return new NextSSRApolloClient({
@@ -20,11 +20,11 @@ function makeClient() {
       typeof window === "undefined"
         ? ApolloLink.from([
             new SSRMultipartLink({
-              stripDefer: true,
+              stripDefer: true
             }),
-            httpLink,
+            httpLink
           ])
-        : httpLink,
+        : httpLink
   });
 }
 

@@ -11,7 +11,6 @@ import { appColor } from "@/theme/foundations/colors";
 import ButtonComponent from "../Collections/components/Button";
 import Blog from "../Collections/components/Blog";
 import Description from "../Collections/components/Description";
-import environment from "@/config/environment";
 import { API } from "@/resources";
 import {
   ProductListDocument,
@@ -21,6 +20,7 @@ import {
 import { logger } from "@/utils/logger";
 import { FIT_ENUM } from "../Collections/components/SizeModal/FitEnums";
 import SizeModuleSection from "../Collections/components/SizeModuleSection";
+import { env } from "@/config/environment";
 
 const getProductDetail = async (id: string) => {
   try {
@@ -55,7 +55,7 @@ export default async function ProductDetail({ productId }: IProps) {
         <Box background={appColor.black} width={"100%"} padding={"2rem 0"}>
           <LeatherSelection
             productDetail={productDetail}
-            urlPrefix={environment?.bucket_url || ""}
+            urlPrefix={env.S3_BASE_URL || ""}
           />
           <SizeModuleSection productName={productDetail?.name} productDetail={productDetail} productId={productId} />
         </Box>
