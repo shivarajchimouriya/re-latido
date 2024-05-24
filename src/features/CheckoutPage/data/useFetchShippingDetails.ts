@@ -5,7 +5,7 @@ import { IShippingDetails } from "@/resources/Shipping/interface"
 import { useMutation } from "@tanstack/react-query"
 
 const getShippingDetails = (token: string | null, data: IShippingDetails) => {
-    return API.Shipping.getShippingDetails({ options: { headers: { Authorization: token ?? "" } }, data })
+    return API.Shipping.getShippingDetails({ options: { headers: { Authorization: token ?? "" } } }, data)
 
 
 }
