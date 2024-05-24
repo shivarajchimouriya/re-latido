@@ -111,7 +111,6 @@ export default function SizeModal({
                   onChange={onAgeChange}
                   default={Number(sizeDetails?.age)||24}
                   label="Age"
-                  loop
                   length={200}
                   width={40}
                 />
@@ -120,7 +119,6 @@ export default function SizeModal({
                 <Wheel
                   default={heightOptions.indexOf(sizeDetails?.height.split(".").join("'")+'"' ||`5'5"`) || 50}
                   label="Height"
-                  loop
                   length={104}
                   width={40}
                   onChange={onHeightChange}
@@ -132,7 +130,6 @@ export default function SizeModal({
                   default={Number(sizeDetails?.weight)||70}
                   label="Weight"
                   onChange={onWeightChange}
-                  loop
                   length={200}
                   width={40}
                 />

@@ -1,6 +1,6 @@
 import { Box } from "@chakra-ui/react";
-import Image from "next/image";
 import { appColor } from "@/theme/foundations/colors";
+import AppImage from "../AppImage";
 
 export interface AvatarProps {
   alt?: string;
@@ -30,7 +30,7 @@ export default function Avatar({
         display="grid"
         placeItems="center"
       >
-        <Image
+        <AppImage
           alt={alt ? alt : "avatar"}
           src={src ? src : ""}
           width={width}

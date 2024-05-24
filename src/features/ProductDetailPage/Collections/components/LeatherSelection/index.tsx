@@ -26,7 +26,7 @@ export default function LeatherSelection({ urlPrefix, productDetail }: IProps) {
   const psid = searchParams.get("psid");
   const findIndex = () =>
     productDetail.product_specification.findIndex(
-      (val: any) => val?.leather_id?._id === lid
+      (val: any) => val?._id === psid
     );
 
   const selectedLeatherIndex = findIndex();

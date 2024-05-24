@@ -9,6 +9,7 @@ import { FIT_ENUM } from "../SizeModal/FitEnums";
 import { useGetNodesLazyQuery } from "@/GraphQl/Generated/graphql";
 import SizeSelector from "../SizeSelector";
 import { useSearchParams, useRouter } from "next/navigation";
+import { useMutation } from "@tanstack/react-query";
 
 export interface ISizeDetails {
   age: string;
@@ -24,7 +25,10 @@ export default function SizeModuleSection({
   productId: string;
   productName: string;
   productDetail: any;
-}) {
+  }) {
+  
+  
+  const PWA = "pwa";
   logger.log("product detail: ", productDetail);
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -34,17 +38,26 @@ export default function SizeModuleSection({
   const urlWeight = searchParams.get("weight");
 
   const psid = searchParams.get("psid");
+  const s = searchParams.get("s");
+  const srid = searchParams.get("srid");
+  const p = searchParams.get("p");
+  const currency = searchParams.get("currency");
+
+  const height = searchParams.get("height");
+  const weight = searchParams.get("weight");
+
+  const findLeatherIndex = productDetail.product_specification.findIndex(
+    (val: any) => val?._id === psid
+  );
+
+  const leatherDetails =
+    productDetail?.product_specification?.[findLeatherIndex];
 
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [heightOptionsValues, setHeightOptionsValues] = useState<string[]>([]);
-  const [recommendedSize, setRecommendedSize] = useState<any>();
   const [selectedFit, setSelectedFit] = useState("General");
   const [showSizeSelector, setShowSizeSelector] = useState(false);
   const [selectedSpecs, setSelectedSpecs] = useState<any>();
-
-  useEffect(() => {
-    console.log("selected fit: ", selectedFit);
-  }, [selectedFit]);
 
   const [sizeDetails, setSizeDetails] = useState<ISizeDetails>({
     height: urlHeight || "4.11",
@@ -249,41 +262,72 @@ export default function SizeModuleSection({
     };
   });
 
-  // const indexWithComfort =
-  //   nodeData?.nodes?.data.findIndex((el) =>
-  //     el.attributes?.attribute_values?.data.find(
-  //       (item) => item.attributes?.valueOne === selectedFit
-  //     )
-  //   ) || 0;
+  const indexWithComfort =
+    nodeData?.nodes?.data.findIndex((el) =>
+      el.attributes?.attribute_values?.data.find(
+        (item) => item.attributes?.valueOne === selectedFit
+      )
+    ) || 0;
 
   useEffect(() => {
     const exactSelectedSpecs = productDetail?.product_specification?.find(
       (ps: any) => ps?._id === psid
     );
     if (exactSelectedSpecs) {
-      setSelectedSpecs(exactSelectedSpecs)
+      setSelectedSpecs(exactSelectedSpecs);
     }
   }, [psid, selectedFit, sizeDetailSubmit]);
 
+  console.log("nide data: ", nodeData);
 
+  const payload = {
+    price: {
+      currency: currency,
+      value: Number(p),
+    },
+    product_specification_id: psid,
+    size_range_id: srid,
+    leather_id: leatherDetails?.leather_id._id,
+    size: s,
+    pattern_package:
+      nodeData?.nodes?.data[indexWithComfort].attributes?.outputLevel,
+    sizing: {
+      height: Number(height),
+      weight: Number(weight),
+    },
+    product: productId,
+    lining: leatherDetails?.default_lining,
+    hardware: leatherDetails?.default_hardware,
+    total_amount: Number(p),
+    origin: PWA,
+  };
 
-  const filteredSizeRange = productDetail?.product_specification?.filter((el:any) => {
-  return el?._id===psid
-})
-const range=new Set(filteredSizeRange?.[0]?.size_range.map((el:any)=>el.size))
-logger.log("range",range)
+  const range = new Map(
+    selectedSpecs?.size_range.map((el: any) => {
+      return [el.size, el];
+    })
+  );
+
+  const handleBuyClick = () => {
+    localStorage.setItem("selected", JSON.stringify(payload));
+
+    
+    logger.log("payload: ", payload);
+  };
   return (
     <>
       <FitSelection
         selectedFit={selectedFit}
         onChange={handleFitChange}
         productId={productId}
-        />
+      />
       {nodeData?.nodes?.data ? (
         <SizeSelector
-        sizeRange={range}
+          sizeRange={range}
+          onOpen={onOpen}
           fitData={fitData}
           recommendation={nodeData?.nodes?.data}
+          handleBuyClick={handleBuyClick}
         />
       ) : (
         <ButtonComponent

@@ -258,6 +258,18 @@ body {
   justify-content: center;
   background: var(--base);
 }
+.edit-size-card {
+  width: 13vw;
+  display: flex;
+  padding: 8px;
+  text-align: center;
+  align-items: center;
+  margin-left: 10px;
+  aspect-ratio: 2 / 2;
+  border-radius: 9px !important;
+  justify-content: center;
+  background-image: linear-gradient(129deg, #fea259 9.14%, #fe3f61 77.08%);
+}
 
 .size-card-selected {
   border: 2px double transparent;
