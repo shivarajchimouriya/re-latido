@@ -8,8 +8,9 @@ import { useDisclosure } from "@chakra-ui/react";
 import { FIT_ENUM } from "../SizeModal/FitEnums";
 import { useGetNodesLazyQuery } from "@/GraphQl/Generated/graphql";
 import SizeSelector from "../SizeSelector";
-import { useSearchParams, useRouter } from "next/navigation";
-import { useMutation } from "@tanstack/react-query";
+import { useSearchParams, useRouter, redirect } from "next/navigation";
+import { useBuy } from "./data/useBuy";
+import { useGetTokens } from "@/hooks/client/useGetToken";
 
 export interface ISizeDetails {
   age: string;
@@ -25,9 +26,7 @@ export default function SizeModuleSection({
   productId: string;
   productName: string;
   productDetail: any;
-  }) {
-  
-  
+}) {
   const PWA = "pwa";
   logger.log("product detail: ", productDetail);
   const router = useRouter();
@@ -278,26 +277,28 @@ export default function SizeModuleSection({
     }
   }, [psid, selectedFit, sizeDetailSubmit]);
 
-  console.log("nide data: ", nodeData);
+  logger.log("nide data: ", nodeData);
 
   const payload = {
-    price: {
-      currency: currency,
-      value: Number(p),
+    product_specification: {
+      price: {
+        currency: currency as string,
+        value: Number(p) as number,
+      },
+      product_specification_id: psid as string,
+      size_range_id: srid as string,
+      leather_id: leatherDetails?.leather_id._id as string,
+      size: Number(s) as number,
+      pattern_package: nodeData?.nodes?.data[indexWithComfort].attributes
+        ?.outputLevel as string,
     },
-    product_specification_id: psid,
-    size_range_id: srid,
-    leather_id: leatherDetails?.leather_id._id,
-    size: s,
-    pattern_package:
-      nodeData?.nodes?.data[indexWithComfort].attributes?.outputLevel,
     sizing: {
       height: Number(height),
       weight: Number(weight),
     },
     product: productId,
-    lining: leatherDetails?.default_lining,
-    hardware: leatherDetails?.default_hardware,
+    lining: leatherDetails?.default_lining as string,
+    hardware: leatherDetails?.default_hardware as string,
     total_amount: Number(p),
     origin: PWA,
   };
@@ -307,11 +308,25 @@ export default function SizeModuleSection({
       return [el.size, el];
     })
   );
+  const { token } = useGetTokens();
+  const { mutateAsync, isPending } = useBuy();
+  const handleBuyClick = async () => {
+    if (!token) {
+      router.push("/auth");
+      return;
+    }
 
-  const handleBuyClick = () => {
-    localStorage.setItem("selected", JSON.stringify(payload));
-
-    
+    try {
+      localStorage.setItem("selected", JSON.stringify(payload));
+      const res = await mutateAsync({ data: payload, token });
+      logger.log('res: ', res);
+      if (res.data) {
+        localStorage.setItem("checkout", JSON.stringify(res?.data));
+        router.push("/checkout");
+      }
+    } catch (error) {
+      logger.error(error);
+    }
     logger.log("payload: ", payload);
   };
   return (

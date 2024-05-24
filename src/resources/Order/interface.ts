@@ -80,3 +80,10 @@ export interface IOrderResponseData {
         total_pages: number;
     };
 }
+
+
+
+export interface IBuyRespose{
+    data: IOrderData,
+    message:string
+}
