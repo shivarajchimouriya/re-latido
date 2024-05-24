@@ -4,7 +4,8 @@ export const queryKeys = {
     PROFILE: "profile",
     SHIPPING: "shipping",
     UPDATE_SHIPPING: "update_shipping",
-    ORDERS: "orders"
+    ORDERS: "orders",
+    PAYMENT_LOG: "paymentLog"
 
 }
 

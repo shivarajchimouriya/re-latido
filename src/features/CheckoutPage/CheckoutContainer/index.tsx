@@ -24,7 +24,7 @@ const CheckoutContainer = () => {
   return (
     <VStack w="full">
       <TabHeader />
-      {views[step]}
+      {views[2]}
     </VStack>
   );
 };
