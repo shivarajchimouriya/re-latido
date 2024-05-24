@@ -23,6 +23,27 @@ const HamburgerMenu = () => {
     [isOpen]
   );
 
+
+const links=[
+{
+  name:'home',
+  link:"/"
+},
+{
+  name:'policy',
+  link:"/policy"
+},
+{
+  name:'contact us',
+  link:"/contact"
+},
+{
+  name:'about us',
+  link:"/about"
+}
+
+]
+
   return (
     <>
     <Box
@@ -100,10 +121,12 @@ const HamburgerMenu = () => {
       >
         <Center h='100%'  w='100%' >
           <VStack  align='start'  w='100%'  pl='2rem'  gap='2rem' >
-     <NavItem name="Home" link="/home"  />
-     <NavItem name="policy" link="/home"  />
-     <NavItem name="contact us" link="/home"  />
-     <NavItem name="about us" link="/home"  />
+            {links.map((el)=>{
+
+
+return <Box key={el.name}  onClick={onClose} > <NavItem name={el.name} link={el.link} />   </Box>
+
+            })}
 </VStack>
         </Center>
       </Box>

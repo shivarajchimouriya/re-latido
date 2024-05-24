@@ -34,9 +34,9 @@ const CollectionCard = ({ isActive, image, link, title, ...rest }: IProps) => {
             <AppImage
               alt={title}
               src={image}
-              height={500}
+              height={50}
               style={{ objectFit: "cover", width: "100%", height: "100%" }}
-              width={500}
+              width={50}
             />
           </Center>
         </VStack>

@@ -49,6 +49,7 @@ const SearchBar = () => {
             name="keyword"
             type="search"
             fontSize="2rem"
+            py="0"
             w="100%"
             onChange={handleChange}
             _focusWithin={{ outline: "none" }}

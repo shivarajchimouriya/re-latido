@@ -20,7 +20,6 @@ const CategoryResult = async ({ id }: IProps) => {
 
   const productsByCategory = await getProductsByCategory(id);
   const products=productsByCategory?.data.data;
-  logger.log("pr")
 if(!products) return null;
   return    <HomepageProductLists products={products} viewType={1} />
 };
