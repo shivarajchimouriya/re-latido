@@ -12,6 +12,7 @@ import { BiMaleSign } from "react-icons/bi";
 import Link from "next/link";
 import { logger } from "@/utils/logger";
 import { useCategories } from "@/hooks/server/useCategories";
+import GenderSwitch from "./components/GenderSwitch";
 
 const Navbar = () => {
   interface INavItem {
@@ -31,6 +32,7 @@ const Navbar = () => {
     setActiveNav(navName);
   };
   useCategories();
+  
 
   return (
     <>
@@ -40,12 +42,14 @@ const Navbar = () => {
           bottom=".2rem"
           zIndex={10}
           transform="translateX(-50%)"
-          left="55%"
+          left="50%"
           fontSize="2.4rem"
           px="2rem"
+          alignItems='end'
           color="white"
           gap='1rem'
         >
+          <GenderSwitch/>
           <Flex
             as={motion.div}
             // layoutId="b"

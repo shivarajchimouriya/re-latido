@@ -16,8 +16,8 @@ import {
 class Product {
   constructor(private apiService: APIService) { }
 
-  getAll() {
-    return this.apiService.get<IProductResponse>({ url: apiURLs.product.all });
+  getAll(options?: IFetchOptions) {
+    return this.apiService.get<IProductResponse>({ url: apiURLs.product.all, options });
   }
   byCategory(id: string, options: IFetchOptions) {
     return this.apiService.get<IResponseProductByCategory>({

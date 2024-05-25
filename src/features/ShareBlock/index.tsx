@@ -77,7 +77,9 @@ const ShareBlock = ({isOpen,onClose,url,title='latido'}:IProps) => {
       setTimeout(() => {
         setCopied(false);
       }, 3000);
-    } catch (error) {}
+    } catch (error) {
+        
+    }
   };
 
   return <AnimatePresence>
@@ -96,12 +98,12 @@ const ShareBlock = ({isOpen,onClose,url,title='latido'}:IProps) => {
                 
                 
                 initial={{y:"100%"}}
-                animate={{y:"0%",transition:{bounce:false}}}
-                exit={{y:"100%"}}
+                animate={{y:"0%",transition:{type:"spring"}}}
+                exit={{y:"100%",transition:{bounce:false,}}}
                 
-                position={'fixed'} left='0' right='0' bottom='0' h='20rem' zIndex={1000} w='full'   >
+                position={'fixed'} left='0' right='0' bottom='.5rem' h='20rem' zIndex={1000} w='full'   >
 
-                    <Grid w='90%' h='full' gap='.5rem' placeItems='center' p='.5rem' templateColumns='repeat(4,1fr)' bg='rgba(255,255,255,0.4)' backdropFilter='auto' backdropBlur='10px'  roundedTop='1rem'  >
+                    <Grid w='95%' h='full' gap='.5rem' placeItems='center' p='.5rem' templateColumns='repeat(4,1fr)' bg='rgba(255,255,255,0.4)' backdropFilter='auto' backdropBlur='10px'  rounded='1rem'  >
                         {links.map((el) => {
                             return <GridItem key={el.name}   >
 
@@ -117,6 +119,7 @@ const ShareBlock = ({isOpen,onClose,url,title='latido'}:IProps) => {
       <Button
         fontSize="1.8rem"
         p=".7rem"
+        bg='rgba(0,0,0,0.3)'
         backdropFilter="auto"
         backdropBlur="10px"
         w="full"

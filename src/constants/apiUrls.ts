@@ -1,7 +1,7 @@
 export const apiURLs = {
 
     product: {
-        all: "/client_product_by_category/?gender=male&limit=10&page=1",
+        all: "/client_product_by_category/?gender=male&limit=100&page=1",
         byId: (id: string) => `/client_product_detail/${id}/`
     },
     category: {
@@ -19,7 +19,7 @@ export const apiURLs = {
         profile: "/client_user"
     },
     order: "/client_order",
-    
+
     payment: {
         log: "/client_order/payment_log"
     }

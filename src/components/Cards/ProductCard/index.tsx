@@ -3,6 +3,7 @@ import AppImage from "@/components/AppImage";
 import { collectionImages } from "@/constants/images";
 import ShareBlock from "@/features/ShareBlock";
 import { IProduct } from "@/resources/Product/interface";
+import { logger } from "@/utils/logger";
 import {
   AbsoluteCenter,
   Box,
@@ -127,7 +128,6 @@ const ProductCard = ({ product, ...rest }: IProps) => {
   }
 
 
-
   return (
     <>
       <ShareBlock url={`${baseURL}/product/detail/${product._id}`} title={product.name} isOpen={isShareOpen} onClose={onShareClose} />
@@ -250,11 +250,11 @@ const ProductCard = ({ product, ...rest }: IProps) => {
 
         }
       </AnimatePresence>
-      <Link href={`/product/details/${product._id}`} style={{ width: "100%" }}  >
+      <Link href={`/product/details/${product._id}`} style={{ width: "100%",maxWidth:"100vw"}}  >
         <VStack
           as={motion.div}
           position='relative'
-          w="100%"
+          w="100vw"
           align='start'
           rounded="0rem"
           overflow="hidden"
@@ -287,11 +287,10 @@ const ProductCard = ({ product, ...rest }: IProps) => {
             />
           </Box>
 
-          <HStack position={'absolute'} bottom={'1rem'} left='1rem' rounded='0.4rem' p='.3rem' pl='2rem' pr='2rem' justifySelf='start' w='fit-content' bg='rgba(255,255,255,.5)' backdropFilter='auto' backdropBlur='4px'  >
+          <HStack position={'absolute'}    bottom={'1rem'} left='1rem' rounded='4rem' p='.5rem' px='1.5rem' justifySelf='start' w='fit-content' bg='rgba(0,0,0,.3)' backdropFilter='auto' backdropBlur='10px'  >
 
             <VStack align='start' gap='0'>
-              <Text fontSize='1.6rem' fontWeight='bold' textTransform='capitalize'   > {product.name}  </Text>
-              { product.pricing && <Text>   Rs. {product.pricing || "N/A"} </Text>}
+              <Text fontSize='1.6rem' fontWeight='bold' textTransform='capitalize'   color='white' > {product.name}  </Text>
             </VStack>
 
 
