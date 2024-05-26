@@ -254,9 +254,9 @@ const ProductCard = ({ product, ...rest }: IProps) => {
         <VStack
           as={motion.div}
           position='relative'
-          w="100vw"
+          w="95vw"
           align='start'
-          rounded="0rem"
+          rounded=".5rem"
           overflow="hidden"
           bg="rgba(0,0,0,0.03)"
           onContextMenu={event => {

@@ -28,7 +28,7 @@ const PasswordField = forwardRef(({ error, label, ...rest }: IProps, ref) => {
         <Input
           variant="underline"
           fontSize="1.4rem"
-          type={isOpen ? "password" : "text"}
+          type={isOpen ? "text" : "password"}
           ref={ref}
           {...rest}
         />
