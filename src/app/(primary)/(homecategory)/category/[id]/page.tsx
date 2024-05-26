@@ -1,3 +1,4 @@
+import CardLoader from "@/components/CardLoader";
 import HomepageProductLists from "@/components/HomepageProductList";
 import CategoryResult from "@/features/CategoryResult";
 import ProductListings from "@/features/Homepage/ProductListings";
@@ -15,7 +16,7 @@ interface IProps {
 const Page = async ({ params }: IProps) => {
   const id = params.id as string;
   return (
-    <Suspense fallback="loading">
+    <Suspense fallback={<CardLoader />}>
       <CategoryResult id={id} />
     </Suspense>
   );

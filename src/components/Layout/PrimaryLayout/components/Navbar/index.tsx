@@ -13,6 +13,7 @@ import Link from "next/link";
 import { logger } from "@/utils/logger";
 import { useCategories } from "@/hooks/server/useCategories";
 import GenderSwitch from "./components/GenderSwitch";
+import { usePathname } from "next/navigation";
 
 const Navbar = () => {
   interface INavItem {
@@ -22,15 +23,16 @@ const Navbar = () => {
   }
 
   const navItems: INavItem[] = [
-    { icon: <AiOutlineThunderbolt />, link: "/", name: "home" },
+    { icon: <AiOutlineThunderbolt />, link: "", name: "home" },
     { icon: <RiSearch2Line />, link: "/search", name: "search" },
     { icon: <GoPerson />, link: "/profile", name: "account" }
   ];
-  const [activeNav, setActiveNav] = useState<string>("home");
+
+const  pathName=  usePathname();
+
+
   const { isOpen, onClose, onOpen } = useDisclosure()
-  const handleNavClick = (navName: string) => {
-    setActiveNav(navName);
-  };
+  
   useCategories();
   
 
@@ -66,7 +68,7 @@ const Navbar = () => {
 
           >
             {navItems.map(el => {
-              const isActive = el.name === activeNav;
+              const isActive = pathName.includes (el.name) || ""
               return (
                 <Link
                 href={el.link}
@@ -79,7 +81,6 @@ const Navbar = () => {
                   height="6rem"
                   align="center"
                   justify="center"
-                  onClick={() => handleNavClick(el.name)}
                   transitionDuration=".3s"
                   transform={`translateY(${isActive ? 40 : 0})`}
                 >

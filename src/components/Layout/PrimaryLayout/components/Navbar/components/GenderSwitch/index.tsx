@@ -7,9 +7,7 @@ import { BiFemaleSign, BiMale, BiMaleSign } from "react-icons/bi";
 import { PiSpinnerGap } from "react-icons/pi";
 type GenderTypes = "male" | "female";
 const GenderSwitch = () => {
-  const { isOpen, onClose, onOpen } = useDisclosure();
   const [activeGender, setActiveGender] = useState<GenderTypes | null>(null);
-
   const storedItem =
     typeof window === "undefined"
       ? null
@@ -20,14 +18,9 @@ const GenderSwitch = () => {
     },
     [storedItem]
   );
-  const params = useParams();
   const router = useRouter();
-  const [genders, setGenders] = useState([
-    { name: "female", icon: <BiFemaleSign /> },
-    { name: "male", icon: <BiMaleSign /> }
-  ]);
   const handleGenderSwitch = () => {
-    router.push("/gender/male");
+    router.push(`/gender/${activeGender}}`);
   };
   const icon = activeGender === "female" ? <BiFemaleSign /> : <BiMaleSign />;
   return (

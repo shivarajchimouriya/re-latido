@@ -1,3 +1,4 @@
+import CardLoader from "@/components/CardLoader";
 import FilterResults from "@/features/FilterResults";
 import { IProductFilterReq } from "@/resources/Product/interface";
 import React, { Suspense } from "react";
@@ -10,7 +11,7 @@ const Page = ({ searchParams }: IProps) => {
   const constrains = searchParams;
 
   return (
-    <Suspense fallback="loading">
+    <Suspense fallback={<CardLoader />}>
       <FilterResults filter={constrains} />
     </Suspense>
   );

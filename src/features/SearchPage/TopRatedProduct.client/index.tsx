@@ -2,10 +2,11 @@
 import React from "react";
 import { useTopRatedProduct } from "./data/useTopRatedProduct";
 import { useSearchParams } from "next/navigation";
-import { Box } from "@chakra-ui/react";
+import { Box, Text } from "@chakra-ui/react";
 import HomepageProductLists from "@/components/HomepageProductList";
 import { useSearchContext } from "@/providers/SearchProvider";
 import { logger } from "@/utils/logger";
+import CardLoader from "@/components/CardLoader";
 
 const TopRatedProductClient = () => {
     const searchParams = useSearchParams();
@@ -13,11 +14,13 @@ const TopRatedProductClient = () => {
    
     const gender = searchParams.get("gender");
     const keyword = searchParams.get("keyword");
-    const { data } = useTopRatedProduct(keyword ?? '', 'male');
+    const { data,isLoading } = useTopRatedProduct(keyword ?? '', '');
     const products = data?.data.data;
-    logger.log("search result",products)
+    const totalProducts=products?.length ?? 0
+    if(isLoading) return <CardLoader/>
     if (!products) return null;
     return <Box w="100%" >
+<Text w='full' textAlign='center' textTransform='capitalize'   fontSize='1.4rem'  py='1rem'  >       {totalProducts}  total products found for keyword  <Text   as='span'  fontWeight='semibold' > {keyword}  </Text> </Text>
         <HomepageProductLists products={products} viewType={1} />
     </Box>;
 };

@@ -130,7 +130,7 @@ const ProductCard = ({ product, ...rest }: IProps) => {
 
   return (
     <>
-      <ShareBlock url={`${baseURL}/product/detail/${product._id}`} title={product.name} isOpen={isShareOpen} onClose={onShareClose} />
+      <ShareBlock url={`${baseURL}/product/details/${product._id}`} title={product.name} isOpen={isShareOpen} onClose={onShareClose} />
       <AnimatePresence>
         {isLongPress && <Box
           as={motion.div}
@@ -250,12 +250,12 @@ const ProductCard = ({ product, ...rest }: IProps) => {
 
         }
       </AnimatePresence>
-      <Link href={`/product/details/${product._id}`} style={{ width: "100%",maxWidth:"100vw"}}  >
+      <Link href={`/product/details/${product._id}`} style={{ width: "100%",maxWidth:"100vw",display:"flex",justifyContent:"center"}}  >
         <VStack
           as={motion.div}
           position='relative'
           w="95vw"
-          align='start'
+          align='center'
           rounded=".5rem"
           overflow="hidden"
           bg="rgba(0,0,0,0.03)"

@@ -13,10 +13,10 @@ const AppliedFilters = ({ filter }: IProps) => {
   return (
     <Flex flexWrap={"wrap"}>
       <Text
-        fontSize="2rem"
+        fontSize="2.3rem"
         textTransform="capitalize"
         fontWeight="bold"
-        my="2rem"
+        my="3rem"
       >
         {" "}results from applied Filters{" "}
       </Text>
