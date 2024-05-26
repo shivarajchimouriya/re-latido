@@ -1,6 +1,6 @@
 import { apiURLs } from "@/constants/apiUrls";
 import { APIService, IFetchOptions, apiService } from "@/lib/requester";
-import { IBuyRespose, IOrderResponseData } from "./interface";
+import { IBuyRespose, IOrderData, IOrderResponseData } from "./interface";
 import { OrderRequestDTO } from "@/features/ProductDetailPage/Collections/components/SizeModuleSection/DTO";
 
 class Order {
@@ -15,8 +15,13 @@ class Order {
 
     }
 
-    createOrder(options: IFetchOptions,data:Partial<OrderRequestDTO>) {
-        return this.apiService.post<IBuyRespose>({url:apiURLs.order,options,data})
+    createOrder(options: IFetchOptions, data: Partial<OrderRequestDTO>) {
+        return this.apiService.post<IBuyRespose>({ url: apiURLs.order, options, data })
+    }
+
+
+    getById(orderID: string, options?: IFetchOptions) {
+        return this.apiService.get<IOrderData>({ url: apiURLs.orderById(orderID), options })
     }
 
 }

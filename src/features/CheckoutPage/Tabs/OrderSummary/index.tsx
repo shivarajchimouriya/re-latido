@@ -7,14 +7,18 @@ import { IPaymentLog } from "@/resources/Payment/interface";
 import { logger } from "@/utils/logger";
 import { useGetTokens } from "@/hooks/client/useGetToken";
 import OrderCard from "@/components/OrderCard";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useFetchOrders } from "@/features/OrdersPage/data/useFetchOrders";
+import { useFetchOrderById } from "./data/useFetchOrderById";
 
 const OrderSummary = () => {
-  const [paymentLog, setPaymentLog] = useState<null | IPaymentLog>(null);
   const { mutateAsync } = usefetchPaymentLog();
   const { token } = useGetTokens();
-  const order = paymentLog;
   const router = useRouter();
+  const searchParams=useSearchParams();
+  const orderId=searchParams.get("order") as  string;
+  const {data:OrderData}=useFetchOrderById(orderId)
+  const order = OrderData;
   useEffect(
     () => {
       const fetchPayentLog = async () => {
@@ -75,7 +79,7 @@ const OrderSummary = () => {
         >
           Order summary
         </Text>
-        {/* { order && <OrderCard
+        { order && <OrderCard
  categoryName={order?.product?.category?.title}
           primaryImage={order?.product?.primary_image}
                 name={order?.product?.name}
@@ -87,7 +91,7 @@ const OrderSummary = () => {
                 orderId={String(order?.order_no)}
                 deliveryDate={order?.delivery_date}
                 quantity={1}
-            />} */}
+            />}
       </VStack>
     </VStack>
   );

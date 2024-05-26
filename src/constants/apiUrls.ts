@@ -19,6 +19,7 @@ export const apiURLs = {
         profile: "/client_user"
     },
     order: "/client_order",
+    orderById: (id: string) => `/client_order/${id}`,
 
     payment: {
         log: "/client_order/payment_log"

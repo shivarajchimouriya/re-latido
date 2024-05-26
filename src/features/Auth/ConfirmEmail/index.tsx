@@ -26,10 +26,10 @@ const ConfirmEmail = ({ username }: IProps) => {
   }
   const { register, handleSubmit, setValue } = useForm<IForm>();
   const router = useRouter();
-  const onSubmit = (data: IForm) => {
+  const onSubmit = async (data: IForm) => {
     logger.log("data", data);
     try {
-      confirmSignUp({
+      await confirmSignUp({
         confirmationCode: data.input,
         username: username
       });

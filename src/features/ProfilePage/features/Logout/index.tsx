@@ -9,7 +9,6 @@ import React from "react";
 import { TbLogout } from "react-icons/tb";
 
 const Logout = () => {
-    configureAmplify()
 const router=useRouter()
       const { isOpen, onOpen, onClose } = useDisclosure()
 

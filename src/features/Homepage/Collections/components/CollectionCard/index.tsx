@@ -18,10 +18,10 @@ interface IProps extends StackProps {
 const CollectionCard = ({ isActive, image, link, title, ...rest }: IProps) => {
   return (
     <Link href={`${link}`}>
-      <VStack {...rest}>
+      <VStack justify="center" alignItems="center" {...rest}>
         <VStack
-          width="6rem"
-          height="6rem"
+          width="6.1rem"
+          height="6.1rem"
           rounded="100%"
           justify="center"
           align="center"
@@ -29,7 +29,6 @@ const CollectionCard = ({ isActive, image, link, title, ...rest }: IProps) => {
           position="relative"
         >
           <AnimatedCircle isActive={isActive || false} />
-
           <Center height="90%" width="90%" rounded="100%" overflow="hidden">
             <AppImage
               alt={title}

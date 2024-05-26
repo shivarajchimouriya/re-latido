@@ -2,23 +2,34 @@
 import { Flex, IconButton, useDisclosure } from "@chakra-ui/react";
 import { motion } from "framer-motion";
 import { useParams, useRouter, useSearchParams } from "next/navigation";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { BiFemaleSign, BiMale, BiMaleSign } from "react-icons/bi";
-
+import { PiSpinnerGap } from "react-icons/pi";
+type GenderTypes = "male" | "female";
 const GenderSwitch = () => {
   const { isOpen, onClose, onOpen } = useDisclosure();
-   const params=   useParams()
-   const router=useRouter()
-  const [genders,setGenders] = useState([
-      { name: "female", icon: <BiFemaleSign /> },
-      { name: "male", icon: <BiMaleSign /> }
-    ]);
-    const activeGender=genders[0]?.name
- const handleGenderSwitch = () => {
+  const [activeGender, setActiveGender] = useState<GenderTypes | null>(null);
 
-  router.push("/gender/male")
-
+  const storedItem =
+    typeof window === "undefined"
+      ? null
+      : (localStorage.getItem("gender") as GenderTypes) || "male";
+  useEffect(
+    () => {
+      setActiveGender(storedItem);
+    },
+    [storedItem]
+  );
+  const params = useParams();
+  const router = useRouter();
+  const [genders, setGenders] = useState([
+    { name: "female", icon: <BiFemaleSign /> },
+    { name: "male", icon: <BiMaleSign /> }
+  ]);
+  const handleGenderSwitch = () => {
+    router.push("/gender/male");
   };
+  const icon = activeGender === "female" ? <BiFemaleSign /> : <BiMaleSign />;
   return (
     <Flex
       align="center"
@@ -31,17 +42,22 @@ const GenderSwitch = () => {
       backdropFilter="auto"
       backdropBlur="10px"
       rounded="2rem"
-       onClick={handleGenderSwitch}
+      onClick={handleGenderSwitch}
     >
-     
-          <IconButton
+      {activeGender
+        ? <IconButton
             height="5.5rem"
             width="5.5rem"
-            icon={<BiMaleSign/>}
+            icon={icon}
             aria-label="female"
-           
           />
-        
+        : <IconButton
+            height="5.5rem"
+            className="spinner"
+            width="5.5rem"
+            icon={<PiSpinnerGap />}
+            aria-label="female"
+          />}
     </Flex>
   );
 };

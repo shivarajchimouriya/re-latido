@@ -4,7 +4,6 @@ import { Flex } from "@chakra-ui/react";
 import React, { useEffect, useRef, useState } from "react";
 import { Swiper, SwiperRef, SwiperSlide } from "swiper/react";
 import CollectionCard from "../CollectionCard";
-import "swiper/css";
 import { ICategory } from "@/resources/Category/interface";
 import { collectionImages } from "@/constants/images";
 import { attachWithS3BaseUrl } from "@/utils/misc";

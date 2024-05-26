@@ -1,7 +1,9 @@
 "use client";
+import { setGender } from "@/serverActions";
 import { logger } from "@/utils/logger";
 import { Box, Button, Flex } from "@chakra-ui/react";
 import { AnimatePresence, motion } from "framer-motion";
+import { cookies } from "next/headers";
 import { useParams, usePathname, useRouter } from "next/navigation";
 import React from "react";
 import { BiFemaleSign, BiMaleSign } from "react-icons/bi";
@@ -19,11 +21,12 @@ const GenderSwitcher = () => {
   ];
 
   const params = usePathname();
-  const isMale = params.includes("male");
-  const activeGender = isMale ? "male" : "female";
+  const isFemale = params.includes("female");
+  const activeGender = isFemale ? "female" : "male";
   const router = useRouter();
 
   const changeTab = (gender: string) => {
+    localStorage.setItem("gender", gender);
     router.push(`/gender/${gender}`);
   };
   return (
@@ -37,6 +40,7 @@ const GenderSwitcher = () => {
         shadow="md"
         borderColor="gray.200"
         rounded="full"
+        p=".4rem"
       >
         <AnimatePresence>
           {genders.map(el => {
@@ -61,7 +65,7 @@ const GenderSwitcher = () => {
                     as={motion.div}
                     zIndex="-1"
                     position="absolute"
-                    layoutId="gender_indicator"
+                    layoutId="gender_switcher"
                     inset="0"
                     w="full"
                     rounded="full"

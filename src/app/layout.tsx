@@ -66,17 +66,17 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
+        <AuthProvider>
         <AppQueryProvider>
           <DrawerProvider>
             <LenisProvider>
               <AppThemeProvider>
-        <AuthProvider>
                 {children}
-        </AuthProvider>
               </AppThemeProvider>
             </LenisProvider>
           </DrawerProvider>
         </AppQueryProvider>
+        </AuthProvider>
       </body>
     </html>
   );

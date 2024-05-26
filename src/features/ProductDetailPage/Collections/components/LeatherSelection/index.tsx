@@ -43,7 +43,7 @@ export default function LeatherSelection({ urlPrefix, productDetail }: IProps) {
     changeSearchParam.set("lid", leatherId);
     changeSearchParam.set("psid", productSpecsId);
 
-    router.replace(`?${changeSearchParam.toString()}`);
+    router.push(`?${changeSearchParam.toString()}`,{scroll:false});
   };
   return (
     <Box width="100%">

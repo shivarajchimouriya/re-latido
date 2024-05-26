@@ -28,6 +28,7 @@ import { CgClose } from "react-icons/cg";
 import { unknown } from "zod";
 import PasswordField from "@/components/Form/PasswordField/index.";
 import { useLoader } from "@/hooks/client/useLoader";
+import { configureAmplify } from "@/config/awsConfig";
 
 interface IProps {
   userName: string;
@@ -62,6 +63,7 @@ const Login = ({ userName }: IProps) => {
       logger.log("success");
       router.push("/");
     } catch (err) {
+      logger.log("eror",err)
       
      let message="username or password is incorrect"
 
