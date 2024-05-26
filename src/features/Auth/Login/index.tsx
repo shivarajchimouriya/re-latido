@@ -28,6 +28,8 @@ import { CgClose } from "react-icons/cg";
 import { unknown } from "zod";
 import PasswordField from "@/components/Form/PasswordField/index.";
 import { useLoader } from "@/hooks/client/useLoader";
+import { configureAmplify } from "@/config/awsConfig";
+import Link from "next/link";
 
 interface IProps {
   userName: string;
@@ -62,6 +64,7 @@ const Login = ({ userName }: IProps) => {
       logger.log("success");
       router.push("/");
     } catch (err) {
+      logger.log("eror",err)
       
      let message="username or password is incorrect"
 
@@ -109,7 +112,7 @@ const Login = ({ userName }: IProps) => {
           Login
         </Text>
         <Text fontSize="1.2rem" color="#707580">
-          Hi Civ, you already have an account here, please fill in the password
+          Hi  <Text as='span'  fontWeight='semibold' > {userName} </Text> , you already have an account here, please fill in the password
           to login to Latido
         </Text>
         <VStack w="full">
@@ -121,7 +124,6 @@ const Login = ({ userName }: IProps) => {
                 error={errors.passoword?.message}
                 {...register("passoword")}  />
           </FormControl>
-
           <Text
             w="full"
             textAlign="right"
@@ -129,7 +131,9 @@ const Login = ({ userName }: IProps) => {
             fontSize="1.2rem"
             mt="1rem"
           >
+<Link href='/auth/forget-password'    >
             forget password?
+          </Link>
           </Text>
         </VStack>
 

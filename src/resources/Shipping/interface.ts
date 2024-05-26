@@ -1,3 +1,5 @@
+import { IOrderData } from "../Order/interface";
+
 export interface IShippingDetails {
     product_specification: {
         price: {
@@ -52,4 +54,9 @@ export interface IShippingDetails {
     updatedAt: string; // Assuming the date is formatted as an ISO string
     order_no: number;
     __v: number;
+}
+
+export interface IShippingDetailResponse {
+    data: IOrderData,
+    message: string
 }

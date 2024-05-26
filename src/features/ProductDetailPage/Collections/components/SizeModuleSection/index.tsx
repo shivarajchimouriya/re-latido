@@ -28,7 +28,6 @@ export default function SizeModuleSection({
   productDetail: any;
 }) {
   const PWA = "pwa";
-  logger.log("product detail: ", productDetail);
   const router = useRouter();
   const searchParams = useSearchParams();
 
@@ -241,7 +240,7 @@ export default function SizeModuleSection({
         sizeQuery.append(el.key, el.value);
       }
     });
-    router.push(`?${sizeQuery}`);
+    router.push(`?${sizeQuery}`,{scroll:false});
     getNodesCall(queryNodeValues);
     getMultipleNodesCall(queryNodeValues);
     onClose();
@@ -277,7 +276,6 @@ export default function SizeModuleSection({
     }
   }, [psid, selectedFit, sizeDetailSubmit]);
 
-  logger.log("nide data: ", nodeData);
 
   const payload = {
     product_specification: {
@@ -289,7 +287,7 @@ export default function SizeModuleSection({
       size_range_id: srid as string,
       leather_id: leatherDetails?.leather_id._id as string,
       size: Number(s) as number,
-      pattern_package: nodeData?.nodes?.data[indexWithComfort].attributes
+      pattern_package: nodeData?.nodes?.data[indexWithComfort]?.attributes
         ?.outputLevel as string,
     },
     sizing: {
@@ -311,18 +309,19 @@ export default function SizeModuleSection({
   const { token } = useGetTokens();
   const { mutateAsync, isPending } = useBuy();
   const handleBuyClick = async () => {
+
     if (!token) {
       router.push("/auth");
       return;
     }
 
+    localStorage.setItem("selected", JSON.stringify(payload));
     try {
-      localStorage.setItem("selected", JSON.stringify(payload));
       const res = await mutateAsync({ data: payload, token });
-      logger.log('res: ', res);
       if (res.data) {
         localStorage.setItem("checkout", JSON.stringify(res?.data));
         router.push("/checkout");
+
       }
     } catch (error) {
       logger.error(error);

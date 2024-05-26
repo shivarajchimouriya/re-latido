@@ -13,6 +13,8 @@ namespace NodeJS {
         POOL_ID: string;
         NEXT_PUBLIC_POOL_ID: string;
         GRAPHQL_API: string;
-        NEXT_PUBLIC_GRAPHQL_API: string
+        NEXT_PUBLIC_GRAPHQL_API: string,
+        NEXT_PUBLIC_FONEPAY_BASE_URL: string,
+        NEXT_PUBLIC_FONEPAY_PID: string
     }
 }

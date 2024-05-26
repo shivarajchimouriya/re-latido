@@ -13,6 +13,8 @@ import { resetPassword } from "aws-amplify/auth";
 import { useForm } from "react-hook-form";
 import { IForgetPasswordForm, forgetPasswordSchema } from "./schema";
 import { logger } from "@/utils/logger";
+import { useRouter } from "next/navigation";
+import { useLoader } from "@/hooks/client/useLoader";
 
 const ForgetPassword = () => {
   const { register, handleSubmit, formState: { errors } } = useForm<
@@ -20,13 +22,18 @@ const ForgetPassword = () => {
   >({
     resolver: zodResolver(forgetPasswordSchema)
   });
-
+  const { isLoading, startLoading, stopLoading } = useLoader();
+  const router = useRouter();
   const onSubmit = async (data: IForgetPasswordForm) => {
+    startLoading();
     try {
       const res = await resetPassword({ username: data.username });
       logger.log("res", res);
+      router.push("/auth/forget-password/confirm");
     } catch (error) {
       logger.log("Error", error);
+    } finally {
+      stopLoading();
     }
   };
   logger.log(errors);
@@ -50,6 +57,8 @@ const ForgetPassword = () => {
           type="submit"
           textTransform="uppercase"
           fontWeight="bold"
+          disabled={isLoading}
+          isLoading={isLoading}
         >
           send otp
         </Button>

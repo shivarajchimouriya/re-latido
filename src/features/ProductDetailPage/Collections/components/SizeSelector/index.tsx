@@ -112,7 +112,7 @@ export default function SizeSelector({
                   node?.price?.price?.[0]?.currency
                 );
 
-                router.push(`?${newUrlSearchParams}`);
+                router.push(`?${newUrlSearchParams}`,{scroll:false});
 
                 price = node?.price?.price?.[0]?.value;
               }

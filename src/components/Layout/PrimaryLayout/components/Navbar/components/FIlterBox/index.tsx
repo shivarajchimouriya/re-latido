@@ -43,7 +43,6 @@ const activeCategory=searchParams.get("collections");
 const lowerLimit=Number(searchParams.get("priceLowerLimit")) ?? 0;
 const upperLimit=Number(searchParams.get("priceUpperLimit")) || 90000;
 const searchedGender=searchParams.get("gender") as 'male'|'female'
-  logger.log("Slider length", sliderLenth)
 const router=useRouter()
   const [rangeValues, setRangeValues] = useState([lowerLimit, upperLimit]);
   const [activeCat, setActiveCat] = useState(activeCategory|| "");

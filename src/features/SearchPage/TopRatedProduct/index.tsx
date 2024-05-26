@@ -14,7 +14,7 @@ interface IReq {
 const getTopRatedProduct = async ({ keyword, gender }: IReq) => {
   try {
     const res = await API.Product.getTopRated({
-      params: { keyword, gender, limit: 100, page: 1 }
+      params: { search: keyword, gender: "", limit: 10, page: 1 }
     });
     logger.log("res", res);
 

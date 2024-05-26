@@ -21,7 +21,6 @@ const getResultFilter = async (filter: IProductFilterReq) => {
 
 const FilterResults = async ({ filter }: IProps) => {
   const filteredProducts = await getResultFilter(filter);
-  logger.log("filterd prodcuts ",filteredProducts)
   const products=filteredProducts?.data.product.data;
 
   if(!products) return null;

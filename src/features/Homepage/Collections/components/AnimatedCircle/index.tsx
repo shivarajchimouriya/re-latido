@@ -11,8 +11,11 @@ const AnimatedCircle = ({ isActive }: IProps) => {
     <AnimatePresence>
       {" "}<Box
         position="absolute"
-        width="115%"
-        height="115%"
+        display="flex"
+        justifyContent="center"
+        alignItems="center"
+        width="117%"
+        height="117%"
         zIndex={-10}
         isolation="isolate"
         as={motion.div}

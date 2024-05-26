@@ -161,7 +161,7 @@ export class APIService implements IFetchRequest {
 
     private async fetchWrapper<T>({ options, url, data, method }: IApiRequestOptions): Promise<T> {   //alll the CRUD requests go via this function and request interceptions are handeled here
         const apiUrl = this.prepareUrl({ baseURL: options?.baseURL, params: options?.params, url });
-        logger.prod("API URL  🚀🚀🚀🚀🚀", apiUrl);
+        logger.log("API URL  🚀🚀🚀🚀🚀", apiUrl);
 
         const res = await fetch(apiUrl, {
             method,

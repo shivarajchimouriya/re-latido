@@ -1,4 +1,4 @@
-interface ServerResponse {
+export interface IServerResponse {
     PRN: string;
     PID: string;
     PS: string;
@@ -14,5 +14,5 @@ interface ServerResponse {
 export interface IPaymentRequestDTO {
     checkout_id: string;
     order: string;
-    serverResponse: ServerResponse;
+    serverResponse: IServerResponse;
 }

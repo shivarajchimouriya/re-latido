@@ -3,7 +3,7 @@ import React from "react";
 
 export default function Description({ description }: { description: string }) {
   return (
-    <VStack width={"100%"}>
+    <VStack width={"100%"} p="1rem">
       <Text
         fontWeight="bold"
         width={"100%"}
@@ -12,7 +12,9 @@ export default function Description({ description }: { description: string }) {
       >
         Description
       </Text>
-      <Text width={"100%"} textAlign={"left"}>{description}</Text>
+      <Text width={"100%"} textAlign={"left"}>
+        {description}
+      </Text>
     </VStack>
   );
 }

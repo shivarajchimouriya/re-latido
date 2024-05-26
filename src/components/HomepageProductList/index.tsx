@@ -6,6 +6,7 @@ import { IProduct } from "@/resources/Product/interface";
 
 interface IProps {
   products: IProduct[];
+  
   viewType: 1;
 }
 

@@ -1,7 +1,8 @@
+import CardLoader from "@/components/CardLoader";
 import React from "react";
 
 const Loading = () => {
-  return <div>Loading category </div>;
+  return <CardLoader />;
 };
 
 export default Loading;

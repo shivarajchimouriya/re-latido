@@ -12,6 +12,8 @@ import { BiMaleSign } from "react-icons/bi";
 import Link from "next/link";
 import { logger } from "@/utils/logger";
 import { useCategories } from "@/hooks/server/useCategories";
+import GenderSwitch from "./components/GenderSwitch";
+import { usePathname } from "next/navigation";
 
 const Navbar = () => {
   interface INavItem {
@@ -21,16 +23,18 @@ const Navbar = () => {
   }
 
   const navItems: INavItem[] = [
-    { icon: <AiOutlineThunderbolt />, link: "/", name: "home" },
+    { icon: <AiOutlineThunderbolt    />, link: "/", name: "" },
     { icon: <RiSearch2Line />, link: "/search", name: "search" },
     { icon: <GoPerson />, link: "/profile", name: "account" }
   ];
-  const [activeNav, setActiveNav] = useState<string>("home");
+
+const  pathName=  usePathname();
+
+
   const { isOpen, onClose, onOpen } = useDisclosure()
-  const handleNavClick = (navName: string) => {
-    setActiveNav(navName);
-  };
+  
   useCategories();
+  
 
   return (
     <>
@@ -40,12 +44,14 @@ const Navbar = () => {
           bottom=".2rem"
           zIndex={10}
           transform="translateX(-50%)"
-          left="55%"
+          left="50%"
           fontSize="2.4rem"
           px="2rem"
+          alignItems='end'
           color="white"
           gap='1rem'
         >
+          <GenderSwitch/>
           <Flex
             as={motion.div}
             // layoutId="b"
@@ -62,7 +68,7 @@ const Navbar = () => {
 
           >
             {navItems.map(el => {
-              const isActive = el.name === activeNav;
+              const isActive = pathName.includes (el.name)
               return (
                 <Link
                 href={el.link}
@@ -75,7 +81,6 @@ const Navbar = () => {
                   height="6rem"
                   align="center"
                   justify="center"
-                  onClick={() => handleNavClick(el.name)}
                   transitionDuration=".3s"
                   transform={`translateY(${isActive ? 40 : 0})`}
                 >

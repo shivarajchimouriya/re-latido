@@ -1,6 +1,6 @@
 @import "react-spring-bottom-sheet/dist/style.css";
 @import "react-international-phone/style.css";
-
+@import "swiper/css";
 :root {
   font-size: 62.5%;
   --primary: #bababa;
@@ -296,4 +296,49 @@ body {
 .google_autocomplete:active {
   outline: none !important;
   box-shadow: none !important;
+}
+
+
+.spinner{
+  animation: spin 1s linear infinite;
+}
+
+
+@keyframes spin {
+  
+
+from {
+  transform: rotate(0deg);
+}
+
+
+to{
+  transform: rotate(360deg);
+}
+
+}
+
+.skeleton{
+  background-color: rgb(202, 201, 201) !important;
+  animation: pulse 6s linear  infinite alternate;
+}
+
+@keyframes pulse {
+  
+from{
+  opacity: 0.4;
+}
+to{
+  opacity: 1;
+}
+
+}
+
+.collection_container::-webkit-scrollbar { 
+  width: 0 !important;
+  display: none; 
+}
+.product_images::-webkit-scrollbar { 
+  width: 0 !important;
+  display: none; 
 }

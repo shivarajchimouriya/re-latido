@@ -3,7 +3,7 @@ import { logger } from "@/utils/logger";
 import { debounce, throttle } from "@/utils/misc";
 import { Box, Flex, FormControl, Input } from "@chakra-ui/react";
 import { useDebounce } from "@uidotdev/usehooks";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import React, {
   ChangeEvent,
   ChangeEventHandler,
@@ -31,6 +31,8 @@ const SearchBar = () => {
     const value = e.target.value;
     setTerm(value);
   };
+  const searchParams = useSearchParams();
+  const keyword = searchParams.get("keyword");
 
   const handleSubmit = (form: FormData) => {
     const keyword = form.get("keyword");
@@ -38,29 +40,36 @@ const SearchBar = () => {
   };
 
   return (
-    <Flex w="100%" justify="space-between" p="1.2rem" align="center">
-      <Box fontSize="2rem">
+    <Flex w='full' justify='center' mt='2rem'>
+    <Flex w="95%" rounded='full' justify="space-between"p='1rem' align="center"
+     border='1px solid'
+     borderColor='gray.400' 
+    >
+      <Box fontSize="1rem" p='.5rem'  ml='.5rem' mr='.5rem'  rounded='full'>
         <BiSearch />
       </Box>
-      <form action={handleSubmit}>
-        <FormControl w="100%" px="1.5rem">
+      <form action={handleSubmit}  style={{width:"100%"}}>
+        <FormControl w="100%" px=".5rem" rounded='full' >
           <Input
             ref={ref}
             name="keyword"
+            border='none'
             type="search"
-            fontSize="2rem"
+            defaultValue={keyword ?? ""}
+            fontSize="1.5rem"
             py="0"
             w="100%"
             onChange={handleChange}
             _focusWithin={{ outline: "none" }}
-            borderBottom="1.2px solid black"
+            
           />
         </FormControl>
       </form>
 
-      <Box fontSize="2rem" onClick={onCancel}>
+      <Box fontSize="1rem" onClick={onCancel} bg='gray.200'p='.5rem'  mr='1rem' rounded='full'  >
         <CgClose />
       </Box>
+    </Flex>
     </Flex>
   );
 };

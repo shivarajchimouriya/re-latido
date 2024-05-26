@@ -1,6 +1,7 @@
 import { apiURLs } from "@/constants/apiUrls";
 import { APIService, IFetchOptions, apiService } from "@/lib/requester";
-import { IShippingDetails } from "./interface";
+import { IShippingDetailResponse, IShippingDetails } from "./interface";
+import { IOrderData } from "../Order/interface";
 
 class Shipping {
   constructor(private apiService: APIService) { }
@@ -14,7 +15,7 @@ class Shipping {
   updateShippingDetails(options: IFetchOptions, data?: any) {
 
 
-    return this.apiService.patch({ url: apiURLs.order, options, data })
+    return this.apiService.patch<IShippingDetailResponse>({ url: apiURLs.order, options, data })
 
 
   }
