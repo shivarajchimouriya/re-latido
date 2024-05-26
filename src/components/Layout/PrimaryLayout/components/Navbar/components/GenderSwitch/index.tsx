@@ -20,7 +20,7 @@ const GenderSwitch = () => {
   );
   const router = useRouter();
   const handleGenderSwitch = () => {
-    router.push(`/gender/${activeGender}}`);
+    router.push(`/gender/${activeGender}`);
   };
   const icon = activeGender === "female" ? <BiFemaleSign /> : <BiMaleSign />;
   return (
