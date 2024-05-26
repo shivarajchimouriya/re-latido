@@ -23,7 +23,7 @@ const Navbar = () => {
   }
 
   const navItems: INavItem[] = [
-    { icon: <AiOutlineThunderbolt />, link: "", name: "home" },
+    { icon: <AiOutlineThunderbolt    />, link: "/", name: "" },
     { icon: <RiSearch2Line />, link: "/search", name: "search" },
     { icon: <GoPerson />, link: "/profile", name: "account" }
   ];
@@ -68,7 +68,7 @@ const  pathName=  usePathname();
 
           >
             {navItems.map(el => {
-              const isActive = pathName.includes (el.name) || ""
+              const isActive = pathName.includes (el.name)
               return (
                 <Link
                 href={el.link}

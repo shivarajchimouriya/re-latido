@@ -13,6 +13,15 @@ interface IProps {
   };
 }
 
+export async function generateStaticParams() {
+  const homepageData = await API.Homepage.get();
+  const categories = homepageData.data.category;
+
+  return categories.map(cat => ({
+    id: cat._id
+  }));
+}
+
 const Page = async ({ params }: IProps) => {
   const id = params.id as string;
   return (

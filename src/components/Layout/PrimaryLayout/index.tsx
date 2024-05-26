@@ -1,7 +1,8 @@
 import { Box, Center, VStack } from "@chakra-ui/react";
-import React, { ReactNode } from "react";
+import React, { ReactNode, Suspense } from "react";
 import Header from "./components/Header";
 import Navbar from "./components/Navbar";
+import LoaderSkeleton from "@/components/LoaderSkeleton";
 
 interface IProps {
   children: ReactNode;
@@ -15,7 +16,9 @@ const PrimaryLayout = ({ children }: IProps) => {
         <Box h="80vh">
           {children}
         </Box>
-        <Navbar />
+        <Suspense fallback={<LoaderSkeleton h="4rem" />}>
+          {" "}<Navbar />
+        </Suspense>
       </Box>
     </VStack>
   );

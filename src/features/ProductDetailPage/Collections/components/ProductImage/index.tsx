@@ -87,9 +87,10 @@ export default function ProductImage({
         width={"100%"}
         height={"100%"}
         overflowX={"scroll"}
-        justifyContent={images.length > 5 ? "auto" : "center"}
+        justifyContent={images?.length > 5 ??0 ? "auto" : "center"}
+        className="product_images" 
       >
-        <div style={{ display: "flex", gap: "1rem" }}>
+        <div style={{ display: "flex", gap: "1rem" }} className="product_images"  >
           {images?.map((image: string, index: number) => (
             <Box onClick={() => handleClick(index)}>
               <Avatar

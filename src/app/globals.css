@@ -338,3 +338,7 @@ to{
   width: 0 !important;
   display: none; 
 }
+.product_images::-webkit-scrollbar { 
+  width: 0 !important;
+  display: none; 
+}

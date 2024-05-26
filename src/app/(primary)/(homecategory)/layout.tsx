@@ -1,6 +1,7 @@
+import LoaderSkeleton from "@/components/LoaderSkeleton";
 import Collections from "@/features/Homepage/Collections";
 import { VStack } from "@chakra-ui/react";
-import React, { ReactNode } from "react";
+import React, { ReactNode, Suspense } from "react";
 interface IProps {
   children: ReactNode;
 }
@@ -8,7 +9,9 @@ interface IProps {
 const Layout = ({ children }: IProps) => {
   return (
     <VStack w="100%">
-      <Collections />
+      <Suspense fallback={<LoaderSkeleton h="4rem" />}>
+        {" "}<Collections />
+      </Suspense>
 
       {children}
     </VStack>
