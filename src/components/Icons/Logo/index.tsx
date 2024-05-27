@@ -3,6 +3,7 @@ import React from "react";
 const LogoIcon = () => {
   return (
     <svg
+      aria-label="home page logo"
       width="31"
       height="34"
       viewBox="0 0 31 34"

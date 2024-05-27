@@ -27,6 +27,7 @@ import {
   useDisclosure
 } from "@chakra-ui/react";
 import { AnimatePresence, TapInfo, Variants, motion } from "framer-motion";
+import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { useRef, useState } from "react";
@@ -276,21 +277,21 @@ const ProductCard = ({ product, ...rest }: IProps) => {
 
         >
           <Box w="100%" overflow="hidden" h='100%' >
-            <AppImage
+            <Image
               alt={product.name}
               src={product.primary_image}
-              height={1000}
-              width={1000}
+              height={600}
+              width={400}
               loading="lazy"
               // quality={100}
-              style={{ objectFit: "cover", width: "100%", height: "100%" }}
+              style={{ objectFit: "cover", width: "100%", height: "calc(-220px + 100dvh)" }}
             />
           </Box>
 
           <HStack position={'absolute'}    bottom={'1rem'} left='1rem' rounded='4rem' p='.5rem' px='1.5rem' justifySelf='start' w='fit-content' bg='rgba(0,0,0,.3)' backdropFilter='auto' backdropBlur='10px'  >
 
             <VStack align='start' gap='0'>
-              <Text fontSize='1.6rem' fontWeight='bold' textTransform='capitalize'   color='white' > {product.name}  </Text>
+              <Text  as='h2' fontSize='1.6rem' fontWeight='bold' textTransform='capitalize'   color='white' > {product.name}  </Text>
             </VStack>
 
 
