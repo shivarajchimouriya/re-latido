@@ -8,7 +8,7 @@ import {
 import { OrderRequestDTO } from "@/features/ProductDetailPage/Collections/components/SizeModuleSection/DTO";
 
 class Order {
-  constructor(private apiService: APIService) {}
+  constructor(private apiService: APIService) { }
 
   getAll(options: IFetchOptions) {
     return this.apiService.get<IOrderResponseData>({
@@ -26,7 +26,7 @@ class Order {
   }
 
   getById(orderID: string, options?: IFetchOptions) {
-    return this.apiService.get<PaymentSuccessUpdate>({
+    return this.apiService.get<any>({
       url: apiURLs.orderById(orderID),
       options,
     });
