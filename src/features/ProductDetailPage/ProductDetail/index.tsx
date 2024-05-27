@@ -48,10 +48,7 @@ export default async function ProductDetail({ productId }: IProps) {
           category={productDetail.category?.title}
           productId={productId}
         />
-        <ProductImage
-          primaryImage={productDetail.primary_image}
-          secondaryImage={productDetail?.product_specification}
-        />
+        <ProductImage secondaryImage={productDetail?.product_specification} />
         <Box background={appColor.black} width={"100%"} padding={"2rem 0"}>
           <LeatherSelection
             productDetail={productDetail}
