@@ -1,5 +1,5 @@
 "use client";
-import React, { useMemo, useRef, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import { Box, Flex, HStack, VStack } from "@chakra-ui/react";
 import { IProductImageProps } from "./IProductImageProps";
 import AppImage from "@/components/AppImage";
@@ -12,7 +12,6 @@ import "swiper/css";
 import "swiper/css/effect-creative";
 
 export default function ProductImage({
-  primaryImage,
   secondaryImage,
 }: IProductImageProps) {
   const searchParams = useSearchParams();
@@ -50,6 +49,8 @@ export default function ProductImage({
             ref={ref}
             grabCursor={true}
             effect="creative"
+            observer={true}
+            observeParents={true}
             creativeEffect={{
               prev: {
                 shadow: true,
@@ -66,7 +67,7 @@ export default function ProductImage({
             }}
           >
             {images?.map((image: string, index: number) => (
-              <SwiperSlide key={index}>
+              <SwiperSlide key={image}>
                 <Box width={"full"} bg="white">
                   <AppImage
                     src={image}
