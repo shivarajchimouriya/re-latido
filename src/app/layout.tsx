@@ -69,11 +69,9 @@ export default function RootLayout({
         <AuthProvider>
         <AppQueryProvider>
           <DrawerProvider>
-            <LenisProvider>
               <AppThemeProvider>
                 {children}
               </AppThemeProvider>
-            </LenisProvider>
           </DrawerProvider>
         </AppQueryProvider>
         </AuthProvider>

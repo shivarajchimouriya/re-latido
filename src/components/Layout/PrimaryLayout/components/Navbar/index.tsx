@@ -38,7 +38,6 @@ const  pathName=  usePathname();
 
   return (
     <>
-      <AnimatePresence>
         <Flex
           position="fixed"
           bottom=".2rem"
@@ -86,12 +85,12 @@ const  pathName=  usePathname();
                 >
                   <IconButton
                     as={motion.button}
-                    aria-label={el.name}
+                    aria-label={el.name|| "home" }
                     icon={el.icon}
                     transitionDuration=".3s"
                     fontWeight={isActive ? "bold" : "normal"}
                   />
-                  {isActive &&
+               <AnimatePresence>   {isActive &&
                     <Circle
                       layoutId="nav_indicator"
                       as={motion.div}
@@ -102,6 +101,7 @@ const  pathName=  usePathname();
                       transform="translateX(-50%)"
                       bg="white"
                     />}
+                    </AnimatePresence>
                 </VStack>
                 </Link>
               );
@@ -162,7 +162,6 @@ const  pathName=  usePathname();
 }
 </AnimatePresence>
 
-      </AnimatePresence>
     </>
   );
 };
