@@ -51,7 +51,6 @@ const links=[
     py='1rem'
     as={motion.div}
        onPan={(e:PointerEvent, info:PanInfo) => {
-          console.log("info", info);
           if ((
             info.delta.x > 3 && info.velocity.x >30 ||
             info.delta.x > 30)
@@ -89,7 +88,6 @@ const links=[
             onClick={onClose}
             transitionDuration=".4s"
                  onPan={(e:PointerEvent, info:PanInfo) => {
-          console.log("info", info);
           if (
             info.delta.x < -3 && info.velocity.x < -30 ||
             info.delta.x < -80
@@ -105,7 +103,6 @@ const links=[
         position="fixed"
         transitionDuration=".4s"
         onPan={(e:PointerEvent, info:PanInfo) => {
-          console.log("info", info);
           if ((
             info.delta.x < -3 && info.velocity.x < -30 ||
             info.delta.x < -80)

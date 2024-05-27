@@ -6,7 +6,6 @@ import { AiOutlineThunderbolt } from "react-icons/ai";
 import { GoPerson } from "react-icons/go";
 import { RiSearch2Line } from "react-icons/ri";
 import Appendix from "./components/Appendix";
-import FilterBox from "./components/FIlterBox";
 import GenderCard from "./components/GenderCard";
 import { BiMaleSign } from "react-icons/bi";
 import Link from "next/link";
@@ -14,6 +13,16 @@ import { logger } from "@/utils/logger";
 import { useCategories } from "@/hooks/server/useCategories";
 import GenderSwitch from "./components/GenderSwitch";
 import { usePathname } from "next/navigation";
+import dynamic from "next/dynamic";
+import CardLoader from "@/components/CardLoader";
+const FilterBox = dynamic(
+  () => import("./components/FIlterBox"),
+  {
+    ssr: true,
+
+    loading: () => <CardLoader />
+  }
+);
 
 const Navbar = () => {
   interface INavItem {

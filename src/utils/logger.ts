@@ -43,5 +43,5 @@ class Logger {
 }
 let isServer = typeof window === 'undefined';
 const isProd = isServer ? process.env.APP_ENV === 'prod' : process.env.NEXT_PUBLIC_APP_ENV === 'prod';
-export const logger = new Logger(!isProd);
+export const logger = new Logger(false);
 

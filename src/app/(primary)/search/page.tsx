@@ -1,4 +1,5 @@
 import SearchContainer from "@/features/SearchPage/SearchContainer";
+import AppQueryProvider from "@/providers/QueryProvider";
 import React from "react";
 
 interface IProps {

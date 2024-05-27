@@ -1,8 +1,13 @@
-import ProductCard from "@/components/Cards/ProductCard";
+import CardLoader from "@/components/CardLoader";
 import { IProduct } from "@/resources/Product/interface";
 import { VStack } from "@chakra-ui/react";
+import dynamic from "next/dynamic";
 import React from "react";
+const ProductCard = dynamic(() => import("@/components/Cards/ProductCard"), {
+  ssr: true,
 
+  loading: () => <CardLoader />
+});
 interface IProps {
   products: IProduct[];
 }
@@ -22,9 +27,15 @@ const ProductList1 = ({ products }: IProps) => {
       }}
     >
       <VStack w="100%">
-        {products.map(el => {
+        {products.map((el, i) => {
+          const isFirst = i === 0;
           return (
-            <ProductCard product={el} key={el.name} scrollSnapAlign="start" />
+            <ProductCard
+              isFirstCard={isFirst}
+              product={el}
+              key={el.name}
+              scrollSnapAlign="start"
+            />
           );
         })}
       </VStack>

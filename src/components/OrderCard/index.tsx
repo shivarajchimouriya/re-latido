@@ -40,7 +40,6 @@ export default function OrderCard({
 
   
   const getProgressValue = () => {
-    console.log("completionProcess", completionProcess);
     switch (completionProcess?.toLowerCase()) {
       case "ordered":
         return 20;

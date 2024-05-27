@@ -3,6 +3,5 @@ export const CommaSeprator = (value: number) => {
 };
 
 export const CommaRemover = (value: string) => {
-  console.log(value);
   return parseInt(value.replace(/,/g, ""), 10);
 };

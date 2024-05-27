@@ -1,11 +1,6 @@
-import AppImage from "@/components/AppImage";
-import { IMockCollection } from "@/data/mock/collection";
-import { Box, Center, StackProps, Text, VStack } from "@chakra-ui/react";
+import { Center, StackProps, Text, VStack } from "@chakra-ui/react";
 import React from "react";
 import AnimatedCircle from "../AnimatedCircle";
-import { AnimatePresence } from "framer-motion";
-import { ICategory } from "@/resources/Category/interface";
-import { attachWithS3BaseUrl } from "@/utils/misc";
 import Link from "next/link";
 import Image from "next/image";
 
@@ -32,11 +27,11 @@ const CollectionCard = ({ isActive, image, link, title, ...rest }: IProps) => {
           <AnimatedCircle isActive={isActive || false} />
           <Center height="90%" width="90%" rounded="100%" overflow="hidden">
             <Image
-              alt={title}
+              alt={` category-${title}`}
               src={image}
-              height={50}
+              height={100}
               style={{ objectFit: "cover", width: "100%", height: "100%" }}
-              width={50}
+              width={100}
             />
           </Center>
         </VStack>
