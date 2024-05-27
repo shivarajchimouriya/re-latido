@@ -1,6 +1,4 @@
 "use client";
-import AppImage from "@/components/AppImage";
-import { mockCollections } from "@/data/mock/collection";
 import {
   Box,
   Button,

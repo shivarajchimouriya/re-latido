@@ -1,6 +1,4 @@
-import ProductCard from "@/components/Cards/ProductCard";
-import HomepageProductLists from "@/components/HomepageProductList";
-import { mockProducts } from "@/data/mock/products";
+import ProductList1 from "@/components/HomepageProductList/ProductList1";
 import { API } from "@/resources";
 import { logger } from "@/utils/logger";
 import { VStack } from "@chakra-ui/react";
@@ -21,7 +19,7 @@ const productList=products?.data.data;
 if(!productList) return null;
   return (
   
-      <HomepageProductLists products={productList} viewType={1} />
+     <ProductList1 products={productList} />
   );
 };
 

@@ -5,42 +5,33 @@ import ShareBlock from "@/features/ShareBlock";
 import { IProduct } from "@/resources/Product/interface";
 import { logger } from "@/utils/logger";
 import {
-  AbsoluteCenter,
   Box,
-  Button,
   Center,
   HStack,
   IconButton,
   Popover,
-  PopoverArrow,
-  PopoverBody,
-  PopoverCloseButton,
   PopoverContent,
-  PopoverFooter,
-  PopoverHeader,
   PopoverTrigger,
-  Portal,
   StackProps,
   Text,
   VStack,
-  position,
   useDisclosure
 } from "@chakra-ui/react";
-import { AnimatePresence, TapInfo, Variants, motion } from "framer-motion";
+import { AnimatePresence, Variants, motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { useRef, useState } from "react";
 import { AiOutlineShareAlt } from "react-icons/ai";
-import { IoCartOutline, IoCloseOutline, IoEyeOutline, IoShareOutline } from "react-icons/io5";
+import { IoCartOutline, IoCloseOutline, IoEyeOutline } from "react-icons/io5";
 import { LongPressEventType, useLongPress } from "use-long-press";
 
 interface IProps extends StackProps {
   product: IProduct;
+  isFirstCard?:boolean
 }
 
-const ProductCard = ({ product, ...rest }: IProps) => {
-  const { isOpen, onClose, onOpen } = useDisclosure();
+const ProductCard = ({ product,isFirstCard, ...rest }: IProps) => {
   const [isLongPress, setIsLongPress] = useState(false);
   const [position, setposition] = useState({ x: 0, y: 0 })
   const { isOpen: isShareOpen, onClose: onShareClose, onOpen: onShareOpen } = useDisclosure()
@@ -58,16 +49,14 @@ const ProductCard = ({ product, ...rest }: IProps) => {
   }, {
     onStart: (event, meta) => {
 
-      console.log("Press started", event);
     },
     onFinish: (event, meta) => {
       // setIsLongPress(false);
-      console.log("Long press finished", meta);
     },
     onCancel: (event, meta) => {
       setIsLongPress(false);
 
-      console.log("Press cancelled", meta);
+     
     },
     filterEvents: event => true, // All events can potentially trigger long press
     threshold: 1000,
@@ -76,7 +65,6 @@ const ProductCard = ({ product, ...rest }: IProps) => {
     cancelOutsideElement: true,
     detect: LongPressEventType.Pointer
   });
-  console.log("isopen", isLongPress);
 
   const utilsVariant: Variants = {
 
@@ -174,7 +162,6 @@ const ProductCard = ({ product, ...rest }: IProps) => {
             <Box zIndex={100000} >
               <PopoverContent zIndex={10000} outline='none' >
                 <Center as={motion.div}
-                  onMouseOver={() => console.log("mouse over")}
                 >
 
                   <HStack
@@ -278,11 +265,11 @@ const ProductCard = ({ product, ...rest }: IProps) => {
         >
           <Box w="100%" overflow="hidden" h='100%' >
             <Image
-              alt={product.name}
+              alt={`product-${product.name}  `}
               src={product.primary_image}
               height={600}
               width={400}
-              loading="lazy"
+              loading={isFirstCard?"eager": "lazy"}
               // quality={100}
               style={{ objectFit: "cover", width: "100%", height: "calc(-220px + 100dvh)" }}
             />

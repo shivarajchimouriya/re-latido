@@ -8,7 +8,7 @@ import {
   InputGroup,
   InputRightAddon,
   InputRightElement,
-  Text,
+  Text
 } from "@chakra-ui/react";
 import React from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
@@ -16,8 +16,9 @@ import {
   FormControl,
   FormLabel,
   FormErrorMessage,
-  FormHelperText,
+  FormHelperText
 } from "@chakra-ui/react";
+import { logger } from "@/utils/logger";
 
 interface Inputs {
   age: string;
@@ -26,28 +27,25 @@ interface Inputs {
   weight: number;
 }
 interface IProps {
-  handleClose: () => void
+  handleClose: () => void;
 }
-export default function SizeFrom({handleClose}: IProps) {
-  const {
-    register,
-    handleSubmit,
-    watch,
-    formState: { errors },
-  } = useForm<Inputs>();
+export default function SizeFrom({ handleClose }: IProps) {
+  const { register, handleSubmit, watch, formState: { errors } } = useForm<
+    Inputs
+  >();
 
-  const onSubmit: SubmitHandler<Inputs> = (data) => console.log(data);
+  const onSubmit: SubmitHandler<Inputs> = data => logger.log(data);
 
   return (
     <Container className="fitting-card-container" mx={"2rem"}>
-      <Flex gap={"0.8rem"} mb={"2rem"} fontSize={"1.8rem"}  textTransform="uppercase">
-        <Text variant={"h1"} >
-          Fitting
-        </Text>
-        <Text
-          variant={"h1"}
-          fontWeight="bold"
-        >
+      <Flex
+        gap={"0.8rem"}
+        mb={"2rem"}
+        fontSize={"1.8rem"}
+        textTransform="uppercase"
+      >
+        <Text variant={"h1"}>Fitting</Text>
+        <Text variant={"h1"} fontWeight="bold">
           Room
         </Text>
       </Flex>
@@ -69,47 +67,43 @@ export default function SizeFrom({handleClose}: IProps) {
                   type="number"
                 />
                 <span className=" fitting-card-postfix">yrs</span>
-                {errors.age && (
-                  <FormErrorMessage>This field is required</FormErrorMessage>
-                )}
+                {errors.age &&
+                  <FormErrorMessage>This field is required</FormErrorMessage>}
               </InputGroup>
             </FormControl>
             <FormControl my={"1rem"}>
               <FormLabel className="fitting-card-label" htmlFor="height">
                 Height
-                          </FormLabel>
-                          <Flex gap={"1rem"}>
-                              
-              <InputGroup className="fitting-card-input-group" id="height">
-                <Input
-                  id="height1"
-                  className="fitting-card-input"
-                  min={0}
-                  max={12}
-                  {...register("height1", { required: true })}
-                  type="number"
-                />
-                <span className=" fitting-card-postfix">ft</span>
-                {/* <InputRightElement children="ft" /> */}
-                {errors.height1 && (
-                  <FormErrorMessage>This field is required</FormErrorMessage>
-                )}
-              </InputGroup>
-              <InputGroup className="fitting-card-input-group" id="height2">
-                <Input
-                  id="height2"
-                  className="fitting-card-input"
-                  min={0}
-                  max={12}
-                  {...register("height2", { required: true })}
-                  type="number"
+              </FormLabel>
+              <Flex gap={"1rem"}>
+                <InputGroup className="fitting-card-input-group" id="height">
+                  <Input
+                    id="height1"
+                    className="fitting-card-input"
+                    min={0}
+                    max={12}
+                    {...register("height1", { required: true })}
+                    type="number"
                   />
-                <span className=" fitting-card-postfix">in</span>
-                {errors.height2 && (
-                    <FormErrorMessage>This field is required</FormErrorMessage>
-                )}
-              </InputGroup>
-                </Flex>
+                  <span className=" fitting-card-postfix">ft</span>
+                  {/* <InputRightElement children="ft" /> */}
+                  {errors.height1 &&
+                    <FormErrorMessage>This field is required</FormErrorMessage>}
+                </InputGroup>
+                <InputGroup className="fitting-card-input-group" id="height2">
+                  <Input
+                    id="height2"
+                    className="fitting-card-input"
+                    min={0}
+                    max={12}
+                    {...register("height2", { required: true })}
+                    type="number"
+                  />
+                  <span className=" fitting-card-postfix">in</span>
+                  {errors.height2 &&
+                    <FormErrorMessage>This field is required</FormErrorMessage>}
+                </InputGroup>
+              </Flex>
             </FormControl>
             <FormControl width="fit-content" my={"1rem"}>
               <FormLabel className="fitting-card-label" htmlFor="weight">
@@ -124,17 +118,36 @@ export default function SizeFrom({handleClose}: IProps) {
                 />
                 <span className=" fitting-card-postfix">kg</span>
 
-                {errors.weight && (
-                  <FormErrorMessage>This field is required</FormErrorMessage>
-                )}
+                {errors.weight &&
+                  <FormErrorMessage>This field is required</FormErrorMessage>}
               </InputGroup>
             </FormControl>
           </Box>
         </Flex>
-            <ButtonGroup my={"2rem"} orientation="vertical" gap={"1rem"} width={"100%"}>
-              <Button px={"4rem"} fontSize={"1.4rem"} className="primary-button" type="submit">Submit</Button>
-              <Button px={"4rem"} fontSize={"1.4rem"} className="secondary-button" onClick={handleClose} type="reset">Cancel</Button>
-            </ButtonGroup>
+        <ButtonGroup
+          my={"2rem"}
+          orientation="vertical"
+          gap={"1rem"}
+          width={"100%"}
+        >
+          <Button
+            px={"4rem"}
+            fontSize={"1.4rem"}
+            className="primary-button"
+            type="submit"
+          >
+            Submit
+          </Button>
+          <Button
+            px={"4rem"}
+            fontSize={"1.4rem"}
+            className="secondary-button"
+            onClick={handleClose}
+            type="reset"
+          >
+            Cancel
+          </Button>
+        </ButtonGroup>
       </form>
     </Container>
   );

@@ -68,11 +68,9 @@ export default function RootLayout({
       <body className={inter.className}>
         <AuthProvider>
         <AppQueryProvider>
-          <DrawerProvider>
               <AppThemeProvider>
                 {children}
               </AppThemeProvider>
-          </DrawerProvider>
         </AppQueryProvider>
         </AuthProvider>
       </body>

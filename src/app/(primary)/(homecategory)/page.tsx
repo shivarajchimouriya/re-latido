@@ -1,7 +1,14 @@
-import Collections from "@/features/Homepage/Collections";
-import ProductListings from "@/features/Homepage/ProductListings";
-import { Center, Text, VStack } from "@chakra-ui/react";
-import Image from "next/image";
+import CardLoader from "@/components/CardLoader";
+import dynamic from "next/dynamic";
+const ProductListings = dynamic(
+  () => import("@/features/Homepage/ProductListings"),
+  {
+    ssr: true,
+
+    loading: () => <CardLoader />
+  }
+);
+import { VStack } from "@chakra-ui/react";
 
 export default function Home() {
   return (
