@@ -7,6 +7,7 @@ import { AnimatePresence } from "framer-motion";
 import { ICategory } from "@/resources/Category/interface";
 import { attachWithS3BaseUrl } from "@/utils/misc";
 import Link from "next/link";
+import Image from "next/image";
 
 interface IProps extends StackProps {
   isActive?: boolean;
@@ -30,7 +31,7 @@ const CollectionCard = ({ isActive, image, link, title, ...rest }: IProps) => {
         >
           <AnimatedCircle isActive={isActive || false} />
           <Center height="90%" width="90%" rounded="100%" overflow="hidden">
-            <AppImage
+            <Image
               alt={title}
               src={image}
               height={50}
