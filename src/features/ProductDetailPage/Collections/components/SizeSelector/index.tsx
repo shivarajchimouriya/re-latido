@@ -68,7 +68,7 @@ export default function SizeSelector({
   recommendation?: any[];
   sizeRange: any;
   onOpen: any;
-  handleBuyClick: () => void;
+  handleBuyClick?: () => void;
 }) {
   const params = useSearchParams();
   const router = useRouter();
@@ -112,7 +112,7 @@ export default function SizeSelector({
                   node?.price?.price?.[0]?.currency
                 );
 
-                router.push(`?${newUrlSearchParams}`,{scroll:false});
+                router.push(`?${newUrlSearchParams}`, { scroll: false });
 
                 price = node?.price?.price?.[0]?.value;
               }
@@ -123,7 +123,6 @@ export default function SizeSelector({
                 <SizeCard
                   recommendedSize={node?.attributes?.output}
                   selected={node?.attributes?.output === fitData?.[0]?.size}
-                  // price={node?.price.value}
                 />
               );
             })}
@@ -138,7 +137,7 @@ export default function SizeSelector({
           fontSize={"1.6rem"}
           color="white"
         >
-          {price ? `रु. ${price}` : null}
+          {price ? `रु. ${Intl.NumberFormat().format(price)}` : null}
         </Text>
       </Box>
       <Grid placeItems="center" mt="4rem" mb="2rem">

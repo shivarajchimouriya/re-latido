@@ -33,7 +33,7 @@ const CheckoutResponse = ({ serverResponse }: IProps) => {
           });
           localStorage.removeItem("checkout");
           localStorage.removeItem("selected");
-          router.push(`/checkout?tab=summary?order=${parsed._id}`);
+          router.push(`/checkout?tab=summary&order=${parsed._id}`);
         } catch (error) {
           router.push("/checkout?tab=shipping");
           logger.log("error", error);
