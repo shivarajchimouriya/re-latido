@@ -1,4 +1,3 @@
 export interface IProductImageProps {
-  primaryImage: string,
-  secondaryImage: any[] | []
+  secondaryImage: any[] | [];
 }
