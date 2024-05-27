@@ -4,18 +4,39 @@ import { useEffect, useState } from "react";
 import FitSelection from "../FitSelection";
 import ButtonComponent from "../Button";
 import SizeModal from "../SizeModal";
-import { useDisclosure } from "@chakra-ui/react";
+import { Box, HStack, Stack, Text, useDisclosure } from "@chakra-ui/react";
 import { FIT_ENUM } from "../SizeModal/FitEnums";
 import { useGetNodesLazyQuery } from "@/GraphQl/Generated/graphql";
 import SizeSelector from "../SizeSelector";
-import { useSearchParams, useRouter, redirect } from "next/navigation";
+import { useSearchParams, useRouter } from "next/navigation";
 import { useBuy } from "./data/useBuy";
 import { useGetTokens } from "@/hooks/client/useGetToken";
+import Link from "next/link";
+import LoaderSkeleton from "@/components/LoaderSkeleton";
+import SizeRecommendationLoader from "../SizeRecommendationLoader";
+import SizeRecommendationNotFound from "../SizeRecommendationNotFound";
 
 export interface ISizeDetails {
   age: string;
   height: string;
   weight: string;
+}
+
+interface RenderSizeRecommendationProps {
+  nodeData?: {
+    nodes?: {
+      data: any[];
+    };
+  };
+  nodeQueryLoading: boolean;
+  productId: string;
+  heightOptionsValues: any[];
+  setSizeDetails: (sizeDetails: any) => void;
+  sizeDetailSubmit: () => void;
+  onOpen: () => void;
+  range?: number[];
+  fitData?: any;
+  handleBuyClick: (sizeRecommendation: any) => void;
 }
 
 export default function SizeModuleSection({
@@ -240,7 +261,7 @@ export default function SizeModuleSection({
         sizeQuery.append(el.key, el.value);
       }
     });
-    router.push(`?${sizeQuery}`,{scroll:false});
+    router.push(`?${sizeQuery}`, { scroll: false });
     getNodesCall(queryNodeValues);
     getMultipleNodesCall(queryNodeValues);
     onClose();
@@ -276,7 +297,6 @@ export default function SizeModuleSection({
     }
   }, [psid, selectedFit, sizeDetailSubmit]);
 
-
   const payload = {
     product_specification: {
       price: {
@@ -309,7 +329,6 @@ export default function SizeModuleSection({
   const { token } = useGetTokens();
   const { mutateAsync, isPending } = useBuy();
   const handleBuyClick = async () => {
-
     if (!token) {
       router.push("/auth");
       return;
@@ -318,16 +337,21 @@ export default function SizeModuleSection({
     localStorage.setItem("selected", JSON.stringify(payload));
     try {
       const res = await mutateAsync({ data: payload, token });
-      if (res.data) {
-        localStorage.setItem("checkout", JSON.stringify(res?.data));
-        router.push("/checkout");
-
-      }
+      localStorage.setItem("checkout", JSON.stringify(res?.data));
+      window.location.href = "/checkout";
+      // if (res.data) {
+      //   logger.log("router: ", router);
+      //   logger.log("payload: ", payload);
+      // }
     } catch (error) {
       logger.error(error);
     }
-    logger.log("payload: ", payload);
   };
+
+  //   const recommendedSize = () => {
+  //   if()
+  // }
+
   return (
     <>
       <FitSelection
@@ -335,14 +359,29 @@ export default function SizeModuleSection({
         onChange={handleFitChange}
         productId={productId}
       />
-      {nodeData?.nodes?.data ? (
-        <SizeSelector
-          sizeRange={range}
-          onOpen={onOpen}
-          fitData={fitData}
-          recommendation={nodeData?.nodes?.data}
-          handleBuyClick={handleBuyClick}
-        />
+      {nodeData?.nodes?.data?.length || 0 > 0 ? (
+        <>
+          <SizeSelector
+            sizeRange={range}
+            onOpen={onOpen}
+            fitData={fitData}
+            recommendation={nodeData?.nodes?.data}
+            handleBuyClick={handleBuyClick}
+          />
+        </>
+      ) : nodeQueryLoading ? (
+        <SizeRecommendationLoader />
+      ) : nodeData?.nodes?.data?.length || 0 <= 0 ? (
+        <>
+          <SizeRecommendationNotFound />
+          <ButtonComponent
+            productId={productId}
+            heightOptionsValues={heightOptionsValues}
+            setSizeDetails={setSizeDetails}
+            sizeDetailSubmit={sizeDetailSubmit}
+            onOpen={onOpen}
+          />
+        </>
       ) : (
         <ButtonComponent
           productId={productId}
