@@ -5,7 +5,7 @@ import { Box, Flex, Grid, Progress, Text, VStack } from "@chakra-ui/react";
 import React from "react";
 
 interface IProps {
-  categoryName: string;
+  categoryName?: string;
   primaryImage: string;
   name: string;
   price: number;
