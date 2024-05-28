@@ -10,6 +10,7 @@ import { EffectCreative } from "swiper/modules";
 
 import "swiper/css";
 import "swiper/css/effect-creative";
+import Image from "next/image";
 
 export default function ProductImage({
   secondaryImage,
@@ -69,10 +70,10 @@ export default function ProductImage({
             {images?.map((image: string, index: number) => (
               <SwiperSlide key={image}>
                 <Box width={"full"} bg="white">
-                  <AppImage
+                  <Image
                     src={image}
-                    height={300 * 1.5}
-                    width={200 * 1.5}
+                    height={500}
+                    width={400}
                     style={{ width: "100%" }}
                     alt="product image"
                   />

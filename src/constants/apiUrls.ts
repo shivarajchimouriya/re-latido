@@ -1,7 +1,7 @@
 export const apiURLs = {
 
     product: {
-        all: "/client_product_by_category/?gender=male&limit=100&page=1",
+        all: "/client_product_by_category/",
         byId: (id: string) => `/client_product_detail/${id}/`
     },
     category: {
