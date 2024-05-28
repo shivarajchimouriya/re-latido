@@ -2,8 +2,8 @@
 import { Box, Circle, Flex, HStack, IconButton, VStack, useDisclosure } from "@chakra-ui/react";
 import { AnimatePresence, PanInfo, motion } from "framer-motion";
 import React, { ReactElement, ReactNode, useState } from "react";
-import { AiOutlineThunderbolt } from "react-icons/ai";
-import { GoPerson } from "react-icons/go";
+import { AiOutlineHome, AiOutlineThunderbolt } from "react-icons/ai";
+import { GoHome, GoPerson } from "react-icons/go";
 import { RiSearch2Line } from "react-icons/ri";
 import Appendix from "./components/Appendix";
 import GenderCard from "./components/GenderCard";
@@ -32,7 +32,7 @@ const Navbar = () => {
   }
 
   const navItems: INavItem[] = [
-    { icon: <AiOutlineThunderbolt    />, link: "/", name: "" },
+    { icon: <GoHome    />, link: "/", name: "" },
     { icon: <RiSearch2Line />, link: "/search", name: "search" },
     { icon: <GoPerson />, link: "/profile", name: "account" }
   ];
@@ -49,15 +49,21 @@ const  pathName=  usePathname();
     <>
         <Flex
           position="fixed"
-          bottom=".2rem"
+          bottom=".3rem"
           zIndex={10}
           transform="translateX(-50%)"
           left="50%"
+          w='97vw'
           fontSize="2.4rem"
           px="2rem"
           alignItems='end'
           color="white"
           gap='1rem'
+            rounded=".5rem"
+            roundedBottom='2rem'
+            bg="rgba(0,0,0,0.6)"
+            backdropFilter="auto"
+            backdropBlur="7px"
         >
           <GenderSwitch/>
           <Flex
@@ -67,10 +73,7 @@ const  pathName=  usePathname();
 
             // initial={{y:400}}
             // animate={{y:0}}
-            bg="rgba(0,0,0,0.5)"
-            rounded="2rem"
-            backdropFilter="auto"
-            backdropBlur="7px"
+          
             transitionDuration='.4s'
             
 
@@ -103,7 +106,7 @@ const  pathName=  usePathname();
                     <Circle
                       layoutId="nav_indicator"
                       as={motion.div}
-                      size=".2rem"
+                      size=".3rem"
                       left="50%"
                       position="absolute"
                       bottom="25%"

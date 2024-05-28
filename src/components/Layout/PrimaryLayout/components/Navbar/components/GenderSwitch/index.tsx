@@ -31,9 +31,9 @@ const GenderSwitch = () => {
       as={motion.div}
       _hover={{ scale: 1.1 } // exit={{ y: 200 }} // animate={{ y: 0, transition: { bounce: false, duration: 0.4 } }} // initial={{ y: 200 }}
       }
-      bg="rgba(0,0,0,0.5)"
-      backdropFilter="auto"
-      backdropBlur="10px"
+      // bg="rgba(0,0,0,0.5)"
+      // backdropFilter="auto"
+      // backdropBlur="10px"
       rounded="2rem"
       onClick={handleGenderSwitch}
     >

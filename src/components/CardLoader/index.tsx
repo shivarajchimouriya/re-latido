@@ -8,7 +8,8 @@ const CardLoader = ({ ...rest }: IProps) => {
     <Box h="63vh" w="full" className="skeleton" {...rest} position="relative">
       <Box
         h="4rem"
-        w="16rem"
+        maxW="16rem"
+        w="97%"
         zIndex="100"
         position="absolute"
         left="1rem"

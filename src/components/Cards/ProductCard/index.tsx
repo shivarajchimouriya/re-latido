@@ -242,7 +242,7 @@ const ProductCard = ({ product,isFirstCard, ...rest }: IProps) => {
         <VStack
           as={motion.div}
           position='relative'
-          w="95vw"
+          w="97vw"
           align='center'
           rounded=".5rem"
           overflow="hidden"
