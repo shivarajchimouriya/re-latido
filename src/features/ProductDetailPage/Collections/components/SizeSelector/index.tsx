@@ -7,12 +7,14 @@ import {
   HStack,
   Text,
   VStack,
+  useToast,
 } from "@chakra-ui/react";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import SizeCard from "../SizeCard";
 import { logger } from "@/utils/logger";
 import EditSizeCard from "../EditSizeCard";
 import { useParams, useSearchParams, useRouter } from "next/navigation";
+import Toast from "@/components/Toast";
 export const availableSizes = [
   {
     name: "XXXS",
@@ -63,18 +65,45 @@ export default function SizeSelector({
   sizeRange,
   onOpen,
   handleBuyClick,
+  handleSizeCardClick,
+  activeFit,
 }: {
   fitData: any;
   recommendation?: any[];
   sizeRange: any;
   onOpen: any;
-  handleBuyClick?: () => void;
+  handleBuyClick: (price: number, sizeRangeId: string) => void;
+  handleSizeCardClick: (val: number) => void;
+  activeFit: string;
 }) {
   const params = useSearchParams();
   const router = useRouter();
-
+  const toast = useToast();
+  const [price, setPrice] = useState<number>();
+  const [sizeRangeId, setSizeRangeId] = useState<string>();
   const newUrlSearchParams = new URLSearchParams(params);
-  // const sizeSearchParam =
+
+  useEffect(() => {
+    const elementThatMatches = intersection?.find((el) => {
+      return el?.attributes?.output === fitData?.[0]?.size;
+    });
+
+    const parametersToWatch = ["srid", "s", "p", "currency"];
+    if (!elementThatMatches) {
+      parametersToWatch.forEach((para) => {
+        if (newUrlSearchParams.has(para)) {
+          newUrlSearchParams.delete(para);
+        }
+      });
+    } else {
+      setPrice(elementThatMatches?.price?.price?.[0]?.value);
+      setSizeRangeId(elementThatMatches?.price._id);
+    }
+    if (activeFit) {
+      newUrlSearchParams.set("fit", activeFit);
+    }
+    router.push(`?${newUrlSearchParams}`, { scroll: false });
+  }, [fitData]);
   const intersection = recommendation?.map((el) => {
     if (sizeRange.has(el.attributes.output)) {
       return {
@@ -84,8 +113,6 @@ export default function SizeSelector({
     }
     return null;
   });
-
-  let price;
 
   return (
     <Container my={"2rem"}>
@@ -103,26 +130,18 @@ export default function SizeSelector({
         <Box>
           <HStack gap={"1rem"}>
             {intersection?.map((node: any, i) => {
-              if (node?.attributes?.output === fitData?.[0]?.size) {
-                newUrlSearchParams.set("s", node?.attributes?.output);
-                newUrlSearchParams.set("srid", node?.price._id);
-                newUrlSearchParams.set("p", node?.price?.price?.[0]?.value);
-                newUrlSearchParams.set(
-                  "currency",
-                  node?.price?.price?.[0]?.currency
-                );
-
-                router.push(`?${newUrlSearchParams}`, { scroll: false });
-
-                price = node?.price?.price?.[0]?.value;
-              }
               if (!node?.attributes?.output) {
                 return null;
               }
+              const recommendedSize = node?.attributes?.output;
+              const selected = node?.attributes?.output === fitData?.[0]?.size;
               return (
                 <SizeCard
-                  recommendedSize={node?.attributes?.output}
-                  selected={node?.attributes?.output === fitData?.[0]?.size}
+                  recommendedSize={recommendedSize}
+                  selected={selected}
+                  onClick={() =>
+                    !selected && handleSizeCardClick(recommendedSize)
+                  }
                 />
               );
             })}
@@ -142,7 +161,19 @@ export default function SizeSelector({
       </Box>
       <Grid placeItems="center" mt="4rem" mb="2rem">
         <Button
-          onClick={handleBuyClick}
+          onClick={() => {
+            if (price && sizeRangeId) {
+              handleBuyClick(price, sizeRangeId);
+            } else {
+              toast({
+                status: "error",
+                position: "top",
+                render: () => {
+                  return <Toast message="Something went wrong." />;
+                },
+              });
+            }
+          }}
           width={"90%"}
           fontSize={"1.6rem"}
           className="primary-button"

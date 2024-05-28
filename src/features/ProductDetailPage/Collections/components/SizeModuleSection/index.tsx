@@ -4,17 +4,16 @@ import { useEffect, useState } from "react";
 import FitSelection from "../FitSelection";
 import ButtonComponent from "../Button";
 import SizeModal from "../SizeModal";
-import { Box, HStack, Stack, Text, useDisclosure } from "@chakra-ui/react";
+import { useDisclosure, useToast } from "@chakra-ui/react";
 import { FIT_ENUM } from "../SizeModal/FitEnums";
 import { useGetNodesLazyQuery } from "@/GraphQl/Generated/graphql";
 import SizeSelector from "../SizeSelector";
 import { useSearchParams, useRouter } from "next/navigation";
 import { useBuy } from "./data/useBuy";
 import { useGetTokens } from "@/hooks/client/useGetToken";
-import Link from "next/link";
-import LoaderSkeleton from "@/components/LoaderSkeleton";
 import SizeRecommendationLoader from "../SizeRecommendationLoader";
 import SizeRecommendationNotFound from "../SizeRecommendationNotFound";
+import Toast from "@/components/Toast";
 
 export interface ISizeDetails {
   age: string;
@@ -48,6 +47,7 @@ export default function SizeModuleSection({
   productName: string;
   productDetail: any;
 }) {
+  const toast = useToast();
   const PWA = "pwa";
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -57,13 +57,9 @@ export default function SizeModuleSection({
   const urlWeight = searchParams.get("weight");
 
   const psid = searchParams.get("psid");
+  const lid = searchParams.get("lid");
   const s = searchParams.get("s");
-  const srid = searchParams.get("srid");
-  const p = searchParams.get("p");
-  const currency = searchParams.get("currency");
-
-  const height = searchParams.get("height");
-  const weight = searchParams.get("weight");
+  const urlFit = searchParams.get("fit");
 
   const findLeatherIndex = productDetail.product_specification.findIndex(
     (val: any) => val?._id === psid
@@ -74,8 +70,7 @@ export default function SizeModuleSection({
 
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [heightOptionsValues, setHeightOptionsValues] = useState<string[]>([]);
-  const [selectedFit, setSelectedFit] = useState("General");
-  const [showSizeSelector, setShowSizeSelector] = useState(false);
+  const [selectedFit, setSelectedFit] = useState(urlFit || "General");
   const [selectedSpecs, setSelectedSpecs] = useState<any>();
 
   const [sizeDetails, setSizeDetails] = useState<ISizeDetails>({
@@ -100,23 +95,15 @@ export default function SizeModuleSection({
 
   const [getNodes, { data: nodeData, loading: nodeQueryLoading }] =
     useGetNodesLazyQuery({
-      onCompleted: () => {
-        // setPreviouslyFetched(true);
-      },
       notifyOnNetworkStatusChange: true,
-      // skip: true,
-      fetchPolicy: "network-only", // Used for first execution
-      nextFetchPolicy: "cache-first", // Used for subsequent executions
+      fetchPolicy: "network-only",
+      nextFetchPolicy: "cache-first",
     });
 
   const [
     getMultipleNodes,
     { data: multipleNodeData, loading: multipleNodeQueryLoading },
-  ] = useGetNodesLazyQuery({
-    onCompleted() {
-      setShowSizeSelector(true);
-    },
-  });
+  ] = useGetNodesLazyQuery();
 
   const getNodesCall = (queryNodeValues: any) => {
     getNodes({
@@ -268,8 +255,10 @@ export default function SizeModuleSection({
   };
 
   const handleFitChange = (e: string) => {
+    if (!urlHeight || !urlWeight) {
+      onOpen();
+    }
     setSelectedFit(e);
-    getMultipleNodesCall({ ...queryNodeValues, Fit: e });
   };
 
   const fitData = multipleNodeData?.nodes?.data?.map((item: any) => {
@@ -297,29 +286,10 @@ export default function SizeModuleSection({
     }
   }, [psid, selectedFit, sizeDetailSubmit]);
 
-  const payload = {
-    product_specification: {
-      price: {
-        currency: currency as string,
-        value: Number(p) as number,
-      },
-      product_specification_id: psid as string,
-      size_range_id: srid as string,
-      leather_id: leatherDetails?.leather_id._id as string,
-      size: Number(s) as number,
-      pattern_package: nodeData?.nodes?.data[indexWithComfort]?.attributes
-        ?.outputLevel as string,
-    },
-    sizing: {
-      height: Number(height),
-      weight: Number(weight),
-    },
-    product: productId,
-    lining: leatherDetails?.default_lining as string,
-    hardware: leatherDetails?.default_hardware as string,
-    total_amount: Number(p),
-    origin: PWA,
-  };
+  useEffect(() => {
+    getNodesCall(queryNodeValues);
+    getMultipleNodesCall(queryNodeValues);
+  }, [urlAge, urlHeight, urlWeight, selectedFit]);
 
   const range = new Map(
     selectedSpecs?.size_range.map((el: any) => {
@@ -328,29 +298,91 @@ export default function SizeModuleSection({
   );
   const { token } = useGetTokens();
   const { mutateAsync, isPending } = useBuy();
-  const handleBuyClick = async () => {
+  const handleBuyClick = async (price: number, srid: string) => {
     if (!token) {
       router.push("/auth");
       return;
     }
 
-    localStorage.setItem("selected", JSON.stringify(payload));
-    try {
-      const res = await mutateAsync({ data: payload, token });
-      localStorage.setItem("checkout", JSON.stringify(res?.data));
-      window.location.href = "/checkout";
-      // if (res.data) {
-      //   logger.log("router: ", router);
-      //   logger.log("payload: ", payload);
-      // }
-    } catch (error) {
-      logger.error(error);
+    const payload = {
+      product_specification: {
+        price: {
+          currency: "Nrs",
+          value: price,
+        },
+        product_specification_id: psid as string,
+        size_range_id: srid,
+        leather_id: leatherDetails?.leather_id._id as string,
+        size: Number(s) as number,
+        pattern_package: nodeData?.nodes?.data[indexWithComfort]?.attributes
+          ?.outputLevel as string,
+      },
+      sizing: {
+        height: Number(urlHeight),
+        weight: Number(urlWeight),
+      },
+      product: productId,
+      lining: leatherDetails?.default_lining as string,
+      hardware: leatherDetails?.default_hardware as string,
+      total_amount: price,
+      origin: PWA,
+    };
+
+    let hasURLPropError = false;
+
+    const validateUrlProps = () => {
+      const incoming = [psid, lid, urlAge, urlFit, urlHeight, urlWeight];
+      incoming.forEach((el) => {
+        if (el === "undefined" || !el) {
+          hasURLPropError = true;
+          return;
+        }
+      });
+    };
+    validateUrlProps();
+
+    if (hasURLPropError) {
+      toast({
+        status: "error",
+        position: "top",
+        render: () => {
+          return (
+            <Toast message="Enter size details and select size to buy product." />
+          );
+        },
+      });
+      return;
+    } else {
+      localStorage.setItem("selected", JSON.stringify(payload));
+      try {
+        const res = await mutateAsync({ data: payload, token });
+        localStorage.setItem("checkout", JSON.stringify(res?.data));
+        // router.push("/checkout");
+        window.location.href = "/checkout";
+      } catch (error) {
+        logger.error(error);
+      }
     }
   };
 
-  //   const recommendedSize = () => {
-  //   if()
-  // }
+  const handleSizeCardClick = (val: number) => {
+    nodeData?.nodes?.data.forEach((fit: any) => {
+      if (fit?.attributes?.output === val) {
+        const dataToSearch = fit?.attributes?.attribute_values?.data;
+        if (dataToSearch) {
+          // find the index with the fitting
+          const index = dataToSearch?.findIndex((item: any) => {
+            const valueOne = item?.attributes?.valueOne;
+            return typeof valueOne === "string" && valueOne.match(/^[^\d.]+$/);
+          });
+          const valueFromData = dataToSearch?.[index]?.attributes?.valueOne;
+          if (valueFromData) {
+            setSelectedFit(valueFromData);
+          }
+        }
+      }
+    });
+  };
 
   return (
     <>
@@ -364,16 +396,20 @@ export default function SizeModuleSection({
           <SizeSelector
             sizeRange={range}
             onOpen={onOpen}
+            activeFit={selectedFit}
             fitData={fitData}
             recommendation={nodeData?.nodes?.data}
             handleBuyClick={handleBuyClick}
+            handleSizeCardClick={handleSizeCardClick}
           />
         </>
       ) : nodeQueryLoading ? (
         <SizeRecommendationLoader />
       ) : nodeData?.nodes?.data?.length || 0 <= 0 ? (
         <>
-          <SizeRecommendationNotFound />
+          {!urlAge || !urlHeight || !urlWeight || nodeQueryLoading ? null : (
+            <SizeRecommendationNotFound />
+          )}
           <ButtonComponent
             productId={productId}
             heightOptionsValues={heightOptionsValues}

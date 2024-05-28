@@ -1,16 +1,8 @@
-import { Box, Flex, Text } from "@chakra-ui/react";
+import { Box, Text } from "@chakra-ui/react";
 import React from "react";
-import data from "@/data/mock/fitting";
 import FittingSwiper from "../FittingSwiper";
 import { appColor } from "@/theme/foundations/colors";
-import { useParams } from "next/navigation";
-import { getClient } from "@/lib/apolloClient";
-import { getNode } from "@/GraphQl/Queries/getNode";
-import { logger } from "@/utils/logger";
-import {
-  ProductListDocument,
-  useProductListQuery,
-} from "@/GraphQl/Generated/graphql";
+import { useProductListQuery } from "@/GraphQl/Generated/graphql";
 
 export interface FitOptionsProps {
   label?: any;
@@ -18,7 +10,15 @@ export interface FitOptionsProps {
   front?: any;
 }
 
-export default function FitSelection({ productId, onChange, selectedFit }: { productId: string, onChange: any, selectedFit:string }) {
+export default function FitSelection({
+  productId,
+  onChange,
+  selectedFit,
+}: {
+  productId: string;
+  onChange: any;
+  selectedFit: string;
+}) {
   const { data: filteredProductsData, loading: filteredProductsLoading } =
     useProductListQuery({
       variables: { filters: { productId: { eq: productId } } },
@@ -43,7 +43,11 @@ export default function FitSelection({ productId, onChange, selectedFit }: { pro
       >
         Fit Selection
       </Text>
-      <FittingSwiper selectedFit={selectedFit} onChange={onChange} options={options} />
+      <FittingSwiper
+        selectedFit={selectedFit}
+        onChange={onChange}
+        options={options}
+      />
     </Box>
   );
 }

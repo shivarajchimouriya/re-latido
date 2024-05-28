@@ -12,13 +12,7 @@ import ButtonComponent from "../Collections/components/Button";
 import Blog from "../Collections/components/Blog";
 import Description from "../Collections/components/Description";
 import { API } from "@/resources";
-import {
-  ProductListDocument,
-  useGetNodesLazyQuery,
-  useProductListQuery,
-} from "@/GraphQl/Generated/graphql";
 import { logger } from "@/utils/logger";
-import { FIT_ENUM } from "../Collections/components/SizeModal/FitEnums";
 import SizeModuleSection from "../Collections/components/SizeModuleSection";
 import { env } from "@/config/environment";
 
