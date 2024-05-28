@@ -109,7 +109,7 @@ const  pathName=  usePathname();
                       size=".3rem"
                       left="50%"
                       position="absolute"
-                      bottom="25%"
+                      bottom="20%"
                       transform="translateX(-50%)"
                       bg="white"
                     />}
