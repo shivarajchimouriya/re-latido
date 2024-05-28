@@ -72,8 +72,8 @@ export default function ProductImage({
                 <Box width={"full"} bg="white">
                   <Image
                     src={image}
-                    height={500}
-                    width={400}
+                    height={300 * 1.5}
+                    width={1000}
                     style={{ width: "100%" }}
                     alt="product image"
                   />

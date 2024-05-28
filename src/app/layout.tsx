@@ -12,7 +12,7 @@ import 'react-date-range/dist/theme/default.css';
 import AppQueryProvider from "@/providers/QueryProvider";
 import AuthProvider from "@/providers/AuthProvider";
 
-
+import NextTopLoader from "nextjs-toploader";
 const APP_NAME = "Latido";
 const APP_DEFAULT_TITLE = "Latido";
 const APP_TITLE_TEMPLATE = "Latido";
@@ -66,6 +66,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
+        <NextTopLoader 
+        color="red"
+        showSpinner={false}
+        
+        />
         <AuthProvider>
         <AppQueryProvider>
               <AppThemeProvider>

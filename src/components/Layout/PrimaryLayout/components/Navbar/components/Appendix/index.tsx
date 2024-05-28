@@ -28,9 +28,9 @@ const Appendix = ({ ...rest }: IProps) => {
       _hover={{ scale: 1.1 }}
     >
       <IconButton
-        bg="rgba(0,0,0,0.5)"
-        backdropFilter="auto"
-        backdropBlur="10px"
+        // bg="rgba(0,0,0,0.5)"
+        // backdropFilter="auto"
+        // backdropBlur="10px"
         rounded="2rem"
         height="5.5rem"
         width="5.5rem"
