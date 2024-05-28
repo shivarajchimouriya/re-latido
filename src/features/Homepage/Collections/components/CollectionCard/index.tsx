@@ -1,8 +1,10 @@
+"use client";
 import { Center, StackProps, Text, VStack } from "@chakra-ui/react";
 import React from "react";
 import AnimatedCircle from "../AnimatedCircle";
 import Link from "next/link";
 import Image from "next/image";
+import { usePathname } from "next/navigation";
 
 interface IProps extends StackProps {
   isActive?: boolean;
@@ -12,9 +14,20 @@ interface IProps extends StackProps {
 }
 
 const CollectionCard = ({ isActive, image, link, title, ...rest }: IProps) => {
+  const pathName = usePathname();
+  const onCardClick = () => {
+    const key = pathName + "_depth";
+    sessionStorage.setItem(key, "0");
+  };
+
   return (
     <Link href={`${link}`}>
-      <VStack justify="center" alignItems="center" {...rest}>
+      <VStack
+        justify="center"
+        alignItems="center"
+        onClick={onCardClick}
+        {...rest}
+      >
         <VStack
           width="6.1rem"
           height="6.1rem"

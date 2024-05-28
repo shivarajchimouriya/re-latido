@@ -69,6 +69,7 @@ export default function RootLayout({
         <NextTopLoader 
         color="red"
         showSpinner={false}
+        crawlSpeed={10}
         
         />
         <AuthProvider>
