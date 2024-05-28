@@ -5,7 +5,8 @@ export const queryKeys = {
     SHIPPING: "shipping",
     UPDATE_SHIPPING: "update_shipping",
     ORDERS: "orders",
-    PAYMENT_LOG: "paymentLog"
+    PAYMENT_LOG: "paymentLog",
+    INVOICE:"invoice"
 
 }
 
