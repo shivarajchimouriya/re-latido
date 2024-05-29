@@ -54,6 +54,9 @@ const CollectionCard = ({ isActive, image, link, title, ...rest }: IProps) => {
           fontSize="1.2rem"
           transitionDuration=".4s"
           fontWeight={isActive ? "bold" : "medium"}
+          overflow="hidden"
+          noOfLines={1}
+          textOverflow="ellipsis"
         >
           {title}
         </Text>

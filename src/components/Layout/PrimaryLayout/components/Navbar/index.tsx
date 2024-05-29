@@ -15,14 +15,7 @@ import GenderSwitch from "./components/GenderSwitch";
 import { usePathname } from "next/navigation";
 import dynamic from "next/dynamic";
 import CardLoader from "@/components/CardLoader";
-const FilterBox = dynamic(
-  () => import("./components/FIlterBox"),
-  {
-    ssr: true,
-
-    loading: () => <CardLoader />
-  }
-);
+import FilterBox from './components/FIlterBox'
 
 const Navbar = () => {
   interface INavItem {

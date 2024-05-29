@@ -70,7 +70,7 @@ export default function ProductImage({
             {images?.map((image: string, index: number) => (
               <SwiperSlide key={image}>
                 <Box width={"full"} bg="white">
-                  <Image
+                  <img
                     src={image}
                     height={300 * 1.5}
                     width={1000}
