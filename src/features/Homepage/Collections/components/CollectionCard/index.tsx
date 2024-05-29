@@ -34,7 +34,6 @@ const CollectionCard = ({ isActive, image, link, title, ...rest }: IProps) => {
           rounded="100%"
           justify="center"
           align="center"
-          overflow="hidden"
           position="relative"
         >
           <AnimatedCircle isActive={isActive || false} />

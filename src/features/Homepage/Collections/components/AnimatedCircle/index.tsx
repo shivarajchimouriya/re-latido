@@ -8,30 +8,25 @@ interface IProps {
 
 const AnimatedCircle = ({ isActive }: IProps) => {
   return (
-    <AnimatePresence>
-      {" "}<Box
-        position="absolute"
-        display="flex"
-        justifyContent="center"
-        alignItems="center"
-        width="117%"
-        height="117%"
-        zIndex={-10}
-        isolation="isolate"
-        as={motion.div}
-        exit={{ opacity: 0 }}
+    <Box
+      position="absolute"
+      display="flex"
+      justifyContent="center"
+      alignItems="center"
+      zIndex={-10}
+      isolation="isolate"
+    >
+      <svg
+        fill="none"
+        className={isActive ? styles.animated_circle : styles.circle}
+        viewBox="0 0 192  192"
+        width="7rem"
+        height="7rem"
+        xmlns="http://www.w3.org/2000/svg"
       >
-        <motion.svg
-          layoutId="circle"
-          fill="none"
-          className={isActive ? styles.animated_circle : styles.circle}
-          viewBox="0 0 192  192"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <circle cx="96" cy="96" r="80" />
-        </motion.svg>
-      </Box>
-    </AnimatePresence>
+        <circle cx="96" cy="96" r="80" />
+      </svg>
+    </Box>
   );
 };
 
