@@ -238,7 +238,11 @@ const ProductCard = ({ product, isFirstCard, ...rest }: IProps) => {
           as={motion.div}
           position="relative"
           w="97vw"
+          transitionDuration='.4s'
           align="center"
+          _hover={{
+            trasform:"scale(0.8)"
+          }}
           rounded=".5rem"
           overflow="hidden"
           bg="rgba(0,0,0,0.03)"
@@ -265,6 +269,7 @@ const ProductCard = ({ product, isFirstCard, ...rest }: IProps) => {
               style={{
                 objectFit: "cover",
                 width: "100%",
+                height:"100%"
               }}
             />
           </Box>
