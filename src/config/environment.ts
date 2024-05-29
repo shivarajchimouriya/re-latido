@@ -7,5 +7,6 @@ export const env = {
   POOL_ID: process.env.POOL_ID || process.env.NEXT_PUBLIC_POOL_ID,
   GRAPHQL_API: process.env.NEXT_PUBLIC_GRAPHQL_API,
   FONEPAY_BASE_URL: process.env.NEXT_PUBLIC_FONEPAY_BASE_URL,
-  FONEPAY_PID: process.env.NEXT_PUBLIC_FONEPAY_PID
+  FONEPAY_PID: process.env.NEXT_PUBLIC_FONEPAY_PID,
+  SITE_URL: process.env.SITE_URL || process.env.NEXT_PUBLIC_SITE_URL
 }

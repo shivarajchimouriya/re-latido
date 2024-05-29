@@ -6,6 +6,8 @@ import IProps from "./IProps";
 import { ApolloWrapper } from "@/providers/AppApolloProvider";
 import { API } from "@/resources";
 import { logger } from "@/utils/logger";
+import { Metadata } from "next";
+import { env } from "@/config/environment";
 
 export const generateStaticParams = async () => {
   const res = await API.Product.getAll({ params: { limit: 1000, page: 1 } });
@@ -16,6 +18,39 @@ export const generateStaticParams = async () => {
     };
   });
 };
+
+
+const getProductDetail = async (id: string) => {
+  try {
+    const res = await API.Product.byID(id);
+    return res;
+  } catch (error) {
+    logger.log("Error", error);
+  }
+};
+
+
+export const generateMetataData=async({params}:IProps):Promise<Metadata>=>{
+  const res = await getProductDetail(params.productId);
+if(!res){
+  return {
+
+  }
+}
+  return {
+    openGraph:{
+      images:[res?.data.productDetail.primary_image],
+      type:"website",
+      description:res.data.productDetail.description,
+      url:`${env.SITE_URL}/product/details/${params.productId}`,
+      locale:"nepali",
+
+    }
+  }
+
+
+
+}
 
 export default function ProductDetail({ params }: IProps) {
   return (

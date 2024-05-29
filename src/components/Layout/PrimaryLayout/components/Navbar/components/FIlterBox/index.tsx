@@ -33,17 +33,17 @@ interface IProps {
 }
 
 const FilterBox = ({ onClose }: IProps) => {
-  const {data}=useCategories();
-  const categories=data || [];
+  const { data } = useCategories();
+  const categories = data || [];
   const sliderLenth = Array.from({ length: Math.ceil(categories?.length / 2) });
-  const searchParams=useSearchParams();
-const activeCategory=searchParams.get("collections");
-const lowerLimit=Number(searchParams.get("priceLowerLimit")) ?? 0;
-const upperLimit=Number(searchParams.get("priceUpperLimit")) || 90000;
-const searchedGender=searchParams.get("gender") as 'male'|'female'
-const router=useRouter()
+  const searchParams = useSearchParams();
+  const activeCategory = searchParams.get("collections");
+  const lowerLimit = Number(searchParams.get("priceLowerLimit")) ?? 0;
+  const upperLimit = Number(searchParams.get("priceUpperLimit")) || 90000;
+  const searchedGender = searchParams.get("gender") as "male" | "female";
+  const router = useRouter();
   const [rangeValues, setRangeValues] = useState([lowerLimit, upperLimit]);
-  const [activeCat, setActiveCat] = useState(activeCategory|| "");
+  const [activeCat, setActiveCat] = useState(activeCategory || "");
   const storedGender = localStorage.getItem("gender") as
     | "male"
     | "female"
@@ -68,30 +68,28 @@ const router=useRouter()
     }
   ];
 
+  const handleApply = () => {
+    const data: IProductFilterReq = {
+      gender: SelectedGender,
+      priceLowerLimit: `${rangeValues[0]}` || "0",
+      priceUpperLimit: `${rangeValues[1]}` || "90000",
+      collections: activeCat,
+      limit: 1000,
+      page: 1
+    };
+    const queryString = Object.entries(data)
+      .map(
+        ([key, value]) =>
+          `${encodeURIComponent(key)}=${encodeURIComponent(value)}`
+      )
+      .join("&");
 
-const handleApply=()=>{
-
-
-const data:IProductFilterReq={
-  gender:SelectedGender,
-  priceLowerLimit:`${rangeValues[0]}` || '0',
-  priceUpperLimit:`${rangeValues[1]}` || '90000',
-  collections:activeCat,
-  limit:1000,
-  page:1
-
-}
-const queryString = Object.entries(data)
-  .map(([key, value]) => `${encodeURIComponent(key)}=${encodeURIComponent(value)}`)
-  .join('&');
-
-
-router.push(`/filter?${queryString}`);
-onClose()
-}
+    router.push(`/filter?${queryString}`);
+    onClose();
+  };
 
   return (
-    <VStack gap="2rem" w="100%" px="2rem" overflow='auto' >
+    <VStack gap="2rem" w="100%" px="2rem" overflow="auto">
       <Box w="full" position="relative" color="white" h="110%" py="2rem">
         <Swiper
           slidesPerView={"auto"}
@@ -105,13 +103,13 @@ onClose()
             bulletActiveClass: styles.bullet_active
           }}
           modules={[Pagination]}
-          style={{ maxWidth: "33rem", height: "120%" }}
+          style={{ maxWidth: "53rem", height: "120%" }}
         >
           {sliderLenth.map((slide, i) => {
             const articlesToShow = categories.slice(i + i, i + i + 2);
             return (
               <SwiperSlide key={i}>
-                <VStack w="8rem" gap="1rem">
+                <VStack w="fit-content" minW="8rem" maxW="15rem" gap="1rem">
                   {articlesToShow.map((el, j) => {
                     const isActive = activeCat === el._id;
                     return (
@@ -123,15 +121,16 @@ onClose()
                           w="100%"
                           h="4rem"
                           rounded="3rem"
+                          px="1rem"
                           color={isActive ? "black" : "white"}
                           position="relative"
                           textTransform="capitalize"
                           fontWeight={isActive ? "bold" : "medium"}
                           border={".1px  solid rgba(255,255,255,.4)"}
                         >
-                          {el.title}
+                          <Text> {el.title} </Text>
                         </Center>
-                        {isActive &&
+                        {isActive && (
                           <Box
                             as={motion.div}
                             position="absolute"
@@ -144,7 +143,8 @@ onClose()
                             rounded="3rem"
                             zIndex={-10}
                             p=".2rem"
-                          />}
+                          />
+                        )}
                       </Box>
                     );
                   })}
@@ -156,7 +156,7 @@ onClose()
       </Box>
       <Box w="90%" mt="3rem" as={motion.div}>
         <RangeSlider
-          onChange={val => {
+          onChange={(val) => {
             setRangeValues(val);
           }}
           defaultValue={[rangeValues[0], rangeValues[1]]}
@@ -235,7 +235,7 @@ onClose()
           }
         }}
       >
-        {genders.map(el => {
+        {genders.map((el) => {
           const isSelected = el.gender === SelectedGender;
 
           return (
@@ -251,7 +251,7 @@ onClose()
                 fontWeight={isSelected ? "bold" : "medium"}
               />
 
-              {isSelected &&
+              {isSelected && (
                 <Box
                   as={motion.div}
                   layoutId="gender_indicator"
@@ -263,7 +263,8 @@ onClose()
                   bg="rgba(255,255,255,0.9)"
                   isolation="isolate"
                   zIndex={-10}
-                />}
+                />
+              )}
             </Box>
           );
         })}
@@ -280,19 +281,24 @@ onClose()
           rounded="1.2rem"
           gap="1rem"
           onClick={handleApply}
-          rightIcon={<MdOutlineDone fontSize="1.5rem"  color='green.500' />}
+          rightIcon={<MdOutlineDone fontSize="1.5rem" color="green.500" />}
         >
-          {" "}Apply{" "}
+          {" "}
+          Apply{" "}
         </Button>
-        <Button  p="1.5rem"
+        <Button
+          p="1.5rem"
           w="100%"
           px="2rem"
           bg="rgba(0,0,0,0.4)"
           color="white"
           fontSize="1.4rem"
           rounded="1.2rem"
-          gap="1rem"onClick={onClose}>
-          {" "}cancel{" "}
+          gap="1rem"
+          onClick={onClose}
+        >
+          {" "}
+          cancel{" "}
         </Button>
       </HStack>
     </VStack>

@@ -15,6 +15,8 @@ namespace NodeJS {
         GRAPHQL_API: string;
         NEXT_PUBLIC_GRAPHQL_API: string,
         NEXT_PUBLIC_FONEPAY_BASE_URL: string,
-        NEXT_PUBLIC_FONEPAY_PID: string
+        NEXT_PUBLIC_FONEPAY_PID: string,
+        SITE_URL:string,
+        NEXT_PUBLIC_SITE_URL:string
     }
 }
