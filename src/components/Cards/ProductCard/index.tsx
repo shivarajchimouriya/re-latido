@@ -265,7 +265,6 @@ const ProductCard = ({ product, isFirstCard, ...rest }: IProps) => {
               style={{
                 objectFit: "cover",
                 width: "100%",
-                height: "calc(-220px + 100dvh)"
               }}
             />
           </Box>
