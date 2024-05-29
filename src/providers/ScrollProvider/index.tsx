@@ -32,9 +32,12 @@ const handleScroll=(e:any)=>{
     sessionStorage.setItem(key,String(scrollPosition))
 
 }
+const handlePageReload=()=>{
+  sessionStorage.clear()
+}
 boxContainer?.addEventListener("scroll",handleScroll)
 
-
+window.addEventListener("beforeunload",  handlePageReload )
 
 
 return ()=>{
