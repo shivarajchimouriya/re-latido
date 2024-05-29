@@ -17,8 +17,9 @@ const Collections = async() => {
 
 const homePageData=await getHomePageData();
 const products = homePageData?.data.category;
-if(!products) return null;
-  return <CollectionSwiper collection={products} />;
+const productsToShow=products?.filter((el)=>el.is_active) || []
+if(!productsToShow) return null;
+  return <CollectionSwiper collection={productsToShow} />;
 };
 
 export default Collections;

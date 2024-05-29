@@ -12,7 +12,7 @@ export const env = {
   PRODUCT_MUTATION_TOKEN:
     process.env.PRODUCT_MUTATION_TOKEN ||
     process.env.NEXT_PUBLIC_PRODUCT_MUTATION_TOKEN,
-  NEXT_PUBLIC_SITE_URL: process.env.SITE_URL || process.env.NEXT_PUBLIC_SITE_URL
+  SITE_URL: process.env.SITE_URL || process.env.NEXT_PUBLIC_SITE_URL
 
 
 };
