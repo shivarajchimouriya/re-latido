@@ -6,12 +6,15 @@ import {
   NextSSRApolloClient,
   ApolloNextAppProvider,
   NextSSRInMemoryCache,
-  SSRMultipartLink
+  SSRMultipartLink,
 } from "@apollo/experimental-nextjs-app-support/ssr";
 
 function makeClient() {
   const httpLink = new HttpLink({
-    uri: `${env.GRAPHQL_API}`
+    uri: `${env.GRAPHQL_API}`,
+    headers: {
+      authorization: `Bearer ${env.PRODUCT_MUTATION_TOKEN}`,
+    },
   });
 
   return new NextSSRApolloClient({
@@ -20,11 +23,11 @@ function makeClient() {
       typeof window === "undefined"
         ? ApolloLink.from([
             new SSRMultipartLink({
-              stripDefer: true
+              stripDefer: true,
             }),
-            httpLink
+            httpLink,
           ])
-        : httpLink
+        : httpLink,
   });
 }
 
