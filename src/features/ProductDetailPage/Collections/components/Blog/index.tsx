@@ -5,7 +5,7 @@ import BlogWrapper from '../BlogWrapper'
 
 export default function Blog({ associated_blog }: TODO) {
   return (
-    <Box padding={'.5rem'}>
+    <Box padding='8'>
     <Text variant={"h1"} fontSize={"1.4rem"} fontWeight={"bold"} >{associated_blog?.title}</Text>
     <BlogWrapper
       data={associated_blog?.content}

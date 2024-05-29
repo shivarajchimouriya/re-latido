@@ -17,7 +17,11 @@ export interface IFit {
   label: string;
 }
 
-export default function FittingSwiper({ options, onChange, selectedFit }: TODO) {
+export default function FittingSwiper({
+  options,
+  onChange,
+  selectedFit,
+}: TODO) {
   return (
     <Flex className="parent" w="100%" overflow="hidden" padding={"1rem 0"}>
       <Swiper
@@ -30,8 +34,16 @@ export default function FittingSwiper({ options, onChange, selectedFit }: TODO) 
         {options?.map((fit: IFit, i: number) => {
           return (
             <SwiperSlide key={i}>
-              <div onClick={()=> onChange(fit.label)}>
-              <SwipeCard selectedIdx={selectedFit === fit.label ? true : false} fit={fit} />
+              <div
+                style={{
+                  paddingLeft: i === 0 ? "20px" : 0,
+                }}
+                onClick={() => onChange(fit.label)}
+              >
+                <SwipeCard
+                  selectedIdx={selectedFit === fit.label ? true : false}
+                  fit={fit}
+                />
               </div>
             </SwiperSlide>
           );

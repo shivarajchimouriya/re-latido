@@ -52,6 +52,7 @@ export default function LeatherSelection({ urlPrefix, productDetail }: IProps) {
         fontWeight="medium"
         fontSize={"1.4rem"}
         color={appColor.base}
+        mx={8}
       >
         Select Your Leather
       </Text>
