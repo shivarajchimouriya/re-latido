@@ -30,7 +30,7 @@ const getProductDetail = async (id: string) => {
 };
 
 
-export const generateMetataData=async({params}:IProps):Promise<Metadata>=>{
+export const generateMetadata=async({params}:IProps):Promise<Metadata>=>{
   const res = await getProductDetail(params.productId);
 if(!res){
   return {
@@ -45,7 +45,13 @@ if(!res){
       url:`${env.SITE_URL}/product/details/${params.productId}`,
       locale:"nepali",
 
-    }
+    },
+    title:res.data.productDetail.name,
+    description:res.data.productDetail.description,
+    authors:[{name:res.data.productDetail.added_by ?? ""}],
+    category:res.data.productDetail.category.title,
+    
+
   }
 
 
