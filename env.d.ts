@@ -18,5 +18,7 @@ namespace NodeJS {
         NEXT_PUBLIC_FONEPAY_PID: string,
         SITE_URL:string,
         NEXT_PUBLIC_SITE_URL:string
+        NEXT_PUBLIC_FONEPAY_PID: string;
+        NEXT_PUBLIC_RODUCT_MUTATION_TOKEN: string;
     }
 }
