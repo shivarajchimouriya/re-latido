@@ -29,7 +29,7 @@ export default function BlogWrapper({ data, primaryMedia }: IBlogWrapper) {
             return <PostBuilder data={i} />;
           }
           return (
-            <Box my="2rem" fontSize={"1.4rem"}>
+            <Box my="2rem" mb={"20vh"} fontSize={"1.4rem"}>
               {parse(i)}
             </Box>
           );
