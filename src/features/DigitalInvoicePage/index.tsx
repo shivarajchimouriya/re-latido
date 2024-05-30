@@ -23,23 +23,23 @@ export const DigitalInvoicePage = ({ id }: IProps) => {
       </Heading>
       <Box>
         <Invoice
-          createdAt={data.data.orderDetail.createdAt}
-          productName={data.data.orderDetail.product.name}
-          currency={data.data.orderDetail.product_specification.price.currency}
-          full_name={data.data.orderDetail.shipping_details.full_name}
+          createdAt={data?.data?.orderDetail?.createdAt}
+          productName={data?.data?.orderDetail?.product?.name}
+          currency={data?.data?.orderDetail?.product_specification?.price?.currency}
+          full_name={data?.data?.orderDetail?.shipping_details?.full_name}
 
-          date={data.data.orderDetail.delivery_date}
+          date={data?.data?.orderDetail?.delivery_date}
           finalAmount={
-            data.data.orderDetail.total_amount ||
-            data.data.orderDetail.product_specification.price.value
+            data?.data?.orderDetail?.total_amount ||
+            data?.data?.orderDetail?.product_specification?.price?.value
           }
-          invoiceId={data.data.orderDetail.order_no}
+          invoiceId={data?.data?.orderDetail?.order_no}
           subtotal={
-            data.data.orderDetail.total_amount ||
-            data.data.orderDetail.product_specification.price.value
+            data?.data?.orderDetail?.total_amount ||
+            data?.data?.orderDetail?.product_specification?.price?.value
           }
-          billingAddress={data.data.orderDetail.shipping_details.address}
-          deliveryAddress={data.data.orderDetail.shipping_details.address}
+          billingAddress={data?.data?.orderDetail?.shipping_details?.address}
+          deliveryAddress={data?.data?.orderDetail?.shipping_details?.address}
         />
       </Box>
     </Container>

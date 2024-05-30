@@ -7,13 +7,11 @@ import { useFetchOrders } from "../data/useFetchOrders";
 import { logger } from "@/utils/logger";
 
 interface IProps {
-  orders: TODO;
+  isInvoice: boolean;
 }
-
-export default function OrderListing({ orders }: IProps) {
+export default function OrderListing({ isInvoice }: IProps) {
   const { data, error, isLoading } = useFetchOrders();
   const order = data?.data.data;
-  logger.log("data", order);
 
   return (
     <Grid gap={"1.6rem"} width={"100%"}>
@@ -34,6 +32,7 @@ export default function OrderListing({ orders }: IProps) {
           orderId={order?.order_no}
           deliveryDate={order?.delivery_date}
           quantity={1}
+          isInvoice={isInvoice}
         />
       ))}
     </Grid>

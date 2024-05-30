@@ -22,6 +22,7 @@ import html2canvas from "html2canvas";
 import InvoiceCard from "../InvoiceCard";
 import InvoicePdf from "../InvoicePdf";
 import { appColor } from "@/theme/foundations/colors";
+import { logger } from "@/utils/logger";
 
 interface InvoiceProps {
   invoiceId: number;
@@ -50,23 +51,13 @@ const Invoice: React.FC<InvoiceProps> = ({
   currency,
   full_name,
 }) => {
-  const [showPdf, setShowPdf] = useState(false);
-
   const { isOpen, onClose, onOpen } = useDisclosure();
-
-  useEffect(() => {
-    console.log("isOpen: ", isOpen);
-    console.log("onCLose: ", onClose);
-    console.log("onOpen: ", onOpen);
-  }, [isOpen, onClose, onOpen]);
 
   const onDownloadClicked = async () => {
     const pdf = new jsPDF("portrait", "pt", "a4");
     const invoice: any = document.querySelector("#invoice");
     const data = await html2canvas(invoice);
     const img = data.toDataURL("image/png");
-    const imgProperties = pdf.getImageProperties(img);
-    const pdfWidth = pdf.internal.pageSize.getWidth();
 
     const a4Width = 210 * 2;
     const a4Height = 297 * 2;
@@ -149,7 +140,7 @@ const Invoice: React.FC<InvoiceProps> = ({
       >
         Download as PDF
       </Button>
-      {showPdf ? (
+      {isOpen ? (
         <Modal isOpen={isOpen} onClose={onClose}>
           <ModalOverlay bg={"rgba(0, 0, 0, 0.8)"} />
 
