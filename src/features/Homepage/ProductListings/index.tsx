@@ -6,7 +6,7 @@ import React from "react";
 
 const getProducts = async () => {
   try {
-    const res = await API.Product.getAll({params:{limit:100,page:1}});
+    const res = await API.Product.getAll({params:{limit:4,page:1}});
     return res;
   } catch (error) {
     logger.log("Error fetching data", error);
