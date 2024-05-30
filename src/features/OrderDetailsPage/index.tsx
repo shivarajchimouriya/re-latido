@@ -1,15 +1,22 @@
+"use client";
 import React from "react";
 import orderDetails from "@/data/mock/orderDetails";
 import { Container, Flex, Grid, Text } from "@chakra-ui/react";
 import OrderCard from "@/components/OrderCard";
 import { dateDifference } from "@/lib/DateModeling";
 import CustomizedProgress from "./Collections/components/CustomizedProgress";
+import { logger } from "@/utils/logger";
+import { useFetchOrderById } from "../CheckoutPage/Tabs/OrderSummary/data/useFetchOrderById";
 
 interface IProps {
   orderId: string;
 }
 export default function OrderDetailsPage({ orderId }: IProps) {
-  const { data } = orderDetails;
+  // const { data } = orderDetails;
+
+  const { data: orderData } = useFetchOrderById(orderId);
+  if (!orderData) return null;
+  const { data } = orderData || {};
 
   const today = new Date().toISOString();
   const deliveryDate = data?.orderDetail?.delivery_date;
@@ -31,6 +38,7 @@ export default function OrderDetailsPage({ orderId }: IProps) {
           </Text>
         )}
         <OrderCard
+          orderIdentity={data.data?.orderDetail?._id || data.data?.id}
           categoryName={data?.orderDetail?.product?.category?.title}
           primaryImage={data?.orderDetail?.product?.primary_image}
           name={data?.orderDetail?.product?.name}
@@ -61,9 +69,7 @@ export default function OrderDetailsPage({ orderId }: IProps) {
           here.
         </Text>
 
-        <CustomizedProgress
-        orderProgress={data?.orderProgress}
-        />
+        <CustomizedProgress orderProgress={data?.orderProgress} />
 
         {/* <Box display="flex" justifyContent="center" marginTop={1}>
           {data?.data?.data?.orderDetail?.payment_status ===

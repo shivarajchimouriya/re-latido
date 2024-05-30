@@ -2,6 +2,7 @@ import AppImage from "@/components/AppImage";
 import { dateDifference } from "@/lib/DateModeling";
 import { CommaSeprator } from "@/lib/PriceFormat";
 import { Box, Flex, Grid, Progress, Text, VStack } from "@chakra-ui/react";
+import { useRouter } from "next/navigation";
 import React from "react";
 
 interface IProps {
@@ -18,9 +19,11 @@ interface IProps {
   quantity: number;
   hideProgress?: boolean;
   hideDaysLeft?: boolean;
+  orderIdentity?: string;
 }
 
 export default function OrderCard({
+  orderIdentity,
   categoryName,
   primaryImage,
   name,
@@ -35,10 +38,10 @@ export default function OrderCard({
   hideProgress,
   hideDaysLeft,
 }: IProps) {
+  const router = useRouter();
   let today = new Date().toISOString();
   const leftToDeliver = dateDifference(deliveryDate, today);
 
-  
   const getProgressValue = () => {
     switch (completionProcess?.toLowerCase()) {
       case "ordered":
@@ -90,6 +93,9 @@ export default function OrderCard({
         gap="2rem"
         justify={"space-between"}
         placeItems={"center"}
+        onClick={() => {
+          router.push(`orders/details/${orderIdentity}`);
+        }}
       >
         <AppImage
           style={{ objectFit: "contain", borderRadius: "0.4rem" }}
@@ -174,7 +180,9 @@ export default function OrderCard({
             value={getProgressValue()}
           />
         </Box>
-      ): <Box pb={"2rem"}></Box>}
+      ) : (
+        <Box pb={"2rem"}></Box>
+      )}
     </Grid>
   );
 }
