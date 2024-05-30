@@ -10,7 +10,7 @@ import {
   Grid,
   HStack,
   Text,
-  VStack
+  VStack,
 } from "@chakra-ui/react";
 import { TbFileInvoice, TbLogout, TbShoppingBagCheck } from "react-icons/tb";
 import AppImage from "@/components/AppImage";
@@ -27,12 +27,11 @@ import { IEditForm, editFormSchema } from "./features/EditPage/schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {} from "aws-amplify/auth";
 import { useFetchProfile } from "./data/useProfile";
-import { useGetTokens } from "@/hooks/client/useGetToken";
 import Logout from "./features/Logout";
 
 export default function ProfilePage() {
-  const {data:profileData} = useFetchProfile();
-const data=profileData?.data;
+  const { data: profileData } = useFetchProfile();
+  const data = profileData?.data;
   return (
     <Grid width={"100%"}>
       <Flex
@@ -59,12 +58,8 @@ const data=profileData?.data;
             {data?.name}
           </Text>
           <Box fontSize={"1.4rem"} color="textSecondary">
-            <Text>
-              {AddSpaceOnPhone(data?.phone || "")}
-            </Text>
-            <Text>
-              {data?.email}
-            </Text>
+            <Text>{AddSpaceOnPhone(data?.phone || "")}</Text>
+            <Text>{data?.email}</Text>
           </Box>
         </Grid>
       </Flex>
@@ -89,7 +84,7 @@ const data=profileData?.data;
         >
           <Text>With latido since</Text>
           <Text fontWeight={"bold"}>
-            {EpochToRedable(DateDifference(data?.createdAt||""))}
+            {EpochToRedable(DateDifference(data?.createdAt || ""))}
           </Text>
         </Flex>
       </Flex>
@@ -117,7 +112,7 @@ const data=profileData?.data;
           </Button>
         </Link>
 
-        <Link href="/orders">
+        <Link href="/digital-invoice">
           <Button
             px={"1rem"}
             py={"1rem"}
@@ -135,7 +130,7 @@ const data=profileData?.data;
           </Button>
         </Link>
 
-          <Logout/>
+        <Logout />
       </ButtonGroup>
     </Grid>
   );
