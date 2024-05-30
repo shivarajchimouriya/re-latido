@@ -260,7 +260,7 @@ const ProductCard = ({ product, isFirstCard, ...rest }: IProps) => {
           }}
         >
           <Box w="100%" overflow="hidden" h="100%">
-            <img
+            <Image
               alt={`product-${product.name}  `}
               src={product.primary_image}
               height={600}
