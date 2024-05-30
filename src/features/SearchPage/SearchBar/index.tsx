@@ -3,6 +3,7 @@ import { logger } from "@/utils/logger";
 import { debounce, throttle } from "@/utils/misc";
 import { Box, Flex, FormControl, Input } from "@chakra-ui/react";
 import { useDebounce } from "@uidotdev/usehooks";
+import { motion } from "framer-motion";
 import { useRouter, useSearchParams } from "next/navigation";
 import React, {
   ChangeEvent,
@@ -44,13 +45,16 @@ const SearchBar = () => {
     <Flex w="95%" rounded='full' justify="space-between"p='1rem' align="center"
      border='1px solid'
      borderColor='gray.400' 
+     as={motion.div}
+     layoutId='search_bar'
     >
       <Box fontSize="1rem" p='.5rem'  ml='.5rem' mr='.5rem'  rounded='full'>
         <BiSearch />
       </Box>
       <form action={handleSubmit}  style={{width:"100%"}}>
-        <FormControl w="100%" px=".5rem" rounded='full' >
+        <FormControl w="100%" px=".5rem" rounded='full'   >
           <Input
+          autoFocus
             ref={ref}
             name="keyword"
             border='none'

@@ -1,7 +1,7 @@
 "use client";
 import { Box, Circle, Flex, HStack, IconButton, VStack, useDisclosure } from "@chakra-ui/react";
-import { AnimatePresence, PanInfo, motion } from "framer-motion";
-import React, { ReactElement, ReactNode, useState } from "react";
+import { AnimatePresence, PanInfo, motion, useDragControls } from "framer-motion";
+import React, { ReactElement, ReactNode, useRef, useState } from "react";
 import { AiOutlineHome, AiOutlineThunderbolt } from "react-icons/ai";
 import { GoHome, GoPerson } from "react-icons/go";
 import { RiSearch2Line } from "react-icons/ri";
@@ -31,29 +31,31 @@ const Navbar = () => {
   ];
 
 const  pathName=  usePathname();
-
+ const controls = useDragControls()
 
   const { isOpen, onClose, onOpen } = useDisclosure()
   
   useCategories();
-  
+  const ref=useRef<HTMLDivElement|null>(null)
 
   return (
     <>
-        <Flex
+    <Appendix
+            onClick={onOpen}
+          />
+        {/* <Flex
           position="fixed"
           bottom=".3rem"
           zIndex={10}
-          transform="translateX(-50%)"
-          left="50%"
-          w='97vw'
+          w='8rem'
+          h='8rem'
+          right='0'
           fontSize="2.4rem"
           px="2rem"
           alignItems='end'
           color="white"
           gap='1rem'
-            rounded=".5rem"
-            roundedBottom='2rem'
+            rounded="full"
             bg="rgba(0,0,0,0.6)"
             backdropFilter="auto"
             backdropBlur="7px"
@@ -112,10 +114,8 @@ const  pathName=  usePathname();
               );
             })}
           </Flex>
-          <Appendix
-            onClick={onOpen}
-          />
-        </Flex>
+        </Flex> */}
+          
 
 
         <AnimatePresence> 
@@ -132,9 +132,9 @@ const  pathName=  usePathname();
             </Box>
             <VStack
               as={motion.div}
-              position='fixed'
+              position='sticky'
 
-              zIndex={10000} bottom='0' width='100%' height='45rem' py='2rem' pb='1rem'
+              zIndex={10000} bottom='0' width='100%' height='54rem' py='2rem' pb='1rem'
               onPan={(e: PointerEvent, info: PanInfo) => {
                 logger.log("info",info)
                 if ((info.delta.y > 2 || info.velocity.y>40 ) && info.delta.x === 0   ) {
@@ -149,9 +149,11 @@ const  pathName=  usePathname();
                 as={motion.div}
                 backdropFilter='auto' backdropBlur='15px'
                 rounded='2rem'
-                layoutId="b"
+                    layoutId="ass"
                 initial={{ y: '100%' }}
-                animate={{ y: 0, transition: { duration:.1, damping:4,  bounce: true } }}
+                animate={{ y: '0%',transition:{duration:.4,  bounce:false,type:"just",} }}
+
+                
                 exit={{ y: '100%',transition:{duration:.4,  bounce:false,type:"just",} }}
                 bg="rgba(0,0,0,.7)"
               >

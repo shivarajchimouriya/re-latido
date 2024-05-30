@@ -240,9 +240,7 @@ const ProductCard = ({ product, isFirstCard, ...rest }: IProps) => {
           w="97vw"
           transitionDuration='.4s'
           align="center"
-          _hover={{
-            trasform:"scale(0.8)"
-          }}
+        
           rounded=".5rem"
           overflow="hidden"
           bg="rgba(0,0,0,0.03)"
@@ -256,7 +254,7 @@ const ProductCard = ({ product, isFirstCard, ...rest }: IProps) => {
           scrollSnapAlign="start"
           scrollSnapStop={"always"}
           style={{
-            height: "calc(-220px + 100dvh)"
+            height: "calc(-160px + 100dvh)"
           }}
         >
           <Box w="100%" overflow="hidden" h="100%">
