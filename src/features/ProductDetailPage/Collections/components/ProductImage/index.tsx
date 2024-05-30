@@ -44,7 +44,7 @@ export default function ProductImage({
   return (
     <VStack pb="2rem" w="full" overflow="hidden">
       {/* <AppImage src={primaryImage} height={500} width={500} alt="product image" /> */}
-      <HStack w="full">
+      <HStack w="full" minH="80vh">
         <>
           <Swiper
             ref={ref}

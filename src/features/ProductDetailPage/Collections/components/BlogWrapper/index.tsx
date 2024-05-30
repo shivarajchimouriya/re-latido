@@ -12,7 +12,7 @@ interface IBlogWrapper {
 
 export default function BlogWrapper({ data, primaryMedia }: IBlogWrapper) {
   return (
-    <Box width={"100%"}>
+    <Box as="article" width={"100%"}>
       {primaryMedia && (
         <Box my={"1rem"}>
           <AppImage
@@ -29,9 +29,9 @@ export default function BlogWrapper({ data, primaryMedia }: IBlogWrapper) {
             return <PostBuilder data={i} />;
           }
           return (
-            <Box my="2rem" mb={"20vh"} fontSize={"1.4rem"}>
+            <Text as="article" my="2rem" mb={"20vh"} fontSize={"1.4rem"}>
               {parse(i)}
-            </Box>
+            </Text>
           );
         })}
     </Box>

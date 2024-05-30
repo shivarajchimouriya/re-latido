@@ -6,9 +6,7 @@ import { IProductResponse } from "./IProductResponse";
 import ProductName from "../Collections/components/ProductName";
 import ProductImage from "../Collections/components/ProductImage";
 import LeatherSelection from "../Collections/components/LeatherSelection";
-import FitSelection from "../Collections/components/FitSelection";
 import { appColor } from "@/theme/foundations/colors";
-import ButtonComponent from "../Collections/components/Button";
 import Blog from "../Collections/components/Blog";
 import Description from "../Collections/components/Description";
 import { API } from "@/resources";
@@ -38,6 +36,7 @@ export default async function ProductDetail({ productId }: IProps) {
     <Container>
       <VStack width="100%">
         <ProductName
+          categoryId={productDetail.category._id}
           productName={productDetail.name}
           category={productDetail.category?.title}
           productId={productId}

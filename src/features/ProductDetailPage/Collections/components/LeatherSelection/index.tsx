@@ -48,6 +48,7 @@ export default function LeatherSelection({ urlPrefix, productDetail }: IProps) {
   return (
     <Box width="100%">
       <Text
+        as="h3"
         textTransform="uppercase"
         fontWeight="medium"
         fontSize={"1.4rem"}
