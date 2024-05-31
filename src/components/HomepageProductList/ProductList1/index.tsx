@@ -27,7 +27,7 @@ const ProductList1 = ({ products }: IProps) => {
           scrollSnapType: "y mandatory",
           scrollSnapStop: "always",
           scrollBehavior: "smooth",
-          height: "calc(-220px + 100dvh)"
+          height: "calc(-150px + 100dvh)"
         }}
       >
         <VStack w="100%">

@@ -3,6 +3,7 @@ import {
   Box,
   Button,
   Center,
+  Flex,
   HStack,
   RangeSlider,
   RangeSliderFilledTrack,
@@ -27,6 +28,8 @@ import { logger } from "@/utils/logger";
 import { IProductFilterReq } from "@/resources/Product/interface";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useCategories } from "@/hooks/server/useCategories";
+import Link from "next/link";
+import { IoSearchOutline } from "react-icons/io5";
 
 interface IProps {
   onClose: () => void;
@@ -89,7 +92,32 @@ const FilterBox = ({ onClose }: IProps) => {
   };
 
   return (
-    <VStack gap="2rem" w="100%" px="2rem" overflow="auto">
+
+<VStack  gap='.3rem' w='full' 
+px="1rem"
+>
+
+     <Link  href='/search'  style={{width:"100%"}} > 
+     
+      <Flex 
+      as={motion.div}
+      bg='rgba(0,0,0,.3)'
+     layoutId='search_bar'
+     onClick={onClose}
+
+      mt='1rem'
+justify='space-between'
+    color='rgba(255,255,255,0.6)'
+
+       alignItems='center' w='full' rounded='full'  h='5rem'  > 
+     <Text 
+    px='3rem'
+     
+     > search here  </Text>
+    <Box   color='white'   mr='3rem' > <IoSearchOutline/> </Box>
+     </Flex>
+     </Link> 
+    <VStack gap="2rem" w="100%"  overflow="auto">
       <Box w="full" position="relative" color="white" h="110%" py="2rem">
         <Swiper
           slidesPerView={"auto"}
@@ -271,6 +299,20 @@ const FilterBox = ({ onClose }: IProps) => {
       </HStack>
 
       <HStack w="100%" color="white" mt="3rem">
+         <Button
+          p="1.5rem"
+          w="100%"
+          px="2rem"
+          bg="rgba(0,0,0,0.1)"
+          color="white"
+          fontSize="1.4rem"
+          rounded="full"
+          gap="1rem"
+          onClick={onClose}
+        >
+          {" "}
+          cancel{" "}
+        </Button>
         <Button
           p="1.5rem"
           w="100%"
@@ -278,7 +320,7 @@ const FilterBox = ({ onClose }: IProps) => {
           bg="white"
           color="black"
           fontSize="1.4rem"
-          rounded="1.2rem"
+          rounded="full"
           gap="1rem"
           onClick={handleApply}
           rightIcon={<MdOutlineDone fontSize="1.5rem" color="green.500" />}
@@ -286,21 +328,9 @@ const FilterBox = ({ onClose }: IProps) => {
           {" "}
           Apply{" "}
         </Button>
-        <Button
-          p="1.5rem"
-          w="100%"
-          px="2rem"
-          bg="rgba(0,0,0,0.4)"
-          color="white"
-          fontSize="1.4rem"
-          rounded="1.2rem"
-          gap="1rem"
-          onClick={onClose}
-        >
-          {" "}
-          cancel{" "}
-        </Button>
+       
       </HStack>
+    </VStack>
     </VStack>
   );
 };

@@ -1,6 +1,7 @@
 "use client";
 import {
   Box,
+  ButtonProps,
   Flex,
   FlexProps,
   IconButton,
@@ -8,36 +9,55 @@ import {
   VStack,
   useDisclosure
 } from "@chakra-ui/react";
-import { AnimatePresence, motion } from "framer-motion";
-import React from "react";
+import { AnimatePresence, motion, useDragControls } from "framer-motion";
+import React, { useRef } from "react";
 import { FaFilter } from "react-icons/fa";
 import { IoFilterOutline } from "react-icons/io5";
+import { TbFilterCog } from "react-icons/tb";
 
-interface IProps extends FlexProps {}
+interface IProps extends ButtonProps {}
 
 const Appendix = ({ ...rest }: IProps) => {
+  const controls = useDragControls();
+  const containerref = useRef<HTMLDivElement | null>(null);
+
   return (
-    <Flex
-      align="center"
-      left="1rem"
-      {...rest}
-      as={motion.div}
-      // initial={{ y: 200 }}
-      // animate={{ y: 0, transition: { bounce: false, duration: 0.4 } }}
-      // exit={{ y: 200 }}
-      _hover={{ scale: 1.1 }}
-    >
-      <IconButton
-        // bg="rgba(0,0,0,0.5)"
-        // backdropFilter="auto"
-        // backdropBlur="10px"
-        rounded="2rem"
+    <>
+    <Box as={motion.div}  ref={containerref} w="fit-content" h="fit-content"
+    
+    rounded="full"
+        position="fixed"
+        right="3rem"
+        bottom="3rem"
+        fontSize="2rem"
         height="5.5rem"
         width="5.5rem"
-        icon={<IoFilterOutline />}
+    >
+    </Box>
+
+      <IconButton
+        as={motion.button}
+        dragConstraints={containerref}
+        drag
+        rounded="full"
+        position="fixed"
+        right="3rem"
+        bottom="3rem"
+        fontSize="2rem"
+        height="5.5rem"
+        width="5.5rem"
+        bg="rgba(255,255,255,.5)"
+        shadow='sm'
+        backdropFilter='auto'
+        
+        backdropBlur='7px'
+        icon={
+          <TbFilterCog /> // backdropBlur="10px" // backdropFilter="auto" // bg="rgba(0,0,0,0.5)"
+        }
         aria-label="filter"
+        {...rest}
       />
-    </Flex>
+    </>
   );
 };
 
