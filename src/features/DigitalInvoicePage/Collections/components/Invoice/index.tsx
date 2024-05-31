@@ -23,6 +23,7 @@ import InvoiceCard from "../InvoiceCard";
 import InvoicePdf from "../InvoicePdf";
 import { appColor } from "@/theme/foundations/colors";
 import { logger } from "@/utils/logger";
+import Toast from "@/components/Toast";
 
 interface InvoiceProps {
   invoiceId: number;
@@ -52,6 +53,7 @@ const Invoice: React.FC<InvoiceProps> = ({
   full_name,
 }) => {
   const { isOpen, onClose, onOpen } = useDisclosure();
+  const toast = useToast();
 
   const onDownloadClicked = async () => {
     const pdf = new jsPDF("portrait", "pt", "a4");
@@ -69,10 +71,20 @@ const Invoice: React.FC<InvoiceProps> = ({
     const marginY = (pageHeight - a4Height) / 2;
 
     pdf.addImage(img, "PNG", marginX, marginY, a4Width, a4Height);
-    if (pdf.save("shipping_label.pdf")) {
-      alert("Pdf downloaded.");
+    if (
+      pdf.save(`Invoice-${invoiceId}-${full_name.split(" ").join("-").toLocaleLowerCase()}.pdf`)
+    ) {
+      toast({
+        status: "error",
+        position: "top",
+        render: () => {
+          return (
+            <Toast type="success" message="Pdf Saved." />
+          );
+        },
+      });
+      onClose();
     }
-    onClose();
   };
 
   return (

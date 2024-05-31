@@ -12,7 +12,6 @@ interface IProps {
 
 export const DigitalInvoicePage = ({ id }: IProps) => {
   const { data, error, isLoading } = useFetchInvoice(id);
-  logger.log("data: ", data);
   if (!data) return null;
   return (
     <Container bg="background" minH="100vh">

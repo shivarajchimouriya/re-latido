@@ -13,6 +13,7 @@ import { API } from "@/resources";
 import { logger } from "@/utils/logger";
 import SizeModuleSection from "../Collections/components/SizeModuleSection";
 import { env } from "@/config/environment";
+import NotFound from "@/components/NotFound";
 
 const getProductDetail = async (id: string) => {
   try {
@@ -30,7 +31,7 @@ export default async function ProductDetail({ productId }: IProps) {
   if (data) {
     productDetail = data?.data?.productDetail;
   }
-  if (!productDetail) return null;
+  if (!productDetail) return <NotFound />;
 
   return (
     <Container>

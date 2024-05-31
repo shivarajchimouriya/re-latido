@@ -35,6 +35,7 @@ const TopRatedProduct = async ({ gender, keyword }: IProps) => {
     queryKey: [queryKeys.TOP_RATED, keyword],
     queryFn: () => getTopRatedProduct({ gender, keyword })
   });
+
   const dehydrated = dehydrate(queryClient);
 
   return (
