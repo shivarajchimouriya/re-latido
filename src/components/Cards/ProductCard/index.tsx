@@ -257,15 +257,12 @@ const ProductCard = ({ product, isFirstCard, ...rest }: IProps) => {
           }}
         >
           <Box w="100%" overflow="hidden" h="100%">
-            <Image
+            <img
               alt={`product-${product.name}  `}
-              blurDataURL={datUrl}
-              placeholder="blur"
               src={product.primary_image}
               height={600}
               width={500}
-              loading="lazy"
-              // quality={100}
+              loading="eager"
               style={{
                 objectFit: "cover",
                 width: "100%",
