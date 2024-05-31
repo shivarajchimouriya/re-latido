@@ -23,7 +23,6 @@ import { useFetchProfile } from "./data/useProfile";
 import Logout from "./features/Logout";
 import { notFound } from "next/navigation";
 import ProfileSkeleton from "./ProfileSkeleton";
-import DefaultLoader from "@/components/DefaultLoader";
 
 export default function ProfilePage() {
   const { data: profileData, isLoading } = useFetchProfile();
@@ -36,7 +35,6 @@ export default function ProfilePage() {
   }
   return (
     <Grid width={"100%"}>
-      <DefaultLoader />
       <Flex
         justifyContent={"start"}
         alignItems={"center"}
