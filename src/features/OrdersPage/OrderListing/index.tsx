@@ -7,7 +7,7 @@ import { useFetchOrders } from "../data/useFetchOrders";
 import { logger } from "@/utils/logger";
 
 interface IProps {
-  isInvoice: boolean;
+  isInvoice?: boolean;
 }
 export default function OrderListing({ isInvoice }: IProps) {
   const { data, error, isLoading } = useFetchOrders();
