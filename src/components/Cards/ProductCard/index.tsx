@@ -1,6 +1,5 @@
-"use client";
 import AppImage from "@/components/AppImage";
-import { collectionImages } from "@/constants/images";
+import { collectionImages, datUrl } from "@/constants/images";
 import ShareBlock from "@/features/ShareBlock";
 import { IProduct } from "@/resources/Product/interface";
 import { logger } from "@/utils/logger";
@@ -32,39 +31,39 @@ interface IProps extends StackProps {
 }
 
 const ProductCard = ({ product, isFirstCard, ...rest }: IProps) => {
-  const [isLongPress, setIsLongPress] = useState(false);
-  const [position, setposition] = useState({ x: 0, y: 0 });
-  const {
-    isOpen: isShareOpen,
-    onClose: onShareClose,
-    onOpen: onShareOpen
-  } = useDisclosure();
+  // const [isLongPress, setIsLongPress] = useState(false);
+  // const [position, setposition] = useState({ x: 0, y: 0 });
+  // const {
+  //   isOpen: isShareOpen,
+  //   onClose: onShareClose,
+  //   onOpen: onShareOpen
+  // } = useDisclosure();
 
-  const bind = useLongPress(
-    (e) => {
-      const event = e as unknown as PointerEvent;
+  // const bind = useLongPress(
+  //   (e) => {
+  //     const event = e as unknown as PointerEvent;
 
-      const x = event.clientX;
-      const y = event.clientY;
-      setposition({ x, y });
-      setIsLongPress(true);
-    },
-    {
-      onStart: (event, meta) => {},
-      onFinish: (event, meta) => {
-        // setIsLongPress(false);
-      },
-      onCancel: (event, meta) => {
-        setIsLongPress(false);
-      },
-      filterEvents: (event) => true, // All events can potentially trigger long press
-      threshold: 1000,
-      captureEvent: true,
-      cancelOnMovement: false,
-      cancelOutsideElement: true,
-      detect: LongPressEventType.Pointer
-    }
-  );
+  //     const x = event.clientX;
+  //     const y = event.clientY;
+  //     // setposition({ x, y });
+  //     // setIsLongPress(true);
+  //   },
+  //   {
+  //     onStart: (event, meta) => {},
+  //     onFinish: (event, meta) => {
+  //       // setIsLongPress(false);
+  //     },
+  //     onCancel: (event, meta) => {
+  //       // setIsLongPress(false);
+  //     },
+  //     filterEvents: (event) => true, // All events can potentially trigger long press
+  //     threshold: 1000,
+  //     captureEvent: true,
+  //     cancelOnMovement: false,
+  //     cancelOutsideElement: true,
+  //     detect: LongPressEventType.Pointer
+  //   }
+  // );
 
   const utilsVariant: Variants = {
     hidden: {
@@ -102,22 +101,22 @@ const ProductCard = ({ product, isFirstCard, ...rest }: IProps) => {
     }
   };
 
-  const router = useRouter();
+  // const router = useRouter();
   const baseURL = typeof window === "undefined" ? "" : window?.location?.host;
 
-  const view = () => {
-    router.push(`/product/details/${product._id}`);
-  };
+  // const view = () => {
+  //   router.push(`/product/details/${product._id}`);
+  // };
 
   return (
     <>
-      <ShareBlock
+      {/* <ShareBlock
         url={`${baseURL}/product/details/${product._id}`}
         title={product.name}
         isOpen={isShareOpen}
         onClose={onShareClose}
-      />
-      <AnimatePresence>
+      /> */}
+      {/* <AnimatePresence>
         {isLongPress && (
           <Box
             as={motion.div}
@@ -224,7 +223,7 @@ const ProductCard = ({ product, isFirstCard, ...rest }: IProps) => {
             </Popover>
           </Box>
         )}
-      </AnimatePresence>
+      </AnimatePresence> */}
       <Link
         href={`/product/details/${product._id}`}
         style={{
@@ -235,7 +234,7 @@ const ProductCard = ({ product, isFirstCard, ...rest }: IProps) => {
         }}
       >
         <VStack
-          as={motion.div}
+          // as={motion.div}
           position="relative"
           w="97vw"
           transitionDuration='.4s'
@@ -244,13 +243,13 @@ const ProductCard = ({ product, isFirstCard, ...rest }: IProps) => {
           rounded=".5rem"
           overflow="hidden"
           bg="rgba(0,0,0,0.03)"
-          onContextMenu={(event) => {
-            event.preventDefault();
-            event.stopPropagation();
-            return false;
-          }}
-          {...rest}
-          {...bind()}
+          // onContextMenu={(event) => {
+          //   event.preventDefault();
+          //   event.stopPropagation();
+          //   return false;
+          // }}
+          // {...rest}
+          // {...bind()}
           scrollSnapAlign="start"
           scrollSnapStop={"always"}
           style={{
@@ -260,6 +259,8 @@ const ProductCard = ({ product, isFirstCard, ...rest }: IProps) => {
           <Box w="100%" overflow="hidden" h="100%">
             <Image
               alt={`product-${product.name}  `}
+              blurDataURL={datUrl}
+              placeholder="blur"
               src={product.primary_image}
               height={600}
               width={500}
