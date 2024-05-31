@@ -95,6 +95,8 @@ body {
   border-radius: 4px;
   text-transform: uppercase;
   font-weight: bold;
+  display: grid;
+  place-items: center;
 }
 .secondary-button {
   border: 1px solid var(--black);

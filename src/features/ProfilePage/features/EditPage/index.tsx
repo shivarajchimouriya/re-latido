@@ -37,9 +37,10 @@ import { logger } from "@/utils/logger";
 import { useFetchProfile, useUpdateProfile } from "../../data/useProfile";
 import { profile } from "console";
 import { IUserProfile } from "@/resources/User/interface";
+import EditSkeleton from "@/app/(secondary)/profile/edit/loading";
 const EditPage = () => {
   const { isOpen, onClose, onOpen } = useDisclosure();
-const {data}=useFetchProfile();
+const {data,isLoading}=useFetchProfile();
    const {mutate,isPending,mutateAsync}=useUpdateProfile()
 const profileData=data?.data;
   const {
@@ -92,7 +93,7 @@ const profileData=data?.data;
   };
   const genders: Array<"Male" | "Female"> = ["Male", "Female"];
 
-  logger.log("errorr", errors);
+  if(isLoading || !data) return <EditSkeleton/>
   return (
     <VStack w="100%" p="1rem">
       <Box position="relative" m="3rem">

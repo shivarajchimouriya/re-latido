@@ -8,17 +8,18 @@ import { API } from "@/resources";
 import { logger } from "@/utils/logger";
 import { Metadata } from "next";
 import { env } from "@/config/environment";
+import ProfileSkeleton from "@/features/ProfilePage/ProfileSkeleton";
+import { notFound } from "next/navigation";
 
 export const generateStaticParams = async () => {
   const res = await API.Product.getAll({ params: { limit: 1000, page: 1 } });
   const allProducts = res.data.data;
-  return allProducts.slice(0, 35).map(el => {
+  return allProducts.slice(0, 35).map((el) => {
     return {
-      productId: el._id
+      productId: el._id,
     };
   });
 };
-
 
 const getProductDetail = async (id: string) => {
   try {
@@ -29,34 +30,25 @@ const getProductDetail = async (id: string) => {
   }
 };
 
-
-export const generateMetadata=async({params}:IProps):Promise<Metadata>=>{
+export const generateMetadata = async ({
+  params,
+}: IProps): Promise<Metadata> => {
   const res = await getProductDetail(params.productId);
-if(!res){
+  if (!res || !res?.data?.productDetail) notFound();
   return {
-
-  }
-}
-  return {
-    openGraph:{
-      images:[res?.data.productDetail.primary_image],
-      type:"website",
-      description:res.data.productDetail.description,
-      url:`${env.SITE_URL}/product/details/${params.productId}`,
-      locale:"nepali",
-
+    openGraph: {
+      images: [res?.data.productDetail.primary_image],
+      type: "website",
+      description: res.data.productDetail.description,
+      url: `${env.SITE_URL}/product/details/${params.productId}`,
+      locale: "nepali",
     },
-    title:res.data.productDetail.name,
-    description:res.data.productDetail.description,
-    authors:[{name:res.data.productDetail.added_by ?? ""}],
-    category:res.data.productDetail.category.title,
-    
-
-  }
-
-
-
-}
+    title: res.data.productDetail.name,
+    description: res.data.productDetail.description,
+    authors: [{ name: res.data.productDetail.added_by ?? "" }],
+    category: res.data.productDetail.category.title,
+  };
+};
 
 export default function ProductDetail({ params }: IProps) {
   return (

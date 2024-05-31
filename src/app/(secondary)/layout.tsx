@@ -1,3 +1,4 @@
+import DefaultLoader from "@/components/DefaultLoader";
 import ProtectedLayout from "@/components/Layout/ProtectedLayout";
 import SecondaryLayout from "@/components/Layout/SecondaryLayout";
 import AuthProvider from "@/providers/AuthProvider";

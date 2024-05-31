@@ -4,16 +4,17 @@ import { HStack, Text } from "@chakra-ui/react";
 interface IProps {
   icon?: React.ReactNode;
   message: string;
+  type?: string;
 }
 
-export default function Toast({ icon, message }: IProps) {
+export default function Toast({ icon, message, type }: IProps) {
   return (
     <HStack
       h="4rem"
       shadow="2xl"
       justify="center"
       border="thin"
-      bg="rgba(255, 69, 69, 0.5)"
+      bg={type === "success" ? "rgba(92, 184, 92, 0.8)":"rgba(255, 69, 69, 0.5)"}
       backdropFilter={"auto"}
       backdropBlur={"4px"}
       rounded={"1rem"}
