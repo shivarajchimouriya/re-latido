@@ -264,6 +264,7 @@ const ProductCard = ({ product, isFirstCard, ...rest }: IProps) => {
               src={product.primary_image}
               height={600}
               width={500}
+              loading="lazy"
               // quality={100}
               style={{
                 objectFit: "cover",
