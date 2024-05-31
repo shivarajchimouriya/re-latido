@@ -1,14 +1,15 @@
 import CardLoader from "@/components/CardLoader";
+import ProductCard from "@/components/Cards/ProductCard";
 import ScrollProvider from "@/providers/ScrollProvider";
 import { IProduct } from "@/resources/Product/interface";
 import { VStack } from "@chakra-ui/react";
 import dynamic from "next/dynamic";
 import React from "react";
-const ProductCard = dynamic(() => import("@/components/Cards/ProductCard"), {
-  ssr: true,
+// const ProductCard = dynamic(() => import("@/components/Cards/ProductCard"), {
+//   ssr: true,
 
-  loading: () => <CardLoader />
-});
+//   loading: () => <CardLoader />
+// });
 interface IProps {
   products: IProduct[];
 }
