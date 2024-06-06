@@ -11,7 +11,7 @@ import {
   InputGroup,
   useToast,
   HStack,
-  Icon
+  Icon,
 } from "@chakra-ui/react";
 import React from "react";
 import { useForm } from "react-hook-form";
@@ -30,15 +30,14 @@ import PasswordField from "@/components/Form/PasswordField/index.";
 import { useLoader } from "@/hooks/client/useLoader";
 import { configureAmplify } from "@/config/awsConfig";
 import Link from "next/link";
+import LoginSkeleton from "./LoginSkeleton";
 
 interface IProps {
   userName: string;
 }
 
-class ErrorWithMessage{
-  constructor(private message:string){
-
-  }
+class ErrorWithMessage {
+  constructor(private message: string) {}
 }
 
 const Login = ({ userName }: IProps) => {
@@ -46,27 +45,36 @@ const Login = ({ userName }: IProps) => {
     handleSubmit,
     register,
     setError,
-    formState: { errors, isSubmitting }
+    formState: { errors, isSubmitting },
   } = useForm<ISigninForm>({
-    resolver: zodResolver(signInFormSchema)
+    resolver: zodResolver(signInFormSchema),
   });
 
   const toast = useToast();
   const router = useRouter();
-  const {isLoading,startLoading,stopLoading}=   useLoader()
+  const { isLoading, startLoading, stopLoading } = useLoader();
   const login = async (data: ISigninForm) => {
-    startLoading()
+    startLoading();
     try {
       const res = await signIn({
         username: userName,
-        password: data.passoword
+        password: data.passoword,
       });
-      logger.log("success");
-      router.push("/");
+      if (res?.isSignedIn) {
+        const productUrl = sessionStorage.getItem("productUrl");
+        if (productUrl) {
+          router.replace(productUrl);
+          sessionStorage.removeItem("productUrl");
+        } else {
+          router.replace("/");
+        }
+      } else {
+        router.replace("/");
+      }
     } catch (err) {
-      logger.log("eror",err)
-      
-     let message="username or password is incorrect"
+      logger.log("eror", err);
+
+      let message = "username or password is incorrect";
 
       setError("passoword", { message });
       // toast({
@@ -90,14 +98,13 @@ const Login = ({ userName }: IProps) => {
       //     );
       //   }
       // });
-    }
-    finally{
-      stopLoading()
+    } finally {
+      stopLoading();
     }
   };
 
   const { isOpen, onClose, onToggle } = useDisclosure();
-  const hasError=!!errors.passoword?.message
+  const hasError = !!errors.passoword?.message;
   return (
     <AuthProvider>
       <VStack
@@ -112,17 +119,24 @@ const Login = ({ userName }: IProps) => {
           Login
         </Text>
         <Text fontSize="1.2rem" color="#707580">
-          Hi  <Text as='span'  fontWeight='semibold' > {userName} </Text> , you already have an account here, please fill in the password
-          to login to Latido
+          Hi{" "}
+          <Text as="span" fontWeight="semibold">
+            {" "}
+            {userName}{" "}
+          </Text>{" "}
+          , you already have an account here, please fill in the password to
+          login to Latido
         </Text>
         <VStack w="full">
-          <FormControl w="full" isInvalid={hasError} >
-            <PasswordField  label="password"  
-                variant={ hasError?"error": "underline"}
-                id="password"
-                fontSize="1.4rem"
-                error={errors.passoword?.message}
-                {...register("passoword")}  />
+          <FormControl w="full" isInvalid={hasError}>
+            <PasswordField
+              label="password"
+              variant={hasError ? "error" : "underline"}
+              id="password"
+              fontSize="1.4rem"
+              error={errors.passoword?.message}
+              {...register("passoword")}
+            />
           </FormControl>
           <Text
             w="full"
@@ -131,13 +145,11 @@ const Login = ({ userName }: IProps) => {
             fontSize="1.2rem"
             mt="1rem"
           >
-<Link href='/auth/forget-password'    >
-            forget password?
-          </Link>
+            <Link href="/auth/forget-password">forget password?</Link>
           </Text>
         </VStack>
 
-        <Button variant="submit" type="submit" isLoading={isLoading} >
+        <Button variant="submit" type="submit" isLoading={isLoading}>
           proceed
         </Button>
       </VStack>
