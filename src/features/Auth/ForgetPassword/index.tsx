@@ -28,15 +28,13 @@ const ForgetPassword = () => {
     startLoading();
     try {
       const res = await resetPassword({ username: data.username });
-      logger.log("res", res);
-      router.push("/auth/forget-password/confirm");
+      router.replace("/auth/forget-password/confirm");
     } catch (error) {
       logger.log("Error", error);
     } finally {
       stopLoading();
     }
   };
-  logger.log(errors);
   return (
     <VStack w="full" p="1rem" align="start">
       <Text fontSize="3xl" fontWeight="bold">
