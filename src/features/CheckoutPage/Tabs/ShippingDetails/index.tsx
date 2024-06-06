@@ -43,12 +43,11 @@ const {token}=useGetTokens()
   const validatePhone=(phone:string)=>{
     try{
     const phoneUtil = PhoneNumberUtil.getInstance();
-     const isValid= phoneUtil.isValidNumber(phoneUtil.parseAndKeepRawInput(phone))
+      return phoneUtil.isValidNumber(phoneUtil.parseAndKeepRawInput(phone))
     }
     
    catch(err){
       setError("phone",{ message: 'phone number is invalid'});
-      return 
      }
 
 
@@ -57,7 +56,10 @@ const {token}=useGetTokens()
 const onSubmit=async(data:IForm)=>{
 
   const phone=data.phone;
-  validatePhone(phone);
+  const validPhone = validatePhone(phone);
+  if (!validPhone) {
+    return;
+  }
   const checkoutData=localStorage.getItem("checkout");
   if(!checkoutData || !token){
     return 
