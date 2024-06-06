@@ -1,6 +1,4 @@
 "use client";
-import { API } from "@/resources";
-import { logger } from "@/utils/logger";
 import {
   Box,
   Button,
@@ -30,13 +28,11 @@ const Entry = () => {
   const router = useRouter();
   const { mutateAsync, isPending } = useUserrCheck();
   const onSubmit: SubmitHandler<IFormValues> = async data => {
-    logger.log("data", data);
     try {
       const res = await mutateAsync({ username: data.username });
-      logger.log("res", res);
-      router.push(`/auth/login?username=${data.username}`);
+      router.replace(`/auth/login?username=${data.username}`);
     } catch (error) {
-      router.push(`/auth/signup?username=${data.username}`);
+      router.replace(`/auth/signup?username=${data.username}`);
     }
   };
 

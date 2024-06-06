@@ -81,29 +81,24 @@ export default function SizeSelector({
   const toast = useToast();
   const [price, setPrice] = useState<number>();
   const [sizeRangeId, setSizeRangeId] = useState<string>();
-  const newUrlSearchParams = new URLSearchParams(params);
 
   useEffect(() => {
     const elementThatMatches = intersection?.find((el) => {
       return el?.attributes?.output === fitData?.[0]?.size;
     });
 
-    const parametersToWatch = ["srid", "s", "p", "currency"];
-    if (!elementThatMatches) {
-      parametersToWatch.forEach((para) => {
-        if (newUrlSearchParams.has(para)) {
-          newUrlSearchParams.delete(para);
-        }
-      });
-    } else {
-      setPrice(elementThatMatches?.price?.price?.[0]?.value);
-      setSizeRangeId(elementThatMatches?.price._id);
-    }
-    if (activeFit) {
-      newUrlSearchParams.set("fit", activeFit);
-    }
-    router.push(`?${newUrlSearchParams}`, { scroll: false });
+    setPrice(elementThatMatches?.price?.price?.[0]?.value);
+    setSizeRangeId(elementThatMatches?.price._id);
   }, [fitData]);
+
+  useEffect(() => {
+    if (activeFit) {
+      const newUrlSearchParams = new URLSearchParams(params);
+      newUrlSearchParams.set("fit", activeFit);
+      router.replace(`?${newUrlSearchParams}`, { scroll: false });
+    }
+  }, [activeFit]);
+
   const intersection = recommendation?.map((el) => {
     if (sizeRange.has(el.attributes.output)) {
       return {
@@ -137,6 +132,7 @@ export default function SizeSelector({
               const selected = node?.attributes?.output === fitData?.[0]?.size;
               return (
                 <SizeCard
+                  key={i}
                   recommendedSize={recommendedSize}
                   selected={selected}
                   onClick={() =>

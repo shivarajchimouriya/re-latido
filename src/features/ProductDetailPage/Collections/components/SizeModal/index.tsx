@@ -1,5 +1,5 @@
 "use client";
-import React, { useRef, useState } from "react";
+import React, { useState } from "react";
 import {
   Box,
   Button,
@@ -16,17 +16,13 @@ import {
 import Wheel from "../Wheel/index";
 import { appColor } from "@/theme/foundations/colors";
 import { ISizeDetails } from "../SizeModuleSection";
+import { useSearchParams } from "next/navigation";
 
 interface IProps {
   isOpen: boolean;
   onClose: () => void;
   heightOptions: string[];
-  findHeight?: (index: number) => string;
-  productName?: string;
-  productId?: string;
-  setSizeDetails?: (prev: any) => void;
-  sizeDetailSubmit?: () => void;
-  sizeDetails?: ISizeDetails;
+  sizeDetailSubmit: (height: string, weight: string, age: string) => void;
 }
 
 interface IScrollValues {
@@ -53,31 +49,35 @@ export default function SizeModal({
   isOpen,
   onClose,
   heightOptions,
-  findHeight,
-  productId,
-  setSizeDetails,
   sizeDetailSubmit,
-  sizeDetails
 }: IProps) {
+  const searchParams = useSearchParams();
+
+  const urlAge = searchParams.get("age");
+  const urlHeight = searchParams.get("height");
+  const urlWeight = searchParams.get("weight");
+
+  const [height, setHeight] = useState<string | null>(urlHeight || null);
+  const [weight, setWeight] = useState<string | null>(urlWeight || null);
+  const [age, setAge] = useState<string | null>(urlAge || null);
+
   const onAgeChange = (val: any) => {
-    setSizeDetails &&
-      setSizeDetails((prev: ISizeDetails) => {
-        return { ...prev, age: val.abs.toString() };
-      });
+    setAge(val.abs.toString());
   };
   const onHeightChange = (val: any) => {
     const height = heightOptions[val.abs];
-    const formatedHeight = height.replace(/[d']/g, ".").replace(/[d"]/g, "");
-    setSizeDetails &&
-      setSizeDetails((prev: ISizeDetails) => {
-        return { ...prev, height: formatedHeight };
-      });
+    const formattedHeight = height.replace(/[d']/g, ".").replace(/[d"]/g, "");
+    setHeight(formattedHeight.toString());
   };
   const onWeightChange = (val: any) => {
-    setSizeDetails &&
-      setSizeDetails((prev: ISizeDetails) => {
-        return { ...prev, weight: val.abs.toString() };
-      });
+    setWeight(val.abs.toString());
+  };
+
+  const handleSizeSubmit = () => {
+    if (!height || !weight || !age) {
+      return null;
+    }
+    sizeDetailSubmit(height, weight, age);
   };
 
   return (
@@ -109,7 +109,7 @@ export default function SizeModal({
               <Box width={40} height={"20rem"}>
                 <Wheel
                   onChange={onAgeChange}
-                  default={Number(sizeDetails?.age)||24}
+                  default={Number(age) || 24}
                   label="Age"
                   length={200}
                   width={40}
@@ -117,7 +117,13 @@ export default function SizeModal({
               </Box>
               <Box width={40} height={"20rem"}>
                 <Wheel
-                  default={heightOptions.indexOf(sizeDetails?.height.split(".").join("'")+'"' ||`5'5"`) || 50}
+                  default={
+                    (height &&
+                      heightOptions.indexOf(
+                        height.split(".").join("'") + '"' || `5'5"`
+                      )) ||
+                    50
+                  }
                   label="Height"
                   length={104}
                   width={40}
@@ -127,7 +133,7 @@ export default function SizeModal({
               </Box>
               <Box width={40} height={"20rem"}>
                 <Wheel
-                  default={Number(sizeDetails?.weight)||70}
+                  default={Number(weight) || 70}
                   label="Weight"
                   onChange={onWeightChange}
                   length={200}
@@ -144,7 +150,7 @@ export default function SizeModal({
               className="primary-button"
               w={"full"}
               type="submit"
-              onClick={sizeDetailSubmit}
+              onClick={handleSizeSubmit}
             >
               Submit
             </Button>

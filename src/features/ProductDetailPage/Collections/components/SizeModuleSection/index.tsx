@@ -1,6 +1,6 @@
 "use client";
 import { logger } from "@/utils/logger";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import FitSelection from "../FitSelection";
 import ButtonComponent from "../Button";
 import SizeModal from "../SizeModal";
@@ -8,7 +8,7 @@ import { useDisclosure, useToast } from "@chakra-ui/react";
 import { FIT_ENUM } from "../SizeModal/FitEnums";
 import { useGetNodesLazyQuery } from "@/GraphQl/Generated/graphql";
 import SizeSelector from "../SizeSelector";
-import { useSearchParams, useRouter } from "next/navigation";
+import { useSearchParams, useRouter, usePathname } from "next/navigation";
 import { useBuy } from "./data/useBuy";
 import { useGetTokens } from "@/hooks/client/useGetToken";
 import SizeRecommendationLoader from "../SizeRecommendationLoader";
@@ -19,23 +19,6 @@ export interface ISizeDetails {
   age: string;
   height: string;
   weight: string;
-}
-
-interface RenderSizeRecommendationProps {
-  nodeData?: {
-    nodes?: {
-      data: any[];
-    };
-  };
-  nodeQueryLoading: boolean;
-  productId: string;
-  heightOptionsValues: any[];
-  setSizeDetails: (sizeDetails: any) => void;
-  sizeDetailSubmit: () => void;
-  onOpen: () => void;
-  range?: number[];
-  fitData?: any;
-  handleBuyClick: (sizeRecommendation: any) => void;
 }
 
 export default function SizeModuleSection({
@@ -72,12 +55,6 @@ export default function SizeModuleSection({
   const [heightOptionsValues, setHeightOptionsValues] = useState<string[]>([]);
   const [selectedFit, setSelectedFit] = useState(urlFit || "General");
   const [selectedSpecs, setSelectedSpecs] = useState<any>();
-
-  const [sizeDetails, setSizeDetails] = useState<ISizeDetails>({
-    height: urlHeight || "4.11",
-    weight: urlWeight || "60",
-    age: urlAge || "24",
-  });
 
   const heightOptions = () => {
     const height = [];
@@ -224,31 +201,28 @@ export default function SizeModuleSection({
     });
   };
 
-  const variables = [
-    { key: "age", value: sizeDetails.age.toString() },
-    { key: "height", value: sizeDetails.height },
-    { key: "weight", value: sizeDetails.weight.toString() },
-  ];
-
   const queryNodeValues = {
     product: productName,
-    Weight: sizeDetails.weight.toString(),
-    Height: sizeDetails.height.toString(),
+    Weight: urlWeight?.toString(),
+    Height: urlHeight?.toString(),
     Fit: selectedFit || "General",
     Gender: "male",
-    Age: sizeDetails?.age.toString(),
+    Age: urlAge?.toString(),
   };
 
-  const sizeDetailSubmit = () => {
-    const sizeQuery = new URLSearchParams(searchParams);
-    variables.forEach((el) => {
-      if (sizeQuery.has(el.key)) {
-        sizeQuery.set(el.key, el.value);
-      } else {
-        sizeQuery.append(el.key, el.value);
-      }
-    });
-    router.push(`?${sizeQuery}`, { scroll: false });
+  const sizeDetailSubmit = (height: string, weight: string, age: string) => {
+    const sizeQuery = new URLSearchParams(searchParams.toString());
+
+    if (!urlAge || !urlHeight || !urlWeight) {
+      sizeQuery.append("height", height);
+      sizeQuery.append("weight", weight);
+      sizeQuery.append("age", age);
+    } else {
+      sizeQuery.set("height", height);
+      sizeQuery.set("weight", weight);
+      sizeQuery.set("age", age);
+    }
+    router.replace(`?${sizeQuery.toString()}`, { scroll: false });
     getNodesCall(queryNodeValues);
     getMultipleNodesCall(queryNodeValues);
     onClose();
@@ -300,6 +274,7 @@ export default function SizeModuleSection({
   const { mutateAsync, isPending } = useBuy();
   const handleBuyClick = async (price: number, srid: string) => {
     if (!token) {
+      sessionStorage.setItem("productUrl", window?.location?.href);
       router.push("/auth");
       return;
     }
@@ -327,6 +302,8 @@ export default function SizeModuleSection({
       total_amount: price,
       origin: PWA,
     };
+
+    logger.log("payload: ", payload);
 
     let hasURLPropError = false;
 
@@ -357,8 +334,8 @@ export default function SizeModuleSection({
       try {
         const res = await mutateAsync({ data: payload, token });
         localStorage.setItem("checkout", JSON.stringify(res?.data));
-        // router.push("/checkout");
-        window.location.href = "/checkout";
+        router.push("/checkout");
+        // window.history.pushState({}, "", "/checkout");
       } catch (error) {
         logger.error(error);
       }
@@ -397,7 +374,7 @@ export default function SizeModuleSection({
             sizeRange={range}
             onOpen={onOpen}
             activeFit={selectedFit}
-            fitData={fitData}
+            fitData={fitData ? fitData : null}
             recommendation={nodeData?.nodes?.data}
             handleBuyClick={handleBuyClick}
             handleSizeCardClick={handleSizeCardClick}
@@ -410,30 +387,17 @@ export default function SizeModuleSection({
           {!urlAge || !urlHeight || !urlWeight || nodeQueryLoading ? null : (
             <SizeRecommendationNotFound />
           )}
-          <ButtonComponent
-            productId={productId}
-            heightOptionsValues={heightOptionsValues}
-            setSizeDetails={setSizeDetails}
-            sizeDetailSubmit={sizeDetailSubmit}
-            onOpen={onOpen}
-          />
+          <ButtonComponent onOpen={onOpen} />
         </>
       ) : (
-        <ButtonComponent
-          productId={productId}
-          heightOptionsValues={heightOptionsValues}
-          setSizeDetails={setSizeDetails}
-          sizeDetailSubmit={sizeDetailSubmit}
-          onOpen={onOpen}
-        />
+        <ButtonComponent onOpen={onOpen} />
       )}
       <SizeModal
         heightOptions={heightOptionsValues}
-        productId={productId}
         isOpen={isOpen}
         onClose={onClose}
-        setSizeDetails={setSizeDetails}
-        sizeDetails={sizeDetails}
+        // setSizeDetails={setSizeDetails}
+        // sizeDetails={sizeDetails}
         sizeDetailSubmit={sizeDetailSubmit}
       />
     </>

@@ -70,7 +70,7 @@ export default function ProductImage({
             {images?.map((image: string, index: number) => (
               <SwiperSlide key={image}>
                 <Box width={"full"} bg="white">
-                  <img
+                  <AppImage
                     src={image}
                     height={300 * 1.5}
                     width={1000}
@@ -90,7 +90,7 @@ export default function ProductImage({
         height={"100%"}
         overflowX={"scroll"}
         justifyContent={images?.length > 5 ??0 ? "auto" : "center"}
-        className="product_images" 
+        className="product_images"
       >
         <div style={{ display: "flex", gap: "1rem" }} className="product_images"  >
           {images?.map((image: string, index: number) => (

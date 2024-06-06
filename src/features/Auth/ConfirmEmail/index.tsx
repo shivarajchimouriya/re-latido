@@ -27,13 +27,12 @@ const ConfirmEmail = ({ username }: IProps) => {
   const { register, handleSubmit, setValue } = useForm<IForm>();
   const router = useRouter();
   const onSubmit = async (data: IForm) => {
-    logger.log("data", data);
     try {
       await confirmSignUp({
         confirmationCode: data.input,
         username: username
       });
-      router.push(`/auth/`);
+      router.replace(`/auth/`);
     } catch (err) {
       logger.log("error", err);
     }
