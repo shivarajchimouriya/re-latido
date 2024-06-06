@@ -36,14 +36,17 @@ export default function LeatherSelection({ urlPrefix, productDetail }: IProps) {
     const productSpecsId = values.product_specification_id;
 
     if (lid === leatherId && psid === productSpecsId) {
-      return;
+      return null;
     }
     const changeSearchParam = new URLSearchParams(searchParams.toString());
 
     changeSearchParam.set("lid", leatherId);
     changeSearchParam.set("psid", productSpecsId);
-
-    router.replace(`?${changeSearchParam.toString()}`,{scroll:false});
+    if (!leatherId || !productSpecsId) {
+      router.replace(`?${changeSearchParam.toString()}`, { scroll: true });
+    } else {
+      router.replace(`?${changeSearchParam.toString()}`, { scroll: true });
+    }
   };
   return (
     <Box width="100%">
