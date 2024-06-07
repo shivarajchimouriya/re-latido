@@ -21,9 +21,12 @@ import dayjs from "dayjs";
 import { env } from "@/config/environment";
 import { useGetTokens } from "@/hooks/client/useGetToken";
 import { logger } from "@/utils/logger";
+import useHandleErrorToast from "@/hooks/client/useAppToast";
+
 
 const PaymentDetails = () => {
-    const {mutateAsync}=   usefetchPaymentLog()
+  const handleErrorToast = useHandleErrorToast();
+    const {mutateAsync, isPending}=   usefetchPaymentLog()
   const [data, setdata] = useState<IOrderData | null>(null);
  const {token}=  useGetTokens()
   useEffect(() => {
@@ -67,7 +70,7 @@ try {
   }
   
 } catch (error) {
-  
+  handleErrorToast(error)
 }
 
 }
@@ -81,6 +84,9 @@ try {
 
       <VStack w="full" shadow="md" bg="white" fontSize="1.2rem" rounded="md">
         {keyVals.map(el => {
+          console.log(
+            "el: ", el
+          )
           return (
             <Flex
               w="full"
@@ -102,6 +108,8 @@ try {
         mt="3rem"
         p="1rem"
         w="100%"
+        disabled={isPending ? true : false}
+        opacity={isPending ? 0.6 : 1}
         textTransform="uppercase"
         border="1px solid black"
         rounded="md"

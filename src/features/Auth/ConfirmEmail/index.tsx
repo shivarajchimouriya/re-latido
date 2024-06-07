@@ -13,12 +13,14 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import { confirmSignUp } from "aws-amplify/auth";
 import { useRouter } from "next/navigation";
+import useHandleErrorToast from "@/hooks/client/useAppToast";
 
 interface IProps {
   username: string;
 }
 
 const ConfirmEmail = ({ username }: IProps) => {
+  const handleErrorToast = useHandleErrorToast();
   const fields = [1, 2, 3, 4, 5, 6];
 
   interface IForm {
@@ -34,6 +36,7 @@ const ConfirmEmail = ({ username }: IProps) => {
       });
       router.replace(`/auth/`);
     } catch (err) {
+      handleErrorToast(err)
       logger.log("error", err);
     }
   };

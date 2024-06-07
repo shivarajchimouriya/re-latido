@@ -2,35 +2,23 @@
 import {
   VStack,
   FormControl,
-  FormLabel,
-  Input,
   Button,
   Text,
-  InputRightElement,
   useDisclosure,
-  InputGroup,
   useToast,
-  HStack,
-  Icon,
 } from "@chakra-ui/react";
 import React from "react";
 import { useForm } from "react-hook-form";
-import { register } from "swiper/element";
-import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
 import { signIn } from "aws-amplify/auth";
 import AuthProvider from "@/providers/AuthProvider";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ISigninForm, signInFormSchema } from "./schema";
-import { ISignupForm } from "../Signup/schema";
-import { logger } from "@/utils/logger";
 import { useRouter } from "next/navigation";
-import { CgClose } from "react-icons/cg";
-import { unknown } from "zod";
 import PasswordField from "@/components/Form/PasswordField/index.";
 import { useLoader } from "@/hooks/client/useLoader";
-import { configureAmplify } from "@/config/awsConfig";
 import Link from "next/link";
-import LoginSkeleton from "./LoginSkeleton";
+import useHandleErrorToast from "@/hooks/client/useAppToast";
+import Toast from "@/components/Toast";
 
 interface IProps {
   userName: string;
@@ -41,6 +29,7 @@ class ErrorWithMessage {
 }
 
 const Login = ({ userName }: IProps) => {
+  const handleErrorToast = useHandleErrorToast();
   const {
     handleSubmit,
     register,
@@ -61,6 +50,19 @@ const Login = ({ userName }: IProps) => {
         password: data.passoword,
       });
       if (res?.isSignedIn) {
+        toast({
+          position: "top",
+          duration: 3000,
+          render: ({ onClose }) => {
+            return (
+              <Toast
+                status="success"
+                onClose={onClose}
+                message={"Login successful."}
+              />
+            );
+          },
+        });
         const productUrl = sessionStorage.getItem("productUrl");
         if (productUrl) {
           router.replace(productUrl);
@@ -72,32 +74,7 @@ const Login = ({ userName }: IProps) => {
         router.replace("/");
       }
     } catch (err) {
-      logger.log("eror", err);
-
-      let message = "username or password is incorrect";
-
-      setError("passoword", { message });
-      // toast({
-      //   status: "error",
-      //   position: "top",
-      //   render: props => {
-      //     return (
-      //       <HStack
-      //         w="full"
-      //         h="4rem"
-      //         shadow="2xl"
-      //         justify="center"
-      //         border="thin"
-      //         bg="white"
-      //       >
-      //         <CgClose />
-      //         <Text color="red" fontSize="1.3rem" fontWeight="semibold">
-      //           User name or password is incorrect{" "}
-      //         </Text>
-      //       </HStack>
-      //     );
-      //   }
-      // });
+      handleErrorToast(err);
     } finally {
       stopLoading();
     }

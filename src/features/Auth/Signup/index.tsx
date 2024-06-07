@@ -38,6 +38,8 @@ import { dateToMonthDayYear } from "@/utils/date";
 import DetailsForm from "./DetailsForm";
 import PasswordForm from "./PasswordForm";
 import { useRouter } from "next/navigation";
+import useHandleErrorToast from "@/hooks/client/useAppToast";
+
 interface IForm {
   full_name: string;
   address: string;
@@ -52,6 +54,7 @@ interface IProps {
 }
 
 const Signup = ({ username }: IProps) => {
+  const handleErrorToast = useHandleErrorToast();
   const router = useRouter();
   const methods = useForm<ISignupForm>({
     resolver: zodResolver(signupSchema),
@@ -96,7 +99,9 @@ const Signup = ({ username }: IProps) => {
       });
       logger.log("sign up data", res);
       router.push(`/auth/confirm-email?username=${username}`);
-    } catch (err) {}
+    } catch (err) {
+      handleErrorToast(err)
+    }
   };
 
   const changeView = (view: number) => {

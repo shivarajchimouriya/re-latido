@@ -15,8 +15,10 @@ import { IForgetPasswordForm, forgetPasswordSchema } from "./schema";
 import { logger } from "@/utils/logger";
 import { useRouter } from "next/navigation";
 import { useLoader } from "@/hooks/client/useLoader";
+import useHandleErrorToast from "@/hooks/client/useAppToast";
 
 const ForgetPassword = () => {
+  const handleErrorToast = useHandleErrorToast();
   const { register, handleSubmit, formState: { errors } } = useForm<
     IForgetPasswordForm
   >({
@@ -30,6 +32,7 @@ const ForgetPassword = () => {
       const res = await resetPassword({ username: data.username });
       router.replace("/auth/forget-password/confirm");
     } catch (error) {
+      handleErrorToast(error)
       logger.log("Error", error);
     } finally {
       stopLoading();
