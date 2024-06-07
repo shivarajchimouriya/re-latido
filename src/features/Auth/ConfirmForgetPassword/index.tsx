@@ -8,44 +8,44 @@ import {
   Text,
   FormControl,
   FormLabel,
-  Box
+  Box,
 } from "@chakra-ui/react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import React from "react";
 import { useForm } from "react-hook-form";
 import {
   IConfirmForgetPasswordForm,
-  confirmForgetPasswordSchema
+  confirmForgetPasswordSchema,
 } from "./schema";
 import PasswordField from "@/components/Form/PasswordField/index.";
 import { logger } from "@/utils/logger";
-import {confirmResetPassword} from 'aws-amplify/auth'
+import { confirmResetPassword } from "aws-amplify/auth";
+import useHandleErrorToast from "@/hooks/client/useAppToast";
+
 const ConfirmForgetPassword = () => {
+  const handleErrorToast = useHandleErrorToast();
   const fields = [1, 2, 3, 4, 5, 6];
 
-  const { formState: { errors }, register, setValue, handleSubmit } = useForm<
-    IConfirmForgetPasswordForm
-  >({ resolver: zodResolver(confirmForgetPasswordSchema) });
-logger.log('errors',errors)
-  const onSubmit = async(data: IConfirmForgetPasswordForm) => {
-
-
-try {
-    const res=await  confirmResetPassword({
-        confirmationCode:data.pin,
-        newPassword:data.new_password,
-        username:'messi'
-    })
-} catch (error) {
-    
-}
-
-
-
+  const {
+    formState: { errors },
+    register,
+    setValue,
+    handleSubmit,
+  } = useForm<IConfirmForgetPasswordForm>({
+    resolver: zodResolver(confirmForgetPasswordSchema),
+  });
+  logger.log("errors", errors);
+  const onSubmit = async (data: IConfirmForgetPasswordForm) => {
+    try {
+      const res = await confirmResetPassword({
+        confirmationCode: data.pin,
+        newPassword: data.new_password,
+        username: "messi",
+      });
+    } catch (error) {
+      handleErrorToast(error);
+    }
   };
-
-
-
 
   return (
     <VStack w="full" p="1rem">
@@ -60,41 +60,48 @@ try {
         onSubmit={handleSubmit(onSubmit)}
       >
         <Box>
-         <FormControl>
+          <FormControl>
             <FormLabel>Enter the OTP</FormLabel>
-        <HStack mt="1rem">
+            <HStack mt="1rem">
+              <PinInput
+                onComplete={(val) => setValue("pin", val)}
+                type="number"
+                colorScheme="black"
+                errorBorderColor="error"
+                otp
+              >
+                {fields.map((el) => {
+                  return (
+                    <PinInputField
+                      display="flex"
+                      justifyContent="center"
+                      alignItems="center"
+                      border="1px solid black"
+                      fontSize="2rem"
+                      w="full"
+                      h="50px"
+                      textAlign="center"
+                      key={el}
+                    />
+                  );
+                })}
+              </PinInput>
+            </HStack>
 
-          <PinInput
-            onComplete={val => setValue("pin", val)}
-            type="number"
-            colorScheme="black"
-            errorBorderColor="error"
-            otp
-          >
-            {fields.map(el => {
-              return (
-                <PinInputField
-                  display="flex"
-                  justifyContent="center"
-                  alignItems="center"
-                  border="1px solid black"
-                  fontSize="2rem"
-                  w="full"
-                  h="50px"
-                  textAlign="center"
-                  key={el}
-                />
-              );
-            })}
-          </PinInput>
-        </HStack>
-
-        <Text>  {errors.pin?.message} </Text>
-        </FormControl>
+            <Text> {errors.pin?.message} </Text>
+          </FormControl>
         </Box>
 
-        <PasswordField   error={errors.new_password?.message}  label="new password" {...register("new_password")} />
-        <PasswordField  error={errors.confirm_new_password?.message} label="Reenter password" {...register("confirm_new_password")} />
+        <PasswordField
+          error={errors.new_password?.message}
+          label="new password"
+          {...register("new_password")}
+        />
+        <PasswordField
+          error={errors.confirm_new_password?.message}
+          label="Reenter password"
+          {...register("confirm_new_password")}
+        />
 
         <Button type="submit" variant="submit">
           proceed

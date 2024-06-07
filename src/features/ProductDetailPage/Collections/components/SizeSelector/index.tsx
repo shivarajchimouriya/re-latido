@@ -13,7 +13,7 @@ import React, { useEffect, useState } from "react";
 import SizeCard from "../SizeCard";
 import { logger } from "@/utils/logger";
 import EditSizeCard from "../EditSizeCard";
-import { useParams, useSearchParams, useRouter } from "next/navigation";
+import { useSearchParams, useRouter } from "next/navigation";
 import Toast from "@/components/Toast";
 export const availableSizes = [
   {
@@ -67,6 +67,7 @@ export default function SizeSelector({
   handleBuyClick,
   handleSizeCardClick,
   activeFit,
+  isPending,
 }: {
   fitData: any;
   recommendation?: any[];
@@ -75,6 +76,7 @@ export default function SizeSelector({
   handleBuyClick: (price: number, sizeRangeId: string) => void;
   handleSizeCardClick: (val: number) => void;
   activeFit: string;
+  isPending: boolean;
 }) {
   const params = useSearchParams();
   const router = useRouter();
@@ -108,7 +110,6 @@ export default function SizeSelector({
     }
     return null;
   });
-
   return (
     <Container my={"2rem"}>
       <VStack>
@@ -157,15 +158,18 @@ export default function SizeSelector({
       </Box>
       <Grid placeItems="center" mt="4rem" mb="2rem">
         <Button
+          isLoading={isPending}
+          disabled={isPending}
+          isDisabled={isPending}
+          opacity={isPending ? 0.6 : 1}
           onClick={() => {
             if (price && sizeRangeId) {
               handleBuyClick(price, sizeRangeId);
             } else {
               toast({
-                status: "error",
                 position: "top",
-                render: () => {
-                  return <Toast message="Something went wrong." />;
+                render: ({ onClose }) => {
+                  return <Toast onClose={onClose} status="error" message="Something went wrong." />;
                 },
               });
             }

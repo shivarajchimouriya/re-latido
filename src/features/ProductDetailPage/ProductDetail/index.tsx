@@ -1,6 +1,5 @@
-import React, { useEffect, useState } from "react";
-import data from "@/data/product/productDetailResponse";
-import { Box, Container, VStack } from "@chakra-ui/react";
+import React from "react";
+import { Box, Button, Container, VStack } from "@chakra-ui/react";
 import { IProps } from "./IProps";
 import { IProductResponse } from "./IProductResponse";
 import ProductName from "../Collections/components/ProductName";

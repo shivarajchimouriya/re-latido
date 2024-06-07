@@ -4,7 +4,7 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import FitSelection from "../FitSelection";
 import ButtonComponent from "../Button";
 import SizeModal from "../SizeModal";
-import { useDisclosure, useToast } from "@chakra-ui/react";
+import { Button, useDisclosure, useToast } from "@chakra-ui/react";
 import { FIT_ENUM } from "../SizeModal/FitEnums";
 import { useGetNodesLazyQuery } from "@/GraphQl/Generated/graphql";
 import SizeSelector from "../SizeSelector";
@@ -14,6 +14,7 @@ import { useGetTokens } from "@/hooks/client/useGetToken";
 import SizeRecommendationLoader from "../SizeRecommendationLoader";
 import SizeRecommendationNotFound from "../SizeRecommendationNotFound";
 import Toast from "@/components/Toast";
+import useHandleErrorToast from "@/hooks/client/useAppToast";
 
 export interface ISizeDetails {
   age: string;
@@ -29,7 +30,8 @@ export default function SizeModuleSection({
   productId: string;
   productName: string;
   productDetail: any;
-}) {
+  }) {
+  const handleErrorToast = useHandleErrorToast();
   const toast = useToast();
   const PWA = "pwa";
   const router = useRouter();
@@ -303,8 +305,6 @@ export default function SizeModuleSection({
       origin: PWA,
     };
 
-    logger.log("payload: ", payload);
-
     let hasURLPropError = false;
 
     const validateUrlProps = () => {
@@ -320,11 +320,15 @@ export default function SizeModuleSection({
 
     if (hasURLPropError) {
       toast({
-        status: "error",
         position: "top",
-        render: () => {
+        duration: 3000,
+        render: ({ onClose }) => {
           return (
-            <Toast message="Enter size details and select size to buy product." />
+            <Toast
+              status="error"
+              onClose={onClose}
+              message="Enter size details and select size to buy product."
+            />
           );
         },
       });
@@ -335,8 +339,8 @@ export default function SizeModuleSection({
         const res = await mutateAsync({ data: payload, token });
         localStorage.setItem("checkout", JSON.stringify(res?.data));
         router.push("/checkout");
-        // window.history.pushState({}, "", "/checkout");
       } catch (error) {
+        handleErrorToast(error)
         logger.error(error);
       }
     }
@@ -368,6 +372,7 @@ export default function SizeModuleSection({
         onChange={handleFitChange}
         productId={productId}
       />
+
       {nodeData?.nodes?.data?.length || 0 > 0 ? (
         <>
           <SizeSelector
@@ -378,6 +383,7 @@ export default function SizeModuleSection({
             recommendation={nodeData?.nodes?.data}
             handleBuyClick={handleBuyClick}
             handleSizeCardClick={handleSizeCardClick}
+            isPending={isPending}
           />
         </>
       ) : nodeQueryLoading ? (

@@ -20,7 +20,7 @@ import {
   Portal,
   Text,
   VStack,
-  useDisclosure
+  useDisclosure,
 } from "@chakra-ui/react";
 import React, { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
@@ -38,62 +38,58 @@ import { useFetchProfile, useUpdateProfile } from "../../data/useProfile";
 import { profile } from "console";
 import { IUserProfile } from "@/resources/User/interface";
 import EditSkeleton from "@/app/(secondary)/profile/edit/loading";
+import useHandleErrorToast from "@/hooks/client/useAppToast";
+
 const EditPage = () => {
+  const handleErrorToast = useHandleErrorToast();
   const { isOpen, onClose, onOpen } = useDisclosure();
-const {data,isLoading}=useFetchProfile();
-   const {mutate,isPending,mutateAsync}=useUpdateProfile()
-const profileData=data?.data;
+  const { data, isLoading } = useFetchProfile();
+  const { mutate, isPending, mutateAsync } = useUpdateProfile();
+  const profileData = data?.data;
   const {
     register,
     handleSubmit,
     control,
     getValues,
-    formState: { errors }
+    formState: { errors },
   } = useForm<IEditForm>({
     resolver: zodResolver(editFormSchema),
-    
+
     defaultValues: {
       address: profileData?.address,
       dob: profileData?.DOB,
       email: profileData?.email,
-      gender: profileData?.gender as 'Male'|'Female',
+      gender: profileData?.gender as "Male" | "Female",
       name: profileData?.name,
-      phone: profileData?.phone
+      phone: profileData?.phone,
     },
-    values:{
-
+    values: {
       address: profileData?.address as string,
       dob: profileData?.DOB as string,
-      email: profileData?.email  as string,
-      gender: profileData?.gender as 'Male'|'Female',
-      name: profileData?.name  as string,
-      phone: profileData?.phone as string
-    }
+      email: profileData?.email as string,
+      gender: profileData?.gender as "Male" | "Female",
+      name: profileData?.name as string,
+      phone: profileData?.phone as string,
+    },
   });
-  const onSubmit = async(values: IEditForm) => {
+  const onSubmit = async (values: IEditForm) => {
     logger.log("values", values);
-    const data:Partial<IUserProfile>={
-      address:values.address,
-      DOB:values.dob,
-      name:values.name,
-      phone:values.phone,
+    const data: Partial<IUserProfile> = {
+      address: values.address,
+      DOB: values.dob,
+      name: values.name,
+      phone: values.phone,
+    };
 
-
-    }
-    
-    try{
-   const res= await mutateAsync(data)
-  
-  
-  }
-
-    catch(err){
-
+    try {
+      const res = await mutateAsync(data);
+    } catch (err) {
+      handleErrorToast(err);
     }
   };
   const genders: Array<"Male" | "Female"> = ["Male", "Female"];
 
-  if(isLoading || !data) return <EditSkeleton/>
+  if (isLoading || !data) return <EditSkeleton />;
   return (
     <VStack w="100%" p="1rem">
       <Box position="relative" m="3rem">
@@ -143,7 +139,9 @@ const profileData=data?.data;
           </FormLabel>
           <HStack w="100%" justify="space-between" my="1rem">
             <Text fontWeight="normal" fontSize="1.4rem">
-              {dayjs(getValues("dob") ).format("MM/DD/YYYY")|| <Text color="gray.600"> Enter DOB </Text>}
+              {dayjs(getValues("dob")).format("MM/DD/YYYY") || (
+                <Text color="gray.600"> Enter DOB </Text>
+              )}
             </Text>
 
             <Popover isOpen={isOpen} onClose={onClose}>
@@ -156,8 +154,10 @@ const profileData=data?.data;
                 />
               </PopoverTrigger>
               <Portal>
-                {" "}<Box position="relative" zIndex="10000" w="full" h="full">
-                  {" "}<PopoverContent>
+                {" "}
+                <Box position="relative" zIndex="10000" w="full" h="full">
+                  {" "}
+                  <PopoverContent>
                     <Controller
                       control={control}
                       name="dob"
@@ -165,8 +165,10 @@ const profileData=data?.data;
                         return (
                           <Calendar
                             date={new Date()}
-                            onChange={val => {
-                              const formatted = dayjs(val).format('YYYY-MM-DDTHH:mm:ss.SSSZ');
+                            onChange={(val) => {
+                              const formatted = dayjs(val).format(
+                                "YYYY-MM-DDTHH:mm:ss.SSSZ"
+                              );
                               onChange(formatted);
                               onClose();
                             }}
@@ -196,7 +198,7 @@ const profileData=data?.data;
                   textTransform="uppercase"
                   fontSize="1.2rem"
                 >
-                  {genders.map(el => {
+                  {genders.map((el) => {
                     const isActive = el === value;
                     return (
                       <Box
@@ -213,7 +215,7 @@ const profileData=data?.data;
                           {el}
                         </Text>
                         <AnimatePresence>
-                          {isActive &&
+                          {isActive && (
                             <Box
                               layoutId="gender"
                               rounded="md"
@@ -225,7 +227,8 @@ const profileData=data?.data;
                               bg="black"
                               isolation="isolate"
                               zIndex="-1"
-                            />}
+                            />
+                          )}
                         </AnimatePresence>
                       </Box>
                     );
@@ -272,7 +275,7 @@ const profileData=data?.data;
         </FormControl>
 
         <Button
-        isLoading={isPending}
+          isLoading={isPending}
           p="1rem"
           type="submit"
           w="100%"

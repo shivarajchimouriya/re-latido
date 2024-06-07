@@ -72,14 +72,18 @@ const Invoice: React.FC<InvoiceProps> = ({
 
     pdf.addImage(img, "PNG", marginX, marginY, a4Width, a4Height);
     if (
-      pdf.save(`Invoice-${invoiceId}-${full_name.split(" ").join("-").toLocaleLowerCase()}.pdf`)
+      pdf.save(
+        `Invoice-${invoiceId}-${full_name
+          .split(" ")
+          .join("-")
+          .toLocaleLowerCase()}.pdf`
+      )
     ) {
       toast({
-        status: "error",
         position: "top",
-        render: () => {
+        render: ({ onClose }) => {
           return (
-            <Toast type="success" message="Pdf Saved." />
+            <Toast status="success" onClose={onClose} message="Pdf Saved." />
           );
         },
       });

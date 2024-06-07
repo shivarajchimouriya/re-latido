@@ -10,8 +10,10 @@ import OrderCard from "@/components/OrderCard";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useFetchOrders } from "@/features/OrdersPage/data/useFetchOrders";
 import { useFetchOrderById } from "./data/useFetchOrderById";
+import useHandleErrorToast from "@/hooks/client/useAppToast";
 
 const OrderSummary = () => {
+  const handleErrorToast = useHandleErrorToast();
   const { mutateAsync } = usefetchPaymentLog();
   const { token } = useGetTokens();
   const router = useRouter();
@@ -41,6 +43,7 @@ const OrderSummary = () => {
           },
         });
       } catch (error) {
+        handleErrorToast(error)
         router.push("/checkout?tab=shipping");
         logger.log("error", error);
       }

@@ -5,12 +5,14 @@ import { redirect } from "next/navigation";
 import Loading from "@/app/loading";
 import { Center } from "@chakra-ui/react";
 import LogoIcon from "@/components/Icons/Logo";
+import useHandleErrorToast from "@/hooks/client/useAppToast";
 
-interface IProps{
-    children:ReactNode
+interface IProps {
+  children: ReactNode;
 }
 
-const ProtectedLayout = ({children}:IProps) => {
+const ProtectedLayout = ({ children }: IProps) => {
+  const handleErrorToast = useHandleErrorToast();
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   const [isLoading, setIsLoading] = useState(true);
@@ -22,6 +24,7 @@ const ProtectedLayout = ({children}:IProps) => {
         const user = await getCurrentUser();
         setIsAuthenticated(true);
       } catch (error) {
+        handleErrorToast(error);
         setIsAuthenticated(false);
       } finally {
         setIsLoading(false);
@@ -31,10 +34,12 @@ const ProtectedLayout = ({children}:IProps) => {
     getUser();
   }, []);
 
-  if(isLoading){
-    return <Center h="100vh" w="100vw">
-      <LogoIcon />
-    </Center>
+  if (isLoading) {
+    return (
+      <Center h="100vh" w="100vw">
+        <LogoIcon />
+      </Center>
+    );
   }
 
   if (!isLoading && !isAuthenticated) {
