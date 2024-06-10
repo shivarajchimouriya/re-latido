@@ -21,6 +21,7 @@ import {
   Text,
   VStack,
   useDisclosure,
+  useToast,
 } from "@chakra-ui/react";
 import React, { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
@@ -39,8 +40,12 @@ import { profile } from "console";
 import { IUserProfile } from "@/resources/User/interface";
 import EditSkeleton from "@/app/(secondary)/profile/edit/loading";
 import useHandleErrorToast from "@/hooks/client/useAppToast";
+import Toast from "@/components/Toast";
+import { useRouter } from "next/navigation";
 
 const EditPage = () => {
+  const toast = useToast();
+  const router = useRouter();
   const handleErrorToast = useHandleErrorToast();
   const { isOpen, onClose, onOpen } = useDisclosure();
   const { data, isLoading } = useFetchProfile();
@@ -73,7 +78,6 @@ const EditPage = () => {
     },
   });
   const onSubmit = async (values: IEditForm) => {
-    logger.log("values", values);
     const data: Partial<IUserProfile> = {
       address: values.address,
       DOB: values.dob,
@@ -83,6 +87,37 @@ const EditPage = () => {
 
     try {
       const res = await mutateAsync(data);
+      if (res?.data?.email) {
+        toast({
+          position: "top",
+          duration: 3000,
+          render: ({ onClose }) => {
+            return (
+              <Toast
+                status="success"
+                onClose={onClose}
+                message={res?.message}
+              />
+            );
+          },
+        });
+      } else {
+        toast({
+          position: "top",
+          duration: 3000,
+          render: ({ onClose }) => {
+            return (
+              <Toast
+                status="error"
+                onClose={onClose}
+                message={res?.message || "Something went wrong"}
+              />
+            );
+          },
+        });
+      }
+
+      router.refresh();
     } catch (err) {
       handleErrorToast(err);
     }
@@ -94,6 +129,7 @@ const EditPage = () => {
     <VStack w="100%" p="1rem">
       <Box position="relative" m="3rem">
         <Avatar
+          src={profileData?.profile_image}
           name={profileData?.name}
           w="10rem"
           h="10rem"
@@ -131,6 +167,7 @@ const EditPage = () => {
             placeholder="name"
             {...register("name")}
           />
+          <Text color="error">{errors.name?.message}</Text>
         </FormControl>
 
         <FormControl>
@@ -164,6 +201,7 @@ const EditPage = () => {
                       render={({ field: { onChange } }) => {
                         return (
                           <Calendar
+                            maxDate={new Date()}
                             date={new Date()}
                             onChange={(val) => {
                               const formatted = dayjs(val).format(
@@ -250,6 +288,7 @@ const EditPage = () => {
             placeholder="Address"
             {...register("address")}
           />
+          <Text color="error">{errors.address?.message}</Text>
         </FormControl>
 
         <FormControl>
@@ -262,6 +301,7 @@ const EditPage = () => {
             placeholder="phone number"
             {...register("phone")}
           />
+          <Text color="error">{errors.phone?.message}</Text>
         </FormControl>
         <FormControl isDisabled>
           <FormLabel htmlFor="name" textTransform="uppercase">
@@ -276,6 +316,8 @@ const EditPage = () => {
 
         <Button
           isLoading={isPending}
+          disabled={isPending ? true : false}
+          opacity={isPending ? 0.6 : 1}
           p="1rem"
           type="submit"
           w="100%"
