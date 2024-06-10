@@ -10,6 +10,13 @@ import {
   HStack,
   IconButton,
   Input,
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  ModalOverlay,
   Popover,
   PopoverArrow,
   PopoverBody,
@@ -23,7 +30,7 @@ import {
   useDisclosure,
   useToast,
 } from "@chakra-ui/react";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { MdOutlineModeEdit } from "react-icons/md";
 import { register } from "swiper/element";
@@ -42,14 +49,25 @@ import EditSkeleton from "@/app/(secondary)/profile/edit/loading";
 import useHandleErrorToast from "@/hooks/client/useAppToast";
 import Toast from "@/components/Toast";
 import { useRouter } from "next/navigation";
+import ImagePlayground from "./Collections/components/ImagePlayground";
+import { appColor } from "@/theme/foundations/colors";
+import ImageModal from "./Collections/components/ImageModal";
 
 const EditPage = () => {
   const toast = useToast();
   const router = useRouter();
   const handleErrorToast = useHandleErrorToast();
   const { isOpen, onClose, onOpen } = useDisclosure();
+  const {
+    isOpen: isOpenImage,
+    onClose: onCloseImage,
+    onOpen: onOpenImage,
+  } = useDisclosure();
   const { data, isLoading } = useFetchProfile();
   const { mutate, isPending, mutateAsync } = useUpdateProfile();
+
+  const [image, setImage] = useState<string>();
+
   const profileData = data?.data;
   const {
     register,
@@ -77,6 +95,52 @@ const EditPage = () => {
       phone: profileData?.phone as string,
     },
   });
+
+  const handleImageChange = (e: any) => {
+    const file = e.target.files[0];
+    const url = window?.URL?.createObjectURL(file);
+    setImage(url);
+    onOpenImage();
+  };
+
+  const handleImageSubmit = async (imgUrl: string) => {
+    console.log('img url: ', imgUrl);
+    const res = await mutateAsync({
+      profile_image: imgUrl,
+    });
+    if (res?.data?.profile_image) {
+      toast({
+        position: "top",
+        duration: 3000,
+        render: ({ onClose }) => {
+          return (
+            <Toast status="success" onClose={onClose} message={res?.message} />
+          );
+        },
+      });
+    } else {
+      toast({
+        position: "top",
+        duration: 3000,
+        render: ({ onClose }) => {
+          return (
+            <Toast
+              status="error"
+              onClose={onClose}
+              message={res?.message || "Something went wrong"}
+            />
+          );
+        },
+      });
+    }
+
+    if (profileData) {
+      profileData.profile_image = res?.data?.profile_image || "";
+    }
+
+    onCloseImage();
+  };
+
   const onSubmit = async (values: IEditForm) => {
     const data: Partial<IUserProfile> = {
       address: values.address,
@@ -127,7 +191,7 @@ const EditPage = () => {
   if (isLoading || !data) return <EditSkeleton />;
   return (
     <VStack w="100%" p="1rem">
-      <Box position="relative" m="3rem">
+      <Box display="grid" placeItems="center" m="3rem">
         <Avatar
           src={profileData?.profile_image}
           name={profileData?.name}
@@ -138,9 +202,22 @@ const EditPage = () => {
           fontSize="3rem"
           color="gray.600"
         />
-        <Input name="profile" id="profile" type="file" display="none" />
-        <Box as="label" bg="red" w="full" h="full" htmlFor="profile">
+        <Box position="relative" w="70%" mt="-2rem">
+          <Input
+            onChange={handleImageChange}
+            name="profile"
+            id="profile"
+            type="file"
+            opacity={0}
+            w={0}
+            h={0}
+          />
           <IconButton
+            right={0}
+            as="label"
+            htmlFor="profile"
+            p="1rem"
+            rounded="full"
             icon={<MdOutlineModeEdit />}
             aria-label="edit"
             position="absolute"
@@ -330,6 +407,13 @@ const EditPage = () => {
           save
         </Button>
       </Flex>
+
+      <ImageModal
+        handleImageSubmit={handleImageSubmit}
+        imageUrl={image || ""}
+        isOpen={isOpenImage}
+        onClose={onCloseImage}
+      />
     </VStack>
   );
 };
