@@ -215,6 +215,7 @@ const EditPage = () => {
             opacity={0}
             w={0}
             h={0}
+            accept="image/*"
           />
           <IconButton
             right={0}

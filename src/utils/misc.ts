@@ -101,17 +101,9 @@ export const isValidPhone = (phone: string) => {
 
 export const validateFile = (file: File): boolean => {
   const allowedTypes = ["image/jpeg", "image/png", "image/gif"];
-  const maxSize = 5 * 1024 * 1024;
-
   if (!allowedTypes.includes(file.type)) {
     console.error("Invalid file type. Only JPEG, PNG, and GIF are allowed.");
     return false;
   }
-
-  if (file.size > maxSize) {
-    console.error("File size exceeds the maximum limit of 5MB.");
-    return false;
-  }
-
   return true;
 };
