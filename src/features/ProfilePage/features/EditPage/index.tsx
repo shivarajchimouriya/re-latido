@@ -30,7 +30,7 @@ import {
   useDisclosure,
   useToast,
 } from "@chakra-ui/react";
-import React, { useEffect, useState } from "react";
+import React, { ChangeEvent, useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { MdOutlineModeEdit } from "react-icons/md";
 import { register } from "swiper/element";
@@ -52,6 +52,7 @@ import { useRouter } from "next/navigation";
 import ImagePlayground from "./Collections/components/ImagePlayground";
 import { appColor } from "@/theme/foundations/colors";
 import ImageModal from "./Collections/components/ImageModal";
+import { validateFile } from "@/utils/misc";
 
 const EditPage = () => {
   const toast = useToast();
@@ -96,15 +97,33 @@ const EditPage = () => {
     },
   });
 
-  const handleImageChange = (e: any) => {
-    const file = e.target.files[0];
-    const url = window?.URL?.createObjectURL(file);
-    setImage(url);
-    onOpenImage();
+  const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const file = e.target?.files?.[0];
+    if (!file) {
+      return null;
+    }
+    if (validateFile(file)) {
+      const url = window?.URL?.createObjectURL(file);
+      setImage(url);
+      onOpenImage();
+    } else {
+      toast({
+        position: "top",
+        duration: 3000,
+        render: ({ onClose }) => {
+          return (
+            <Toast
+              status="error"
+              onClose={onClose}
+              message="Pleaser choose image file"
+            />
+          );
+        },
+      });
+    }
   };
 
   const handleImageSubmit = async (imgUrl: string) => {
-    console.log('img url: ', imgUrl);
     const res = await mutateAsync({
       profile_image: imgUrl,
     });
@@ -165,22 +184,7 @@ const EditPage = () => {
             );
           },
         });
-      } else {
-        toast({
-          position: "top",
-          duration: 3000,
-          render: ({ onClose }) => {
-            return (
-              <Toast
-                status="error"
-                onClose={onClose}
-                message={res?.message || "Something went wrong"}
-              />
-            );
-          },
-        });
       }
-
       router.refresh();
     } catch (err) {
       handleErrorToast(err);
