@@ -15,5 +15,5 @@ export const env = {
   SITE_URL: process.env.SITE_URL || process.env.NEXT_PUBLIC_SITE_URL,
   BUCKET_NAME: process.env.BUCKET_NAME || process.env.NEXT_PUBLIC_BUCKET_NAME,
   BUCKET_REGION:
-    process.env.NEXT_PUBLIC_BUCKET_REGION || process.env.BUCKET_REGION,
+    process.env.BUCKET_REGION || process.env.NEXT_PUBLIC_BUCKET_REGION,
 };
