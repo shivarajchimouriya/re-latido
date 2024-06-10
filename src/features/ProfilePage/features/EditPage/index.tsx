@@ -10,6 +10,13 @@ import {
   HStack,
   IconButton,
   Input,
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  ModalOverlay,
   Popover,
   PopoverArrow,
   PopoverBody,
@@ -21,8 +28,9 @@ import {
   Text,
   VStack,
   useDisclosure,
+  useToast,
 } from "@chakra-ui/react";
-import React, { useState } from "react";
+import React, { ChangeEvent, useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { MdOutlineModeEdit } from "react-icons/md";
 import { register } from "swiper/element";
@@ -39,12 +47,28 @@ import { profile } from "console";
 import { IUserProfile } from "@/resources/User/interface";
 import EditSkeleton from "@/app/(secondary)/profile/edit/loading";
 import useHandleErrorToast from "@/hooks/client/useAppToast";
+import Toast from "@/components/Toast";
+import { useRouter } from "next/navigation";
+import ImagePlayground from "./Collections/components/ImagePlayground";
+import { appColor } from "@/theme/foundations/colors";
+import ImageModal from "./Collections/components/ImageModal";
+import { validateFile } from "@/utils/misc";
 
 const EditPage = () => {
+  const toast = useToast();
+  const router = useRouter();
   const handleErrorToast = useHandleErrorToast();
   const { isOpen, onClose, onOpen } = useDisclosure();
+  const {
+    isOpen: isOpenImage,
+    onClose: onCloseImage,
+    onOpen: onOpenImage,
+  } = useDisclosure();
   const { data, isLoading } = useFetchProfile();
   const { mutate, isPending, mutateAsync } = useUpdateProfile();
+
+  const [image, setImage] = useState<string>();
+
   const profileData = data?.data;
   const {
     register,
@@ -72,8 +96,71 @@ const EditPage = () => {
       phone: profileData?.phone as string,
     },
   });
+
+  const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const file = e.target?.files?.[0];
+    if (!file) {
+      return null;
+    }
+    if (validateFile(file)) {
+      const url = window?.URL?.createObjectURL(file);
+      setImage(url);
+      onOpenImage();
+    } else {
+      toast({
+        position: "top",
+        duration: 3000,
+        render: ({ onClose }) => {
+          return (
+            <Toast
+              status="error"
+              onClose={onClose}
+              message="Pleaser choose image file"
+            />
+          );
+        },
+      });
+    }
+  };
+
+  const handleImageSubmit = async (imgUrl: string) => {
+    const res = await mutateAsync({
+      profile_image: imgUrl,
+    });
+    if (res?.data?.profile_image) {
+      toast({
+        position: "top",
+        duration: 3000,
+        render: ({ onClose }) => {
+          return (
+            <Toast status="success" onClose={onClose} message={res?.message} />
+          );
+        },
+      });
+    } else {
+      toast({
+        position: "top",
+        duration: 3000,
+        render: ({ onClose }) => {
+          return (
+            <Toast
+              status="error"
+              onClose={onClose}
+              message={res?.message || "Something went wrong"}
+            />
+          );
+        },
+      });
+    }
+
+    if (profileData) {
+      profileData.profile_image = res?.data?.profile_image || "";
+    }
+
+    onCloseImage();
+  };
+
   const onSubmit = async (values: IEditForm) => {
-    logger.log("values", values);
     const data: Partial<IUserProfile> = {
       address: values.address,
       DOB: values.dob,
@@ -83,6 +170,22 @@ const EditPage = () => {
 
     try {
       const res = await mutateAsync(data);
+      if (res?.data?.email) {
+        toast({
+          position: "top",
+          duration: 3000,
+          render: ({ onClose }) => {
+            return (
+              <Toast
+                status="success"
+                onClose={onClose}
+                message={res?.message}
+              />
+            );
+          },
+        });
+      }
+      router.refresh();
     } catch (err) {
       handleErrorToast(err);
     }
@@ -92,8 +195,9 @@ const EditPage = () => {
   if (isLoading || !data) return <EditSkeleton />;
   return (
     <VStack w="100%" p="1rem">
-      <Box position="relative" m="3rem">
+      <Box display="grid" placeItems="center" m="3rem">
         <Avatar
+          src={profileData?.profile_image}
           name={profileData?.name}
           w="10rem"
           h="10rem"
@@ -102,9 +206,22 @@ const EditPage = () => {
           fontSize="3rem"
           color="gray.600"
         />
-        <Input name="profile" id="profile" type="file" display="none" />
-        <Box as="label" bg="red" w="full" h="full" htmlFor="profile">
+        <Box position="relative" w="70%" mt="-2rem">
+          <Input
+            onChange={handleImageChange}
+            name="profile"
+            id="profile"
+            type="file"
+            opacity={0}
+            w={0}
+            h={0}
+          />
           <IconButton
+            right={0}
+            as="label"
+            htmlFor="profile"
+            p="1rem"
+            rounded="full"
             icon={<MdOutlineModeEdit />}
             aria-label="edit"
             position="absolute"
@@ -131,6 +248,7 @@ const EditPage = () => {
             placeholder="name"
             {...register("name")}
           />
+          <Text color="error">{errors.name?.message}</Text>
         </FormControl>
 
         <FormControl>
@@ -164,6 +282,7 @@ const EditPage = () => {
                       render={({ field: { onChange } }) => {
                         return (
                           <Calendar
+                            maxDate={new Date()}
                             date={new Date()}
                             onChange={(val) => {
                               const formatted = dayjs(val).format(
@@ -250,6 +369,7 @@ const EditPage = () => {
             placeholder="Address"
             {...register("address")}
           />
+          <Text color="error">{errors.address?.message}</Text>
         </FormControl>
 
         <FormControl>
@@ -262,6 +382,7 @@ const EditPage = () => {
             placeholder="phone number"
             {...register("phone")}
           />
+          <Text color="error">{errors.phone?.message}</Text>
         </FormControl>
         <FormControl isDisabled>
           <FormLabel htmlFor="name" textTransform="uppercase">
@@ -276,6 +397,8 @@ const EditPage = () => {
 
         <Button
           isLoading={isPending}
+          disabled={isPending ? true : false}
+          opacity={isPending ? 0.6 : 1}
           p="1rem"
           type="submit"
           w="100%"
@@ -288,6 +411,13 @@ const EditPage = () => {
           save
         </Button>
       </Flex>
+
+      <ImageModal
+        handleImageSubmit={handleImageSubmit}
+        imageUrl={image || ""}
+        isOpen={isOpenImage}
+        onClose={onCloseImage}
+      />
     </VStack>
   );
 };

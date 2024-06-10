@@ -12,7 +12,8 @@ export const env = {
   PRODUCT_MUTATION_TOKEN:
     process.env.PRODUCT_MUTATION_TOKEN ||
     process.env.NEXT_PUBLIC_PRODUCT_MUTATION_TOKEN,
-  SITE_URL: process.env.SITE_URL || process.env.NEXT_PUBLIC_SITE_URL
-
-
+  SITE_URL: process.env.SITE_URL || process.env.NEXT_PUBLIC_SITE_URL,
+  BUCKET_NAME: process.env.BUCKET_NAME || process.env.NEXT_PUBLIC_BUCKET_NAME,
+  BUCKET_REGION:
+    process.env.BUCKET_REGION || process.env.NEXT_PUBLIC_BUCKET_REGION,
 };
