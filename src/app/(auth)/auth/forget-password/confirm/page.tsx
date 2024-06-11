@@ -11,7 +11,7 @@ interface IProps {
 const Page = ({ searchParams }: IProps) => {
   const username = searchParams.username;
   if (!username) redirect("/");
-  return <ConfirmForgetPassword />;
+  return <ConfirmForgetPassword username={username} />;
 };
 
 export default Page;

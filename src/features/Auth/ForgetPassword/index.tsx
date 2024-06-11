@@ -5,7 +5,7 @@ import {
   FormLabel,
   Input,
   Text,
-  VStack
+  VStack,
 } from "@chakra-ui/react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import React from "react";
@@ -19,10 +19,12 @@ import useHandleErrorToast from "@/hooks/client/useAppToast";
 
 const ForgetPassword = () => {
   const handleErrorToast = useHandleErrorToast();
-  const { register, handleSubmit, formState: { errors } } = useForm<
-    IForgetPasswordForm
-  >({
-    resolver: zodResolver(forgetPasswordSchema)
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<IForgetPasswordForm>({
+    resolver: zodResolver(forgetPasswordSchema),
   });
   const { isLoading, startLoading, stopLoading } = useLoader();
   const router = useRouter();
@@ -30,9 +32,9 @@ const ForgetPassword = () => {
     startLoading();
     try {
       const res = await resetPassword({ username: data.username });
-      router.replace("/auth/forget-password/confirm");
+      router.replace("/auth/forget-password/confirm?username=" + data.username);
     } catch (error) {
-      handleErrorToast(error)
+      handleErrorToast(error);
       logger.log("Error", error);
     } finally {
       stopLoading();
@@ -48,7 +50,7 @@ const ForgetPassword = () => {
         <FormControl w="full">
           <FormLabel>username</FormLabel>
           <Input {...register("username")} />
-          <Text color="error" mt="1rem">
+          <Text color="info" mt="1rem">
             We'll never share your email.
           </Text>
         </FormControl>
@@ -59,6 +61,7 @@ const ForgetPassword = () => {
           textTransform="uppercase"
           fontWeight="bold"
           disabled={isLoading}
+          opacity={isLoading ? 0.6 : 1}
           isLoading={isLoading}
         >
           send otp

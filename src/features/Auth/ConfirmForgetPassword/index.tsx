@@ -9,6 +9,7 @@ import {
   FormControl,
   FormLabel,
   Box,
+  useToast,
 } from "@chakra-ui/react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import React from "react";
@@ -21,9 +22,12 @@ import PasswordField from "@/components/Form/PasswordField/index.";
 import { logger } from "@/utils/logger";
 import { confirmResetPassword } from "aws-amplify/auth";
 import useHandleErrorToast from "@/hooks/client/useAppToast";
+import Toast from "@/components/Toast";
+import { useRouter } from "next/navigation";
 
-const ConfirmForgetPassword = () => {
+const ConfirmForgetPassword = ({ username }: { username: string }) => {
   const handleErrorToast = useHandleErrorToast();
+  const router = useRouter();
   const fields = [1, 2, 3, 4, 5, 6];
 
   const {
@@ -34,14 +38,29 @@ const ConfirmForgetPassword = () => {
   } = useForm<IConfirmForgetPasswordForm>({
     resolver: zodResolver(confirmForgetPasswordSchema),
   });
-  logger.log("errors", errors);
+  const toast = useToast();
   const onSubmit = async (data: IConfirmForgetPasswordForm) => {
     try {
       const res = await confirmResetPassword({
         confirmationCode: data.pin,
         newPassword: data.new_password,
-        username: "messi",
+        username: username,
       });
+      toast({
+        position: "top",
+        duration: 3000,
+        render: ({ onClose }) => {
+          return (
+            <Toast
+              status="success"
+              onClose={onClose}
+              message={"Password reset success."}
+            />
+          );
+        },
+      });
+
+      router.push("/auth/login");
     } catch (error) {
       handleErrorToast(error);
     }
@@ -88,7 +107,7 @@ const ConfirmForgetPassword = () => {
               </PinInput>
             </HStack>
 
-            <Text> {errors.pin?.message} </Text>
+            <Text color="error"> {errors.pin?.message} </Text>
           </FormControl>
         </Box>
 
@@ -103,7 +122,7 @@ const ConfirmForgetPassword = () => {
           {...register("confirm_new_password")}
         />
 
-        <Button type="submit" variant="submit">
+        <Button type="submit" variant="submit" textTransform="capitalize">
           proceed
         </Button>
       </VStack>

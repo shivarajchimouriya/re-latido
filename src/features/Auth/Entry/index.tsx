@@ -7,27 +7,49 @@ import {
   FormLabel,
   Input,
   Text,
-  VStack
+  VStack,
+  useToast,
 } from "@chakra-ui/react";
-import { redirect, useRouter } from "next/navigation";
-import React from "react";
+import { useRouter } from "next/navigation";
+import React, { useEffect } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useUserrCheck } from "./hooks/useFormSubmit";
+import Toast from "@/components/Toast";
+import { zodResolver } from "@hookform/resolvers/zod";
+import {
+  IUsernameForm,
+  usernameFormSchema,
+} from "@/features/Auth/Entry/schema";
 
 const Entry = () => {
-  interface IFormValues {
-    username: string;
-  }
-
   const {
     handleSubmit,
     register,
     setError,
-    formState: { errors, isSubmitting }
-  } = useForm<IFormValues>();
+    formState: { errors, isSubmitting },
+  } = useForm<IUsernameForm>({
+    resolver: zodResolver(usernameFormSchema),
+  });
   const router = useRouter();
+  const toast = useToast();
   const { mutateAsync, isPending } = useUserrCheck();
-  const onSubmit: SubmitHandler<IFormValues> = async data => {
+
+  const onSubmit: SubmitHandler<IUsernameForm> = async (data) => {
+    if (!data.username) {
+      toast({
+        position: "top",
+        render: ({ onClose }) => {
+          return (
+            <Toast
+              status="error"
+              onClose={onClose}
+              message="Please enter username"
+            />
+          );
+        },
+      });
+      return;
+    }
     try {
       const res = await mutateAsync({ username: data.username });
       router.replace(`/auth/login?username=${data.username}`);
@@ -39,7 +61,8 @@ const Entry = () => {
   return (
     <VStack w="full" p="2rem" alignItems="center" gap="2rem">
       <Text fontSize="3rem" fontWeight={"bold"} w="full">
-        {" "}Login /Signup{" "}
+        {" "}
+        Login /Signup{" "}
       </Text>
 
       <Text fontSize="1.2rem" color="#707580">
@@ -54,7 +77,8 @@ const Entry = () => {
           </FormLabel>
           <Input variant="underline" id="name" {...register("username")} />
           <Text color={"red"}>
-            {" "}{errors.username && errors.username.message}
+            {" "}
+            {errors.username && errors.username.message}
           </Text>
         </FormControl>
 
@@ -69,7 +93,10 @@ const Entry = () => {
           type="submit"
           bg="black"
           color="white"
+          textTransform="capitalize"
           isLoading={isPending}
+          disabled={isPending}
+          opacity={isPending ? 0.6 : 1}
         >
           proceed
         </Button>
