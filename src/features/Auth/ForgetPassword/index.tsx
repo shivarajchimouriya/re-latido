@@ -32,7 +32,6 @@ const ForgetPassword = () => {
     startLoading();
     try {
       const res = await resetPassword({ username: data.username });
-      console.log("response: ", res);
       router.replace("/auth/forget-password/confirm?username=" + data.username);
     } catch (error) {
       handleErrorToast(error);
