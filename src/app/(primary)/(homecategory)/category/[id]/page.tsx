@@ -15,12 +15,6 @@ interface IProps {
   };
 }
 
-const findCategory = async (categoryId: string) => {
-  console.log("category id: ", categoryId);
-  const response = await API.Category.getAll();
-  console.log("response: ", response);
-};
-
 export async function generateStaticParams() {
   const homepageData = await API.Homepage.get();
   const categories = homepageData.data.category;
