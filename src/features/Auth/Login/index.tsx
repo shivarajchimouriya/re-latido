@@ -19,6 +19,7 @@ import { useLoader } from "@/hooks/client/useLoader";
 import Link from "next/link";
 import useHandleErrorToast from "@/hooks/client/useAppToast";
 import Toast from "@/components/Toast";
+import { logger } from "@/utils/logger";
 
 interface IProps {
   userName: string;
@@ -49,6 +50,26 @@ const Login = ({ userName }: IProps) => {
         username: userName,
         password: data.passoword,
       });
+      logger.log("response: ", res);
+
+      if (!res.isSignedIn && res.nextStep.signInStep === "CONFIRM_SIGN_UP") {
+        toast({
+          position: "top",
+          duration: 3000,
+          render: ({ onClose }) => {
+            return (
+              <Toast
+                status="error"
+                onClose={onClose}
+                message={"Please confirm your email."}
+              />
+            );
+          },
+        });
+        router.replace("/auth/confirm-email?username=" + userName);
+        return;
+      }
+
       if (res?.isSignedIn) {
         toast({
           position: "top",
@@ -126,7 +147,14 @@ const Login = ({ userName }: IProps) => {
           </Text>
         </VStack>
 
-        <Button variant="submit" type="submit" isLoading={isLoading}>
+        <Button
+          disabled={isLoading}
+          variant="submit"
+          type="submit"
+          isLoading={isLoading}
+          opacity={isLoading ? 0.6 : 1}
+          textTransform="capitalize"
+        >
           proceed
         </Button>
       </VStack>
