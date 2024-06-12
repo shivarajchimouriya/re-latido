@@ -1,34 +1,43 @@
+"use client";
 import CardLoader from "@/components/CardLoader";
 import ProductCard from "@/components/Cards/ProductCard";
 import ScrollProvider from "@/providers/ScrollProvider";
 import { IProduct } from "@/resources/Product/interface";
-import { VStack } from "@chakra-ui/react";
-import dynamic from "next/dynamic";
+import { Box, Spinner, Text, VStack } from "@chakra-ui/react";
 import React from "react";
-// const ProductCard = dynamic(() => import("@/components/Cards/ProductCard"), {
-//   ssr: true,
-
-//   loading: () => <CardLoader />
-// });
 interface IProps {
-  products: IProduct[];
+  products: IProduct[] | null;
+  viewRef: any;
+  hasNextPage: boolean;
+  isFetchingNextPage: boolean;
+  isFetching: boolean;
+  isLoading: boolean;
 }
 
-const ProductList1 = ({ products }: IProps) => {
+const ProductList1 = ({
+  products,
+  viewRef,
+  hasNextPage,
+  isFetchingNextPage,
+  isFetching,
+  isLoading,
+}: IProps) => {
+  if (products === null) {
+    return;
+  }
   return (
-    <ScrollProvider selectorClassName="helo" >
+    <ScrollProvider selectorClassName="helo">
       <VStack
         w="100%"
         maxW="50rem"
         className="helo"
-        overflow="auto"
         rounded="0"
         p="0"
         style={{
           scrollSnapType: "y mandatory",
           scrollSnapStop: "always",
           scrollBehavior: "smooth",
-          height: "calc(-150px + 100dvh)"
+          height: "calc(-150px + 100dvh)",
         }}
       >
         <VStack w="100%">
@@ -44,6 +53,20 @@ const ProductList1 = ({ products }: IProps) => {
             );
           })}
         </VStack>
+        <Box mt="2rem" minH="80vh">
+          {hasNextPage &&
+            (!isFetchingNextPage || !isFetching || !isLoading) && (
+              <Box ref={viewRef}>
+                <Spinner height="10rem" width="10rem" />
+              </Box>
+            )}
+
+          {!hasNextPage && (
+            <Text fontSize="2rem" fontWeight="bold">
+              End of Product
+            </Text>
+          )}
+        </Box>
       </VStack>
     </ScrollProvider>
   );
