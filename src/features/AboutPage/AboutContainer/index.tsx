@@ -6,7 +6,7 @@ import React from "react";
 
 const AboutContainer = () => {
   return (
-    <VStack w="full" bg="dark_bg" color="white" p="1rem" h="full">
+    <VStack w="full" bg="dark_bg" color="white" p="1rem">
       <HStack color="white" fontSize="2rem" gap="1rem">
         <Text py="2rem" color="#707580">
           {" "}About
@@ -18,6 +18,7 @@ const AboutContainer = () => {
       <VStack
         w="full"
         mt="3rem"
+        mb="10rem"
         alignItems="start"
         gap="3rem"
         fontSize="1.5rem"
