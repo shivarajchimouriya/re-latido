@@ -7,11 +7,11 @@ import { Box, Spinner, Text, VStack } from "@chakra-ui/react";
 import React from "react";
 interface IProps {
   products: IProduct[] | null;
-  viewRef: any;
-  hasNextPage: boolean;
-  isFetchingNextPage: boolean;
-  isFetching: boolean;
-  isLoading: boolean;
+  viewRef?: any;
+  hasNextPage?: boolean;
+  isFetchingNextPage?: boolean;
+  isFetching?: boolean;
+  isLoading?: boolean;
 }
 
 const ProductList1 = ({
@@ -31,6 +31,7 @@ const ProductList1 = ({
         w="100%"
         maxW="50rem"
         className="helo"
+        overflow="auto"
         rounded="0"
         p="0"
         style={{
