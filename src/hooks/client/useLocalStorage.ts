@@ -18,7 +18,7 @@ export default function useLocalStorage(key: string) {
     } catch (error) {
       logger.error(error);
     }
-  });
+  }, [value, setValue]);
 
   return { value, setValue };
 }

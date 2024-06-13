@@ -1,27 +1,14 @@
-"use client";
 import CardLoader from "@/components/CardLoader";
 import ProductCard from "@/components/Cards/ProductCard";
 import ScrollProvider from "@/providers/ScrollProvider";
 import { IProduct } from "@/resources/Product/interface";
-import { Box, Spinner, Text, VStack } from "@chakra-ui/react";
+import { VStack } from "@chakra-ui/react";
 import React from "react";
 interface IProps {
   products: IProduct[] | null;
-  viewRef?: any;
-  hasNextPage?: boolean;
-  isFetchingNextPage?: boolean;
-  isFetching?: boolean;
-  isLoading?: boolean;
 }
 
-const ProductList1 = ({
-  products,
-  viewRef,
-  hasNextPage,
-  isFetchingNextPage,
-  isFetching,
-  isLoading,
-}: IProps) => {
+const ProductList1 = ({ products }: IProps) => {
   if (products === null) {
     return;
   }
@@ -54,20 +41,6 @@ const ProductList1 = ({
             );
           })}
         </VStack>
-        <Box mt="2rem" minH="80vh">
-          {hasNextPage &&
-            (!isFetchingNextPage || !isFetching || !isLoading) && (
-              <Box ref={viewRef}>
-                <Spinner height="10rem" width="10rem" />
-              </Box>
-            )}
-
-          {!hasNextPage && (
-            <Text fontSize="2rem" fontWeight="bold">
-              End of Product
-            </Text>
-          )}
-        </Box>
       </VStack>
     </ScrollProvider>
   );
