@@ -28,9 +28,8 @@ const GenderSwitch = () => {
       align="center"
       direction="column"
       position="relative"
-      as={motion.div}
-      _hover={{ scale: 1.1 } // exit={{ y: 200 }} // animate={{ y: 0, transition: { bounce: false, duration: 0.4 } }} // initial={{ y: 200 }}
-      }
+      // as={motion.div}
+      
       // bg="rgba(0,0,0,0.5)"
       // backdropFilter="auto"
       // backdropBlur="10px"

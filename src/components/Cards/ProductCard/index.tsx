@@ -14,7 +14,7 @@ import {
   StackProps,
   Text,
   VStack,
-  useDisclosure
+  useDisclosure,
 } from "@chakra-ui/react";
 import { AnimatePresence, Variants, motion } from "framer-motion";
 import Image from "next/image";
@@ -67,38 +67,38 @@ const ProductCard = ({ product, isFirstCard, ...rest }: IProps) => {
 
   const utilsVariant: Variants = {
     hidden: {
-      y: 30
+      y: 30,
     },
     show: {
       y: 0,
       transition: {
-        staggerChildren: 0.01
-      }
+        staggerChildren: 0.01,
+      },
     },
     exit: {
-      y: 30
-    }
+      y: 30,
+    },
   };
 
   const iconVariant: Variants = {
     hidden: {
       y: 30,
       x: 30,
-      opacity: 0
+      opacity: 0,
     },
     show: {
       y: 0,
       x: 0,
       opacity: 1,
       transition: {
-        bounce: false
-      }
+        bounce: false,
+      },
     },
     exit: {
       y: 0,
       x: 30,
-      opacity: 0
-    }
+      opacity: 0,
+    },
   };
 
   // const router = useRouter();
@@ -126,7 +126,7 @@ const ProductCard = ({ product, isFirstCard, ...rest }: IProps) => {
             exit={{ opacity: 0 }}
             inset="0"
             w="100vw"
-            h="100vh"
+            h="100dvh"
             bg="rgba(0,0,0,0.3)"
             zIndex={100}
             onClick={() => setIsLongPress(false)}
@@ -230,73 +230,80 @@ const ProductCard = ({ product, isFirstCard, ...rest }: IProps) => {
           width: "100%",
           maxWidth: "100vw",
           display: "flex",
-          justifyContent: "center"
+          justifyContent: "center",
+          marginTop: "1rem",
         }}
       >
         <VStack
-          // as={motion.div}
-          position="relative"
-          w="97vw"
-          transitionDuration='.4s'
-          align="center"
-        
-          rounded=".5rem"
-          overflow="hidden"
-          bg="rgba(0,0,0,0.03)"
-          // onContextMenu={(event) => {
-          //   event.preventDefault();
-          //   event.stopPropagation();
-          //   return false;
-          // }}
-          // {...rest}
-          // {...bind()}
-          scrollSnapAlign="start"
-          scrollSnapStop={"always"}
-          style={{
-            height: "calc(-160px + 100dvh)"
-          }}
+          w="full"
+          h="full"
+          justify="center"
+          scrollSnapAlign="end"
+          scrollSnapStop="always"
         >
-          <Box w="100%" overflow="hidden" h="100%">
-            <img
-              alt={`product-${product.name}  `}
-              src={product.primary_image}
-              height={600}
-              width={500}
-              loading="eager"
-              style={{
-                objectFit: "cover",
-                width: "100%",
-                height:"100%"
-              }}
-            />
-          </Box>
-
-          <HStack
-            position={"absolute"}
-            bottom={"1rem"}
-            left="1rem"
-            rounded="4rem"
-            p=".5rem"
-            px="1.5rem"
-            justifySelf="start"
-            w="fit-content"
-            bg="rgba(0,0,0,.3)"
-            backdropFilter="auto"
-            backdropBlur="10px"
+          <VStack
+            // as={motion.div}
+            position="relative"
+            w="97vw"
+            mb=".6rem"
+            transitionDuration=".4s"
+            align="center"
+            rounded=".5rem"
+            overflow="hidden"
+            bg="rgba(0,0,0,0.03)"
+            // onContextMenu={(event) => {
+            //   event.preventDefault();
+            //   event.stopPropagation();
+            //   return false;
+            // }}
+            // {...rest}
+            // {...bind()}
+            style={{
+              height: "calc(-160px + 98dvh)",
+            }}
           >
-            <VStack align="start" gap="0">
-              <Text
-                as="h2"
-                fontSize="1.6rem"
-                fontWeight="bold"
-                textTransform="capitalize"
-                color="white"
-              >
-                {" "}
-                {product.name}{" "}
-              </Text>
-            </VStack>
-          </HStack>
+            <Box w="100%" overflow="hidden" h="100%">
+              <img
+                alt={`product-${product.name}  `}
+                src={product.primary_image}
+                height={600}
+                width={500}
+                loading="eager"
+                style={{
+                  objectFit: "cover",
+                  width: "100%",
+                  height: "100%",
+                }}
+              />
+            </Box>
+
+            <HStack
+              position={"absolute"}
+              bottom={"1rem"}
+              left="1rem"
+              rounded="4rem"
+              p=".5rem"
+              px="1.5rem"
+              justifySelf="start"
+              w="fit-content"
+              bg="rgba(0,0,0,.3)"
+              backdropFilter="auto"
+              backdropBlur="10px"
+            >
+              <VStack align="start" gap="0">
+                <Text
+                  as="h2"
+                  fontSize="1.6rem"
+                  fontWeight="bold"
+                  textTransform="capitalize"
+                  color="white"
+                >
+                  {" "}
+                  {product.name}{" "}
+                </Text>
+              </VStack>
+            </HStack>
+          </VStack>
         </VStack>
       </Link>
     </>

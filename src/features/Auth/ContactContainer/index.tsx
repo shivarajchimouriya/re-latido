@@ -12,7 +12,7 @@ const ContactContainer = () => {
     { link: "https://www.instagram.com/latidonepal", icon: <FaInstagram /> }
   ];
   return (
-    <VStack w="100%" h="80vh">
+    <VStack w="100%" h="100dvh">
       <Text fontSize="3rem" fontWeight="bold" py="3rem" mb="5rem" p="1rem">
         WE ALWAYS APPRECIATE{"  "}
         <Text as="span" color="white" bg="#2B2B2B">

@@ -14,6 +14,9 @@ import AuthProvider from "@/providers/AuthProvider";
 
 import NextTopLoader from "nextjs-toploader";
 import Script from "next/script";
+import { Box } from "@chakra-ui/react";
+import Header from "@/components/Layout/PrimaryLayout/components/Header";
+import JsonLd from "@/features/JsonLd";
 const APP_NAME = "Latido";
 const APP_DEFAULT_TITLE = "Latido";
 const APP_TITLE_TEMPLATE = "Latido";
@@ -59,37 +62,6 @@ export const viewport: Viewport = {
   themeColor: "#FFFFFF",
 };
 
-const breadcrumbJson = {
-  "@context": "http://schema.org/",
-  "@type": "BreadcrumbList",
-  itemListElement: [
-    {
-      "@type": "ListItem",
-      position: 1,
-      name: "Home",
-      item: "https://www.latido.com.np",
-    },
-    {
-      "@type": "ListItem",
-      position: 2,
-      name: "About",
-      item: "https://www.latido.com.np/about",
-    },
-    {
-      "@type": "ListItem",
-      position: 3,
-      name: "Contact",
-      item: "https://www.latido.com.np/contact",
-    },
-    {
-      "@type": "ListItem",
-      position: 4,
-      name: "Policy",
-      item: "https://www.latido.com.np/policy",
-    },
-  ],
-};
-
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -97,16 +69,27 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <Script
-        id="breadcrumb"
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJson) }}
-      />
-      <body className={inter.className}>
+      <JsonLd />
+      <body
+        id="rootContainer"
+        className={inter.className}
+        style={{
+          position: "relative",
+          scrollSnapType: "y mandatory",
+          scrollSnapStop: "always",
+          scrollBehavior: "smooth",
+          height: "calc(-160px + 100dvh)",
+        }}
+      >
         <NextTopLoader color="red" showSpinner={false} />
         <AuthProvider>
           <AppQueryProvider>
-            <AppThemeProvider>{children}</AppThemeProvider>
+            <AppThemeProvider>
+              <Box position="fixed" w="full" top="0" zIndex={100}>
+                <Header />
+              </Box>
+              {children}
+            </AppThemeProvider>
           </AppQueryProvider>
         </AuthProvider>
       </body>

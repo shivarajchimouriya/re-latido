@@ -8,12 +8,12 @@ import dynamic from "next/dynamic";
 //     loading: () => <CardLoader />
 //   }
 // );
-import { VStack } from "@chakra-ui/react";
+import { Box, VStack } from "@chakra-ui/react";
 import ProductListings from "@/features/Homepage/ProductListings";
 
 export default function Home() {
   return (
-    <VStack h="full">
+    <VStack>
       <ProductListings />
     </VStack>
   );
