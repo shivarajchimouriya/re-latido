@@ -36,7 +36,7 @@ const ProtectedLayout = ({ children }: IProps) => {
 
   if (isLoading) {
     return (
-      <Center h="100vh" w="100vw">
+      <Center h="100dvh" w="100vw">
         <LogoIcon />
       </Center>
     );

@@ -14,7 +14,7 @@ export const DigitalInvoicePage = ({ id }: IProps) => {
   const { data, error, isLoading } = useFetchInvoice(id);
   if (!data) return null;
   return (
-    <Container bg="background" minH="100vh">
+    <Container bg="background" minH="100dvh">
       <Heading px={8} fontSize={"2rem"} as="h1" lineHeight={1.2} textAlign="left" py="6">
         <Text as={"span"}>DIGITAL </Text>
         <br />

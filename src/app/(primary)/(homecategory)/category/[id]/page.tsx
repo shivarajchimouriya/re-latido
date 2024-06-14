@@ -30,21 +30,21 @@ export const generateMetadata = async ({
   const result = await API.Homepage.get();
   const categoryData = result.data.category;
 
-  const index = categoryData.find((cat) => cat._id === params.id);
+  const category = categoryData.find((cat) => cat._id === params.id);
 
-  if (!index) {
+  if (!category) {
     return {};
   }
   return {
-    title: index?.title,
-    keywords: index?.slug,
+    title: category?.title,
+    keywords: category?.slug,
     openGraph: {
       type: "website",
-      description: index.title,
-      title: index.title,
+      description: category.title,
+      title: category.title,
       siteName: "Latido",
       url: env.SITE_URL + "/category" + params.id,
-      images: [index.image],
+      images: [category.image],
     },
   };
 };

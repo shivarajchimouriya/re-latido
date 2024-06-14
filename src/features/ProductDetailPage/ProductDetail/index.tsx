@@ -26,11 +26,7 @@ const getProductDetail = async (id: string) => {
 export default async function ProductDetail({ productId }: IProps) {
   const data = await getProductDetail(productId);
 
-
-  let productDetail = null;
-  if (data) {
-    productDetail = data?.data?.productDetail;
-  }
+  const productDetail = data?.data?.productDetail;
   if (!productDetail) return <NotFound />;
 
   return (

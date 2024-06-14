@@ -15,9 +15,9 @@ const CollectionSwiper = ({ collection }: IProps) => {
   const category = params.id as string;
 
   return (
-    <Flex w="100%" m="1rem" gap="2rem" px=".5rem" overflow="auto">
+    <Flex w="100%" p="1rem" position='fixed' top='4.6rem'   bg="white" gap="2rem" px=".5rem" overflow="auto">
       <div
-        style={{ display: "flex", overflow: "auto", gap: "2rem" }}
+        style={{ display: "flex", overflowX: "auto", gap: "2rem", width: "100%" }}
         className="collection_container"
       >
         <CollectionCard
@@ -26,7 +26,7 @@ const CollectionSwiper = ({ collection }: IProps) => {
           title={"All "}
           isActive={!category}
         />
-        {collection.map(el => {
+        {collection.map((el) => {
           const isActive = el._id === category;
           return (
             <CollectionCard

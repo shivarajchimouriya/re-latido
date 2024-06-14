@@ -9,17 +9,17 @@ import HamburgerMenu from "./components/Hamburger";
 const Header = () => {
   return (
     <Flex
+      className="header"
       w="100%"
       justify="space-between"
       align="center"
-      position={"sticky"}
       pr="2rem"
-      top="0"
       backdropFilter="auto"
-      backdropBlur="10px"
+      // backdropBlur="10px"
       py=".3rem"
       shadow="xl"
-      bg="rgba(255,255,255,0.3)"
+      // bg="rgba(255,255,255,0.3)"
+      bg="base"
       zIndex={100}
       borderBottom="1px solid rgba(0,0,0,0.2)"
     >

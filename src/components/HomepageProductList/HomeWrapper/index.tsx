@@ -1,32 +1,14 @@
 "use client";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect } from "react";
 import ProductList1 from "../ProductList1";
-import { Box, Container, VStack } from "@chakra-ui/react";
+import { Box, Grid, Spinner, Text } from "@chakra-ui/react";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { queryKeys } from "@/constants/keys";
 import { getProducts } from "@/features/Homepage/ProductListings";
 import { useInView } from "react-intersection-observer";
-import { logger } from "@/utils/logger";
 
 export default function HomeWrapper() {
-  const containerRef = useRef(null);
-
-  const options = {
-    root: containerRef.current,
-    rootMargin: "3000px",
-    threshold: 0,
-  };
-  const [ref, inView] = useInView(options);
-
-  const {
-    data,
-    error,
-    isLoading,
-    isFetching,
-    isFetchingNextPage,
-    fetchNextPage,
-    hasNextPage,
-  } = useInfiniteQuery({
+  const { data, fetchNextPage, hasNextPage } = useInfiniteQuery({
     queryKey: [queryKeys.PRODUCT_LISTING],
     queryFn: ({ pageParam }) => {
       const page = pageParam?.page || 1;
@@ -45,6 +27,11 @@ export default function HomeWrapper() {
     return el?.data?.data || [];
   });
 
+  const options = {
+    threshold: 0,
+  };
+  const { ref, inView } = useInView(options);
+
   useEffect(() => {
     if (inView) {
       fetchNextPage();
@@ -52,17 +39,23 @@ export default function HomeWrapper() {
   }, [inView]);
 
   return (
-    <Container>
-      <Box ref={containerRef}>
-        <ProductList1
-          products={productsFlat || []}
-          viewRef={ref}
-          hasNextPage={hasNextPage}
-          isFetchingNextPage={isFetchingNextPage}
-          isFetching={isFetching}
-          isLoading={isLoading}
-        />
+    <>
+      <Box mt="14dvh">
+        <ProductList1 products={productsFlat || []} />
+        <Grid width="full" mt="2rem" minH="80vh" justifyContent="center">
+          {hasNextPage && (
+            <Box className="THIS_IS_TARGET">
+              <Spinner height="10rem" width="10rem" />
+              <Box mt="-1500px" ref={ref} bg="transparent" />
+            </Box>
+          )}
+          {!hasNextPage && (
+            <Text fontSize="2rem" fontWeight="bold">
+              End of Product
+            </Text>
+          )}
+        </Grid>
       </Box>
-    </Container>
+    </>
   );
 }
