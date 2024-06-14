@@ -71,27 +71,33 @@ export default function RootLayout({
     <html lang="en">
       <JsonLd />
       <body
-        id="rootContainer"
         className={inter.className}
         style={{
-          position: "relative",
-          scrollSnapType: "y mandatory",
-          scrollSnapStop: "always",
-          scrollBehavior: "smooth",
-          height: "calc(-160px + 100dvh)",
+          height: "100dvh",
+          overflow: "hidden",
         }}
       >
-        <NextTopLoader color="red" showSpinner={false} />
-        <AuthProvider>
-          <AppQueryProvider>
-            <AppThemeProvider>
-              <Box position="fixed" w="full" top="0" zIndex={100}>
+        <div
+          id="rootContainer"
+          style={{
+            overflow: "auto",
+            position: "relative",
+            scrollSnapType: "y mandatory",
+            scrollSnapStop: "always",
+            scrollBehavior: "smooth",
+            height: "100dvh",
+          }}
+        >
+          <NextTopLoader color="red" showSpinner={false} />
+          <AuthProvider>
+            <AppQueryProvider>
+              <AppThemeProvider>
                 <Header />
-              </Box>
-              {children}
-            </AppThemeProvider>
-          </AppQueryProvider>
-        </AuthProvider>
+                {children}
+              </AppThemeProvider>
+            </AppQueryProvider>
+          </AuthProvider>
+        </div>
       </body>
     </html>
   );

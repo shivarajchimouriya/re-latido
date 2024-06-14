@@ -13,7 +13,7 @@ const ProductList1 = ({ products }: IProps) => {
     return;
   }
   return (
-    <Grid placeItems="center" mt="7dvh" gap="1rem">
+    <Grid placeItems="center" gap="1rem">
       {products.map((el, i) => {
         const isFirst = i === 0;
         return <ProductCard isFirstCard={isFirst} product={el} key={el.name} />;

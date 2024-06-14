@@ -1,6 +1,19 @@
 "use client";
-import { Box, Circle, Flex, HStack, IconButton, VStack, useDisclosure } from "@chakra-ui/react";
-import { AnimatePresence, PanInfo, motion, useDragControls } from "framer-motion";
+import {
+  Box,
+  Circle,
+  Flex,
+  HStack,
+  IconButton,
+  VStack,
+  useDisclosure,
+} from "@chakra-ui/react";
+import {
+  AnimatePresence,
+  PanInfo,
+  motion,
+  useDragControls,
+} from "framer-motion";
 import React, { ReactElement, ReactNode, useRef, useState } from "react";
 import { AiOutlineHome, AiOutlineThunderbolt } from "react-icons/ai";
 import { GoHome, GoPerson } from "react-icons/go";
@@ -15,7 +28,7 @@ import GenderSwitch from "./components/GenderSwitch";
 import { usePathname } from "next/navigation";
 import dynamic from "next/dynamic";
 import CardLoader from "@/components/CardLoader";
-import FilterBox from './components/FIlterBox'
+import FilterBox from "./components/FIlterBox";
 
 const Navbar = () => {
   interface INavItem {
@@ -25,25 +38,23 @@ const Navbar = () => {
   }
 
   const navItems: INavItem[] = [
-    { icon: <GoHome    />, link: "/", name: "" },
+    { icon: <GoHome />, link: "/", name: "" },
     { icon: <RiSearch2Line />, link: "/search", name: "search" },
-    { icon: <GoPerson />, link: "/profile", name: "account" }
+    { icon: <GoPerson />, link: "/profile", name: "account" },
   ];
 
-const  pathName=  usePathname();
- const controls = useDragControls()
+  const pathName = usePathname();
+  const controls = useDragControls();
 
-  const { isOpen, onClose, onOpen } = useDisclosure()
-  
+  const { isOpen, onClose, onOpen } = useDisclosure();
+
   useCategories();
-  const ref=useRef<HTMLDivElement|null>(null)
+  const ref = useRef<HTMLDivElement | null>(null);
 
   return (
     <>
-    <Appendix
-            onClick={onOpen}
-          />
-        {/* <Flex
+      <Appendix onClick={onOpen} />
+      {/* <Flex
           position="fixed"
           bottom=".3rem"
           zIndex={10}
@@ -115,60 +126,77 @@ const  pathName=  usePathname();
             })}
           </Flex>
         </Flex> */}
-          
 
-
-        <AnimatePresence> 
-        {isOpen &&
-
+      <AnimatePresence>
+        {isOpen && (
           <>
             <Box
               as={motion.div}
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              position='fixed' inset='0'
-              zIndex={10000} width='100%' height='100%' bg='rgba(0,0,0,.1)' onClick={onClose} >
-            </Box>
+              position="fixed"
+              inset="0"
+              zIndex={10000}
+              width="100%"
+              height="100%"
+              bg="rgba(0,0,0,.1)"
+              // bg="red"
+              onClick={onClose}
+            ></Box>
             <VStack
               as={motion.div}
-              position='sticky'
-
-              zIndex={10000} bottom='0' width='100%' height='54rem' py='2rem' pb='1rem'
+              position="fixed"
+              zIndex={10000}
+              bottom="0"
+              width="100%"
+              height="50rem"
+              py="2rem"
+              pb="1rem"
               onPan={(e: PointerEvent, info: PanInfo) => {
-                logger.log("info",info)
-                if ((info.delta.y > 2 || info.velocity.y>40 ) && info.delta.x === 0   ) {
-                  onClose()
+                logger.log("info", info);
+                if (
+                  (info.delta.y > 2 || info.velocity.y > 40) &&
+                  info.delta.x === 0
+                ) {
+                  onClose();
                 }
-
               }}
             >
-              <VStack w='95%' h='100%'
-                position='relative'
-                overflow='hidden'
+              <VStack
+                w="95%"
+                h="100%"
+                position="relative"
+                overflow="hidden"
                 as={motion.div}
-                backdropFilter='auto' backdropBlur='15px'
-                rounded='2rem'
-                    layoutId="ass"
-                initial={{ y: '100%' }}
-                animate={{ y: '0%',transition:{duration:.4,  bounce:false,type:"just",} }}
-
-                
-                exit={{ y: '100%',transition:{duration:.4,  bounce:false,type:"just",} }}
+                backdropFilter="auto"
+                backdropBlur="15px"
+                rounded="2rem"
+                layoutId="ass"
+                initial={{ y: "100%" }}
+                animate={{
+                  y: "0%",
+                  transition: { duration: 0.4, bounce: false, type: "just" },
+                }}
+                exit={{
+                  y: "100%",
+                  transition: { duration: 0.4, bounce: false, type: "just" },
+                }}
                 bg="rgba(0,0,0,.7)"
               >
-                <Box w='3rem' h='.3rem' mt='1rem' rounded='5rem' bg='whitesmoke' />
-                <FilterBox onClose={onClose}  />
+                <Box
+                  w="3rem"
+                  h=".3rem"
+                  mt="1rem"
+                  rounded="5rem"
+                  bg="whitesmoke"
+                />
+                <FilterBox onClose={onClose} />
               </VStack>
-
             </VStack>
-
           </>
-
-
-}
-</AnimatePresence>
-
+        )}
+      </AnimatePresence>
     </>
   );
 };
