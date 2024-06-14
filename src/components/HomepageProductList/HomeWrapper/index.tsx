@@ -1,24 +1,14 @@
 "use client";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect } from "react";
 import ProductList1 from "../ProductList1";
-import { Box, Container, Grid, Spinner, Text, VStack } from "@chakra-ui/react";
+import { Box, Grid, Spinner, Text } from "@chakra-ui/react";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { queryKeys } from "@/constants/keys";
 import { getProducts } from "@/features/Homepage/ProductListings";
 import { useInView } from "react-intersection-observer";
 
 export default function HomeWrapper() {
-  const containerRef = useRef(null);
-
-  const {
-    data,
-    error,
-    isLoading,
-    isFetching,
-    isFetchingNextPage,
-    fetchNextPage,
-    hasNextPage,
-  } = useInfiniteQuery({
+  const { data, fetchNextPage, hasNextPage } = useInfiniteQuery({
     queryKey: [queryKeys.PRODUCT_LISTING],
     queryFn: ({ pageParam }) => {
       const page = pageParam?.page || 1;
@@ -37,17 +27,12 @@ export default function HomeWrapper() {
     return el?.data?.data || [];
   });
 
-  const isClient = typeof window != undefined;
-
   const options = {
-    root: isClient ? window?.document?.getElementById("rootContainer") : null,
-    rootMargin: "1500px",
     threshold: 0,
   };
   const { ref, inView } = useInView(options);
 
   useEffect(() => {
-    console.log("in view: ", inView);
     if (inView) {
       fetchNextPage();
     }
@@ -59,8 +44,9 @@ export default function HomeWrapper() {
         <ProductList1 products={productsFlat || []} />
         <Grid width="full" mt="2rem" minH="80vh" justifyContent="center">
           {hasNextPage && (
-            <Box ref={ref} className="THIS_IS_TARGET">
+            <Box className="THIS_IS_TARGET">
               <Spinner height="10rem" width="10rem" />
+              <Box mt="-1500px" ref={ref} bg="transparent" />
             </Box>
           )}
           {!hasNextPage && (

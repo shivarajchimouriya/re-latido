@@ -1,15 +1,9 @@
 import HomeWrapper from "@/components/HomepageProductList/HomeWrapper";
-import ProductList1 from "@/components/HomepageProductList/ProductList1";
 import { queryKeys } from "@/constants/keys";
 import getQueryClient from "@/lib/queryClient";
 import { API } from "@/resources";
 import { logger } from "@/utils/logger";
-import { VStack } from "@chakra-ui/react";
-import {
-  HydrationBoundary,
-  QueryClient,
-  dehydrate,
-} from "@tanstack/react-query";
+import { HydrationBoundary, dehydrate } from "@tanstack/react-query";
 import React from "react";
 
 interface IProps {
@@ -39,13 +33,9 @@ const ProductListings = async () => {
     queryFn: () => {
       return getProducts(fetchOptions);
     },
-    initialPageParam: { limit: 5, page: 1 },
+    initialPageParam: { limit: 10, page: 1 },
   });
   const dehydratedState = dehydrate(queryClient);
-
-  // const products = await getProducts();
-  // const productList = products?.data.data;
-  // if (!productList) return null;
   return (
     <HydrationBoundary state={dehydratedState}>
       <HomeWrapper />
