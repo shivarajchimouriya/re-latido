@@ -12,9 +12,7 @@ import "swiper/css";
 import "swiper/css/effect-creative";
 import Image from "next/image";
 
-export default function ProductImage({
-  secondaryImage,
-}: IProductImageProps) {
+export default function ProductImage({ secondaryImage }: IProductImageProps) {
   const searchParams = useSearchParams();
   const lid = searchParams.get("lid");
   const psid = searchParams.get("psid");
@@ -44,7 +42,7 @@ export default function ProductImage({
   return (
     <VStack pb="2rem" w="full" overflow="hidden">
       {/* <AppImage src={primaryImage} height={500} width={500} alt="product image" /> */}
-      <HStack w="full" minH="100dvh">
+      <HStack w="full">
         <>
           <Swiper
             ref={ref}
@@ -74,7 +72,7 @@ export default function ProductImage({
                     src={image}
                     height={300 * 1.5}
                     width={1000}
-                    style={{ width: "100%" }}
+                    style={{ width: "100%", minHeight: "80dvh" }}
                     alt="product image"
                   />
                 </Box>
@@ -89,10 +87,13 @@ export default function ProductImage({
         width={"100%"}
         height={"100%"}
         overflowX={"scroll"}
-        justifyContent={images?.length > 5 ??0 ? "auto" : "center"}
+        justifyContent={images?.length > 5 ?? 0 ? "auto" : "center"}
         className="product_images"
       >
-        <div style={{ display: "flex", gap: "1rem" }} className="product_images"  >
+        <div
+          style={{ display: "flex", gap: "1rem" }}
+          className="product_images"
+        >
           {images?.map((image: string, index: number) => (
             <Box onClick={() => handleClick(index)}>
               <Avatar

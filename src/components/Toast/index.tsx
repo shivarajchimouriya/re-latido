@@ -1,35 +1,43 @@
 import React from "react";
-import { HStack, Text, Box, CloseButton, Slide, useDisclosure, Icon } from "@chakra-ui/react";
-import { FaCheckCircle, FaExclamationCircle } from 'react-icons/fa';
+import {
+  HStack,
+  Text,
+  Box,
+  CloseButton,
+  Slide,
+  useDisclosure,
+  Icon,
+} from "@chakra-ui/react";
+import { FaCheckCircle, FaExclamationCircle } from "react-icons/fa";
 
 interface IProps {
   icon?: React.ReactNode;
   message: string;
-  status?: 'success' | 'error';
+  status?: "success" | "error";
   onClose: () => void;
   isOpen?: boolean;
 }
 
-export default function Toast({ icon, message, status='success', onClose, isOpen }: IProps) {
-
+export default function Toast({
+  icon,
+  message,
+  status = "success",
+  onClose,
+  isOpen,
+}: IProps) {
   const messageComponents = {
-    'success': {
+    success: {
       icon: FaCheckCircle,
-      bg:"rgb(34, 197, 94, 0.8)"
+      bg: "rgb(34, 197, 94, 0.8)",
     },
-    'error': {
+    error: {
       icon: FaExclamationCircle,
-      bg: "rgb(239, 68, 68, 0.8)"
-    }
-  }
+      bg: "rgb(239, 68, 68, 0.8)",
+    },
+  };
   return (
-    <HStack >
-      <Box
-        w="full"
-        display="flex"
-        justifyContent="center"
-        p={4}
-      >
+    <HStack>
+      <Box w="full" display="flex" justifyContent="center" p={4}>
         <HStack
           shadow="lg"
           align="center"
@@ -49,10 +57,12 @@ export default function Toast({ icon, message, status='success', onClose, isOpen
           <Text flex="1" fontWeight="medium">
             {message}
           </Text>
-          <CloseButton onClick={() => {
-            console.log('close');
-            onClose();
-          }} color="white" />
+          <CloseButton
+            onClick={() => {
+              onClose();
+            }}
+            color="white"
+          />
         </HStack>
       </Box>
     </HStack>

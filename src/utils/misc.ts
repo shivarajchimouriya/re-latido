@@ -95,14 +95,12 @@ export const isValidPhone = (phone: string) => {
   if (!isValid) {
     return false;
   }
-
   return true;
 };
 
 export const validateFile = (file: File): boolean => {
   const allowedTypes = ["image/jpeg", "image/png", "image/gif"];
   if (!allowedTypes.includes(file.type)) {
-    console.error("Invalid file type. Only JPEG, PNG, and GIF are allowed.");
     return false;
   }
   return true;

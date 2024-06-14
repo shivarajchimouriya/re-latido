@@ -10,7 +10,7 @@ import {
   RangeSliderThumb,
   RangeSliderTrack,
   Text,
-  VStack
+  VStack,
 } from "@chakra-ui/react";
 import styles from "./filterbox.module.css";
 
@@ -63,12 +63,12 @@ const FilterBox = ({ onClose }: IProps) => {
   const genders: { gender: "male" | "female"; icon: ReactElement }[] = [
     {
       gender: "male",
-      icon: <BiMaleSign />
+      icon: <BiMaleSign />,
     },
     {
       gender: "female",
-      icon: <BiFemaleSign />
-    }
+      icon: <BiFemaleSign />,
+    },
   ];
 
   const handleApply = () => {
@@ -78,7 +78,7 @@ const FilterBox = ({ onClose }: IProps) => {
       priceUpperLimit: `${rangeValues[1]}` || "90000",
       collections: activeCat,
       limit: 1000,
-      page: 1
+      page: 1,
     };
     const queryString = Object.entries(data)
       .map(
@@ -92,245 +92,241 @@ const FilterBox = ({ onClose }: IProps) => {
   };
 
   return (
-
-<VStack  gap='.3rem' w='full' 
-px="1rem"
->
-
-     <Link  href='/search'  style={{width:"100%"}} > 
-     
-      <Flex 
-      as={motion.div}
-      bg='rgba(0,0,0,.3)'
-     layoutId='search_bar'
-     onClick={onClose}
-
-      mt='1rem'
-justify='space-between'
-    color='rgba(255,255,255,0.6)'
-
-       alignItems='center' w='full' rounded='full'  h='5rem'  > 
-     <Text 
-    px='3rem'
-     
-     > search here  </Text>
-    <Box   color='white'   mr='3rem' > <IoSearchOutline/> </Box>
-     </Flex>
-     </Link> 
-    <VStack gap="2rem" w="100%"  overflow="auto">
-      <Box w="full" position="relative" color="white" h="110%" py="2rem">
-        <Swiper
-          slidesPerView={"auto"}
-          spaceBetween={10}
-          pagination={{
-            clickable: true,
-            type: "bullets",
-            horizontalClass: styles.bullet_container,
-            bulletClass: styles.bullet,
-            currentClass: styles.current_bullet,
-            bulletActiveClass: styles.bullet_active
-          }}
-          modules={[Pagination]}
-          style={{ maxWidth: "53rem", height: "120%" }}
+    <VStack gap=".3rem" w="full" px="1rem" zIndex={1000}>
+      <Link href="/search" style={{ width: "100%" }}>
+        <Flex
+          as={motion.div}
+          bg="rgba(0,0,0,.3)"
+          layoutId="search_bar"
+          onClick={onClose}
+          mt="1rem"
+          justify="space-between"
+          color="rgba(255,255,255,0.6)"
+          alignItems="center"
+          w="full"
+          rounded="full"
+          h="5rem"
         >
-          {sliderLenth.map((slide, i) => {
-            const articlesToShow = categories.slice(i + i, i + i + 2);
-            return (
-              <SwiperSlide key={i}>
-                <VStack w="fit-content" minW="8rem" maxW="15rem" gap="1rem">
-                  {articlesToShow.map((el, j) => {
-                    const isActive = activeCat === el._id;
-                    return (
-                      <Box position="relative" w="100%">
-                        <Center
-                          onClick={() => handleCatClick(el._id)}
-                          bg={"rgba(0,0,0,0.1)"}
-                          transitionDuration=".4s"
-                          w="100%"
-                          h="4rem"
-                          rounded="3rem"
-                          px="1rem"
-                          color={isActive ? "black" : "white"}
-                          position="relative"
-                          textTransform="capitalize"
-                          fontWeight={isActive ? "bold" : "medium"}
-                          border={".1px  solid rgba(255,255,255,.4)"}
-                        >
-                          <Text> {el.title} </Text>
-                        </Center>
-                        {isActive && (
-                          <Box
-                            as={motion.div}
-                            position="absolute"
-                            layoutId="cat_indicator"
-                            inset="0"
+          <Text px="3rem"> search here </Text>
+          <Box color="white" mr="3rem">
+            {" "}
+            <IoSearchOutline />{" "}
+          </Box>
+        </Flex>
+      </Link>
+      <VStack gap="2rem" w="100%" overflow="auto">
+        <Box w="full" position="relative" color="white" h="110%" py="2rem">
+          <Swiper
+            slidesPerView={"auto"}
+            spaceBetween={10}
+            pagination={{
+              clickable: true,
+              type: "bullets",
+              horizontalClass: styles.bullet_container,
+              bulletClass: styles.bullet,
+              currentClass: styles.current_bullet,
+              bulletActiveClass: styles.bullet_active,
+            }}
+            modules={[Pagination]}
+            style={{ maxWidth: "53rem", height: "120%" }}
+          >
+            {sliderLenth.map((slide, i) => {
+              const articlesToShow = categories.slice(i + i, i + i + 2);
+              return (
+                <SwiperSlide key={i}>
+                  <VStack w="fit-content" minW="8rem" maxW="15rem" gap="1rem">
+                    {articlesToShow.map((el, j) => {
+                      const isActive = activeCat === el._id;
+                      return (
+                        <Box position="relative" w="100%">
+                          <Center
+                            onClick={() => handleCatClick(el._id)}
+                            bg={"rgba(0,0,0,0.1)"}
+                            transitionDuration=".4s"
                             w="100%"
-                            h="100%"
-                            bg="rgba(255,255,255,0.9)"
-                            isolation="isolate"
+                            h="4rem"
                             rounded="3rem"
-                            zIndex={-10}
-                            p=".2rem"
-                          />
-                        )}
-                      </Box>
-                    );
-                  })}
-                </VStack>
-              </SwiperSlide>
+                            px="1rem"
+                            color={isActive ? "black" : "white"}
+                            position="relative"
+                            textTransform="capitalize"
+                            fontWeight={isActive ? "bold" : "medium"}
+                            border={".1px  solid rgba(255,255,255,.4)"}
+                          >
+                            <Text> {el.title} </Text>
+                          </Center>
+                          {isActive && (
+                            <Box
+                              as={motion.div}
+                              position="absolute"
+                              layoutId="cat_indicator"
+                              inset="0"
+                              w="100%"
+                              h="100%"
+                              bg="rgba(255,255,255,0.9)"
+                              isolation="isolate"
+                              rounded="3rem"
+                              zIndex={-10}
+                              p=".2rem"
+                            />
+                          )}
+                        </Box>
+                      );
+                    })}
+                  </VStack>
+                </SwiperSlide>
+              );
+            })}
+          </Swiper>
+        </Box>
+        <Box w="90%" mt="3rem" as={motion.div}>
+          <RangeSlider
+            onChange={(val) => {
+              setRangeValues(val);
+            }}
+            defaultValue={[rangeValues[0], rangeValues[1]]}
+            min={0}
+            max={90000}
+            step={1000}
+            h="auto"
+          >
+            <RangeSliderTrack bg="rgba(255,255,255,0.3)" h=".2rem">
+              <RangeSliderFilledTrack bg="white" h=".2rem" />
+            </RangeSliderTrack>
+            <RangeSliderThumb
+              boxSize={35}
+              rounded="100%"
+              top="0rem"
+              index={0}
+              bg="white"
+            >
+              <Box
+                position="absolute"
+                top="-3rem"
+                p=".3rem"
+                px=".7rem"
+                rounded="3rem"
+                bg="rgba(0,0,0,0.7)"
+                backdropFilter="auto"
+                color="white"
+                backdropBlur="10px"
+              >
+                {Math.floor(rangeValues[0] / 1000)}k
+              </Box>
+
+              <Center h="100%" color="black">
+                <PiCurrencyDollarLight />
+              </Center>
+            </RangeSliderThumb>
+            <RangeSliderThumb
+              boxSize={35}
+              index={1}
+              defaultValue={90000}
+              rounded="100%"
+              top="0"
+              bg="white"
+            >
+              <Box
+                position="absolute"
+                top="-3rem"
+                p=".3rem"
+                px=".7rem"
+                rounded="3rem"
+                bg="rgba(0,0,0,0.7)"
+                backdropFilter="auto"
+                color="white"
+                backdropBlur="10px"
+              >
+                {Math.floor(rangeValues[1] / 1000)}k
+              </Box>
+
+              <Center h="100%" color="black">
+                <PiCurrencyDollarLight />
+              </Center>
+            </RangeSliderThumb>
+          </RangeSlider>
+        </Box>
+
+        <HStack
+          fontSize="2rem"
+          color="white"
+          gap="2rem"
+          as={motion.div}
+          initial={{ opacity: 0 }}
+          animate={{
+            opacity: 1,
+            transition: {
+              staggerChildren: 0.3,
+            },
+          }}
+        >
+          {genders.map((el) => {
+            const isSelected = el.gender === SelectedGender;
+
+            return (
+              <Box position="relative" as={motion.div}>
+                <GenderCard
+                  gender={el.gender}
+                  rounded="5rem"
+                  border={".1px  solid rgba(255,255,255,.4)"}
+                  onClick={() => setSelectedGender(el.gender)}
+                  color={isSelected ? "black" : "white"}
+                  transitionDuration={".4s"}
+                  icon={el.icon}
+                  fontWeight={isSelected ? "bold" : "medium"}
+                />
+
+                {isSelected && (
+                  <Box
+                    as={motion.div}
+                    layoutId="gender_indicator"
+                    position="absolute"
+                    w="100%"
+                    h="100%"
+                    inset="0"
+                    rounded="5rem"
+                    bg="rgba(255,255,255,0.9)"
+                    isolation="isolate"
+                    zIndex={-10}
+                  />
+                )}
+              </Box>
             );
           })}
-        </Swiper>
-      </Box>
-      <Box w="90%" mt="3rem" as={motion.div}>
-        <RangeSlider
-          onChange={(val) => {
-            setRangeValues(val);
-          }}
-          defaultValue={[rangeValues[0], rangeValues[1]]}
-          min={0}
-          max={90000}
-          step={1000}
-          h="auto"
-        >
-          <RangeSliderTrack bg="rgba(255,255,255,0.3)" h=".2rem">
-            <RangeSliderFilledTrack bg="white" h=".2rem" />
-          </RangeSliderTrack>
-          <RangeSliderThumb
-            boxSize={35}
-            rounded="100%"
-            top="0rem"
-            index={0}
-            bg="white"
+        </HStack>
+
+        <HStack w="100%" color="white" mt="3rem">
+          <Button
+            p="1.5rem"
+            w="100%"
+            px="2rem"
+            bg="rgba(0,0,0,0.1)"
+            color="white"
+            fontSize="1.4rem"
+            rounded="full"
+            gap="1rem"
+            onClick={onClose}
           >
-            <Box
-              position="absolute"
-              top="-3rem"
-              p=".3rem"
-              px=".7rem"
-              rounded="3rem"
-              bg="rgba(0,0,0,0.7)"
-              backdropFilter="auto"
-              color="white"
-              backdropBlur="10px"
-            >
-              {Math.floor(rangeValues[0] / 1000)}k
-            </Box>
-
-            <Center h="100%" color="black">
-              <PiCurrencyDollarLight />
-            </Center>
-          </RangeSliderThumb>
-          <RangeSliderThumb
-            boxSize={35}
-            index={1}
-            defaultValue={90000}
-            rounded="100%"
-            top="0"
+            {" "}
+            cancel{" "}
+          </Button>
+          <Button
+            p="1.5rem"
+            w="100%"
+            px="2rem"
             bg="white"
+            color="black"
+            fontSize="1.4rem"
+            rounded="full"
+            gap="1rem"
+            onClick={handleApply}
+            rightIcon={<MdOutlineDone fontSize="1.5rem" color="green.500" />}
           >
-            <Box
-              position="absolute"
-              top="-3rem"
-              p=".3rem"
-              px=".7rem"
-              rounded="3rem"
-              bg="rgba(0,0,0,0.7)"
-              backdropFilter="auto"
-              color="white"
-              backdropBlur="10px"
-            >
-              {Math.floor(rangeValues[1] / 1000)}k
-            </Box>
-
-            <Center h="100%" color="black">
-              <PiCurrencyDollarLight />
-            </Center>
-          </RangeSliderThumb>
-        </RangeSlider>
-      </Box>
-
-      <HStack
-        fontSize="2rem"
-        color="white"
-        gap="2rem"
-        as={motion.div}
-        initial={{ opacity: 0 }}
-        animate={{
-          opacity: 1,
-          transition: {
-            staggerChildren: 0.3
-          }
-        }}
-      >
-        {genders.map((el) => {
-          const isSelected = el.gender === SelectedGender;
-
-          return (
-            <Box position="relative" as={motion.div}>
-              <GenderCard
-                gender={el.gender}
-                rounded="5rem"
-                border={".1px  solid rgba(255,255,255,.4)"}
-                onClick={() => setSelectedGender(el.gender)}
-                color={isSelected ? "black" : "white"}
-                transitionDuration={".4s"}
-                icon={el.icon}
-                fontWeight={isSelected ? "bold" : "medium"}
-              />
-
-              {isSelected && (
-                <Box
-                  as={motion.div}
-                  layoutId="gender_indicator"
-                  position="absolute"
-                  w="100%"
-                  h="100%"
-                  inset="0"
-                  rounded="5rem"
-                  bg="rgba(255,255,255,0.9)"
-                  isolation="isolate"
-                  zIndex={-10}
-                />
-              )}
-            </Box>
-          );
-        })}
-      </HStack>
-
-      <HStack w="100%" color="white" mt="3rem">
-         <Button
-          p="1.5rem"
-          w="100%"
-          px="2rem"
-          bg="rgba(0,0,0,0.1)"
-          color="white"
-          fontSize="1.4rem"
-          rounded="full"
-          gap="1rem"
-          onClick={onClose}
-        >
-          {" "}
-          cancel{" "}
-        </Button>
-        <Button
-          p="1.5rem"
-          w="100%"
-          px="2rem"
-          bg="white"
-          color="black"
-          fontSize="1.4rem"
-          rounded="full"
-          gap="1rem"
-          onClick={handleApply}
-          rightIcon={<MdOutlineDone fontSize="1.5rem" color="green.500" />}
-        >
-          {" "}
-          Apply{" "}
-        </Button>
-       
-      </HStack>
-    </VStack>
+            {" "}
+            Apply{" "}
+          </Button>
+        </HStack>
+      </VStack>
     </VStack>
   );
 };

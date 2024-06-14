@@ -22,6 +22,9 @@ const Header = () => {
       bg="base"
       zIndex={100}
       borderBottom="1px solid rgba(0,0,0,0.2)"
+      height="5rem"
+      position="sticky"
+      top="0"
     >
       {/* <BackButton /> */}
       <HamburgerMenu />

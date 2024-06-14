@@ -40,7 +40,7 @@ export default function HomeWrapper() {
 
   return (
     <>
-      <Box mt="14dvh">
+      <Box mt="15dvh">
         <ProductList1 products={productsFlat || []} />
         <Grid width="full" mt="2rem" minH="80vh" justifyContent="center">
           {hasNextPage && (
