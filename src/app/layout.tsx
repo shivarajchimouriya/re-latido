@@ -86,6 +86,7 @@ export default function RootLayout({
             scrollSnapStop: "always",
             scrollBehavior: "smooth",
             height: "100dvh",
+            scrollPaddingTop: "4.6rem"
           }}
         >
           <NextTopLoader color="red" showSpinner={false} />
