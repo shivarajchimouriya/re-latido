@@ -228,7 +228,7 @@ const ProductCard = ({ product, isFirstCard, ...rest }: IProps) => {
         href={`/product/details/${product._id}`}
         style={{
           width: "100%",
-          maxWidth: "100vw",
+          maxWidth: "600px",
           display: "flex",
           justifyContent: "center",
           marginTop: "1rem",
@@ -245,6 +245,7 @@ const ProductCard = ({ product, isFirstCard, ...rest }: IProps) => {
             // as={motion.div}
             position="relative"
             w="97vw"
+            maxW="480px"
             mb=".6rem"
             transitionDuration=".4s"
             align="center"

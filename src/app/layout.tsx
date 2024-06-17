@@ -76,32 +76,32 @@ export default function RootLayout({
         style={{
           height: "100dvh",
           overflow: "hidden",
+          maxWidth: "500px",
+          margin: "0 auto"
         }}
       >
-        <SafeOrientation>
-          <div
-            id="rootContainer"
-            style={{
-              overflow: "auto",
+        <div
+          id="rootContainer"
+          style={{
+            overflow: "auto",
               position: "relative",
               scrollSnapType: "y mandatory",
               scrollSnapStop: "always",
               scrollBehavior: "smooth",
               height: "100dvh",
               scrollPaddingTop: "4.6rem",
-            }}
-          >
-            <NextTopLoader color="red" showSpinner={false} />
-            <AuthProvider>
-              <AppQueryProvider>
-                <AppThemeProvider>
-                  <Header />
-                  {children}
-                </AppThemeProvider>
-              </AppQueryProvider>
-            </AuthProvider>
-          </div>
-        </SafeOrientation>
+          }}
+        >
+          <NextTopLoader color="red" showSpinner={false} />
+          <AuthProvider>
+            <AppQueryProvider>
+              <AppThemeProvider>
+                <Header />
+                {children}
+              </AppThemeProvider>
+            </AppQueryProvider>
+          </AuthProvider>
+        </div>
       </body>
     </html>
   );

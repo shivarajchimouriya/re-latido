@@ -23,12 +23,13 @@ const CollectionSwiper = ({ collection }: IProps) => {
       bg="white"
       gap="2rem"
       px=".5rem"
-      overflow="auto"
+      maxW="500px"
+      overflow="hidden"
     >
       <div
         style={{
           display: "flex",
-          overflowX: "auto",
+          overflowX: "scroll",
           gap: "2rem",
           width: "100%",
         }}
