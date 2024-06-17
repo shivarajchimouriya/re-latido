@@ -9,6 +9,38 @@ import { logger } from "@/utils/logger";
 import CardLoader from "@/components/CardLoader";
 import SearchNotFound from "../SearchNotFound";
 
+const SearchMessage = ({
+  keyword,
+  totalProducts,
+}: {
+  keyword: string;
+  totalProducts: number;
+}) => {
+  return (
+    <Text
+      w="full"
+      textAlign="left"
+      fontSize="1.4rem"
+      px="1rem"
+      py="1rem"
+      mt="7.4rem"
+      position="fixed"
+      zIndex="99"
+    >
+      {totalProducts > 0 ? (
+        <>
+          <strong>{totalProducts}</strong> total products found for keyword{" "}
+          <strong>{keyword}</strong>
+        </>
+      ) : (
+        <>
+          No result found for <strong>{keyword}</strong>
+        </>
+      )}
+    </Text>
+  );
+};
+
 const TopRatedProductClient = () => {
   const searchParams = useSearchParams();
 
@@ -21,35 +53,14 @@ const TopRatedProductClient = () => {
   // if (products?.length === 0 || error)notFound()
   return (
     <Box w="100%" bg="base">
-      <Text
-        w="full"
-        textAlign="left"
-        fontSize="1.4rem"
-        px="1rem"
-        py="1rem"
-        mt="7.4rem"
-        position="fixed"
-        zIndex="99"
-      >
-        {totalProducts > 0 ? (
-          <>
-            <strong>{totalProducts}</strong> total products found for keyword{" "}
-            <strong>{keyword}</strong>
-          </>
-        ) : (
-          <>
-            No result found for <strong>{keyword}</strong>
-          </>
-        )}
-      </Text>
+      <SearchMessage
+        keyword={keyword ? keyword : ""}
+        totalProducts={totalProducts}
+      />
       {products && products?.length > 0 ? (
-        <>
-          <HomepageProductLists products={products} viewType={1} />
-        </>
+        <HomepageProductLists products={products} viewType={1} />
       ) : (
-        <>
-          <SearchNotFound />
-        </>
+        <SearchNotFound />
       )}
     </Box>
   );
