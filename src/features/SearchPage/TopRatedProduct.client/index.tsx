@@ -27,14 +27,20 @@ const SearchMessage = ({
       position="fixed"
       zIndex="99"
     >
-      {totalProducts > 0 ? (
-        <>
-          <strong>{totalProducts}</strong> total products found for keyword{" "}
-          <strong>{keyword}</strong>
-        </>
+      {keyword ? (
+        totalProducts > 0 ? (
+          <>
+            <strong>{totalProducts}</strong> total products found for keyword{" "}
+            <strong>{keyword}</strong>
+          </>
+        ) : (
+          <>
+            No result found for <strong>{keyword}</strong>
+          </>
+        )
       ) : (
         <>
-          No result found for <strong>{keyword}</strong>
+          <strong>{totalProducts}</strong> total products to start with{" "}
         </>
       )}
     </Text>
@@ -50,7 +56,6 @@ const TopRatedProductClient = () => {
   const products = data?.data.data;
   const totalProducts = products?.length ?? 0;
   if (isLoading) return <CardLoader />;
-  // if (products?.length === 0 || error)notFound()
   return (
     <Box w="100%" bg="base">
       <SearchMessage
