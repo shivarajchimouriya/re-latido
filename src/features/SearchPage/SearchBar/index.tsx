@@ -40,7 +40,7 @@ const SearchBar = () => {
     router.push(`/search?keyword=${keyword}`);
   };
   return (
-    <Flex w='full' justify='center' position="fixed" zIndex="10" mt="0" bg="base" py="2rem" pt="4rem">
+    <Flex w='full' justify='center' position="fixed" zIndex="10" mt="0" pt="3rem" pb="3.4rem" bg="base">
     <Flex w="95%" rounded='full' justify="space-between"p='1rem' align="center"
      border='1px solid'
      borderColor='gray.400' 
