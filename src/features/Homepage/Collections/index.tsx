@@ -13,12 +13,11 @@ const getHomePageData = async () => {
   }
 };
 
-const Collections = async() => {
-
-const homePageData=await getHomePageData();
-const products = homePageData?.data.category;
-const productsToShow=products?.filter((el)=>el.is_active) || []
-if(!productsToShow) return null;
+const Collections = async () => {
+  const homePageData = await getHomePageData();
+  const products = homePageData?.data.category;
+  const productsToShow = products?.filter((el) => el.is_active) || [];
+  if (!productsToShow) return null;
   return <CollectionSwiper collection={productsToShow} />;
 };
 

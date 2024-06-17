@@ -67,12 +67,11 @@ export default function ProductImage({ secondaryImage }: IProductImageProps) {
           >
             {images?.map((image: string, index: number) => (
               <SwiperSlide key={image}>
-                <Box width={"full"} bg="white">
+                <Box width="full" minH="80vh" bg="white">
                   <AppImage
                     src={image}
                     height={300 * 1.5}
                     width={1000}
-                    style={{ width: "100%", minHeight: "80dvh" }}
                     alt="product image"
                   />
                 </Box>

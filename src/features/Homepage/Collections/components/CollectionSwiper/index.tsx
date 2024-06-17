@@ -18,7 +18,7 @@ const CollectionSwiper = ({ collection }: IProps) => {
     <Flex
       w="100%"
       p="1rem"
-      pt="2rem"
+      pt="1.4rem"
       position="fixed"
       bg="white"
       gap="2rem"
