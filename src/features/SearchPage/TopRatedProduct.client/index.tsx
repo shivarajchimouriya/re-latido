@@ -19,7 +19,6 @@ const TopRatedProductClient = () => {
   const totalProducts = products?.length ?? 0;
   if (isLoading) return <CardLoader />;
   // if (products?.length === 0 || error)notFound()
-  if (!products) return null;
   return (
     <Box w="100%" bg="base">
       <Text
@@ -43,7 +42,7 @@ const TopRatedProductClient = () => {
           </>
         )}
       </Text>
-      {products?.length > 0 ? (
+      {products && products?.length > 0 ? (
         <>
           <HomepageProductLists products={products} viewType={1} />
         </>
