@@ -10,7 +10,7 @@ import React, {
   ChangeEventHandler,
   useEffect,
   useRef,
-  useState
+  useState,
 } from "react";
 import { BiSearch } from "react-icons/bi";
 import { CgClose } from "react-icons/cg";
@@ -20,59 +20,80 @@ const SearchBar = () => {
   const [term, setTerm] = useState("");
   const terms = useDebounce(term, 1000);
   const router = useRouter();
-  logger.log("terms", terms);
 
   function onCancel() {
     if (ref.current) ref.current.value = "";
   }
 
-  useEffect(() => {}, []);
-
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
-    setTerm(value);
+    if (!value.trim()) {
+      setTerm(value);
+    }
   };
   const searchParams = useSearchParams();
   const keyword = searchParams.get("keyword");
 
   const handleSubmit = (form: FormData) => {
     const keyword = form.get("keyword");
-    router.push(`/search?keyword=${keyword}`);
+    if (keyword && keyword.toString().trim()) {
+      router.push(`/search?keyword=${keyword.toString().trim()}`);
+    }
   };
   return (
-    <Flex w='full' justify='center' position="fixed" zIndex="10" mt="0" pt="3rem" pb="3.4rem" bg="base">
-    <Flex w="95%" rounded='full' justify="space-between"p='1rem' align="center"
-     border='1px solid'
-     borderColor='gray.400' 
-     as={motion.div}
-     layoutId='search_bar'
+    <Flex
+      w="full"
+      justify="center"
+      position="fixed"
+      zIndex="10"
+      mt="0"
+      pt="3rem"
+      pb="3.4rem"
+      bg="base"
     >
-      <Box fontSize="1rem" p='.5rem'  ml='.5rem' mr='.5rem'  rounded='full'>
-        <BiSearch />
-      </Box>
-      <form action={handleSubmit}  style={{width:"100%"}}>
-        <FormControl w="100%" px=".5rem" rounded='full'   >
-          <Input
-          autoFocus
-            ref={ref}
-            name="keyword"
-            border='none'
-            type="search"
-            defaultValue={keyword ?? ""}
-            fontSize="1.5rem"
-            py="0"
-            w="100%"
-            onChange={handleChange}
-            _focusWithin={{ outline: "none" }}
-            
-          />
-        </FormControl>
-      </form>
+      <Flex
+        w="95%"
+        rounded="full"
+        justify="space-between"
+        p="1rem"
+        align="center"
+        border="1px solid"
+        borderColor="gray.400"
+        as={motion.div}
+        layoutId="search_bar"
+      >
+        <Box fontSize="1rem" p=".5rem" ml=".5rem" mr=".5rem" rounded="full">
+          <BiSearch />
+        </Box>
+        <form action={handleSubmit} style={{ width: "100%" }}>
+          <FormControl w="100%" px=".5rem" rounded="full">
+            <Input
+              autoFocus
+              ref={ref}
+              name="keyword"
+              border="none"
+              type="search"
+              defaultValue={keyword ?? ""}
+              fontSize="1.5rem"
+              py="0"
+              w="100%"
+              onChange={handleChange}
+              _focusWithin={{ outline: "none" }}
+            />
+          </FormControl>
+        </form>
 
-      <Box fontSize="1rem" onClick={onCancel} bg='gray.200'p='.5rem'  mr='1rem' rounded='full'  >
-        <CgClose />
-      </Box>
-    </Flex>
+        <Box
+          fontSize="1rem"
+          onClick={onCancel}
+          bg="gray.200"
+          p=".5rem"
+          mr="1rem"
+          rounded="full"
+        >
+          <CgClose />
+        </Box>
+      </Flex>
     </Flex>
   );
 };
