@@ -10,7 +10,6 @@ const SecondaryLayout = ({ children }: IProps) => {
   return (
     <VStack w="full" justify="center" align="center">
       <Box w="100%" maxW="50rem">
-        <Header />
         {children}
       </Box>
     </VStack>
