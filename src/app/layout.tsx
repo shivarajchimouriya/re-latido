@@ -17,6 +17,7 @@ import Script from "next/script";
 import { Box } from "@chakra-ui/react";
 import Header from "@/components/Layout/PrimaryLayout/components/Header";
 import JsonLd from "@/features/JsonLd";
+import SafeOrientation from "@/features/SafeOrientation";
 const APP_NAME = "Latido";
 const APP_DEFAULT_TITLE = "Latido";
 const APP_TITLE_TEMPLATE = "Latido";
@@ -75,18 +76,20 @@ export default function RootLayout({
         style={{
           height: "100dvh",
           overflow: "hidden",
+          maxWidth: "500px",
+          margin: "0 auto"
         }}
       >
         <div
           id="rootContainer"
           style={{
             overflow: "auto",
-            position: "relative",
-            scrollSnapType: "y mandatory",
-            scrollSnapStop: "always",
-            scrollBehavior: "smooth",
-            height: "100dvh",
-            scrollPaddingTop: "4.6rem"
+              position: "relative",
+              scrollSnapType: "y mandatory",
+              scrollSnapStop: "always",
+              scrollBehavior: "smooth",
+              height: "100dvh",
+              scrollPaddingTop: "4.6rem",
           }}
         >
           <NextTopLoader color="red" showSpinner={false} />
