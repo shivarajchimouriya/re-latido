@@ -25,7 +25,6 @@ const TopRatedProductClient = () => {
       <Text
         w="full"
         textAlign="left"
-        textTransform="capitalize"
         fontSize="1.4rem"
         px="1rem"
         py="1rem"
@@ -33,12 +32,16 @@ const TopRatedProductClient = () => {
         position="fixed"
         zIndex="99"
       >
-        {" "}
-        {totalProducts} total products found for keyword{" "}
-        <Text as="span" fontWeight="semibold">
-          {" "}
-          {keyword}{" "}
-        </Text>{" "}
+        {totalProducts > 0 ? (
+          <>
+            <strong>{totalProducts}</strong> total products found for keyword{" "}
+            <strong>{keyword}</strong>
+          </>
+        ) : (
+          <>
+            No result found for <strong>{keyword}</strong>
+          </>
+        )}
       </Text>
       {products?.length > 0 ? (
         <>
