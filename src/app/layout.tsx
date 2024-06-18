@@ -27,7 +27,7 @@ export const metadata: Metadata = {
   applicationName: APP_NAME,
   title: {
     default: APP_DEFAULT_TITLE,
-    template: APP_TITLE_TEMPLATE,
+    template: `%s - ${APP_TITLE_TEMPLATE}`,
   },
   description: APP_DESCRIPTION,
   manifest: "/manifest.json",
@@ -35,7 +35,6 @@ export const metadata: Metadata = {
     capable: true,
     statusBarStyle: "default",
     title: APP_DEFAULT_TITLE,
-    // startUpImage: [],
   },
   formatDetection: {
     telephone: false,
@@ -77,19 +76,19 @@ export default function RootLayout({
           height: "100dvh",
           overflow: "hidden",
           maxWidth: "500px",
-          margin: "0 auto"
+          margin: "0 auto",
         }}
       >
         <div
           id="rootContainer"
           style={{
             overflow: "auto",
-              position: "relative",
-              scrollSnapType: "y mandatory",
-              scrollSnapStop: "always",
-              scrollBehavior: "smooth",
-              height: "100dvh",
-              scrollPaddingTop: "4.6rem",
+            position: "relative",
+            scrollSnapType: "y mandatory",
+            scrollSnapStop: "always",
+            scrollBehavior: "smooth",
+            height: "100dvh",
+            scrollPaddingTop: "4.6rem",
           }}
         >
           <NextTopLoader color="red" showSpinner={false} />

@@ -2,6 +2,7 @@ import AppImage from "@/components/AppImage";
 import { collectionImages, datUrl } from "@/constants/images";
 import ShareBlock from "@/features/ShareBlock";
 import { IProduct } from "@/resources/Product/interface";
+import { appColor } from "@/theme/foundations/colors";
 import { logger } from "@/utils/logger";
 import {
   Box,
@@ -107,6 +108,27 @@ const ProductCard = ({ product, isFirstCard, ...rest }: IProps) => {
   // const view = () => {
   //   router.push(`/product/details/${product._id}`);
   // };
+
+  let splittedPrice: string | null = null;
+
+  if (product.pricing) {
+    if (typeof product.pricing === "string") {
+      splittedPrice = product.pricing
+        .split("-")
+        .map((p: string) => {
+          const formattedPrice = parseFloat(p);
+          return isNaN(formattedPrice)
+            ? null
+            : Intl.NumberFormat().format(formattedPrice);
+        })
+        .join(" - ");
+
+      // Check if any part of the split price is null
+      if (splittedPrice.includes("null")) {
+        splittedPrice = null;
+      }
+    }
+  }
 
   return (
     <>
@@ -249,8 +271,7 @@ const ProductCard = ({ product, isFirstCard, ...rest }: IProps) => {
             mb=".6rem"
             transitionDuration=".4s"
             align="center"
-            rounded=".5rem"
-            roundedBottom="2rem"
+            rounded=".8rem"
             overflow="hidden"
             bg="rgba(0,0,0,0.03)"
             // onContextMenu={(event) => {
@@ -280,28 +301,29 @@ const ProductCard = ({ product, isFirstCard, ...rest }: IProps) => {
             </Box>
 
             <HStack
-              position={"absolute"}
-              bottom={"1rem"}
-              left="1rem"
-              rounded="4rem"
-              p=".5rem"
-              px="1.5rem"
-              justifySelf="start"
-              w="fit-content"
-              bg="rgba(0,0,0,.3)"
-              backdropFilter="auto"
-              backdropBlur="10px"
+              bg={`linear-gradient(to bottom, rgba(255,255,255,0) 0%, ${appColor.black} 200%)`}
+              position="absolute"
+              w="full"
+              bottom="0"
             >
-              <VStack align="start" gap="0">
+              <VStack w="full" p="1rem" pb="0.8rem" align="left" lineHeight="1">
                 <Text
                   as="h2"
-                  fontSize="1.6rem"
+                  fontSize="1.3rem"
                   fontWeight="bold"
                   textTransform="capitalize"
                   color="white"
                 >
-                  {" "}
-                  {product.name}{" "}
+                  {product.name}
+                </Text>
+                <Text
+                  as="h3"
+                  fontSize="1.1rem"
+                  textTransform="capitalize"
+                  color="white"
+                  fontWeight="semibold"
+                >
+                  {splittedPrice ? "रु." + splittedPrice : null}
                 </Text>
               </VStack>
             </HStack>
