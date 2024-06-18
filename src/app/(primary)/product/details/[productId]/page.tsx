@@ -47,6 +47,10 @@ export const generateMetadata = async ({
     description: res.data.productDetail.description,
     authors: [{ name: res.data.productDetail.added_by ?? "" }],
     category: res.data.productDetail.category.title,
+    keywords: [
+      res.data.productDetail.name,
+      res.data.productDetail.category.title,
+    ],
   };
 };
 

@@ -1,6 +1,4 @@
-import AppImage from "@/components/AppImage";
 import CleanLogo from "@/components/Icons/CleanLogo";
-import LogoIcon from "@/components/Icons/Logo";
 import { HStack, Text, VStack } from "@chakra-ui/react";
 import React from "react";
 
@@ -9,7 +7,8 @@ const AboutContainer = () => {
     <VStack w="full" bg="dark_bg" color="white" p="1rem">
       <HStack color="white" fontSize="2rem" gap="1rem">
         <Text py="2rem" color="#707580">
-          {" "}About
+          {" "}
+          About
         </Text>
         <CleanLogo />
         <Text>Latido</Text>
