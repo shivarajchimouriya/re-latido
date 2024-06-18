@@ -67,6 +67,14 @@ export default function OrderCard({
       rounded={"1rem"}
       overflow={"hidden"}
       placeItems={"center"}
+      _hover={{
+        cursor: "pointer",
+      }}
+      onClick={() => {
+        isInvoice
+          ? router.push(`digital-invoice/detail/${orderIdentity}`)
+          : router.push(`orders/details/${orderIdentity}`);
+      }}
     >
       <Flex
         width={"100%"}
@@ -95,11 +103,6 @@ export default function OrderCard({
         gap="2rem"
         justify={"space-between"}
         placeItems={"center"}
-        onClick={() => {
-          isInvoice
-            ? router.push(`digital-invoice/detail/${orderIdentity}`)
-            : router.push(`orders/details/${orderIdentity}`);
-        }}
       >
         <AppImage
           style={{ objectFit: "contain", borderRadius: "0.4rem" }}

@@ -10,7 +10,6 @@ interface IProps {
 const Layout = ({ children }: IProps) => {
   return (
     <PreventAuthScreens>
-      <Header />
       {children}
     </PreventAuthScreens>
   );
