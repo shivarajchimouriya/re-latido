@@ -11,11 +11,8 @@ export const AuthLayout = ({ children }: IProps) => {
   return (
     <VStack w="full" justify="center" align="center">
       <Box w="100%" maxW="50rem">
-        <Header />
         <Box h="full">
-          <AuthProvider>
-            {children}
-          </AuthProvider>
+          <AuthProvider>{children}</AuthProvider>
         </Box>
       </Box>
     </VStack>

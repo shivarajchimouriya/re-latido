@@ -7,6 +7,8 @@ export default function EditSizeCard({ onOpen }: { onOpen: any }) {
   return (
     <Box
       fontSize={"1.8rem"}
+      height="5rem"
+      width="5rem"
       fontWeight="semibold"
       className={"edit-size-card"}
       onClick={onOpen}

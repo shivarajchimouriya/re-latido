@@ -123,8 +123,8 @@ export default function SizeSelector({
           Recommended size for you
         </Text>
 
-        <Box>
-          <HStack gap={"1rem"}>
+        <Box maxW="500px">
+          <HStack gap="1rem" mx="2rem">
             {intersection?.map((node: any, i) => {
               if (!node?.attributes?.output) {
                 return null;

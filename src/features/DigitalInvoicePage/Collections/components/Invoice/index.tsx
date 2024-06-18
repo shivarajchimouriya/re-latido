@@ -157,7 +157,7 @@ const Invoice: React.FC<InvoiceProps> = ({
         Download as PDF
       </Button>
       {isOpen ? (
-        <Modal isOpen={isOpen} onClose={onClose}>
+        <Modal isOpen={isOpen} onClose={onClose} isCentered>
           <ModalOverlay bg={"rgba(0, 0, 0, 0.8)"} />
 
           <ModalContent
@@ -169,6 +169,8 @@ const Invoice: React.FC<InvoiceProps> = ({
             rounded={"8px"}
             m={4}
             border={"1px solid var(--text-primary)"}
+            mx="auto"
+            maxW="500px"
           >
             <Box id="invoice" width="96%">
               <InvoicePdf

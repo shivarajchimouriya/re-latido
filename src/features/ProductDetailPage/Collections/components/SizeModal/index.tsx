@@ -81,7 +81,7 @@ export default function SizeModal({
   };
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose}>
+    <Modal isOpen={isOpen} onClose={onClose} isCentered>
       <ModalOverlay bg={"rgba(0, 0, 0, 0.8)"} />
       <ModalContent
         h="fit-content"
@@ -91,7 +91,9 @@ export default function SizeModal({
         placeItems={"center"}
         rounded={"4px"}
         m={4}
+        mx='auto'
         border={"1px solid var(--text-primary)"}
+        maxW="500px"
       >
         <Box width={"80%"} my={8}>
           <Flex
