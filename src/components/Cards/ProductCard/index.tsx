@@ -271,7 +271,8 @@ const ProductCard = ({ product, isFirstCard, ...rest }: IProps) => {
             mb=".6rem"
             transitionDuration=".4s"
             align="center"
-            rounded=".8rem"
+            rounded="1rem"
+            roundedBottom= "2rem"
             overflow="hidden"
             bg="rgba(0,0,0,0.03)"
             // onContextMenu={(event) => {
