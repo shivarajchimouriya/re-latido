@@ -306,7 +306,7 @@ const ProductCard = ({ product, isFirstCard, ...rest }: IProps) => {
               w="full"
               bottom="0"
             >
-              <VStack w="full" p="1rem" pb="0.4rem" align="left" gap="0">
+              <VStack w="full" p="1rem" pb="0.8rem" align="left" lineHeight="1">
                 <Text
                   as="h2"
                   fontSize="1.3rem"
