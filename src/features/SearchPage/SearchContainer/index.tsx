@@ -1,5 +1,5 @@
 import { API } from "@/resources";
-import { VStack } from "@chakra-ui/react";
+import { Box, VStack } from "@chakra-ui/react";
 import React, { Suspense } from "react";
 import SearchBar from "../SearchBar";
 import TopRatedProduct from "../TopRatedProduct";

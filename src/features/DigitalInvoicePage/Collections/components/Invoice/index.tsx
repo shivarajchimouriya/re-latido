@@ -22,6 +22,8 @@ import html2canvas from "html2canvas";
 import InvoiceCard from "../InvoiceCard";
 import InvoicePdf from "../InvoicePdf";
 import { appColor } from "@/theme/foundations/colors";
+import { logger } from "@/utils/logger";
+import Toast from "@/components/Toast";
 
 interface InvoiceProps {
   invoiceId: number;
@@ -50,23 +52,14 @@ const Invoice: React.FC<InvoiceProps> = ({
   currency,
   full_name,
 }) => {
-  const [showPdf, setShowPdf] = useState(false);
-
   const { isOpen, onClose, onOpen } = useDisclosure();
-
-  useEffect(() => {
-    console.log("isOpen: ", isOpen);
-    console.log("onCLose: ", onClose);
-    console.log("onOpen: ", onOpen);
-  }, [isOpen, onClose, onOpen]);
+  const toast = useToast();
 
   const onDownloadClicked = async () => {
     const pdf = new jsPDF("portrait", "pt", "a4");
     const invoice: any = document.querySelector("#invoice");
     const data = await html2canvas(invoice);
     const img = data.toDataURL("image/png");
-    const imgProperties = pdf.getImageProperties(img);
-    const pdfWidth = pdf.internal.pageSize.getWidth();
 
     const a4Width = 210 * 2;
     const a4Height = 297 * 2;
@@ -78,10 +71,24 @@ const Invoice: React.FC<InvoiceProps> = ({
     const marginY = (pageHeight - a4Height) / 2;
 
     pdf.addImage(img, "PNG", marginX, marginY, a4Width, a4Height);
-    if (pdf.save("shipping_label.pdf")) {
-      alert("Pdf downloaded.");
+    if (
+      pdf.save(
+        `Invoice-${invoiceId}-${full_name
+          .split(" ")
+          .join("-")
+          .toLocaleLowerCase()}.pdf`
+      )
+    ) {
+      toast({
+        position: "top",
+        render: ({ onClose }) => {
+          return (
+            <Toast status="success" onClose={onClose} message="Pdf Saved." />
+          );
+        },
+      });
+      onClose();
     }
-    onClose();
   };
 
   return (
@@ -149,8 +156,8 @@ const Invoice: React.FC<InvoiceProps> = ({
       >
         Download as PDF
       </Button>
-      {showPdf ? (
-        <Modal isOpen={isOpen} onClose={onClose}>
+      {isOpen ? (
+        <Modal isOpen={isOpen} onClose={onClose} isCentered>
           <ModalOverlay bg={"rgba(0, 0, 0, 0.8)"} />
 
           <ModalContent
@@ -162,6 +169,8 @@ const Invoice: React.FC<InvoiceProps> = ({
             rounded={"8px"}
             m={4}
             border={"1px solid var(--text-primary)"}
+            mx="auto"
+            maxW="500px"
           >
             <Box id="invoice" width="96%">
               <InvoicePdf

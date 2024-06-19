@@ -1,8 +1,8 @@
-"use client";
 import AppImage from "@/components/AppImage";
-import { collectionImages } from "@/constants/images";
+import { collectionImages, datUrl } from "@/constants/images";
 import ShareBlock from "@/features/ShareBlock";
 import { IProduct } from "@/resources/Product/interface";
+import { appColor } from "@/theme/foundations/colors";
 import { logger } from "@/utils/logger";
 import {
   Box,
@@ -15,7 +15,7 @@ import {
   StackProps,
   Text,
   VStack,
-  useDisclosure
+  useDisclosure,
 } from "@chakra-ui/react";
 import { AnimatePresence, Variants, motion } from "framer-motion";
 import Image from "next/image";
@@ -32,92 +32,113 @@ interface IProps extends StackProps {
 }
 
 const ProductCard = ({ product, isFirstCard, ...rest }: IProps) => {
-  const [isLongPress, setIsLongPress] = useState(false);
-  const [position, setposition] = useState({ x: 0, y: 0 });
-  const {
-    isOpen: isShareOpen,
-    onClose: onShareClose,
-    onOpen: onShareOpen
-  } = useDisclosure();
+  // const [isLongPress, setIsLongPress] = useState(false);
+  // const [position, setposition] = useState({ x: 0, y: 0 });
+  // const {
+  //   isOpen: isShareOpen,
+  //   onClose: onShareClose,
+  //   onOpen: onShareOpen
+  // } = useDisclosure();
 
-  const bind = useLongPress(
-    (e) => {
-      const event = e as unknown as PointerEvent;
+  // const bind = useLongPress(
+  //   (e) => {
+  //     const event = e as unknown as PointerEvent;
 
-      const x = event.clientX;
-      const y = event.clientY;
-      setposition({ x, y });
-      setIsLongPress(true);
-    },
-    {
-      onStart: (event, meta) => {},
-      onFinish: (event, meta) => {
-        // setIsLongPress(false);
-      },
-      onCancel: (event, meta) => {
-        setIsLongPress(false);
-      },
-      filterEvents: (event) => true, // All events can potentially trigger long press
-      threshold: 1000,
-      captureEvent: true,
-      cancelOnMovement: false,
-      cancelOutsideElement: true,
-      detect: LongPressEventType.Pointer
-    }
-  );
+  //     const x = event.clientX;
+  //     const y = event.clientY;
+  //     // setposition({ x, y });
+  //     // setIsLongPress(true);
+  //   },
+  //   {
+  //     onStart: (event, meta) => {},
+  //     onFinish: (event, meta) => {
+  //       // setIsLongPress(false);
+  //     },
+  //     onCancel: (event, meta) => {
+  //       // setIsLongPress(false);
+  //     },
+  //     filterEvents: (event) => true, // All events can potentially trigger long press
+  //     threshold: 1000,
+  //     captureEvent: true,
+  //     cancelOnMovement: false,
+  //     cancelOutsideElement: true,
+  //     detect: LongPressEventType.Pointer
+  //   }
+  // );
 
   const utilsVariant: Variants = {
     hidden: {
-      y: 30
+      y: 30,
     },
     show: {
       y: 0,
       transition: {
-        staggerChildren: 0.01
-      }
+        staggerChildren: 0.01,
+      },
     },
     exit: {
-      y: 30
-    }
+      y: 30,
+    },
   };
 
   const iconVariant: Variants = {
     hidden: {
       y: 30,
       x: 30,
-      opacity: 0
+      opacity: 0,
     },
     show: {
       y: 0,
       x: 0,
       opacity: 1,
       transition: {
-        bounce: false
-      }
+        bounce: false,
+      },
     },
     exit: {
       y: 0,
       x: 30,
-      opacity: 0
-    }
+      opacity: 0,
+    },
   };
 
-  const router = useRouter();
+  // const router = useRouter();
   const baseURL = typeof window === "undefined" ? "" : window?.location?.host;
 
-  const view = () => {
-    router.push(`/product/details/${product._id}`);
-  };
+  // const view = () => {
+  //   router.push(`/product/details/${product._id}`);
+  // };
+
+  let splittedPrice: string | null = null;
+
+  if (product.pricing) {
+    if (typeof product.pricing === "string") {
+      splittedPrice = product.pricing
+        .split("-")
+        .map((p: string) => {
+          const formattedPrice = parseFloat(p);
+          return isNaN(formattedPrice)
+            ? null
+            : Intl.NumberFormat().format(formattedPrice);
+        })
+        .join(" - ");
+
+      // Check if any part of the split price is null
+      if (splittedPrice.includes("null")) {
+        splittedPrice = null;
+      }
+    }
+  }
 
   return (
     <>
-      <ShareBlock
+      {/* <ShareBlock
         url={`${baseURL}/product/details/${product._id}`}
         title={product.name}
         isOpen={isShareOpen}
         onClose={onShareClose}
-      />
-      <AnimatePresence>
+      /> */}
+      {/* <AnimatePresence>
         {isLongPress && (
           <Box
             as={motion.div}
@@ -127,7 +148,7 @@ const ProductCard = ({ product, isFirstCard, ...rest }: IProps) => {
             exit={{ opacity: 0 }}
             inset="0"
             w="100vw"
-            h="100vh"
+            h="100dvh"
             bg="rgba(0,0,0,0.3)"
             zIndex={100}
             onClick={() => setIsLongPress(false)}
@@ -224,80 +245,90 @@ const ProductCard = ({ product, isFirstCard, ...rest }: IProps) => {
             </Popover>
           </Box>
         )}
-      </AnimatePresence>
+      </AnimatePresence> */}
       <Link
         href={`/product/details/${product._id}`}
         style={{
           width: "100%",
-          maxWidth: "100vw",
+          maxWidth: "600px",
           display: "flex",
-          justifyContent: "center"
+          justifyContent: "center",
+          marginTop: "1rem",
         }}
       >
         <VStack
-          as={motion.div}
-          position="relative"
-          w="97vw"
-          transitionDuration='.4s'
-          align="center"
-        
-          rounded=".5rem"
-          overflow="hidden"
-          bg="rgba(0,0,0,0.03)"
-          onContextMenu={(event) => {
-            event.preventDefault();
-            event.stopPropagation();
-            return false;
-          }}
-          {...rest}
-          {...bind()}
-          scrollSnapAlign="start"
-          scrollSnapStop={"always"}
-          style={{
-            height: "calc(-160px + 100dvh)"
-          }}
+          w="full"
+          h="full"
+          justify="center"
+          scrollSnapAlign="end"
+          scrollSnapStop="always"
         >
-          <Box w="100%" overflow="hidden" h="100%">
-            <Image
-              alt={`product-${product.name}  `}
-              src={product.primary_image}
-              height={600}
-              width={500}
-              // quality={100}
-              style={{
-                objectFit: "cover",
-                width: "100%",
-                height:"100%"
-              }}
-            />
-          </Box>
-
-          <HStack
-            position={"absolute"}
-            bottom={"1rem"}
-            left="1rem"
-            rounded="4rem"
-            p=".5rem"
-            px="1.5rem"
-            justifySelf="start"
-            w="fit-content"
-            bg="rgba(0,0,0,.3)"
-            backdropFilter="auto"
-            backdropBlur="10px"
+          <VStack
+            // as={motion.div}
+            position="relative"
+            w="97vw"
+            maxW="480px"
+            mb=".6rem"
+            transitionDuration=".4s"
+            align="center"
+            rounded="1rem"
+            roundedBottom= "2rem"
+            overflow="hidden"
+            bg="rgba(0,0,0,0.03)"
+            // onContextMenu={(event) => {
+            //   event.preventDefault();
+            //   event.stopPropagation();
+            //   return false;
+            // }}
+            // {...rest}
+            // {...bind()}
+            style={{
+              height: "calc(-160px + 98dvh)",
+            }}
           >
-            <VStack align="start" gap="0">
-              <Text
-                as="h2"
-                fontSize="1.6rem"
-                fontWeight="bold"
-                textTransform="capitalize"
-                color="white"
-              >
-                {" "}
-                {product.name}{" "}
-              </Text>
-            </VStack>
-          </HStack>
+            <Box w="100%" overflow="hidden" h="100%">
+              <img
+                alt={`product-${product.name}  `}
+                src={product.primary_image}
+                height={600}
+                width={500}
+                loading="eager"
+                style={{
+                  objectFit: "cover",
+                  width: "100%",
+                  height: "100%",
+                }}
+              />
+            </Box>
+
+            <HStack
+              bg={`linear-gradient(to bottom, rgba(255,255,255,0) 0%, ${appColor.black} 200%)`}
+              position="absolute"
+              w="full"
+              bottom="0"
+            >
+              <VStack w="full" p="1rem" pb="0.8rem" align="left" lineHeight="1">
+                <Text
+                  as="h2"
+                  fontSize="1.3rem"
+                  fontWeight="bold"
+                  textTransform="capitalize"
+                  color="white"
+                >
+                  {product.name}
+                </Text>
+                <Text
+                  as="h3"
+                  fontSize="1.1rem"
+                  textTransform="capitalize"
+                  color="white"
+                  fontWeight="semibold"
+                >
+                  {splittedPrice ? "रु." + splittedPrice : null}
+                </Text>
+              </VStack>
+            </HStack>
+          </VStack>
         </VStack>
       </Link>
     </>

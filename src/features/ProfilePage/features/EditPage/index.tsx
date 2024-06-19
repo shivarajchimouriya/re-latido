@@ -10,6 +10,13 @@ import {
   HStack,
   IconButton,
   Input,
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  ModalOverlay,
   Popover,
   PopoverArrow,
   PopoverBody,
@@ -20,9 +27,10 @@ import {
   Portal,
   Text,
   VStack,
-  useDisclosure
+  useDisclosure,
+  useToast,
 } from "@chakra-ui/react";
-import React, { useState } from "react";
+import React, { ChangeEvent, useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { MdOutlineModeEdit } from "react-icons/md";
 import { register } from "swiper/element";
@@ -37,66 +45,159 @@ import { logger } from "@/utils/logger";
 import { useFetchProfile, useUpdateProfile } from "../../data/useProfile";
 import { profile } from "console";
 import { IUserProfile } from "@/resources/User/interface";
+import EditSkeleton from "@/app/(secondary)/profile/edit/loading";
+import useHandleErrorToast from "@/hooks/client/useAppToast";
+import Toast from "@/components/Toast";
+import { useRouter } from "next/navigation";
+import ImagePlayground from "./Collections/components/ImagePlayground";
+import { appColor } from "@/theme/foundations/colors";
+import ImageModal from "./Collections/components/ImageModal";
+import { validateFile } from "@/utils/misc";
+
 const EditPage = () => {
+  const toast = useToast();
+  const router = useRouter();
+  const handleErrorToast = useHandleErrorToast();
   const { isOpen, onClose, onOpen } = useDisclosure();
-const {data}=useFetchProfile();
-   const {mutate,isPending,mutateAsync}=useUpdateProfile()
-const profileData=data?.data;
+  const {
+    isOpen: isOpenImage,
+    onClose: onCloseImage,
+    onOpen: onOpenImage,
+  } = useDisclosure();
+  const { data, isLoading } = useFetchProfile();
+  const { mutate, isPending, mutateAsync } = useUpdateProfile();
+
+  const [image, setImage] = useState<string>();
+
+  const profileData = data?.data;
   const {
     register,
     handleSubmit,
     control,
     getValues,
-    formState: { errors }
+    formState: { errors },
   } = useForm<IEditForm>({
     resolver: zodResolver(editFormSchema),
-    
+
     defaultValues: {
       address: profileData?.address,
       dob: profileData?.DOB,
       email: profileData?.email,
-      gender: profileData?.gender as 'Male'|'Female',
+      gender: profileData?.gender as "Male" | "Female",
       name: profileData?.name,
-      phone: profileData?.phone
+      phone: profileData?.phone,
     },
-    values:{
-
+    values: {
       address: profileData?.address as string,
       dob: profileData?.DOB as string,
-      email: profileData?.email  as string,
-      gender: profileData?.gender as 'Male'|'Female',
-      name: profileData?.name  as string,
-      phone: profileData?.phone as string
-    }
+      email: profileData?.email as string,
+      gender: profileData?.gender as "Male" | "Female",
+      name: profileData?.name as string,
+      phone: profileData?.phone as string,
+    },
   });
-  const onSubmit = async(values: IEditForm) => {
-    logger.log("values", values);
-    const data:Partial<IUserProfile>={
-      address:values.address,
-      DOB:values.dob,
-      name:values.name,
-      phone:values.phone,
 
-
+  const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const file = e.target?.files?.[0];
+    if (!file) {
+      return null;
     }
-    
-    try{
-   const res= await mutateAsync(data)
-  
-  
-  }
+    if (validateFile(file)) {
+      const url = window?.URL?.createObjectURL(file);
+      setImage(url);
+      onOpenImage();
+    } else {
+      toast({
+        position: "top",
+        duration: 3000,
+        render: ({ onClose }) => {
+          return (
+            <Toast
+              status="error"
+              onClose={onClose}
+              message="Pleaser choose image file"
+            />
+          );
+        },
+      });
+    }
+  };
 
-    catch(err){
+  const handleImageSubmit = async (imgUrl: string) => {
+    const res = await mutateAsync({
+      profile_image: imgUrl,
+    });
+    if (res?.data?.profile_image) {
+      toast({
+        position: "top",
+        duration: 3000,
+        render: ({ onClose }) => {
+          return (
+            <Toast status="success" onClose={onClose} message={res?.message} />
+          );
+        },
+      });
+    } else {
+      toast({
+        position: "top",
+        duration: 3000,
+        render: ({ onClose }) => {
+          return (
+            <Toast
+              status="error"
+              onClose={onClose}
+              message={res?.message || "Something went wrong"}
+            />
+          );
+        },
+      });
+    }
 
+    if (profileData) {
+      profileData.profile_image = res?.data?.profile_image || "";
+    }
+
+    onCloseImage();
+  };
+
+  const onSubmit = async (values: IEditForm) => {
+    const data: Partial<IUserProfile> = {
+      address: values.address,
+      DOB: values.dob,
+      name: values.name,
+      phone: values.phone,
+    };
+
+    try {
+      const res = await mutateAsync(data);
+      if (res?.data?.email) {
+        toast({
+          position: "top",
+          duration: 3000,
+          render: ({ onClose }) => {
+            return (
+              <Toast
+                status="success"
+                onClose={onClose}
+                message={res?.message}
+              />
+            );
+          },
+        });
+      }
+      router.refresh();
+    } catch (err) {
+      handleErrorToast(err);
     }
   };
   const genders: Array<"Male" | "Female"> = ["Male", "Female"];
 
-  logger.log("errorr", errors);
+  if (isLoading || !data) return <EditSkeleton />;
   return (
     <VStack w="100%" p="1rem">
-      <Box position="relative" m="3rem">
+      <Box display="grid" placeItems="center" m="3rem">
         <Avatar
+          src={profileData?.profile_image}
           name={profileData?.name}
           w="10rem"
           h="10rem"
@@ -105,9 +206,23 @@ const profileData=data?.data;
           fontSize="3rem"
           color="gray.600"
         />
-        <Input name="profile" id="profile" type="file" display="none" />
-        <Box as="label" bg="red" w="full" h="full" htmlFor="profile">
+        <Box position="relative" w="70%" mt="-2rem">
+          <Input
+            onChange={handleImageChange}
+            name="profile"
+            id="profile"
+            type="file"
+            opacity={0}
+            w={0}
+            h={0}
+            accept="image/*"
+          />
           <IconButton
+            right={0}
+            as="label"
+            htmlFor="profile"
+            p="1rem"
+            rounded="full"
             icon={<MdOutlineModeEdit />}
             aria-label="edit"
             position="absolute"
@@ -134,6 +249,7 @@ const profileData=data?.data;
             placeholder="name"
             {...register("name")}
           />
+          <Text color="error">{errors.name?.message}</Text>
         </FormControl>
 
         <FormControl>
@@ -142,7 +258,9 @@ const profileData=data?.data;
           </FormLabel>
           <HStack w="100%" justify="space-between" my="1rem">
             <Text fontWeight="normal" fontSize="1.4rem">
-              {dayjs(getValues("dob") ).format("MM/DD/YYYY")|| <Text color="gray.600"> Enter DOB </Text>}
+              {dayjs(getValues("dob")).format("MM/DD/YYYY") || (
+                <Text color="gray.600"> Enter DOB </Text>
+              )}
             </Text>
 
             <Popover isOpen={isOpen} onClose={onClose}>
@@ -155,17 +273,22 @@ const profileData=data?.data;
                 />
               </PopoverTrigger>
               <Portal>
-                {" "}<Box position="relative" zIndex="10000" w="full" h="full">
-                  {" "}<PopoverContent>
+                {" "}
+                <Box position="relative" zIndex="10000" w="full" h="full">
+                  {" "}
+                  <PopoverContent>
                     <Controller
                       control={control}
                       name="dob"
                       render={({ field: { onChange } }) => {
                         return (
                           <Calendar
+                            maxDate={new Date()}
                             date={new Date()}
-                            onChange={val => {
-                              const formatted = dayjs(val).format('YYYY-MM-DDTHH:mm:ss.SSSZ');
+                            onChange={(val) => {
+                              const formatted = dayjs(val).format(
+                                "YYYY-MM-DDTHH:mm:ss.SSSZ"
+                              );
                               onChange(formatted);
                               onClose();
                             }}
@@ -195,7 +318,7 @@ const profileData=data?.data;
                   textTransform="uppercase"
                   fontSize="1.2rem"
                 >
-                  {genders.map(el => {
+                  {genders.map((el) => {
                     const isActive = el === value;
                     return (
                       <Box
@@ -212,7 +335,7 @@ const profileData=data?.data;
                           {el}
                         </Text>
                         <AnimatePresence>
-                          {isActive &&
+                          {isActive && (
                             <Box
                               layoutId="gender"
                               rounded="md"
@@ -224,7 +347,8 @@ const profileData=data?.data;
                               bg="black"
                               isolation="isolate"
                               zIndex="-1"
-                            />}
+                            />
+                          )}
                         </AnimatePresence>
                       </Box>
                     );
@@ -246,6 +370,7 @@ const profileData=data?.data;
             placeholder="Address"
             {...register("address")}
           />
+          <Text color="error">{errors.address?.message}</Text>
         </FormControl>
 
         <FormControl>
@@ -258,6 +383,7 @@ const profileData=data?.data;
             placeholder="phone number"
             {...register("phone")}
           />
+          <Text color="error">{errors.phone?.message}</Text>
         </FormControl>
         <FormControl isDisabled>
           <FormLabel htmlFor="name" textTransform="uppercase">
@@ -271,7 +397,9 @@ const profileData=data?.data;
         </FormControl>
 
         <Button
-        isLoading={isPending}
+          isLoading={isPending}
+          disabled={isPending ? true : false}
+          opacity={isPending ? 0.6 : 1}
           p="1rem"
           type="submit"
           w="100%"
@@ -284,6 +412,13 @@ const profileData=data?.data;
           save
         </Button>
       </Flex>
+
+      <ImageModal
+        handleImageSubmit={handleImageSubmit}
+        imageUrl={image || ""}
+        isOpen={isOpenImage}
+        onClose={onCloseImage}
+      />
     </VStack>
   );
 };

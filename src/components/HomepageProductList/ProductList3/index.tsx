@@ -22,9 +22,9 @@ const ProductList3 = ({ products }: IProps) => {
         return (
           <SwiperSlide
             key={el.name}
-            style={{ height: "100vh", backgroundColor: "red" }}
+            style={{ height: "100dvh", backgroundColor: "red" }}
           >
-            <ProductCard product={el} bg="white" height="100vh" />
+            <ProductCard product={el} bg="white" height="100dvh" />
           </SwiperSlide>
         );
       })}

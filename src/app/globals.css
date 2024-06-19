@@ -45,6 +45,11 @@
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
+  scroll-behavior: smooth;
+  ::-webkit-scrollbar {
+    display: none;
+    scrollbar-width: none;
+  }
 }
 
 html,
@@ -95,6 +100,8 @@ body {
   border-radius: 4px;
   text-transform: uppercase;
   font-weight: bold;
+  display: grid;
+  place-items: center;
 }
 .secondary-button {
   border: 1px solid var(--black);
@@ -296,47 +303,39 @@ body {
   box-shadow: none !important;
 }
 
-
-.spinner{
+.spinner {
   animation: spin 1s linear infinite;
 }
 
-
 @keyframes spin {
-  
+  from {
+    transform: rotate(0deg);
+  }
 
-from {
-  transform: rotate(0deg);
+  to {
+    transform: rotate(360deg);
+  }
 }
 
-
-to{
-  transform: rotate(360deg);
-}
-
-}
-
-.skeleton{
+.skeleton {
   background-color: rgb(202, 201, 201) !important;
-  animation: pulse 6s linear  infinite alternate;
+  animation: pulse 6s linear infinite alternate;
 }
 
 @keyframes pulse {
-  
-from{
-  opacity: 0.4;
-}
-to{
-  opacity: 1;
-}
-
+  from {
+    opacity: 0.4;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
-.collection_container::-webkit-scrollbar { 
+.collection_container::-webkit-scrollbar {
   width: 0 !important;
-  display: none; 
+  display: none;
 }
-.product_images::-webkit-scrollbar { 
+.product_images::-webkit-scrollbar {
   width: 0 !important;
-  display: none; 
+  display: none;
 }

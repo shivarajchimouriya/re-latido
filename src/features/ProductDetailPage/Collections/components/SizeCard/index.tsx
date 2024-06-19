@@ -14,6 +14,8 @@ export default function SizeCard({
   return (
     <Box
       fontSize={"1.6rem"}
+      h="5rem"
+      w="5rem"
       fontWeight="semibold"
       className={selected ? "size-card-selected" : "size-card"}
       {...rest}

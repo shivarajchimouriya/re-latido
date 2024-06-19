@@ -12,9 +12,7 @@ import "swiper/css";
 import "swiper/css/effect-creative";
 import Image from "next/image";
 
-export default function ProductImage({
-  secondaryImage,
-}: IProductImageProps) {
+export default function ProductImage({ secondaryImage }: IProductImageProps) {
   const searchParams = useSearchParams();
   const lid = searchParams.get("lid");
   const psid = searchParams.get("psid");
@@ -69,12 +67,11 @@ export default function ProductImage({
           >
             {images?.map((image: string, index: number) => (
               <SwiperSlide key={image}>
-                <Box width={"full"} bg="white">
-                  <img
+                <Box width="full" minH="80vh" bg="white">
+                  <AppImage
                     src={image}
                     height={300 * 1.5}
                     width={1000}
-                    style={{ width: "100%" }}
                     alt="product image"
                   />
                 </Box>
@@ -89,10 +86,13 @@ export default function ProductImage({
         width={"100%"}
         height={"100%"}
         overflowX={"scroll"}
-        justifyContent={images?.length > 5 ??0 ? "auto" : "center"}
-        className="product_images" 
+        justifyContent={images?.length > 5 ?? 0 ? "auto" : "center"}
+        className="product_images"
       >
-        <div style={{ display: "flex", gap: "1rem" }} className="product_images"  >
+        <div
+          style={{ display: "flex", gap: "1rem" }}
+          className="product_images"
+        >
           {images?.map((image: string, index: number) => (
             <Box onClick={() => handleClick(index)}>
               <Avatar

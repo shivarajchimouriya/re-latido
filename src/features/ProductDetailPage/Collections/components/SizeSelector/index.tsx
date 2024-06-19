@@ -13,7 +13,7 @@ import React, { useEffect, useState } from "react";
 import SizeCard from "../SizeCard";
 import { logger } from "@/utils/logger";
 import EditSizeCard from "../EditSizeCard";
-import { useParams, useSearchParams, useRouter } from "next/navigation";
+import { useSearchParams, useRouter } from "next/navigation";
 import Toast from "@/components/Toast";
 export const availableSizes = [
   {
@@ -67,6 +67,7 @@ export default function SizeSelector({
   handleBuyClick,
   handleSizeCardClick,
   activeFit,
+  isPending,
 }: {
   fitData: any;
   recommendation?: any[];
@@ -75,35 +76,31 @@ export default function SizeSelector({
   handleBuyClick: (price: number, sizeRangeId: string) => void;
   handleSizeCardClick: (val: number) => void;
   activeFit: string;
+  isPending: boolean;
 }) {
   const params = useSearchParams();
   const router = useRouter();
   const toast = useToast();
   const [price, setPrice] = useState<number>();
   const [sizeRangeId, setSizeRangeId] = useState<string>();
-  const newUrlSearchParams = new URLSearchParams(params);
 
   useEffect(() => {
     const elementThatMatches = intersection?.find((el) => {
       return el?.attributes?.output === fitData?.[0]?.size;
     });
 
-    const parametersToWatch = ["srid", "s", "p", "currency"];
-    if (!elementThatMatches) {
-      parametersToWatch.forEach((para) => {
-        if (newUrlSearchParams.has(para)) {
-          newUrlSearchParams.delete(para);
-        }
-      });
-    } else {
-      setPrice(elementThatMatches?.price?.price?.[0]?.value);
-      setSizeRangeId(elementThatMatches?.price._id);
-    }
-    if (activeFit) {
-      newUrlSearchParams.set("fit", activeFit);
-    }
-    router.push(`?${newUrlSearchParams}`, { scroll: false });
+    setPrice(elementThatMatches?.price?.price?.[0]?.value);
+    setSizeRangeId(elementThatMatches?.price._id);
   }, [fitData]);
+
+  useEffect(() => {
+    if (activeFit) {
+      const newUrlSearchParams = new URLSearchParams(params);
+      newUrlSearchParams.set("fit", activeFit);
+      router.replace(`?${newUrlSearchParams}`, { scroll: false });
+    }
+  }, [activeFit]);
+
   const intersection = recommendation?.map((el) => {
     if (sizeRange.has(el.attributes.output)) {
       return {
@@ -113,7 +110,6 @@ export default function SizeSelector({
     }
     return null;
   });
-
   return (
     <Container my={"2rem"}>
       <VStack>
@@ -127,8 +123,8 @@ export default function SizeSelector({
           Recommended size for you
         </Text>
 
-        <Box>
-          <HStack gap={"1rem"}>
+        <Box maxW="500px">
+          <HStack gap="1rem" mx="2rem">
             {intersection?.map((node: any, i) => {
               if (!node?.attributes?.output) {
                 return null;
@@ -137,6 +133,7 @@ export default function SizeSelector({
               const selected = node?.attributes?.output === fitData?.[0]?.size;
               return (
                 <SizeCard
+                  key={i}
                   recommendedSize={recommendedSize}
                   selected={selected}
                   onClick={() =>
@@ -161,15 +158,18 @@ export default function SizeSelector({
       </Box>
       <Grid placeItems="center" mt="4rem" mb="2rem">
         <Button
+          isLoading={isPending}
+          disabled={isPending}
+          isDisabled={isPending}
+          opacity={isPending ? 0.6 : 1}
           onClick={() => {
             if (price && sizeRangeId) {
               handleBuyClick(price, sizeRangeId);
             } else {
               toast({
-                status: "error",
                 position: "top",
-                render: () => {
-                  return <Toast message="Something went wrong." />;
+                render: ({ onClose }) => {
+                  return <Toast onClose={onClose} status="error" message="Something went wrong." />;
                 },
               });
             }

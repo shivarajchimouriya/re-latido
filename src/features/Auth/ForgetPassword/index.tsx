@@ -5,7 +5,7 @@ import {
   FormLabel,
   Input,
   Text,
-  VStack
+  VStack,
 } from "@chakra-ui/react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import React from "react";
@@ -15,12 +15,16 @@ import { IForgetPasswordForm, forgetPasswordSchema } from "./schema";
 import { logger } from "@/utils/logger";
 import { useRouter } from "next/navigation";
 import { useLoader } from "@/hooks/client/useLoader";
+import useHandleErrorToast from "@/hooks/client/useAppToast";
 
 const ForgetPassword = () => {
-  const { register, handleSubmit, formState: { errors } } = useForm<
-    IForgetPasswordForm
-  >({
-    resolver: zodResolver(forgetPasswordSchema)
+  const handleErrorToast = useHandleErrorToast();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<IForgetPasswordForm>({
+    resolver: zodResolver(forgetPasswordSchema),
   });
   const { isLoading, startLoading, stopLoading } = useLoader();
   const router = useRouter();
@@ -28,15 +32,14 @@ const ForgetPassword = () => {
     startLoading();
     try {
       const res = await resetPassword({ username: data.username });
-      logger.log("res", res);
-      router.push("/auth/forget-password/confirm");
+      router.replace("/auth/forget-password/confirm?username=" + data.username);
     } catch (error) {
+      handleErrorToast(error);
       logger.log("Error", error);
     } finally {
       stopLoading();
     }
   };
-  logger.log(errors);
   return (
     <VStack w="full" p="1rem" align="start">
       <Text fontSize="3xl" fontWeight="bold">
@@ -47,7 +50,7 @@ const ForgetPassword = () => {
         <FormControl w="full">
           <FormLabel>username</FormLabel>
           <Input {...register("username")} />
-          <Text color="error" mt="1rem">
+          <Text color="info" mt="1rem">
             We'll never share your email.
           </Text>
         </FormControl>
@@ -58,6 +61,7 @@ const ForgetPassword = () => {
           textTransform="uppercase"
           fontWeight="bold"
           disabled={isLoading}
+          opacity={isLoading ? 0.6 : 1}
           isLoading={isLoading}
         >
           send otp

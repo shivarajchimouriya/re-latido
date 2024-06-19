@@ -1,20 +1,18 @@
-import React, { useEffect, useState } from "react";
-import data from "@/data/product/productDetailResponse";
-import { Box, Container, VStack } from "@chakra-ui/react";
+import React from "react";
+import { Box, Button, Container, VStack } from "@chakra-ui/react";
 import { IProps } from "./IProps";
 import { IProductResponse } from "./IProductResponse";
 import ProductName from "../Collections/components/ProductName";
 import ProductImage from "../Collections/components/ProductImage";
 import LeatherSelection from "../Collections/components/LeatherSelection";
-import FitSelection from "../Collections/components/FitSelection";
 import { appColor } from "@/theme/foundations/colors";
-import ButtonComponent from "../Collections/components/Button";
 import Blog from "../Collections/components/Blog";
 import Description from "../Collections/components/Description";
 import { API } from "@/resources";
 import { logger } from "@/utils/logger";
 import SizeModuleSection from "../Collections/components/SizeModuleSection";
 import { env } from "@/config/environment";
+import NotFound from "@/components/NotFound";
 
 const getProductDetail = async (id: string) => {
   try {
@@ -28,22 +26,20 @@ const getProductDetail = async (id: string) => {
 export default async function ProductDetail({ productId }: IProps) {
   const data = await getProductDetail(productId);
 
-  let productDetail = null;
-  if (data) {
-    productDetail = data?.data?.productDetail;
-  }
-  if (!productDetail) return null;
+  const productDetail = data?.data?.productDetail;
+  if (!productDetail) return <NotFound />;
 
   return (
     <Container>
       <VStack width="100%">
         <ProductName
+          categoryId={productDetail.category._id}
           productName={productDetail.name}
           category={productDetail.category?.title}
           productId={productId}
         />
         <ProductImage secondaryImage={productDetail?.product_specification} />
-        <Box background={appColor.black} width={"100%"} padding={"2rem 0"}>
+        <Box background={appColor.black} width={"100%"} maxW="500px" padding={"2rem 0"}>
           <LeatherSelection
             productDetail={productDetail}
             urlPrefix={env.S3_BASE_URL || ""}

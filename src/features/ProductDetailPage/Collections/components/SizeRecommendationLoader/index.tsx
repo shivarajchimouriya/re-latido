@@ -14,7 +14,7 @@ export default function SizeRecommendationLoader() {
           fontWeight={"bold"}
           textTransform="uppercase"
         >
-          Recommended size for you
+          Finding Sizes for you
         </Text>
       </HStack>
       <HStack width={"full"} gap={"1rem"} justifyContent={"center"}>

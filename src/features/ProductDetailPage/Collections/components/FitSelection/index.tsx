@@ -36,6 +36,7 @@ export default function FitSelection({
   return (
     <Box width="100%">
       <Text
+        as="h3"
         textTransform="uppercase"
         fontWeight="medium"
         fontSize={"1.4rem"}

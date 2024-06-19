@@ -1,8 +1,8 @@
+import React from "react";
 import { socialUrls } from "@/constants/links";
 import { appColor } from "@/theme/foundations/colors";
 import { Box, Icon, Text } from "@chakra-ui/react";
 import Link from "next/link";
-import React from "react";
 import { MdOutlineWhatsapp } from "react-icons/md";
 
 export default function SizeRecommendationNotFound() {

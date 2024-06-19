@@ -20,6 +20,7 @@ interface IProps {
   hideProgress?: boolean;
   hideDaysLeft?: boolean;
   orderIdentity?: string;
+  isInvoice?: boolean;
 }
 
 export default function OrderCard({
@@ -37,6 +38,7 @@ export default function OrderCard({
   quantity,
   hideProgress,
   hideDaysLeft,
+  isInvoice,
 }: IProps) {
   const router = useRouter();
   let today = new Date().toISOString();
@@ -65,6 +67,14 @@ export default function OrderCard({
       rounded={"1rem"}
       overflow={"hidden"}
       placeItems={"center"}
+      _hover={{
+        cursor: "pointer",
+      }}
+      onClick={() => {
+        isInvoice
+          ? router.push(`digital-invoice/detail/${orderIdentity}`)
+          : router.push(`orders/details/${orderIdentity}`);
+      }}
     >
       <Flex
         width={"100%"}
@@ -93,9 +103,6 @@ export default function OrderCard({
         gap="2rem"
         justify={"space-between"}
         placeItems={"center"}
-        onClick={() => {
-          router.push(`orders/details/${orderIdentity}`);
-        }}
       >
         <AppImage
           style={{ objectFit: "contain", borderRadius: "0.4rem" }}

@@ -6,13 +6,18 @@ import LenisProvider from "@/providers/LenisProvider";
 import PullToRefreshProvider from "@/providers/PullTorefreshProvider";
 import DrawerProvider from "@/providers/DrawerProvider";
 const inter = Inter({ subsets: ["latin"] });
-import 'swiper/css/grid';
-import 'react-date-range/dist/styles.css'; // main style file
-import 'react-date-range/dist/theme/default.css';
+import "swiper/css/grid";
+import "react-date-range/dist/styles.css"; // main style file
+import "react-date-range/dist/theme/default.css";
 import AppQueryProvider from "@/providers/QueryProvider";
 import AuthProvider from "@/providers/AuthProvider";
 
 import NextTopLoader from "nextjs-toploader";
+import Script from "next/script";
+import { Box } from "@chakra-ui/react";
+import Header from "@/components/Layout/PrimaryLayout/components/Header";
+import JsonLd from "@/features/JsonLd";
+import SafeOrientation from "@/features/SafeOrientation";
 const APP_NAME = "Latido";
 const APP_DEFAULT_TITLE = "Latido";
 const APP_TITLE_TEMPLATE = "Latido";
@@ -22,7 +27,7 @@ export const metadata: Metadata = {
   applicationName: APP_NAME,
   title: {
     default: APP_DEFAULT_TITLE,
-    template: APP_TITLE_TEMPLATE,
+    template: `%s - ${APP_TITLE_TEMPLATE}`,
   },
   description: APP_DESCRIPTION,
   manifest: "/manifest.json",
@@ -30,7 +35,6 @@ export const metadata: Metadata = {
     capable: true,
     statusBarStyle: "default",
     title: APP_DEFAULT_TITLE,
-    // startUpImage: [],
   },
   formatDetection: {
     telephone: false,
@@ -65,19 +69,38 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={inter.className}>
-        <NextTopLoader 
-        color="red"
-        showSpinner={false}
-        
-        />
-        <AuthProvider>
-        <AppQueryProvider>
+      <JsonLd />
+      <body
+        className={inter.className}
+        style={{
+          height: "100dvh",
+          overflow: "hidden",
+          maxWidth: "500px",
+          margin: "0 auto",
+        }}
+      >
+        <div
+          id="rootContainer"
+          style={{
+            overflow: "auto",
+            position: "relative",
+            scrollSnapType: "y mandatory",
+            scrollSnapStop: "always",
+            scrollBehavior: "smooth",
+            height: "100dvh",
+            scrollPaddingTop: "4.6rem",
+          }}
+        >
+          <NextTopLoader color="red" showSpinner={false} />
+          <AuthProvider>
+            <AppQueryProvider>
               <AppThemeProvider>
+                <Header />
                 {children}
               </AppThemeProvider>
-        </AppQueryProvider>
-        </AuthProvider>
+            </AppQueryProvider>
+          </AuthProvider>
+        </div>
       </body>
     </html>
   );

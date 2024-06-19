@@ -13,7 +13,7 @@ const AnimatedCircle = ({ isActive }: IProps) => {
       display="flex"
       justifyContent="center"
       alignItems="center"
-      zIndex={-10}
+      zIndex={10}
       isolation="isolate"
     >
       <svg

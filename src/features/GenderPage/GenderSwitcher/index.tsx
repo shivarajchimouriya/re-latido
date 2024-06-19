@@ -12,12 +12,12 @@ const GenderSwitcher = () => {
   const genders = [
     {
       name: "male",
-      icon: <BiMaleSign />
+      icon: <BiMaleSign />,
     },
     {
       name: "female",
-      icon: <BiFemaleSign />
-    }
+      icon: <BiFemaleSign />,
+    },
   ];
 
   const params = usePathname();
@@ -30,7 +30,7 @@ const GenderSwitcher = () => {
     router.push(`/gender/${gender}`);
   };
   return (
-    <Box w="full" px="2rem">
+    <Box w="full" px="2rem" position="fixed" top="4.6rem" zIndex="10" bg="base">
       <Flex
         w="full"
         justify="center"
@@ -43,7 +43,7 @@ const GenderSwitcher = () => {
         p=".4rem"
       >
         <AnimatePresence>
-          {genders.map(el => {
+          {genders.map((el) => {
             const isActive = activeGender === el.name;
             return (
               <Box position="relative" w="full">
@@ -60,7 +60,7 @@ const GenderSwitcher = () => {
                 >
                   {el.name}
                 </Button>
-                {isActive &&
+                {isActive && (
                   <Box
                     as={motion.div}
                     zIndex="-1"
@@ -71,7 +71,8 @@ const GenderSwitcher = () => {
                     rounded="full"
                     m=".1rem"
                     bg="black"
-                  />}
+                  />
+                )}
               </Box>
             );
           })}

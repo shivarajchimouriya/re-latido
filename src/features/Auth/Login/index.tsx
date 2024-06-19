@@ -2,102 +2,107 @@
 import {
   VStack,
   FormControl,
-  FormLabel,
-  Input,
   Button,
   Text,
-  InputRightElement,
   useDisclosure,
-  InputGroup,
   useToast,
-  HStack,
-  Icon
 } from "@chakra-ui/react";
 import React from "react";
 import { useForm } from "react-hook-form";
-import { register } from "swiper/element";
-import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
 import { signIn } from "aws-amplify/auth";
 import AuthProvider from "@/providers/AuthProvider";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ISigninForm, signInFormSchema } from "./schema";
-import { ISignupForm } from "../Signup/schema";
-import { logger } from "@/utils/logger";
 import { useRouter } from "next/navigation";
-import { CgClose } from "react-icons/cg";
-import { unknown } from "zod";
 import PasswordField from "@/components/Form/PasswordField/index.";
 import { useLoader } from "@/hooks/client/useLoader";
-import { configureAmplify } from "@/config/awsConfig";
 import Link from "next/link";
+import useHandleErrorToast from "@/hooks/client/useAppToast";
+import Toast from "@/components/Toast";
+import { logger } from "@/utils/logger";
 
 interface IProps {
   userName: string;
 }
 
-class ErrorWithMessage{
-  constructor(private message:string){
-
-  }
+class ErrorWithMessage {
+  constructor(private message: string) {}
 }
 
 const Login = ({ userName }: IProps) => {
+  const handleErrorToast = useHandleErrorToast();
   const {
     handleSubmit,
     register,
     setError,
-    formState: { errors, isSubmitting }
+    formState: { errors, isSubmitting },
   } = useForm<ISigninForm>({
-    resolver: zodResolver(signInFormSchema)
+    resolver: zodResolver(signInFormSchema),
   });
 
   const toast = useToast();
   const router = useRouter();
-  const {isLoading,startLoading,stopLoading}=   useLoader()
+  const { isLoading, startLoading, stopLoading } = useLoader();
   const login = async (data: ISigninForm) => {
-    startLoading()
+    startLoading();
     try {
       const res = await signIn({
         username: userName,
-        password: data.passoword
+        password: data.passoword,
       });
-      logger.log("success");
-      router.push("/");
-    } catch (err) {
-      logger.log("eror",err)
-      
-     let message="username or password is incorrect"
+      logger.log("response: ", res);
 
-      setError("passoword", { message });
-      // toast({
-      //   status: "error",
-      //   position: "top",
-      //   render: props => {
-      //     return (
-      //       <HStack
-      //         w="full"
-      //         h="4rem"
-      //         shadow="2xl"
-      //         justify="center"
-      //         border="thin"
-      //         bg="white"
-      //       >
-      //         <CgClose />
-      //         <Text color="red" fontSize="1.3rem" fontWeight="semibold">
-      //           User name or password is incorrect{" "}
-      //         </Text>
-      //       </HStack>
-      //     );
-      //   }
-      // });
-    }
-    finally{
-      stopLoading()
+      if (!res.isSignedIn && res.nextStep.signInStep === "CONFIRM_SIGN_UP") {
+        toast({
+          position: "top",
+          duration: 3000,
+          render: ({ onClose }) => {
+            return (
+              <Toast
+                status="error"
+                onClose={onClose}
+                message={"Please confirm your email."}
+              />
+            );
+          },
+        });
+        router.replace("/auth/confirm-email?username=" + userName);
+        return;
+      }
+
+      if (res?.isSignedIn) {
+        toast({
+          position: "top",
+          duration: 3000,
+          render: ({ onClose }) => {
+            return (
+              <Toast
+                status="success"
+                onClose={onClose}
+                message={"Login successful."}
+              />
+            );
+          },
+        });
+        const productUrl = sessionStorage.getItem("productUrl");
+        if (productUrl) {
+          router.replace(productUrl);
+          sessionStorage.removeItem("productUrl");
+        } else {
+          router.replace("/");
+        }
+      } else {
+        router.replace("/");
+      }
+    } catch (err) {
+      handleErrorToast(err);
+    } finally {
+      stopLoading();
     }
   };
 
   const { isOpen, onClose, onToggle } = useDisclosure();
-  const hasError=!!errors.passoword?.message
+  const hasError = !!errors.passoword?.message;
   return (
     <AuthProvider>
       <VStack
@@ -112,17 +117,24 @@ const Login = ({ userName }: IProps) => {
           Login
         </Text>
         <Text fontSize="1.2rem" color="#707580">
-          Hi  <Text as='span'  fontWeight='semibold' > {userName} </Text> , you already have an account here, please fill in the password
-          to login to Latido
+          Hi{" "}
+          <Text as="span" fontWeight="semibold">
+            {" "}
+            {userName}{" "}
+          </Text>{" "}
+          , you already have an account here, please fill in the password to
+          login to Latido
         </Text>
         <VStack w="full">
-          <FormControl w="full" isInvalid={hasError} >
-            <PasswordField  label="password"  
-                variant={ hasError?"error": "underline"}
-                id="password"
-                fontSize="1.4rem"
-                error={errors.passoword?.message}
-                {...register("passoword")}  />
+          <FormControl w="full" isInvalid={hasError}>
+            <PasswordField
+              label="password"
+              variant={hasError ? "error" : "underline"}
+              id="password"
+              fontSize="1.4rem"
+              error={errors.passoword?.message}
+              {...register("passoword")}
+            />
           </FormControl>
           <Text
             w="full"
@@ -131,13 +143,18 @@ const Login = ({ userName }: IProps) => {
             fontSize="1.2rem"
             mt="1rem"
           >
-<Link href='/auth/forget-password'    >
-            forget password?
-          </Link>
+            <Link href="/auth/forget-password">forget password?</Link>
           </Text>
         </VStack>
 
-        <Button variant="submit" type="submit" isLoading={isLoading} >
+        <Button
+          disabled={isLoading}
+          variant="submit"
+          type="submit"
+          isLoading={isLoading}
+          opacity={isLoading ? 0.6 : 1}
+          textTransform="capitalize"
+        >
           proceed
         </Button>
       </VStack>
