@@ -8,6 +8,7 @@ export const queryKeys = {
   PAYMENT_LOG: "paymentLog",
   INVOICE: "invoice",
   PRODUCT_LISTING: "productListing",
+  GENDER_PRODUCT_LISTING: "genderProductListing",
 };
 
 export const mutationKeys = {
