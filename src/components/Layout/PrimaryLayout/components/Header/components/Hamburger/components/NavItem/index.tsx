@@ -5,17 +5,22 @@ import Link from "next/link";
 interface IProps extends StackProps {
   link: string;
   name: string;
+  icon: React.ReactNode;
+  isExternal?: boolean;
 }
 
-const NavItem = ({ link, name, ...rest }: IProps) => {
+const NavItem = ({ link, name, icon, isExternal, ...rest }: IProps) => {
   return (
-    <Link href={link}>
-      {" "}<HStack {...rest}>
+    <Link href={link} target={isExternal ? "_blank" : "_self"}>
+      <HStack {...rest} gap="2rem">
+        <Text as="span" color="white" fontSize="2rem">
+          {icon}
+        </Text>
         <Text
-          fontSize="2.7rem"
+          fontSize="1.6rem"
           textTransform="capitalize"
-          fontWeight="bold"
-          color="gray"
+          color="base"
+          fontWeight="medium"
         >
           {name}
         </Text>
