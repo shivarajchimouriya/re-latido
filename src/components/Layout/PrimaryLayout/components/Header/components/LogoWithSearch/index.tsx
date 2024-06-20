@@ -14,14 +14,13 @@ import { CiSearch } from "react-icons/ci";
 
 export default function LogoWithSearch({ onClose }: { onClose: () => void }) {
   return (
-    <Grid gap="2rem" w="full">
+    <Grid gap="2rem" width="96%">
       <LatidoHeader />
       <Link href="/search">
         <Box
           bg="light-black"
           rounded="8px"
           pl="1.6rem"
-          w="full"
           onClick={onClose}
         >
           <FormControl>

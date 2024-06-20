@@ -96,7 +96,7 @@ const HamburgerMenu = () => {
         }}
         inset="0"
         zIndex={1000}
-        w="70%"
+        w="80%"
         h="100dvh"
         bg="black"
         backdropFilter="auto"

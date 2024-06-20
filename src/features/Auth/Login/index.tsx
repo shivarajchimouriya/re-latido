@@ -41,7 +41,6 @@ const Login = ({ userName }: IProps) => {
   });
 
   const toast = useToast();
-  const router = useRouter();
   const { isLoading, startLoading, stopLoading } = useLoader();
   const login = async (data: ISigninForm) => {
     startLoading();
@@ -100,8 +99,6 @@ const Login = ({ userName }: IProps) => {
       stopLoading();
     }
   };
-
-  const { isOpen, onClose, onToggle } = useDisclosure();
   const hasError = !!errors.passoword?.message;
   return (
     <AuthProvider>
