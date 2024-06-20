@@ -10,7 +10,7 @@ import {
   VStack,
   useToast,
 } from "@chakra-ui/react";
-import React from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { confirmSignUp, resendSignUpCode } from "aws-amplify/auth";
 import { useRouter } from "next/navigation";
@@ -22,6 +22,7 @@ interface IProps {
 }
 
 const ConfirmEmail = ({ username }: IProps) => {
+  const [loading, setLoading] = useState<boolean | null>(null);
   const toast = useToast();
   const handleErrorToast = useHandleErrorToast();
   const fields = [1, 2, 3, 4, 5, 6];
@@ -33,11 +34,25 @@ const ConfirmEmail = ({ username }: IProps) => {
   const router = useRouter();
   const onSubmit = async (data: IForm) => {
     try {
+      setLoading(true);
       const res = await confirmSignUp({
         confirmationCode: data.input,
         username: username,
       });
       if (res.isSignUpComplete) {
+        toast({
+          position: "top",
+          duration: 3000,
+          render: ({ onClose }) => {
+            return (
+              <Toast
+                status="success"
+                onClose={onClose}
+                message="Email Confirmation Complete"
+              />
+            );
+          },
+        });
         router.replace(`/auth/`);
       } else {
         handleErrorToast("Something went wrong!");
@@ -45,6 +60,8 @@ const ConfirmEmail = ({ username }: IProps) => {
     } catch (err) {
       handleErrorToast(err);
       logger.log("error", err);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -119,6 +136,9 @@ const ConfirmEmail = ({ username }: IProps) => {
           type="submit"
           variant="submit"
           textTransform="capitalize"
+          isLoading={!!loading}
+          isDisabled={!!loading}
+          disabled={!!loading}
         >
           proceed
         </Button>

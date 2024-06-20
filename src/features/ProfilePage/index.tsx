@@ -21,7 +21,6 @@ import Link from "next/link";
 import { FaFileInvoiceDollar } from "react-icons/fa";
 import { useFetchProfile } from "./data/useProfile";
 import Logout from "./features/Logout";
-import { notFound } from "next/navigation";
 import ProfileSkeleton from "./ProfileSkeleton";
 
 export default function ProfilePage() {

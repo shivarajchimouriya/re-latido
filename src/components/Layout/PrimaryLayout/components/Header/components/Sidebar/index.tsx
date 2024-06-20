@@ -11,8 +11,8 @@ interface IProps {
 
 export default function Sidebar({ onClose }: IProps) {
   return (
-    <Grid placeItems="center">
-      <VStack alignItems="start" justifyContent="space-between" gap="6rem">
+    <Grid placeItems="center" width="full">
+      <VStack alignItems="start" w="full" maxW="28rem" justifyContent="space-between" gap="6rem" px="1rem">
         <LogoWithSearch onClose={onClose} />
         <Menus onClose={onClose} />
         <ProfileSection onClose={onClose} />
