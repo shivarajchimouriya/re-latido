@@ -20,14 +20,14 @@ export default function Menus({ onClose }: { onClose: () => void }) {
       icon: <MdOutlinePolicy />,
     },
     {
-      name: "contact us",
-      link: "/contact",
-      icon: <HiOutlinePhone />,
-    },
-    {
       name: "about us",
       link: "/about",
       icon: <MdInfoOutline />,
+    },
+    {
+      name: "contact us",
+      link: "/contact",
+      icon: <HiOutlinePhone />,
     },
     {
       name: "message us",
