@@ -31,9 +31,7 @@ export default function Menus({ onClose }: { onClose: () => void }) {
     },
     {
       name: "message us",
-      link: `https://wa.me/9779801154484?text=${encodeURI(
-        "Didn't find the size I was looking for. Could you please assist me? "
-      )}`,
+      link: "https://wa.me/9779801154484",
       icon: <FaWhatsapp />,
       isExternal: true,
     },
