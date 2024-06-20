@@ -1,19 +1,17 @@
 import { HStack, StackProps, Text } from "@chakra-ui/react";
 import React from "react";
 import Link from "next/link";
-import { IoHomeOutline } from "react-icons/io5";
-import { MdOutlinePhone, MdOutlinePolicy } from "react-icons/md";
-import { BsInfo } from "react-icons/bs";
 
 interface IProps extends StackProps {
   link: string;
   name: string;
   icon: React.ReactNode;
+  isExternal?: boolean;
 }
 
-const NavItem = ({ link, name, icon, ...rest }: IProps) => {
+const NavItem = ({ link, name, icon, isExternal, ...rest }: IProps) => {
   return (
-    <Link href={link}>
+    <Link href={link} target={isExternal ? "_blank" : "_self"}>
       <HStack {...rest} gap="2rem">
         <Text as="span" color="white" fontSize="2rem">
           {icon}
