@@ -8,18 +8,15 @@ import { logger } from "@/utils/logger";
 import { useRouter } from "next/navigation";
 import { useFetchProfile } from "@/features/ProfilePage/data/useProfile";
 import { IoLogInOutline } from "react-icons/io5";
-import { useQueryClient } from "@tanstack/react-query";
 
 export default function ProfileSection({ onClose }: { onClose: () => void }) {
   const { data: profileData, isLoading } = useFetchProfile();
-  const queryClient = useQueryClient();
   const data = profileData?.data;
   const router = useRouter();
   const handleLogout = () => {
     const logout = confirm("Are you sure, you want to Logout");
     if (logout) {
       try {
-        queryClient.invalidateQueries();
         signOut();
         onClose();
         location.replace("/");
