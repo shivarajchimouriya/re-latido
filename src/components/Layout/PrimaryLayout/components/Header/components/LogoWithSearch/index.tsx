@@ -14,7 +14,7 @@ import { CiSearch } from "react-icons/ci";
 
 export default function LogoWithSearch({ onClose }: { onClose: () => void }) {
   return (
-    <Grid gap="2rem">
+    <Grid gap="2rem" width="96%">
       <LatidoHeader />
       <Link href="/search">
         <Box
