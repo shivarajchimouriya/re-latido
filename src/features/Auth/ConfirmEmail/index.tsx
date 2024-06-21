@@ -7,19 +7,23 @@ import {
   PinInput,
   PinInputField,
   Text,
-  VStack
+  VStack,
+  useToast,
 } from "@chakra-ui/react";
-import React from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
-import { confirmSignUp } from "aws-amplify/auth";
+import { confirmSignUp, resendSignUpCode } from "aws-amplify/auth";
 import { useRouter } from "next/navigation";
 import useHandleErrorToast from "@/hooks/client/useAppToast";
+import Toast from "@/components/Toast";
 
 interface IProps {
   username: string;
 }
 
 const ConfirmEmail = ({ username }: IProps) => {
+  const [loading, setLoading] = useState<boolean | null>(null);
+  const toast = useToast();
   const handleErrorToast = useHandleErrorToast();
   const fields = [1, 2, 3, 4, 5, 6];
 
@@ -30,22 +34,61 @@ const ConfirmEmail = ({ username }: IProps) => {
   const router = useRouter();
   const onSubmit = async (data: IForm) => {
     try {
-      await confirmSignUp({
+      setLoading(true);
+      const res = await confirmSignUp({
         confirmationCode: data.input,
-        username: username
+        username: username,
       });
-      router.replace(`/auth/`);
+      if (res.isSignUpComplete) {
+        toast({
+          position: "top",
+          duration: 3000,
+          render: ({ onClose }) => {
+            return (
+              <Toast
+                status="success"
+                onClose={onClose}
+                message="Email Confirmation Complete"
+              />
+            );
+          },
+        });
+        router.replace(`/auth/`);
+      } else {
+        handleErrorToast("Something went wrong!");
+      }
     } catch (err) {
-      handleErrorToast(err)
+      handleErrorToast(err);
       logger.log("error", err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleResendOtp = async () => {
+    try {
+      const res = await resendSignUpCode({ username: username });
+      if (res?.attributeName) {
+        toast({
+          position: "top",
+          duration: 3000,
+          render: ({ onClose }) => {
+            return (
+              <Toast status="success" onClose={onClose} message="OTP sent" />
+            );
+          },
+        });
+      }
+    } catch (error) {
+      handleErrorToast(error);
     }
   };
 
   return (
-    <VStack w="full" p="1rem">
+    <VStack w="full" p="1rem" mt="2rem">
       <Text fontSize="2rem" fontWeight="bold">
-        {" "}Enter your confirmation OTP Below{" "}
-      </Text>{" "}
+        Enter your confirmation OTP Below
+      </Text>
       <VStack
         w="full"
         p="1rem"
@@ -53,15 +96,15 @@ const ConfirmEmail = ({ username }: IProps) => {
         as="form"
         onSubmit={handleSubmit(onSubmit)}
       >
-        <HStack mt="4rem">
+        <HStack mt="4rem" my="2rem">
           <PinInput
-            onComplete={val => setValue("input", val)}
+            onComplete={(val) => setValue("input", val)}
             type="number"
             colorScheme="black"
             errorBorderColor="error"
             otp
           >
-            {fields.map(el => {
+            {fields.map((el) => {
               return (
                 <PinInputField
                   display="flex"
@@ -78,8 +121,26 @@ const ConfirmEmail = ({ username }: IProps) => {
             })}
           </PinInput>
         </HStack>
-        <Button type="submit" variant="submit">
-          {" "}proceed{" "}
+        <HStack w="full" justifyContent="end">
+          <Button
+            color="var(--text-secondary)"
+            fontSize="1.1rem"
+            fontWeight="bold"
+            onClick={handleResendOtp}
+          >
+            Resend OTP
+          </Button>
+        </HStack>
+        <Button
+          mt="1rem"
+          type="submit"
+          variant="submit"
+          textTransform="capitalize"
+          isLoading={!!loading}
+          isDisabled={!!loading}
+          disabled={!!loading}
+        >
+          proceed
         </Button>
       </VStack>
     </VStack>

@@ -41,7 +41,6 @@ const Login = ({ userName }: IProps) => {
   });
 
   const toast = useToast();
-  const router = useRouter();
   const { isLoading, startLoading, stopLoading } = useLoader();
   const login = async (data: ISigninForm) => {
     startLoading();
@@ -66,7 +65,7 @@ const Login = ({ userName }: IProps) => {
             );
           },
         });
-        router.replace("/auth/confirm-email?username=" + userName);
+        location.replace("/auth/confirm-email?username=" + userName);
         return;
       }
 
@@ -86,13 +85,13 @@ const Login = ({ userName }: IProps) => {
         });
         const productUrl = sessionStorage.getItem("productUrl");
         if (productUrl) {
-          router.replace(productUrl);
+          location.replace(productUrl);
           sessionStorage.removeItem("productUrl");
         } else {
-          router.replace("/");
+          location.replace("/");
         }
       } else {
-        router.replace("/");
+        location.replace("/");
       }
     } catch (err) {
       handleErrorToast(err);
@@ -100,8 +99,6 @@ const Login = ({ userName }: IProps) => {
       stopLoading();
     }
   };
-
-  const { isOpen, onClose, onToggle } = useDisclosure();
   const hasError = !!errors.passoword?.message;
   return (
     <AuthProvider>
