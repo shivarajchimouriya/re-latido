@@ -42,9 +42,13 @@ export default function ProductImage({ secondaryImage }: IProductImageProps) {
   return (
     <VStack pb="2rem" w="full" overflow="hidden">
       {/* <AppImage src={primaryImage} height={500} width={500} alt="product image" /> */}
-      <HStack w="full">
+      <HStack w="full" h='70vh'  bg='green' minH='50rem' >
+
+
+
+
         <>
-          <Swiper
+          {/* <Swiper
             ref={ref}
             grabCursor={true}
             effect="creative"
@@ -77,7 +81,7 @@ export default function ProductImage({ secondaryImage }: IProductImageProps) {
                 </Box>
               </SwiperSlide>
             ))}
-          </Swiper>
+          </Swiper> */}
         </>
       </HStack>
       <Flex
@@ -89,7 +93,7 @@ export default function ProductImage({ secondaryImage }: IProductImageProps) {
         justifyContent={images?.length > 5 ?? 0 ? "auto" : "center"}
         className="product_images"
       >
-        <div
+        {/* <div
           style={{ display: "flex", gap: "1rem" }}
           className="product_images"
         >
@@ -104,7 +108,7 @@ export default function ProductImage({ secondaryImage }: IProductImageProps) {
               />
             </Box>
           ))}
-        </div>
+        </div> */}
       </Flex>
     </VStack>
   );
