@@ -8,12 +8,14 @@ import {
   Button,
   FormControl,
   FormLabel,
+  Grid,
   HStack,
   IconButton,
   Input,
   Popover,
   PopoverContent,
   PopoverTrigger,
+  Portal,
   Text,
   VStack,
   useDisclosure,
@@ -35,6 +37,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { isValidPhone } from "@/utils/misc";
 import { useUserrCheck } from "../Entry/hooks/useFormSubmit";
 import { APPError } from "@/lib/exception";
+import Link from "next/link";
 
 interface IForm {
   full_name: string;
@@ -158,20 +161,6 @@ const Signup = () => {
         <Text fontSize="3rem" fontWeight={"bold"} w="full">
           Signup
         </Text>
-        {/* <Text
-          w="full"
-          textAlign="right"
-          display="inline-block"
-          fontSize="1.2rem"
-          mt="1rem"
-        >
-          Already have an account?{" "}
-          <Link href="/auth/login">
-            <Text as="span" fontWeight="semibold">
-              Login Here
-            </Text>
-          </Link>
-        </Text> */}
       </VStack>
       {/* {view === 0
           ? <DetailsForm changeView={changeView} />
@@ -184,7 +173,7 @@ const Signup = () => {
         as="form"
         onSubmit={handleSubmit(proceed)}
       >
-        <FormControl w="full">
+        <FormControl w="full" isRequired>
           <FormLabel htmlFor="username" fontSize="fl" textTransform="uppercase">
             username
           </FormLabel>
@@ -201,7 +190,7 @@ const Signup = () => {
           </Text>
         </FormControl>
         <VStack w="full" gap="3rem">
-          <FormControl w="full">
+          <FormControl w="full" isRequired>
             <FormLabel htmlFor="name" fontSize="fl" textTransform="uppercase">
               fullname
             </FormLabel>
@@ -209,7 +198,7 @@ const Signup = () => {
             <Text color="error"> {errors?.full_name?.message} </Text>
           </FormControl>
 
-          <FormControl w="full" gap="1rem">
+          <FormControl w="full" gap="1rem" isRequired>
             <FormLabel fontSize="fl" htmlFor="name" textTransform="uppercase">
               address
             </FormLabel>
@@ -234,7 +223,7 @@ const Signup = () => {
             <Text color="error"> {errors?.address?.message} </Text>
           </FormControl>
 
-          <FormControl w="full">
+          <FormControl w="full" isRequired>
             <FormLabel fontSize="fl" htmlFor="gender" textTransform="uppercase">
               gender
             </FormLabel>
@@ -293,7 +282,7 @@ const Signup = () => {
             </Text>
           </FormControl>
 
-          <FormControl w="full">
+          <FormControl w="full" isRequired>
             <FormLabel htmlFor="name" textTransform="uppercase" fontSize="fl">
               date of birth
             </FormLabel>
@@ -305,8 +294,12 @@ const Signup = () => {
               isLazy
             >
               <PopoverTrigger>
-                <HStack w="full" justify="space-between">
-                  <Text fontSize="1.2rem"> {getValues("date_of_birth")} </Text>{" "}
+                <HStack
+                  w="full"
+                  justify="space-between"
+                  borderBottom="1px solid black"
+                >
+                  <Text mt="1rem"> {getValues("date_of_birth")} </Text>{" "}
                   <IconButton
                     fontSize="2rem"
                     icon={<BiCalendar />}
@@ -316,30 +309,49 @@ const Signup = () => {
               </PopoverTrigger>
 
               <PopoverContent p={5}>
-                <Box zIndex={"1000000000"}>
-                  <Controller
-                    control={control}
-                    name="date_of_birth"
-                    render={({ field: { onChange } }) => {
-                      return (
-                        <Calendar
-                          maxDate={new Date()}
-                          onChange={(val) => {
-                            const d = dayjs(val).format("MM/DD/YYYY");
-                            onChange(d);
-                            onClose();
+                <Portal>
+                  <Box
+                    position="absolute"
+                    inset="0"
+                    zIndex="999999"
+                    top="4.6rem"
+                    h="full"
+                    w="full"
+                    onClick={onClose}
+                  >
+                    <Grid
+                      mx="auto"
+                      w="full"
+                      placeItems="center"
+                      py="2rem"
+                    >
+                      <Box border="1px solid black" bg="base">
+                        <Controller
+                          control={control}
+                          name="date_of_birth"
+                          render={({ field: { onChange } }) => {
+                            return (
+                              <Calendar
+                                maxDate={new Date()}
+                                onChange={(val) => {
+                                  const d = dayjs(val).format("MM/DD/YYYY");
+                                  onChange(d);
+                                  onClose();
+                                }}
+                              />
+                            );
                           }}
                         />
-                      );
-                    }}
-                  />
-                </Box>
+                      </Box>
+                    </Grid>
+                  </Box>
+                </Portal>
               </PopoverContent>
             </Popover>
             <Text color="error"> {errors?.date_of_birth?.message} </Text>
           </FormControl>
 
-          <FormControl w="full">
+          <FormControl w="full" isRequired>
             <FormLabel htmlFor="name" fontSize="fl" textTransform="uppercase">
               email
             </FormLabel>
@@ -347,7 +359,7 @@ const Signup = () => {
             <Text color="error"> {errors?.email?.message} </Text>
           </FormControl>
 
-          <FormControl w="full">
+          <FormControl w="full" isRequired>
             <FormLabel htmlFor="name" fontSize="fl" textTransform="uppercase">
               phone number
             </FormLabel>
@@ -393,6 +405,20 @@ const Signup = () => {
             error={errors.confirm_password?.message}
             {...register("confirm_password")}
           />
+          <Text
+            w="full"
+            textAlign="right"
+            display="inline-block"
+            fontSize="1.2rem"
+            mt="1rem"
+          >
+            Already have an account?{" "}
+            <Link href="/auth/login">
+              <Text as="span" fontWeight="semibold">
+                Login Here
+              </Text>
+            </Link>
+          </Text>
           <Button
             isLoading={isSubmitting}
             type="submit"

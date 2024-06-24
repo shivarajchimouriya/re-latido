@@ -61,7 +61,7 @@ export default function ProfileSection({ onClose }: { onClose: () => void }) {
   };
   const handleLogin = () => {
     onClose();
-    router.push("/auth");
+    router.push("/auth/login");
   };
   if (isLoading) {
     return (

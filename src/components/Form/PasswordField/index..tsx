@@ -20,7 +20,7 @@ const PasswordField = forwardRef(({ error, label, ...rest }: IProps, ref) => {
   const { isOpen, onClose, onToggle } = useDisclosure();
 
   return (
-    <FormControl w="full">
+    <FormControl w="full" isRequired>
       <FormLabel htmlFor="name" textTransform="uppercase" fontSize="1.2rem">
         {label}
       </FormLabel>

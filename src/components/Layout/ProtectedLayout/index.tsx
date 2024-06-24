@@ -43,7 +43,7 @@ const ProtectedLayout = ({ children }: IProps) => {
   }
 
   if (!isLoading && !isAuthenticated) {
-    redirect("/auth");
+    redirect("/auth/login");
   }
 
   return <> {children} </>;
