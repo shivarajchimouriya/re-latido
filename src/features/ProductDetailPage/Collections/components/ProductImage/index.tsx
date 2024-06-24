@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useMemo, useRef, useState } from "react";
+import React, { useMemo, useState } from "react";
 import {
   Box,
   Button,
@@ -7,7 +7,7 @@ import {
   HStack,
   IconButton,
   Portal,
-  VStack
+  VStack,
 } from "@chakra-ui/react";
 import { IProductImageProps } from "./IProductImageProps";
 import AppImage from "@/components/AppImage";
@@ -19,11 +19,12 @@ import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
 
 import "swiper/css";
 import "swiper/css/effect-creative";
-import Image from "next/image";
 import { AnimatePresence, motion } from "framer-motion";
-import { CgClose } from "react-icons/cg";
-import { BsArrowLeft, BsArrowRight } from "react-icons/bs";
-import { IoArrowBackSharp, IoArrowForwardOutline, IoClose } from "react-icons/io5";
+import {
+  IoArrowBackSharp,
+  IoArrowForwardOutline,
+  IoClose,
+} from "react-icons/io5";
 
 export default function ProductImage({ secondaryImage }: IProductImageProps) {
   const searchParams = useSearchParams();
@@ -50,43 +51,38 @@ export default function ProductImage({ secondaryImage }: IProductImageProps) {
 
   const ref = React.useRef<HTMLDivElement | null>(null);
 
+  const onNextClick = () => {
+    if (selectedIndex === null) return;
+    if (selectedIndex >= images.length - 1) {
+      setSelectedIndex(0);
+    } else {
+      setSelectedIndex((prev) => (prev ? prev + 1 : 0));
+    }
+  };
 
-const onNextClick=()=>{
-
-if(selectedIndex===null) return
-if(selectedIndex>=images.length-1){
-  setSelectedIndex(0)
-}else{
-  setSelectedIndex((prev)=>prev? prev+1:0)
-}
-
-}
-
-
-const  onPrevClick=()=>{
-
-if(selectedIndex===null) return
-if(selectedIndex<=0){
-  setSelectedIndex(0)
-}else{
-  setSelectedIndex((prev)=>prev? prev-1:0)
-
-}
-
-}
-
-
+  const onPrevClick = () => {
+    if (selectedIndex === null) return;
+    if (selectedIndex <= 0) {
+      setSelectedIndex(0);
+    } else {
+      setSelectedIndex((prev) => (prev ? prev - 1 : 0));
+    }
+  };
 
   return (
     <>
-      <VStack pb=".2rem" w="full" overflow="hidden"  >
-        <HStack w="full" h="60vh" minH="50rem">
-          <HStack flex="2" h="full">
+      <VStack pb=".2rem" w="full" overflow="hidden">
+        <HStack w="full" h="48dvh">
+          <HStack flex="2" h="full" alignItems="center">
             <AppImage
               src={images[0]}
               height={500}
               width={500}
               alt="product image"
+              style={{
+                objectFit: "contain",
+                height: "inherit",
+              }}
             />
           </HStack>
           <VStack flex="1" h="full" overflow="scroll">
@@ -173,11 +169,10 @@ if(selectedIndex<=0){
         </Flex>
       </VStack>
       <AnimatePresence>
-        {selectedIndex !==null && (
+        {selectedIndex !== null && (
           <Portal>
             <Box
               as={motion.div}
-            
               position="fixed"
               inset="0"
               h="100vh"
@@ -201,12 +196,12 @@ if(selectedIndex<=0){
                 w="4rem"
                 top="2rem"
                 right="2rem"
-                backdropFilter='auto'
-                backdropBlur='5px'
-                rounded='full'
-                shadow='md'
-                fontSize='1.5rem'
-                background='rgba(255,255,255,0.5)'
+                backdropFilter="auto"
+                backdropBlur="5px"
+                rounded="full"
+                shadow="md"
+                fontSize="1.5rem"
+                background="rgba(255,255,255,0.5)"
               />
 
               <TransformWrapper>
@@ -221,7 +216,7 @@ if(selectedIndex<=0){
                     style={{
                       height: "100%",
                       width: "100%",
-                      objectFit: "contain"
+                      objectFit: "contain",
                     }}
                     width={500}
                   />
@@ -245,9 +240,9 @@ if(selectedIndex<=0){
                   rounded="full"
                   backdropFilter="auto"
                   backdropBlur="4px"
-                  height='4rem'
-                  width='4rem'
-                  shadow='md'
+                  height="4rem"
+                  width="4rem"
+                  shadow="md"
                   onClick={onPrevClick}
                 />
                 <IconButton
@@ -257,11 +252,10 @@ if(selectedIndex<=0){
                   rounded="full"
                   backdropFilter="auto"
                   backdropBlur="4px"
-                  shadow='md'
-onClick={onNextClick}
-                                    height='4rem'
-                  width='4rem'
-
+                  shadow="md"
+                  onClick={onNextClick}
+                  height="4rem"
+                  width="4rem"
                 />
               </Flex>
             </Box>

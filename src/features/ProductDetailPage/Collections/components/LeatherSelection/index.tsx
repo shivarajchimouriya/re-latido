@@ -1,26 +1,19 @@
 "use client";
 import { useRouter, useSearchParams } from "next/navigation";
-import { Box, Flex, Grid, HStack, Text, VStack } from "@chakra-ui/react";
+import { Box, Grid, Text, VStack } from "@chakra-ui/react";
 import React, { useState } from "react";
-import { appColor } from "@/theme/foundations/colors";
-import { Swiper, SwiperSlide } from "swiper/react";
-import Carousel3D from "../Carousel3D";
 import { IProduct } from "@/resources/Product/interface";
 import Leathercapsule from "../Leathercapsule";
-import { collectionImages, leatherImage } from "@/constants/images";
+import { leatherImage } from "@/constants/images";
+import { env } from "@/config/environment";
+import { AnimatePresence, motion } from "framer-motion";
 
 interface IProps {
-  urlPrefix: string;
   productDetail: IProduct;
 }
-interface ILeatherChange {
-  hardware: string;
-  leather_id: string;
-  lining: string;
-  name: string;
-  product_specification_id: string;
-}
-export default function LeatherSelection({ urlPrefix, productDetail }: IProps) {
+
+const baseUrl = env.S3_BASE_URL;
+export default function LeatherSelection({ productDetail }: IProps) {
   const router = useRouter();
 
   const searchParams = useSearchParams();
@@ -33,10 +26,7 @@ export default function LeatherSelection({ urlPrefix, productDetail }: IProps) {
 
   const selectedLeatherIndex = findIndex();
 
-  const onChange = (values: ILeatherChange) => {
-    const leatherId = values.leather_id;
-    const productSpecsId = values.product_specification_id;
-
+  const onChange = (leatherId: string, productSpecsId: string) => {
     if (lid === leatherId && psid === productSpecsId) {
       return null;
     }
@@ -51,16 +41,17 @@ export default function LeatherSelection({ urlPrefix, productDetail }: IProps) {
     }
   };
 
+  const [activeLeather, setActiveLeather] = useState<number>(
+    selectedLeatherIndex === -1 ? 0 : selectedLeatherIndex
+  );
 
-const [activeLeather, setActiveLeather] = useState<number>(0)
-
-
-const onLeatherSelect=(idx:number)=>{
-
-
-setActiveLeather(idx)
-
-}
+  const onLeatherSelect = (idx: number) => {
+    setActiveLeather(idx);
+    onChange(
+      productDetail.product_specification[idx].leather_id?._id,
+      productDetail.product_specification[idx]._id
+    );
+  };
 
   return (
     <VStack w="full" p="1rem">
@@ -72,13 +63,39 @@ setActiveLeather(idx)
         textTransform="capitalize"
         fontSize="medium"
       >
-        {" "}
-        select leather{" "}
+        select leather
       </Text>
 
-      <Grid templateColumns="repeat(5,1fr)" gap="1rem">
-        {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((el,i) => {
-          return <Leathercapsule  activeLeather={activeLeather} onLeatherSelect={onLeatherSelect}  id={i} image={leatherImage} name="latido" />;
+      <Grid templateColumns="repeat(4,1fr)" gap="1rem" my="2rem">
+        {productDetail.product_specification.map((el, i) => {
+          const isActive = i === activeLeather;
+          return (
+            <Box position="relative">
+              <Leathercapsule
+                isActive={isActive}
+                onLeatherSelect={onLeatherSelect}
+                id={i}
+                image={baseUrl + el?.leather_id?.ball_image || leatherImage}
+                name={el.leather_id.item_name}
+              />
+              <AnimatePresence>
+                {isActive && (
+                  <Box
+                    as={motion.div}
+                    layoutId="leather"
+                    position="absolute"
+                    w="100%"
+                    h="100%"
+                    inset="0"
+                    rounded="md"
+                    outline="1px solid gray"
+                    isolation="isolate"
+                    bgColor="gray.200"
+                  />
+                )}
+              </AnimatePresence>
+            </Box>
+          );
         })}
       </Grid>
     </VStack>

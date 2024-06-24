@@ -38,7 +38,7 @@ export interface IProduct {
     status: boolean;
     secondary_image: any[]; // You may want to replace 'any' with a specific type if possible
     _id: string;
-    leather_id: string;
+    leather_id: LeatherId;
     default_hardware: string;
     default_lining: string;
     size_range: {
@@ -69,6 +69,16 @@ export interface IProduct {
   sub_category: string | null;
   pricing: string;
   isFav: boolean;
+}
+
+interface LeatherId {
+  _id: string;
+  item_name: string;
+  latido_code: string;
+  ball_image: string;
+  brand: string;
+  color: string;
+  icon: string;
 }
 
 interface Category {
