@@ -9,7 +9,7 @@ const defaultStyles = definePartsStyle({
 const sm = definePartsStyle({
   container: {
         label: {
-        mt: "3rem"
+        mt: "1.6rem"
     },
     input: {
         h: "3rem"

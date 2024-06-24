@@ -105,7 +105,6 @@ const Login = () => {
         w="full"
         p="2rem"
         alignItems="center"
-        gap="2rem"
         as="form"
         onSubmit={handleSubmit(login)}
       >
@@ -115,8 +114,8 @@ const Login = () => {
         <Text fontSize="1.2rem" color="#707580">
           If you already have an account, please fill in the password to login.
         </Text>
-        <VStack w="full" gap="2rem">
-          <FormControl w="full">
+        <VStack w="full">
+          <FormControl w="full" isRequired>
             <FormLabel htmlFor="name" textTransform="uppercase" fontSize="1.2rem">
               username
             </FormLabel>
@@ -145,7 +144,7 @@ const Login = () => {
             textAlign="right"
             textTransform="capitalize"
             fontSize="1.2rem"
-            mt="1rem"
+            my="1.6rem"
             color="var(--text-secondary)"
           >
             <Link href="/auth/forget-password">forget password?</Link>

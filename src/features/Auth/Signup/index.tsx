@@ -171,6 +171,7 @@ const Signup = () => {
         align="start"
         px="2rem"
         as="form"
+        gap="-1.6rem"
         onSubmit={handleSubmit(proceed)}
       >
         <FormControl w="full" isRequired>
@@ -189,7 +190,7 @@ const Signup = () => {
             {errors.username && errors.username.message}
           </Text>
         </FormControl>
-        <VStack w="full" gap="3rem">
+        <VStack w="full">
           <FormControl w="full" isRequired>
             <FormLabel htmlFor="name" fontSize="fl" textTransform="uppercase">
               fullname
@@ -319,12 +320,7 @@ const Signup = () => {
                     w="full"
                     onClick={onClose}
                   >
-                    <Grid
-                      mx="auto"
-                      w="full"
-                      placeItems="center"
-                      py="2rem"
-                    >
+                    <Grid mx="auto" w="full" placeItems="center" py="2rem">
                       <Box border="1px solid black" bg="base">
                         <Controller
                           control={control}
@@ -410,7 +406,7 @@ const Signup = () => {
             textAlign="right"
             display="inline-block"
             fontSize="1.2rem"
-            mt="1rem"
+            my="2rem"
           >
             Already have an account?{" "}
             <Link href="/auth/login">

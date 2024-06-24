@@ -21,7 +21,7 @@ const PasswordField = forwardRef(({ error, label, ...rest }: IProps, ref) => {
 
   return (
     <FormControl w="full" isRequired>
-      <FormLabel htmlFor="name" textTransform="uppercase" fontSize="1.2rem">
+      <FormLabel htmlFor="password" textTransform="uppercase" fontSize="1.2rem">
         {label}
       </FormLabel>
       <InputGroup display="flex   " alignItems="center">
