@@ -55,7 +55,7 @@ export default function SizeModuleSection({
 
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [heightOptionsValues, setHeightOptionsValues] = useState<string[]>([]);
-  const [selectedFit, setSelectedFit] = useState(urlFit || "General");
+  const [selectedFit, setSelectedFit] = useState(urlFit || "Regular Fit");
   const [selectedSpecs, setSelectedSpecs] = useState<any>();
 
   const heightOptions = () => {

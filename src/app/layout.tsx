@@ -71,6 +71,7 @@ export default function RootLayout({
     <html lang="en">
       <JsonLd />
       <body
+      id='body'
         className={inter.className}
         style={{
           height: "100dvh",

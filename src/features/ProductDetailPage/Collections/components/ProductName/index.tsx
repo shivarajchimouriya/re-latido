@@ -10,10 +10,10 @@ export default function ProductName({
   productName,
   category,
   productId,
-  categoryId,
+  categoryId
 }: IProductNameProps) {
   return (
-    <HStack w="100%" justify="space-between" p={"2rem"}>
+    <HStack w="100%" justify="space-between" p={"2rem"} py="1rem">
       <VStack alignItems="flex-start" spacing={0}>
         <Link href={`/category/${categoryId}`}>
           <Text

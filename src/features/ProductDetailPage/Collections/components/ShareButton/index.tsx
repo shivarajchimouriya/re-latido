@@ -1,31 +1,7 @@
 "use client";
-import {
-  Box,
-  Button,
-  Center,
-  Flex,
-  Grid,
-  GridItem,
-  IconButton,
-  VStack,
-  useDisclosure,
-} from "@chakra-ui/react";
+import { IconButton, useDisclosure } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
-import {
-  FaFacebook,
-  FaFacebookMessenger,
-  FaLinkedinIn,
-  FaRedditAlien,
-  FaTelegramPlane,
-  FaViber,
-  FaWhatsapp,
-} from "react-icons/fa";
-import { IoIosShareAlt } from "react-icons/io";
-import { BsTwitterX } from "react-icons/bs";
-import ShareIcon from "../ShareIcon";
-import { IoCopyOutline } from "react-icons/io5";
-import { AnimatePresence, motion } from "framer-motion";
-import { MdDoneAll } from "react-icons/md";
+import { IoShareSocialOutline } from "react-icons/io5";
 import ShareBlock from "@/features/ShareBlock";
 
 const ShareButton = () => {
@@ -40,7 +16,7 @@ const ShareButton = () => {
     <>
       <IconButton
         aria-label="share"
-        icon={<IoIosShareAlt fontSize="2.5rem" onClick={onOpen} />}
+        icon={<IoShareSocialOutline fontSize="2.5rem" onClick={onOpen} />}
       />
       <ShareBlock isOpen={isOpen} onClose={onClose} url={url} />
     </>

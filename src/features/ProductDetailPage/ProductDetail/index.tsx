@@ -1,7 +1,6 @@
 import React from "react";
 import { Box, Button, Container, VStack } from "@chakra-ui/react";
 import { IProps } from "./IProps";
-import { IProductResponse } from "./IProductResponse";
 import ProductName from "../Collections/components/ProductName";
 import ProductImage from "../Collections/components/ProductImage";
 import LeatherSelection from "../Collections/components/LeatherSelection";
@@ -11,7 +10,6 @@ import Description from "../Collections/components/Description";
 import { API } from "@/resources";
 import { logger } from "@/utils/logger";
 import SizeModuleSection from "../Collections/components/SizeModuleSection";
-import { env } from "@/config/environment";
 import NotFound from "@/components/NotFound";
 
 const getProductDetail = async (id: string) => {
@@ -39,11 +37,13 @@ export default async function ProductDetail({ productId }: IProps) {
           productId={productId}
         />
         <ProductImage secondaryImage={productDetail?.product_specification} />
-        <Box background={appColor.black} width={"100%"} maxW="500px" padding={"2rem 0"}>
-          <LeatherSelection
-            productDetail={productDetail}
-            urlPrefix={env.S3_BASE_URL || ""}
-          />
+        <LeatherSelection productDetail={productDetail} />
+        <Box
+          background={appColor.black}
+          width={"100%"}
+          maxW="500px"
+          padding={"2rem 0"}
+        >
           <SizeModuleSection
             productName={productDetail?.name}
             productDetail={productDetail}
