@@ -23,17 +23,24 @@ export default function FittingSwiper({
   selectedFit,
 }: TODO) {
   return (
-    <Flex className="parent" w="100%" overflow="hidden" padding={"1rem 0"}>
+    <Flex className="parent" w="auto" overflow="hidden" padding={"1rem 0"}>
       <Swiper
-        width={100}
         spaceBetween={4}
         slidesPerView="auto"
         freeMode={true}
         modules={[FreeMode]}
+        style={{
+          width: "fit-content",
+        }}
       >
         {options?.map((fit: IFit, i: number) => {
           return (
-            <SwiperSlide key={i}>
+            <SwiperSlide
+              key={i}
+              style={{
+                width: "fit-content",
+              }}
+            >
               <div
                 style={{
                   paddingLeft: i === 0 ? "20px" : 0,
