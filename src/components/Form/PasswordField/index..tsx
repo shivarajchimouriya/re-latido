@@ -21,7 +21,7 @@ const PasswordField = forwardRef(({ error, label, ...rest }: IProps, ref) => {
 
   return (
     <FormControl w="full">
-      <FormLabel htmlFor="name" textTransform="capitalize">
+      <FormLabel htmlFor="name" textTransform="uppercase" fontSize="1.2rem">
         {label}
       </FormLabel>
       <InputGroup display="flex   " alignItems="center">
@@ -39,7 +39,7 @@ const PasswordField = forwardRef(({ error, label, ...rest }: IProps, ref) => {
         </InputRightElement>
       </InputGroup>
       {error &&
-        <Text color="error">
+        <Text color="error" mt="0.4rem">
           {" "}{error}{" "}
         </Text>}
     </FormControl>

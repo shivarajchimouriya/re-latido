@@ -134,7 +134,7 @@ export default function ProfileSection({ onClose }: { onClose: () => void }) {
         rounded="full"
         width="96%"
       >
-        <Link href={data?.name ? "/profile" : "/auth"}>
+        <Link href={data?.name ? "/profile" : "/auth/login"}>
           <HStack gap="1rem" onClick={onClose}>
             <Avatar
               src={data?.profile_image ?? ""}
