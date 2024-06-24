@@ -277,7 +277,7 @@ export default function SizeModuleSection({
   const handleBuyClick = async (price: number, srid: string) => {
     if (!token) {
       sessionStorage.setItem("productUrl", window?.location?.href);
-      router.push("/auth");
+      router.push("/auth/login");
       return;
     }
 

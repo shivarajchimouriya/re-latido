@@ -6,6 +6,8 @@ import {
   Text,
   useDisclosure,
   useToast,
+  FormLabel,
+  Input,
 } from "@chakra-ui/react";
 import React from "react";
 import { useForm } from "react-hook-form";
@@ -21,15 +23,11 @@ import useHandleErrorToast from "@/hooks/client/useAppToast";
 import Toast from "@/components/Toast";
 import { logger } from "@/utils/logger";
 
-interface IProps {
-  userName: string;
-}
-
 class ErrorWithMessage {
   constructor(private message: string) {}
 }
 
-const Login = ({ userName }: IProps) => {
+const Login = () => {
   const handleErrorToast = useHandleErrorToast();
   const {
     handleSubmit,
@@ -41,12 +39,13 @@ const Login = ({ userName }: IProps) => {
   });
 
   const toast = useToast();
+
   const { isLoading, startLoading, stopLoading } = useLoader();
   const login = async (data: ISigninForm) => {
     startLoading();
     try {
       const res = await signIn({
-        username: userName,
+        username: data.username,
         password: data.passoword,
       });
       logger.log("response: ", res);
@@ -65,7 +64,7 @@ const Login = ({ userName }: IProps) => {
             );
           },
         });
-        location.replace("/auth/confirm-email?username=" + userName);
+        location.replace("/auth/confirm-email?username=" + data.username);
         return;
       }
 
@@ -106,7 +105,6 @@ const Login = ({ userName }: IProps) => {
         w="full"
         p="2rem"
         alignItems="center"
-        gap="2rem"
         as="form"
         onSubmit={handleSubmit(login)}
       >
@@ -114,15 +112,23 @@ const Login = ({ userName }: IProps) => {
           Login
         </Text>
         <Text fontSize="1.2rem" color="#707580">
-          Hi{" "}
-          <Text as="span" fontWeight="semibold">
-            {" "}
-            {userName}{" "}
-          </Text>{" "}
-          , you already have an account here, please fill in the password to
-          login to Latido
+          If you already have an account, please fill in the password to login.
         </Text>
         <VStack w="full">
+          <FormControl w="full" isRequired>
+            <FormLabel htmlFor="name" textTransform="uppercase" fontSize="1.2rem">
+              username
+            </FormLabel>
+            <Input
+              variant="underline"
+              errorBorderColor="red"
+              id="name"
+              {...register("username")}
+            />
+            <Text color={"red"} mt="0.4rem">
+              {errors.username && errors.username.message}
+            </Text>
+          </FormControl>
           <FormControl w="full" isInvalid={hasError}>
             <PasswordField
               label="password"
@@ -138,7 +144,8 @@ const Login = ({ userName }: IProps) => {
             textAlign="right"
             textTransform="capitalize"
             fontSize="1.2rem"
-            mt="1rem"
+            my="1.6rem"
+            color="var(--text-secondary)"
           >
             <Link href="/auth/forget-password">forget password?</Link>
           </Text>
@@ -152,8 +159,22 @@ const Login = ({ userName }: IProps) => {
           opacity={isLoading ? 0.6 : 1}
           textTransform="capitalize"
         >
-          proceed
+          Login
         </Button>
+        <Text
+          w="full"
+          textAlign="left"
+          display="inline-block"
+          fontSize="1.2rem"
+          mt="1rem"
+        >
+          Didn't have an account?{" "}
+          <Link href="/auth/signup">
+            <Text as="span" fontWeight="semibold">
+              Signup Here
+            </Text>
+          </Link>
+        </Text>
       </VStack>
     </AuthProvider>
   );

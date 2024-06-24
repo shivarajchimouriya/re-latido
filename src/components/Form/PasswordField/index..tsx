@@ -20,8 +20,8 @@ const PasswordField = forwardRef(({ error, label, ...rest }: IProps, ref) => {
   const { isOpen, onClose, onToggle } = useDisclosure();
 
   return (
-    <FormControl w="full">
-      <FormLabel htmlFor="name" textTransform="capitalize">
+    <FormControl w="full" isRequired>
+      <FormLabel htmlFor="password" textTransform="uppercase" fontSize="1.2rem">
         {label}
       </FormLabel>
       <InputGroup display="flex   " alignItems="center">
@@ -39,7 +39,7 @@ const PasswordField = forwardRef(({ error, label, ...rest }: IProps, ref) => {
         </InputRightElement>
       </InputGroup>
       {error &&
-        <Text color="error">
+        <Text color="error" mt="0.4rem">
           {" "}{error}{" "}
         </Text>}
     </FormControl>

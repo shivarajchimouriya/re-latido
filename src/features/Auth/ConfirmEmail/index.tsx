@@ -53,7 +53,7 @@ const ConfirmEmail = ({ username }: IProps) => {
             );
           },
         });
-        router.replace(`/auth/`);
+        router.replace(`/auth/login`);
       } else {
         handleErrorToast("Something went wrong!");
       }
