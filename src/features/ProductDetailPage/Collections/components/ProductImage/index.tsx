@@ -1,23 +1,36 @@
 "use client";
 import React, { useEffect, useMemo, useRef, useState } from "react";
-import { Box, Flex, HStack, VStack } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  Flex,
+  HStack,
+  IconButton,
+  Portal,
+  VStack
+} from "@chakra-ui/react";
 import { IProductImageProps } from "./IProductImageProps";
 import AppImage from "@/components/AppImage";
 import Avatar from "@/components/Avatar";
 import { useSearchParams } from "next/navigation";
 import { Swiper, SwiperRef, SwiperSlide, useSwiper } from "swiper/react";
 import { EffectCreative } from "swiper/modules";
+import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
 
 import "swiper/css";
 import "swiper/css/effect-creative";
 import Image from "next/image";
+import { AnimatePresence, motion } from "framer-motion";
+import { CgClose } from "react-icons/cg";
+import { BsArrowLeft, BsArrowRight } from "react-icons/bs";
+import { IoArrowBackSharp, IoArrowForwardOutline, IoClose } from "react-icons/io5";
 
 export default function ProductImage({ secondaryImage }: IProductImageProps) {
   const searchParams = useSearchParams();
   const lid = searchParams.get("lid");
   const psid = searchParams.get("psid");
 
-  const [selectedIndex, setSelectedIndex] = useState<number>(0);
+  const [selectedIndex, setSelectedIndex] = useState<null | number>(null);
 
   let imageIndex = 0;
 
@@ -27,28 +40,76 @@ export default function ProductImage({ secondaryImage }: IProductImageProps) {
     );
   }, [lid]);
 
-  const ref = useRef<null | SwiperRef>(null);
   if (lid && psid) {
     imageIndex = findIndexOfImage;
   }
 
-  const images = secondaryImage[imageIndex ? imageIndex : 0]?.secondary_image;
+  const images =
+    secondaryImage[imageIndex ? imageIndex : 0]?.secondary_image || [];
+  const otherImages: string[] = images.slice(1) || [];
 
-  const handleClick = (index: number) => {
-    setSelectedIndex(index);
-    ref.current?.swiper.slideTo(index);
-  };
+  const ref = React.useRef<HTMLDivElement | null>(null);
+
+
+const onNextClick=()=>{
+
+if(selectedIndex===null) return
+if(selectedIndex>=images.length-1){
+  setSelectedIndex(0)
+}else{
+  setSelectedIndex((prev)=>prev? prev+1:0)
+}
+
+}
+
+
+const  onPrevClick=()=>{
+
+if(selectedIndex===null) return
+if(selectedIndex<=0){
+  setSelectedIndex(0)
+}else{
+  setSelectedIndex((prev)=>prev? prev-1:0)
+
+}
+
+}
+
+
 
   return (
-    <VStack pb="2rem" w="full" overflow="hidden">
-      {/* <AppImage src={primaryImage} height={500} width={500} alt="product image" /> */}
-      <HStack w="full" h='70vh'  bg='green' minH='50rem' >
-
-
-
-
-        <>
-          {/* <Swiper
+    <>
+      <VStack pb=".2rem" w="full" overflow="hidden"  >
+        <HStack w="full" h="60vh" minH="50rem">
+          <HStack flex="2" h="full">
+            <AppImage
+              src={images[0]}
+              height={500}
+              width={500}
+              alt="product image"
+            />
+          </HStack>
+          <VStack flex="1" h="full" overflow="scroll">
+            {otherImages.map((el, i) => {
+              return (
+                <Box
+                  onClick={() => setSelectedIndex(i)}
+                  as={motion.div}
+                  layoutId={`${i}`}
+                >
+                  {" "}
+                  <AppImage
+                    src={el}
+                    height={500}
+                    width={500}
+                    alt={`product image -${i}`}
+                  />
+                </Box>
+              );
+            })}
+          </VStack>
+          <>
+            {/* <Swiper
             ref={ref}
             grabCursor={true}
             effect="creative"
@@ -82,18 +143,18 @@ export default function ProductImage({ secondaryImage }: IProductImageProps) {
               </SwiperSlide>
             ))}
           </Swiper> */}
-        </>
-      </HStack>
-      <Flex
-        gap={"1.4rem"}
-        p={"1rem"}
-        width={"100%"}
-        height={"100%"}
-        overflowX={"scroll"}
-        justifyContent={images?.length > 5 ?? 0 ? "auto" : "center"}
-        className="product_images"
-      >
-        {/* <div
+          </>
+        </HStack>
+        <Flex
+          gap={"1.4rem"}
+          p={"1rem"}
+          width={"100%"}
+          height={"100%"}
+          overflowX={"scroll"}
+          justifyContent={images?.length > 5 ?? 0 ? "auto" : "center"}
+          className="product_images"
+        >
+          {/* <div
           style={{ display: "flex", gap: "1rem" }}
           className="product_images"
         >
@@ -109,7 +170,104 @@ export default function ProductImage({ secondaryImage }: IProductImageProps) {
             </Box>
           ))}
         </div> */}
-      </Flex>
-    </VStack>
+        </Flex>
+      </VStack>
+      <AnimatePresence>
+        {selectedIndex !==null && (
+          <Portal>
+            <Box
+              as={motion.div}
+            
+              position="fixed"
+              inset="0"
+              h="100vh"
+              display="flex"
+              justifyContent="center"
+              alignItems="center"
+              zIndex={100000}
+              w="full"
+              background="rgba(255,255,255,.8)"
+              backdropFilter="auto"
+              backdropBlur="5px"
+              layoutId={`${selectedIndex}`}
+            >
+              <IconButton
+                aria-label="close"
+                icon={<IoClose />}
+                zIndex={100000}
+                onClick={() => setSelectedIndex(null)}
+                position="absolute"
+                height="4rem"
+                w="4rem"
+                top="2rem"
+                right="2rem"
+                backdropFilter='auto'
+                backdropBlur='5px'
+                rounded='full'
+                shadow='md'
+                fontSize='1.5rem'
+                background='rgba(255,255,255,0.5)'
+              />
+
+              <TransformWrapper>
+                <TransformComponent
+                  wrapperStyle={{ maxHeight: "100vh", height: "100%" }}
+                  contentStyle={{ height: "100%" }}
+                >
+                  <AppImage
+                    src={otherImages[selectedIndex]}
+                    alt="product image"
+                    height={500}
+                    style={{
+                      height: "100%",
+                      width: "100%",
+                      objectFit: "contain"
+                    }}
+                    width={500}
+                  />
+                </TransformComponent>
+              </TransformWrapper>
+
+              <Flex
+                position="absolute"
+                gap="3rem"
+                bottom="10rem"
+                left="50%"
+                transform="translateX(-50%)"
+                fontSize="2rem"
+                height="4rem"
+                zIndex={10000}
+              >
+                <IconButton
+                  icon={<IoArrowBackSharp />}
+                  aria-label="previous"
+                  p="1rem"
+                  rounded="full"
+                  backdropFilter="auto"
+                  backdropBlur="4px"
+                  height='4rem'
+                  width='4rem'
+                  shadow='md'
+                  onClick={onPrevClick}
+                />
+                <IconButton
+                  icon={<IoArrowForwardOutline />}
+                  aria-label="right"
+                  p="1rem"
+                  rounded="full"
+                  backdropFilter="auto"
+                  backdropBlur="4px"
+                  shadow='md'
+onClick={onNextClick}
+                                    height='4rem'
+                  width='4rem'
+
+                />
+              </Flex>
+            </Box>
+          </Portal>
+        )}
+      </AnimatePresence>
+    </>
   );
 }

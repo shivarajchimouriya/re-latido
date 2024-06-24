@@ -39,11 +39,11 @@ export default async function ProductDetail({ productId }: IProps) {
           productId={productId}
         />
         <ProductImage secondaryImage={productDetail?.product_specification} />
-        <Box background={appColor.black} width={"100%"} maxW="500px" padding={"2rem 0"}>
           <LeatherSelection
             productDetail={productDetail}
             urlPrefix={env.S3_BASE_URL || ""}
           />
+        <Box background={appColor.black} width={"100%"} maxW="500px" padding={"2rem 0"}>
           <SizeModuleSection
             productName={productDetail?.name}
             productDetail={productDetail}

@@ -37,7 +37,7 @@ const Appendix = ({ ...rest }: IProps) => {
 
       <IconButton
         as={motion.button}
-        dragConstraints={containerref}
+        dragConstraints={document.getElementById("body")}
         drag
         rounded="full"
         position="fixed"
