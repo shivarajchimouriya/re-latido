@@ -1,7 +1,7 @@
 "use client";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Box, Grid, Text, VStack } from "@chakra-ui/react";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { IProduct } from "@/resources/Product/interface";
 import Leathercapsule from "../Leathercapsule";
 import { leatherImage } from "@/constants/images";
@@ -52,6 +52,10 @@ export default function LeatherSelection({ productDetail }: IProps) {
       productDetail.product_specification[idx]._id
     );
   };
+
+  useEffect(() => {
+    onLeatherSelect(0);
+  }, []);
 
   return (
     <VStack w="full" p="1rem">

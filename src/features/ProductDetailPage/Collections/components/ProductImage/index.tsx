@@ -2,7 +2,6 @@
 import React, { useMemo, useState } from "react";
 import {
   Box,
-  Button,
   Flex,
   HStack,
   IconButton,
@@ -11,10 +10,7 @@ import {
 } from "@chakra-ui/react";
 import { IProductImageProps } from "./IProductImageProps";
 import AppImage from "@/components/AppImage";
-import Avatar from "@/components/Avatar";
 import { useSearchParams } from "next/navigation";
-import { Swiper, SwiperRef, SwiperSlide, useSwiper } from "swiper/react";
-import { EffectCreative } from "swiper/modules";
 import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
 
 import "swiper/css";
@@ -53,27 +49,31 @@ export default function ProductImage({ secondaryImage }: IProductImageProps) {
 
   const onNextClick = () => {
     if (selectedIndex === null) return;
-    if (selectedIndex >= images.length - 1) {
-      setSelectedIndex(0);
-    } else {
-      setSelectedIndex((prev) => (prev ? prev + 1 : 0));
-    }
+    setSelectedIndex((prev) => {
+      if (prev === null) return 0;
+      return prev >= images.length - 1 ? 0 : prev + 1;
+    });
   };
 
   const onPrevClick = () => {
     if (selectedIndex === null) return;
-    if (selectedIndex <= 0) {
-      setSelectedIndex(0);
-    } else {
-      setSelectedIndex((prev) => (prev ? prev - 1 : 0));
-    }
+    setSelectedIndex((prev) => {
+      if (prev === null) return images.length - 1;
+      return prev <= 0 ? images.length - 1 : prev - 1;
+    });
   };
 
   return (
     <>
       <VStack pb=".2rem" w="full" overflow="hidden">
         <HStack w="full" h="48dvh">
-          <HStack flex="2" h="full" alignItems="center">
+          <HStack
+            flex="2"
+            h="full"
+            alignItems="center"
+            as={motion.div}
+            layoutId="0"
+          >
             <AppImage
               src={images[0]}
               height={500}
@@ -83,17 +83,17 @@ export default function ProductImage({ secondaryImage }: IProductImageProps) {
                 objectFit: "contain",
                 height: "inherit",
               }}
+              onClick={() => setSelectedIndex(0)}
             />
           </HStack>
           <VStack flex="1" h="full" overflow="scroll">
-            {otherImages.map((el, i) => {
+            {otherImages?.map((el, i) => {
               return (
                 <Box
-                  onClick={() => setSelectedIndex(i)}
+                  onClick={() => setSelectedIndex(i + 1)}
                   as={motion.div}
-                  layoutId={`${i}`}
+                  layoutId={`${i + 1}`}
                 >
-                  {" "}
                   <AppImage
                     src={el}
                     height={500}
@@ -210,7 +210,7 @@ export default function ProductImage({ secondaryImage }: IProductImageProps) {
                   contentStyle={{ height: "100%" }}
                 >
                   <AppImage
-                    src={otherImages[selectedIndex]}
+                    src={images?.[selectedIndex]}
                     alt="product image"
                     height={500}
                     style={{
