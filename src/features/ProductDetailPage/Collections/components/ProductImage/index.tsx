@@ -66,7 +66,7 @@ export default function ProductImage({ secondaryImage }: IProductImageProps) {
   return (
     <>
       <VStack pb=".2rem" w="full" overflow="hidden">
-        <HStack w="full" h="48dvh">
+        <HStack w="full" h="48dvh"px="1rem">
           <HStack
             flex="2"
             h="full"
@@ -86,7 +86,7 @@ export default function ProductImage({ secondaryImage }: IProductImageProps) {
               onClick={() => setSelectedIndex(0)}
             />
           </HStack>
-          <VStack flex="1" h="full" overflow="scroll">
+          <VStack flex="1" h="48dvh" overflowY="scroll">
             {otherImages?.map((el, i) => {
               return (
                 <Box
@@ -237,6 +237,7 @@ export default function ProductImage({ secondaryImage }: IProductImageProps) {
                   icon={<IoArrowBackSharp />}
                   aria-label="previous"
                   p="1rem"
+                  bgColor="white"
                   rounded="full"
                   backdropFilter="auto"
                   backdropBlur="4px"
@@ -249,6 +250,7 @@ export default function ProductImage({ secondaryImage }: IProductImageProps) {
                   icon={<IoArrowForwardOutline />}
                   aria-label="right"
                   p="1rem"
+                  bgColor="white"
                   rounded="full"
                   backdropFilter="auto"
                   backdropBlur="4px"
