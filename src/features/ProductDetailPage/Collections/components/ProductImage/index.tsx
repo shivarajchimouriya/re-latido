@@ -47,26 +47,29 @@ export default function ProductImage({ secondaryImage }: IProductImageProps) {
 
   const images =
     secondaryImage[imageIndex ? imageIndex : 0]?.secondary_image || [];
+  const firstImage = images[0];
   const otherImages: string[] = images.slice(1) || [];
+
+  if (firstImage) {
+    otherImages.push(firstImage);
+  }
 
   const ref = React.useRef<HTMLDivElement | null>(null);
 
   const onNextClick = () => {
     if (selectedIndex === null) return;
-    if (selectedIndex >= images.length - 1) {
-      setSelectedIndex(0);
-    } else {
-      setSelectedIndex((prev) => (prev ? prev + 1 : 0));
-    }
+    setSelectedIndex((prev) => {
+      if (prev === null) return 0;
+      return prev >= otherImages.length - 1 ? 0 : prev + 1;
+    });
   };
 
   const onPrevClick = () => {
     if (selectedIndex === null) return;
-    if (selectedIndex <= 0) {
-      setSelectedIndex(0);
-    } else {
-      setSelectedIndex((prev) => (prev ? prev - 1 : 0));
-    }
+    setSelectedIndex((prev) => {
+      if (prev === null) return otherImages.length - 1;
+      return prev <= 0 ? otherImages.length - 1 : prev - 1;
+    });
   };
 
   return (
@@ -93,7 +96,6 @@ export default function ProductImage({ secondaryImage }: IProductImageProps) {
                   as={motion.div}
                   layoutId={`${i}`}
                 >
-                  {" "}
                   <AppImage
                     src={el}
                     height={500}

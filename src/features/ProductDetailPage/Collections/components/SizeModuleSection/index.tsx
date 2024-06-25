@@ -272,6 +272,7 @@ export default function SizeModuleSection({
       return [el.size, el];
     })
   );
+  
   const { token } = useGetTokens();
   const { mutateAsync, isPending } = useBuy();
   const handleBuyClick = async (price: number, srid: string) => {
