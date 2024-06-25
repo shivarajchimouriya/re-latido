@@ -320,8 +320,21 @@ const Signup = () => {
                     w="full"
                     onClick={onClose}
                   >
-                    <Grid mx="auto" w="full" placeItems="center" py="2rem">
-                      <Box border="1px solid black" bg="base">
+                    <Grid
+                      onClick={(e) => {
+                        e.stopPropagation();
+                      }}
+                      mx="auto"
+                      w="full"
+                      placeItems="center"
+                      pt="2rem"
+                    >
+                      <Box
+                        border="1px solid black"
+                        p="0.4rem"
+                        rounded="md"
+                        bg="base"
+                      >
                         <Controller
                           control={control}
                           name="date_of_birth"
