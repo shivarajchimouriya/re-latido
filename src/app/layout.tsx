@@ -2,9 +2,6 @@ import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import AppThemeProvider from "@/providers/AppThemeProvider";
-import LenisProvider from "@/providers/LenisProvider";
-import PullToRefreshProvider from "@/providers/PullTorefreshProvider";
-import DrawerProvider from "@/providers/DrawerProvider";
 const inter = Inter({ subsets: ["latin"] });
 import "swiper/css/grid";
 import "react-date-range/dist/styles.css"; // main style file
@@ -13,11 +10,8 @@ import AppQueryProvider from "@/providers/QueryProvider";
 import AuthProvider from "@/providers/AuthProvider";
 
 import NextTopLoader from "nextjs-toploader";
-import Script from "next/script";
-import { Box } from "@chakra-ui/react";
 import Header from "@/components/Layout/PrimaryLayout/components/Header";
 import JsonLd from "@/features/JsonLd";
-import SafeOrientation from "@/features/SafeOrientation";
 const APP_NAME = "Latido";
 const APP_DEFAULT_TITLE = "Latido";
 const APP_TITLE_TEMPLATE = "Latido";
@@ -71,7 +65,7 @@ export default function RootLayout({
     <html lang="en">
       <JsonLd />
       <body
-      id='body'
+        id="body"
         className={inter.className}
         style={{
           height: "100dvh",
@@ -91,6 +85,7 @@ export default function RootLayout({
             height: "100dvh",
             scrollPaddingTop: "4.6rem",
           }}
+          className="productList"
         >
           <NextTopLoader color="red" showSpinner={false} />
           <AuthProvider>
