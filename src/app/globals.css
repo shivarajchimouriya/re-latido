@@ -342,3 +342,8 @@ body {
   width: 0 !important;
   display: none;
 }
+
+.maskSlider {
+  mask-image: linear-gradient(black 70%, transparent 90%);
+  backdrop-filter: blur(0) !important;
+}

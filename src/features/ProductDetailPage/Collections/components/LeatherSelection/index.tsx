@@ -1,12 +1,14 @@
 "use client";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Box, Grid, Text, VStack } from "@chakra-ui/react";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { IProduct } from "@/resources/Product/interface";
 import Leathercapsule from "../Leathercapsule";
 import { leatherImage } from "@/constants/images";
 import { env } from "@/config/environment";
 import { AnimatePresence, motion } from "framer-motion";
+
+import { useOptimistic } from "react";
 
 interface IProps {
   productDetail: IProduct;
@@ -26,31 +28,34 @@ export default function LeatherSelection({ productDetail }: IProps) {
 
   const selectedLeatherIndex = findIndex();
 
-  const onChange = (leatherId: string, productSpecsId: string) => {
-    if (lid === leatherId && psid === productSpecsId) {
-      return null;
-    }
-    const changeSearchParam = new URLSearchParams(searchParams.toString());
+  const onChange = useCallback(
+    (leatherId: string, productSpecsId: string) => {
+      if (lid === leatherId && psid === productSpecsId) {
+        return null;
+      }
+      const changeSearchParam = new URLSearchParams(searchParams.toString());
 
-    changeSearchParam.set("lid", leatherId);
-    changeSearchParam.set("psid", productSpecsId);
-    if (!leatherId || !productSpecsId) {
-      router.replace(`?${changeSearchParam.toString()}`, { scroll: true });
-    } else {
-      router.replace(`?${changeSearchParam.toString()}`, { scroll: true });
-    }
-  };
+      changeSearchParam.set("lid", leatherId);
+      changeSearchParam.set("psid", productSpecsId);
+      if (!leatherId || !productSpecsId) {
+        router.replace(`?${changeSearchParam.toString()}`, { scroll: true });
+      } else {
+        router.replace(`?${changeSearchParam.toString()}`, { scroll: true });
+      }
+    },
+    []
+  );
 
-  const [activeLeather, setActiveLeather] = useState<number>(
+  const [activeLeather, addOptimistic] = useState<number>(
     selectedLeatherIndex === -1 ? 0 : selectedLeatherIndex
   );
 
   const onLeatherSelect = (idx: number) => {
-    setActiveLeather(idx);
-    onChange(
-      productDetail.product_specification[idx].leather_id?._id,
-      productDetail.product_specification[idx]._id
-    );
+    addOptimistic(idx);
+
+    const psidX = productDetail.product_specification[idx].leather_id?._id;
+    const lidX = productDetail.product_specification[idx]._id;
+    onChange(psidX, lidX);
   };
 
   useEffect(() => {
