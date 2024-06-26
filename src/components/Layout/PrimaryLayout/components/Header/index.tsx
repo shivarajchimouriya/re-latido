@@ -5,6 +5,7 @@ import Logo from "./components/Logo";
 import Search from "./components/Search";
 import Chat from "./components/Chat";
 import HamburgerMenu from "./components/Hamburger";
+import Gender from "./components/Gender";
 
 const Header = () => {
   return (
@@ -29,7 +30,7 @@ const Header = () => {
       {/* <BackButton /> */}
       <HamburgerMenu />
       <Logo />
-      <Chat />
+      <Gender />
     </Flex>
   );
 };

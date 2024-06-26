@@ -1,25 +1,16 @@
 import { apiURLs } from "@/constants/apiUrls";
-import { APIService, apiService } from "@/lib/requester";
+import { APIService, IFetchOptions, apiService } from "@/lib/requester";
 import { IHomepageResponse } from "./interface";
 
 class Homepage {
+  constructor(private apiService: APIService) {}
 
-    constructor(private apiService: APIService) {
-
-
-
-    }
-
-    get() {
-
-        return this.apiService.get<IHomepageResponse>({ url: apiURLs.homepage })
-
-    }
-
-
-
-
-
+  get(data?: IFetchOptions) {
+    return this.apiService.get<IHomepageResponse>({
+      url: apiURLs.homepage,
+      options: { data: data?.options, params: data?.params },
+    });
+  }
 }
 
-export const homepageService = new Homepage(apiService)
+export const homepageService = new Homepage(apiService);

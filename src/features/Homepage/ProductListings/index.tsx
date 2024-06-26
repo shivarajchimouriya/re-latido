@@ -5,15 +5,23 @@ import { API } from "@/resources";
 import { logger } from "@/utils/logger";
 import { HydrationBoundary, dehydrate } from "@tanstack/react-query";
 import React from "react";
+import { gender as GENDER } from "@/enums";
+
+export type genderType = GENDER.MALE | GENDER.FEMALE;
 
 interface IProps {
   limit?: number;
   page?: number;
+  gender?: genderType;
 }
-export const getProducts = async ({ limit = 10, page = 1 }: IProps) => {
+export const getProducts = async ({
+  limit = 10,
+  page = 1,
+  gender = GENDER.MALE,
+}: IProps) => {
   try {
     const res = await API.Product.getAll({
-      params: { limit: limit, page: page },
+      params: { limit: limit, page: page, gender: gender },
     });
     return res;
   } catch (error) {
@@ -21,11 +29,12 @@ export const getProducts = async ({ limit = 10, page = 1 }: IProps) => {
   }
 };
 
-const ProductListings = async () => {
+const ProductListings = async ({ gender }: { gender: genderType }) => {
   const queryClient = getQueryClient();
   const fetchOptions = {
     limit: 10,
     page: 1,
+    gender: gender,
   };
 
   await queryClient.prefetchInfiniteQuery({
@@ -33,12 +42,12 @@ const ProductListings = async () => {
     queryFn: () => {
       return getProducts(fetchOptions);
     },
-    initialPageParam: { limit: 10, page: 1 },
+    initialPageParam: { limit: 10, page: 1, gender: gender },
   });
   const dehydratedState = dehydrate(queryClient);
   return (
     <HydrationBoundary state={dehydratedState}>
-      <HomeWrapper />
+      <HomeWrapper gender={gender} />
     </HydrationBoundary>
   );
 };

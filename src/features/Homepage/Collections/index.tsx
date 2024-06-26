@@ -3,10 +3,13 @@ import CollectionSwiper from "./components/CollectionSwiper";
 import { mockCollections } from "@/data/mock/collection";
 import { API } from "@/resources";
 import { logger } from "@/utils/logger";
+import { gender as GENDER } from "@/enums/index";
 
 const getHomePageData = async () => {
   try {
-    const res = await API.Homepage.get();
+    const res = await API.Homepage.get({
+      params: { gender: GENDER.MALE, limit: 10, page: 1 },
+    });
     return res;
   } catch (error) {
     logger.log("Error fetching data", error);
