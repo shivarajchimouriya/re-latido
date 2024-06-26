@@ -16,7 +16,9 @@ interface IProps {
 }
 
 export async function generateStaticParams() {
-  const homepageData = await API.Homepage.get();
+  const homepageData = await API.Homepage.get({
+    params: { gender: "male", limit: 10, page: 1 },
+  });
   const categories = homepageData.data.category;
 
   return categories.map((cat) => ({
@@ -27,7 +29,9 @@ export async function generateStaticParams() {
 export const generateMetadata = async ({
   params,
 }: IProps): Promise<Metadata> => {
-  const result = await API.Homepage.get();
+  const result = await API.Homepage.get({
+    params: { gender: "male", limit: 10, page: 1 },
+  });
   const categoryData = result.data.category;
 
   const category = categoryData.find((cat) => cat._id === params.id);

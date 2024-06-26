@@ -6,7 +6,9 @@ import { logger } from "@/utils/logger";
 
 const getHomePageData = async () => {
   try {
-    const res = await API.Homepage.get();
+    const res = await API.Homepage.get({
+      params: { gender: "female", limit: 10, page: 1 },
+    });
     return res;
   } catch (error) {
     logger.log("Error fetching data", error);
