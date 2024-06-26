@@ -5,16 +5,19 @@ import { API } from "@/resources";
 import { logger } from "@/utils/logger";
 import { HydrationBoundary, dehydrate } from "@tanstack/react-query";
 import React from "react";
+import { gender as GENDER } from "@/enums";
+
+export type genderType = GENDER.MALE | GENDER.FEMALE;
 
 interface IProps {
   limit?: number;
   page?: number;
-  gender?: string;
+  gender?: genderType;
 }
 export const getProducts = async ({
   limit = 10,
   page = 1,
-  gender = "male",
+  gender = GENDER.MALE,
 }: IProps) => {
   try {
     const res = await API.Product.getAll({
@@ -26,7 +29,7 @@ export const getProducts = async ({
   }
 };
 
-const ProductListings = async ({ gender }: { gender: string }) => {
+const ProductListings = async ({ gender }: { gender: genderType }) => {
   const queryClient = getQueryClient();
   const fetchOptions = {
     limit: 10,

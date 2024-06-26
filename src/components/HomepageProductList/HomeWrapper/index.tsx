@@ -4,10 +4,10 @@ import ProductList1 from "../ProductList1";
 import { Box, Grid, Spinner, Text } from "@chakra-ui/react";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { queryKeys } from "@/constants/keys";
-import { getProducts } from "@/features/Homepage/ProductListings";
+import { genderType, getProducts } from "@/features/Homepage/ProductListings";
 import { useInView } from "react-intersection-observer";
 
-export default function HomeWrapper({ gender }: { gender: string }) {
+export default function HomeWrapper({ gender }: { gender: genderType }) {
   const { data, fetchNextPage, hasNextPage } = useInfiniteQuery({
     queryKey: [queryKeys.PRODUCT_LISTING],
     queryFn: ({ pageParam }) => {
