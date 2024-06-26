@@ -17,9 +17,7 @@ import { getCookie, setCookie } from "cookies-next";
 import { useRouter } from "next/navigation";
 
 export default function Gender() {
-  const router = useRouter();
   const currentCookie = getCookie("gender");
-  console.log("current cookie: ", currentCookie);
   const handleMenuClick = (gender: string) => {
     setCookie("gender", gender, {
       maxAge: 60 * 60 * 24 * 60 * 12,

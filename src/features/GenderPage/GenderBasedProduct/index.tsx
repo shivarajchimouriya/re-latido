@@ -22,7 +22,6 @@ export const fetchProductByGender = async (params: IFetchProps) => {
     const res = await API.Product.getAll({
       params: { gender: params.gender, limit: params.limit, page: params.page },
     });
-    console.log('fetch product by gender: ', res);
     return res;
   } catch (error) {
     logger.log("Error fetch product", error);
