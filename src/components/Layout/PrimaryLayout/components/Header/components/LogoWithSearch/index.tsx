@@ -21,7 +21,10 @@ export default function LogoWithSearch({ onClose }: { onClose: () => void }) {
           bg="light-black"
           rounded="8px"
           pl="1.6rem"
+          minH="4rem"
           onClick={onClose}
+          display="grid"
+          placeItems="center"
         >
           <FormControl>
             <InputGroup>
