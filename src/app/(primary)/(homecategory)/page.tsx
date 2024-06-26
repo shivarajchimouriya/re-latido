@@ -9,7 +9,7 @@ export default function Home() {
   let gender;
   if (ck) {
     gender = ck.gender;
-    if (gender !== GENDER.MALE && GENDER.FEMALE) {
+    if (gender !== GENDER.MALE && gender !== GENDER.FEMALE) {
       gender = GENDER.MALE;
     }
   }
