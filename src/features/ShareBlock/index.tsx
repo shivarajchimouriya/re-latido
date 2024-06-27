@@ -6,6 +6,7 @@ import { IoCopyOutline } from "react-icons/io5";
 import { MdDoneAll } from "react-icons/md";
 import ShareIcon from "../ProductDetailPage/Collections/components/ShareIcon";
 import { BsTwitterX } from "react-icons/bs";
+
 import {
   FaFacebook,
   FaFacebookMessenger,
@@ -14,6 +15,7 @@ import {
   FaRedditAlien,
   FaTelegramPlane,
 } from "react-icons/fa";
+import useDeviceDetection from "@/hooks/client/useDeviceDetection";
 
 interface IProps {
   isOpen: boolean;
@@ -23,6 +25,9 @@ interface IProps {
 }
 
 const ShareBlock = ({ isOpen, onClose, url, title = "latido" }: IProps) => {
+  const device = useDeviceDetection();
+  const isMobile = device === "mobile";
+
   const links = [
     {
       icon: <FaFacebook />,
@@ -40,13 +45,17 @@ const ShareBlock = ({ isOpen, onClose, url, title = "latido" }: IProps) => {
       icon: <FaFacebookMessenger />,
       link: "fb.com",
       color: "messenger",
-      shareUrl: `https://www.facebook.com/dialog/send?link=${url}&app_id=291494419107518&redirect_uri=${url}`,
+      shareUrl: isMobile
+        ? `fb-messenger://share?link=${url}`
+        : `https://www.facebook.com/dialog/send?link=${url}&app_id=291494419107518&redirect_uri=${url}`,
     },
     {
       icon: <FaWhatsapp />,
       link: "fb.com",
       color: "whatsapp",
-      shareUrl: `https://web.whatsapp.com/send?text=${url}`,
+      shareUrl: isMobile
+        ? `whatsapp://send?text=${url}`
+        : `https://web.whatsapp.com/send?text=${url}`,
     },
     {
       icon: <FaViber />,

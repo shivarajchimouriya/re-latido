@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Box,
   Button,
@@ -45,6 +45,12 @@ export interface FitOptionsProps {
   front?: any;
 }
 
+interface ISizingData {
+  height: string;
+  age: string;
+  weight: string;
+}
+
 export default function SizeModal({
   isOpen,
   onClose,
@@ -53,13 +59,25 @@ export default function SizeModal({
 }: IProps) {
   const searchParams = useSearchParams();
 
+  const [localStorageData, setLocalStorageData] = useState<ISizingData | null>(
+    () => {
+      const sizing = localStorage?.getItem("sizing");
+      return sizing ? (JSON.parse(sizing) as ISizingData) : null;
+    }
+  );
   const urlAge = searchParams.get("age");
   const urlHeight = searchParams.get("height");
   const urlWeight = searchParams.get("weight");
 
-  const [height, setHeight] = useState<string | null>(urlHeight || null);
-  const [weight, setWeight] = useState<string | null>(urlWeight || null);
-  const [age, setAge] = useState<string | null>(urlAge || null);
+  const [height, setHeight] = useState<string | null>(
+    urlHeight || localStorageData?.height || null
+  );
+  const [weight, setWeight] = useState<string | null>(
+    urlWeight || localStorageData?.weight || null
+  );
+  const [age, setAge] = useState<string | null>(
+    urlAge || localStorageData?.age || null
+  );
 
   const onAgeChange = (val: any) => {
     setAge(val.abs.toString());
@@ -78,6 +96,15 @@ export default function SizeModal({
       return null;
     }
     sizeDetailSubmit(height, weight, age);
+
+    localStorage?.setItem(
+      "sizing",
+      JSON.stringify({
+        height: height,
+        weight: weight,
+        age: age,
+      })
+    );
   };
 
   return (
@@ -91,7 +118,7 @@ export default function SizeModal({
         placeItems={"center"}
         rounded={"4px"}
         m={4}
-        mx='auto'
+        mx="auto"
         border={"1px solid var(--text-primary)"}
         maxW="500px"
       >

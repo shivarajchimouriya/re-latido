@@ -66,7 +66,7 @@ export default function ProductImage({ secondaryImage }: IProductImageProps) {
   return (
     <>
       <VStack pb=".2rem" w="full" overflow="hidden">
-        <HStack w="full" h="48dvh"px="1rem">
+        <HStack w="full" h="48dvh" px="1rem" position="relative">
           <HStack
             flex="2"
             h="full"
@@ -86,7 +86,19 @@ export default function ProductImage({ secondaryImage }: IProductImageProps) {
               onClick={() => setSelectedIndex(0)}
             />
           </HStack>
-          <VStack flex="1" h="48dvh" overflowY="scroll">
+          <Box
+            h="48dvh"
+            w="10rem"
+            position="absolute"
+            right="1.6rem"
+            bottom="0"
+          />
+          <VStack
+            flex="1"
+            h="48dvh"
+            overflowY="scroll"
+            className={otherImages.length > 2 ? "maskSlider" : ""}
+          >
             {otherImages?.map((el, i) => {
               return (
                 <Box
