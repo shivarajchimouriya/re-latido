@@ -12,17 +12,21 @@ const baseStyle = definePartsStyle({
     bg: "base",
     shadow: "xl",
     gap: "0.6rem",
+    
   },
   item: {
-    color: "text-secondary",
+    textColor: "gray.600",
     gap: "0.6rem",
     py: "0.4rem",
-    minW: "6rem",
+    minW: "8rem",
+    fontSize: "1.4rem",
     _hover: {
-      fontWeight: "medium",
+      fontWeight: "semibold",
+      color: "black",
     },
     _focus: {
-      fontWeight: "medium",
+      fontWeight: "semibold",
+      color: "black",
     },
   },
   groupTitle: {
