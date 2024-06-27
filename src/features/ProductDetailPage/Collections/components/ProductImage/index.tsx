@@ -92,14 +92,13 @@ export default function ProductImage({ secondaryImage }: IProductImageProps) {
             position="absolute"
             right="1.6rem"
             bottom="0"
-            // bg={
-            //   otherImages.length > 2
-            //     ? `linear-gradient(to bottom, transparent 60%,white 96%)`
-            //     : ""
-            // }
           />
-          <VStack flex="1" h="48dvh" overflowY="scroll" className="maskSlider" >
-            {/* <Box className="maskSlider" h="48dvh" flex="1" overflow="hidden" /> */}
+          <VStack
+            flex="1"
+            h="48dvh"
+            overflowY="scroll"
+            className={otherImages.length > 2 ? "maskSlider" : ""}
+          >
             {otherImages?.map((el, i) => {
               return (
                 <Box
