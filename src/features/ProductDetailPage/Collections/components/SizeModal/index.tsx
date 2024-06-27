@@ -61,7 +61,7 @@ export default function SizeModal({
 
   const [localStorageData, setLocalStorageData] = useState<ISizingData | null>(
     () => {
-      const sizing = localStorage.getItem("sizing");
+      const sizing = localStorage?.getItem("sizing");
       return sizing ? (JSON.parse(sizing) as ISizingData) : null;
     }
   );
@@ -97,7 +97,7 @@ export default function SizeModal({
     }
     sizeDetailSubmit(height, weight, age);
 
-    localStorage.setItem(
+    localStorage?.setItem(
       "sizing",
       JSON.stringify({
         height: height,
