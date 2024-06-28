@@ -42,13 +42,14 @@ const Login = () => {
 
   const { isLoading, startLoading, stopLoading } = useLoader();
   const login = async (data: ISigninForm) => {
+    logger.log("data: ", data);
     startLoading();
     try {
       const res = await signIn({
-        username: data.username,
+        username: data.username.trim(),
         password: data.passoword,
       });
-      logger.log("response: ", res);
+      logger.log("response from api: ", res);
 
       if (!res.isSignedIn && res.nextStep.signInStep === "CONFIRM_SIGN_UP") {
         toast({
@@ -93,6 +94,7 @@ const Login = () => {
         location.replace("/");
       }
     } catch (err) {
+      logger.error("ERROR: ", err);
       handleErrorToast(err);
     } finally {
       stopLoading();
@@ -116,13 +118,19 @@ const Login = () => {
         </Text>
         <VStack w="full">
           <FormControl w="full" isRequired>
-            <FormLabel htmlFor="name" textTransform="uppercase" fontSize="1.2rem">
+            <FormLabel
+              htmlFor="name"
+              textTransform="uppercase"
+              fontSize="1.2rem"
+            >
               username
             </FormLabel>
             <Input
               variant="underline"
               errorBorderColor="red"
               id="name"
+              autoCapitalize="none"
+              autoCorrect="off"
               {...register("username")}
             />
             <Text color={"red"} mt="0.4rem">

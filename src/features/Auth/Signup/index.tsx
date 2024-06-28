@@ -182,6 +182,8 @@ const Signup = () => {
             variant="underline"
             errorBorderColor="red"
             id="username"
+            autoCapitalize="none"
+            autoCorrect="off"
             {...register("username", {
               onChange: handleUsernameChange,
             })}
