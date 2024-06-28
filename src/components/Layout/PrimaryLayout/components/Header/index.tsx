@@ -6,20 +6,7 @@ import Search from "./components/Search";
 import Chat from "./components/Chat";
 import HamburgerMenu from "./components/Hamburger";
 import Gender from "./components/Gender";
-
-import { getCookies } from "cookies-next";
-import { cookies } from "next/headers";
-import { gender as GENDER } from "@/enums/index";
-
 const Header = () => {
-  const ck: any = getCookies({ cookies });
-  let gender;
-  if (ck) {
-    gender = ck.gender;
-    if (gender !== GENDER.MALE && gender !== GENDER.FEMALE) {
-      gender = GENDER.MALE;
-    }
-  }
   return (
     <Flex
       className="header"
@@ -42,7 +29,7 @@ const Header = () => {
       {/* <BackButton /> */}
       <HamburgerMenu />
       <Logo />
-      <Gender gender={gender} />
+      <Gender />
     </Flex>
   );
 };

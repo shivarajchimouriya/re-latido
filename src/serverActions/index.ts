@@ -2,7 +2,10 @@
 
 import { API } from "@/resources";
 import { logger } from "@/utils/logger";
+import { getCookies } from "cookies-next";
 import { cookies } from "next/headers";
+
+import { gender as GENDER } from "@/enums";
 
 export const setGender = (gender: string) => {
   const c = cookies();
@@ -21,5 +24,22 @@ export const getProducts = async ({ limit = 10, page = 1 }: IProductProps) => {
     return res;
   } catch (error) {
     logger.log("Error fetching data", error);
+  }
+};
+
+export const getServerCookie = async () => {
+  let gender;
+  try {
+    const ck: any = getCookies({ cookies });
+    if (ck) {
+      gender = ck.gender;
+      if (gender !== GENDER.MALE && gender !== GENDER.FEMALE) {
+        gender = GENDER.MALE;
+      }
+    }
+
+    return gender;
+  } catch (error) {
+    logger.log(error);
   }
 };

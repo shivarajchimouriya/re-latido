@@ -2,14 +2,11 @@
 import {
   Box,
   Button,
-  Center,
-  Divider,
   Menu,
   MenuButton,
   MenuItem,
   MenuList,
   Text,
-  useDisclosure,
 } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 import { IoMaleOutline, IoFemaleOutline } from "react-icons/io5";
@@ -17,12 +14,9 @@ import { getCookie, setCookie } from "cookies-next";
 
 import { gender as GENDER } from "@/enums/index";
 import { genderType } from "@/features/Homepage/ProductListings";
+import { PiUserSwitch } from "react-icons/pi";
 
-interface IProps {
-  gender: string;
-}
-
-export default function Gender({ gender }: IProps) {
+export default function Gender() {
   const [currentGender, setCurrentGender] = useState<genderType | null>(null);
 
   const currentCookie = getCookie("gender") as genderType;
@@ -46,11 +40,7 @@ export default function Gender({ gender }: IProps) {
     <Menu>
       <MenuButton as={Button}>
         <Box height="fit-content">
-          {gender === GENDER.FEMALE ? (
-            <IoFemaleOutline fontSize="1.6rem" />
-          ) : (
-            <IoMaleOutline fontSize="1.6rem" />
-          )}
+          <PiUserSwitch fontSize="1.8rem" />
         </Box>
       </MenuButton>
       <MenuList>

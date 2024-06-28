@@ -24,10 +24,6 @@ const baseStyle = definePartsStyle({
       fontWeight: "semibold",
       color: "black",
     },
-    _focus: {
-      fontWeight: "semibold",
-      color: "black",
-    },
   },
   groupTitle: {
     textTransform: "uppercase",
