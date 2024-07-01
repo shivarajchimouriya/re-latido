@@ -34,7 +34,12 @@ export const generateMetadata = async ({
   params,
 }: IProps): Promise<Metadata> => {
   const res = await getProductDetail(params.productId);
-  if (!res || !res?.data?.productDetail) notFound();
+  if (!res || !res?.data?.productDetail) {
+    return {
+      title: "latido",
+      category: "latido",
+    };
+  }
   return {
     openGraph: {
       images: [res?.data.productDetail.primary_image],
@@ -42,6 +47,14 @@ export const generateMetadata = async ({
       description: res.data.productDetail.description,
       url: `${env.SITE_URL}/product/details/${params.productId}`,
       locale: "nepali",
+    },
+    twitter: {
+      card: "summary",
+      title: {
+        default: res.data.productDetail.name,
+        template: res.data.productDetail.name,
+      },
+      description: res.data.productDetail.description,
     },
     title: res.data.productDetail.name,
     description: res.data.productDetail.description,
