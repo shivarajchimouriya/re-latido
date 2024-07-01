@@ -73,6 +73,7 @@ export default function ProductImage({ secondaryImage }: IProductImageProps) {
             alignItems="center"
             as={motion.div}
             layoutId="0"
+            zIndex="5"
           >
             <AppImage
               src={images[0]}
@@ -102,7 +103,10 @@ export default function ProductImage({ secondaryImage }: IProductImageProps) {
             {otherImages?.map((el, i) => {
               return (
                 <Box
-                  onClick={() => setSelectedIndex(i + 1)}
+                  zIndex="5"
+                  onClick={() => {
+                    setSelectedIndex(i + 1);
+                  }}
                   as={motion.div}
                   layoutId={`${i + 1}`}
                 >
