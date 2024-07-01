@@ -28,7 +28,7 @@ export default async function ProductDetail({ productId }: IProps) {
   if (!productDetail) return <NotFound />;
 
   return (
-    <Container>
+    <Container top="0" height="100vh" overflowY="scroll">
       <VStack width="100%">
         <ProductName
           categoryId={productDetail.category._id}
