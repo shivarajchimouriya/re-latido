@@ -34,17 +34,17 @@ const ProtectedLayout = ({ children }: IProps) => {
     getUser();
   }, []);
 
-  if (isLoading) {
-    return (
-      <Center h="100dvh" w="100vw">
-        <LogoIcon />
-      </Center>
-    );
-  }
+  // if (isLoading) {
+  //   return (
+  //     <Center h="100dvh" w="100vw">
+  //       <LogoIcon />
+  //     </Center>
+  //   );
+  // }
 
-  if (!isLoading && !isAuthenticated) {
-    redirect("/auth/login");
-  }
+  // if (!isLoading && !isAuthenticated) {
+  //   redirect("/auth/login");
+  // }
 
   return <> {children} </>;
 };
