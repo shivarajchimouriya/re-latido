@@ -73,7 +73,6 @@ export default function ProductImage({ secondaryImage }: IProductImageProps) {
             alignItems="center"
             as={motion.div}
             layoutId="0"
-            zIndex="5"
           >
             <AppImage
               src={images[0]}
@@ -87,13 +86,6 @@ export default function ProductImage({ secondaryImage }: IProductImageProps) {
               onClick={() => setSelectedIndex(0)}
             />
           </HStack>
-          <Box
-            h="48dvh"
-            w="10rem"
-            position="absolute"
-            right="1.6rem"
-            bottom="0"
-          />
           <VStack
             flex="1"
             h="48dvh"
@@ -103,7 +95,6 @@ export default function ProductImage({ secondaryImage }: IProductImageProps) {
             {otherImages?.map((el, i) => {
               return (
                 <Box
-                  zIndex="5"
                   onClick={() => {
                     setSelectedIndex(i + 1);
                   }}
