@@ -4,7 +4,7 @@ import { IProduct } from "@/resources/Product/interface";
 import { Box } from "@chakra-ui/react";
 
 interface IProps {
-  products: any[];
+  products: IProduct[];
   viewType: 1;
 }
 
