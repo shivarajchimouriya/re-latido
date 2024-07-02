@@ -2,10 +2,11 @@ import HomepageProductLists from "@/components/HomepageProductList";
 import { API } from "@/resources";
 import { IProductFilterReq } from "@/resources/Product/interface";
 import { logger } from "@/utils/logger";
-import { VStack } from "@chakra-ui/react";
+import { Box, VStack } from "@chakra-ui/react";
 import React from "react";
 import AppliedFilters from "./features/AppliedFilters";
 import useHandleErrorToast from "@/hooks/client/useAppToast";
+import Collections from "../Homepage/Collections";
 
 interface IProps {
   filter: IProductFilterReq;
@@ -13,8 +14,8 @@ interface IProps {
 
 const getResultFilter = async (filter: IProductFilterReq) => {
   try {
-    const res = await API.Product.filter({ ...filter });
-    return res;
+    const res = await API.Product.filter({ ...filter, availiability: true });
+    return res.data;
   } catch (error) {
     logger.log("Error fetching filtered produts");
   }
@@ -22,7 +23,7 @@ const getResultFilter = async (filter: IProductFilterReq) => {
 
 const FilterResults = async ({ filter }: IProps) => {
   const filteredProducts = await getResultFilter(filter);
-  const products = filteredProducts?.data.product.data;
+  const products: any = filteredProducts?.data;
 
   if (!products) return null;
 

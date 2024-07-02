@@ -12,7 +12,7 @@ const Page = ({ searchParams }: IProps) => {
 
   return (
     <Suspense fallback={<CardLoader />}>
-      <FilterResults filter={constrains} />
+        <FilterResults filter={constrains} />
     </Suspense>
   );
 };

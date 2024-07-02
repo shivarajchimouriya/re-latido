@@ -113,13 +113,15 @@ export interface IResponseProductByCategory extends IProductResponse {}
 export interface IResposneFIlteredProduct {
   message: string;
   data: {
-    product: {
-      data: IProduct[];
-      success: boolean;
-      msg: string;
-      page: string;
-      size: string;
-      totalData: number;
+    data: {
+      product: {
+        data: IProduct[];
+        success: boolean;
+        msg: string;
+        page: string;
+        size: string;
+        totalData: number;
+      };
     };
     category: ICategory[];
   };
@@ -131,6 +133,8 @@ export interface IProductFilterReq {
   priceUpperLimit: string;
   page: number;
   limit: number;
+  collectionName: string;
+  availiability?: boolean;
 }
 
 export interface ISearchResponse extends IProductResponse {}

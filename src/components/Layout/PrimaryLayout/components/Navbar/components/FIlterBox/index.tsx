@@ -71,6 +71,8 @@ const FilterBox = ({ onClose }: IProps) => {
     },
   ];
 
+  const selectedCategory = categories.find((el) => el._id === activeCat);
+
   const handleApply = () => {
     const data: IProductFilterReq = {
       gender: SelectedGender,
@@ -79,6 +81,7 @@ const FilterBox = ({ onClose }: IProps) => {
       collections: activeCat,
       limit: 1000,
       page: 1,
+      collectionName: `${selectedCategory?.title}`,
     };
     const queryString = Object.entries(data)
       .map(
