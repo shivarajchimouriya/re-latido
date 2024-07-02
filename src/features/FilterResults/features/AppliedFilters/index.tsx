@@ -10,10 +10,18 @@ const AppliedFilters = ({ filter }: IProps) => {
   const filterMap = Object.entries(filter);
 
   const price = `रु. ${CommaSeprator(
-    filterMap.find((el) => el?.[0] === "priceLowerLimit")?.[1] || 0
-  )} k - ${CommaSeprator(
-    filterMap.find((el) => el?.[0] === "priceUpperLimit")?.[1] || 0
-  )} k`;
+    filter.priceLowerLimit || 0
+  )} k - ${CommaSeprator(filter.priceUpperLimit || 0)} k`;
+
+  const paramsToExclude = new Set([
+    "collections",
+    "limit",
+    "page",
+    "priceLowerLimit",
+    "priceUpperLimit",
+  ]);
+
+  const paramsToShow = filterMap.filter((el) => !paramsToExclude.has(el[0]));
 
   return (
     <Container>
@@ -39,16 +47,7 @@ const AppliedFilters = ({ filter }: IProps) => {
           overflowX="scroll"
           p="0.1rem"
         >
-          {filterMap.map((item) => {
-            if (
-              item?.[0] === "collections" ||
-              item?.[0] === "limit" ||
-              item?.[0] === "page" ||
-              item?.[0] === "priceLowerLimit" ||
-              item?.[0] === "priceUpperLimit"
-            ) {
-              return null;
-            }
+          {paramsToShow.map((item) => {
             return (
               <Text
                 bg="base"
