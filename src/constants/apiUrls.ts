@@ -9,7 +9,7 @@ export const apiURLs = {
   },
   homepage:
     "/mobile_home",
-  filter: "/mobile_home",
+  filter: "/client_product",
   search: "/client_product",
   topRated: "/client_product",
   auth: {
