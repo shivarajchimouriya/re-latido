@@ -9,6 +9,7 @@ import { logger } from "@/utils/logger";
 import { Metadata, MetadataRoute } from "next";
 import { gender as GENDER } from "@/enums/index";
 import React, { Suspense } from "react";
+import { getServerCookie } from "@/serverActions";
 
 interface IProps {
   params: {
@@ -55,10 +56,11 @@ export const generateMetadata = async ({
 };
 
 const Page = async ({ params }: IProps) => {
+  const gender = await getServerCookie();
   const id = params.id as string;
   return (
     <Suspense fallback={<CardLoader />}>
-      <CategoryResult id={id} />
+      <CategoryResult id={id} gender={gender} />
     </Suspense>
   );
 };
