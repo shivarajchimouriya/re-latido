@@ -1,4 +1,5 @@
 import ProductCard from "@/components/Cards/ProductCard";
+import SpotifyCard from "@/components/Cards/SpotifyCard";
 import ScrollProvider from "@/providers/ScrollProvider";
 import { IProduct } from "@/resources/Product/interface";
 import { Grid } from "@chakra-ui/react";
@@ -16,8 +17,12 @@ const ProductList1 = ({ products }: IProps) => {
       <Grid placeItems="center" gap="1rem">
         {products.map((el, i) => {
           const isFirst = i === 0;
+          const showPlaylist = i === 4;
           return (
-            <ProductCard isFirstCard={isFirst} product={el} key={el.name} />
+            <>
+              {showPlaylist && <SpotifyCard showPlaylist={showPlaylist} />}
+              <ProductCard isFirstCard={isFirst} product={el} key={el.name} />
+            </>
           );
         })}
       </Grid>
