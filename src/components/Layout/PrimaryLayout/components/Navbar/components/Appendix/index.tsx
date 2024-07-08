@@ -1,10 +1,12 @@
 "use client";
-import { Box, ButtonProps, IconButton } from "@chakra-ui/react";
+import  assist  from "../../../../../../../../public/assist.json";
+import { Box, Button, ButtonProps, IconButton } from "@chakra-ui/react";
 import { motion, useDragControls } from "framer-motion";
+import { duration } from "html2canvas/dist/types/css/property-descriptors/duration";
+import Lottie from "lottie-react";
 import { usePathname } from "next/navigation";
 import React, { useRef } from "react";
 import { TbFilterCog } from "react-icons/tb";
-
 interface IProps extends ButtonProps {}
 
 const Appendix = ({ ...rest }: IProps) => {
@@ -25,32 +27,37 @@ const Appendix = ({ ...rest }: IProps) => {
         right="3rem"
         bottom="3rem"
         fontSize="2rem"
-        height="5.5rem"
-        width="5.5rem"
+        height="7rem"
+        width="7rem"
       ></Box>
 
-      <IconButton
+      <Button
         as={motion.button}
         dragConstraints={containerref}
         drag
         rounded="full"
+
+        
         position="fixed"
         right="3rem"
         bottom="3rem"
         fontSize="2rem"
-        height="5.5rem"
-        width="5.5rem"
-        bg="rgba(255,255,255,.5)"
+        height="5.8rem"
+        width="5.8rem"
+        bg="rgba(255,255,255,.1)"
         shadow="sm"
         backdropFilter="auto"
         zIndex="10"
         backdropBlur="7px"
-        icon={
-          <TbFilterCog /> // backdropBlur="10px" // backdropFilter="auto" // bg="rgba(0,0,0,0.5)"
-        }
+        
         aria-label="filter"
         {...rest}
-      />
+      >
+
+      <Lottie animationData={assist} loop />
+
+
+      </Button>
     </>
   );
 };

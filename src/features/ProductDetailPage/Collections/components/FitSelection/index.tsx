@@ -38,10 +38,12 @@ export default function FitSelection({
       <Text
         as="h3"
         textTransform="uppercase"
-        fontWeight="medium"
+        fontWeight="semibold"
         fontSize={"1.4rem"}
         color={appColor.base}
         mx={8}
+        mb='2rem'
+
       >
         Fit Selection
       </Text>

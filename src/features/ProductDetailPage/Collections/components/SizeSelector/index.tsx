@@ -15,6 +15,8 @@ import { logger } from "@/utils/logger";
 import EditSizeCard from "../EditSizeCard";
 import { useSearchParams, useRouter } from "next/navigation";
 import Toast from "@/components/Toast";
+import { IoBagCheckOutline } from "react-icons/io5";
+import { AnimatePresence, motion } from "framer-motion";
 export const availableSizes = [
   {
     name: "XXXS",
@@ -111,6 +113,7 @@ export default function SizeSelector({
     return null;
   });
   return (
+    <AnimatePresence>
     <Container my={"2rem"}>
       <VStack>
         <Text
@@ -174,13 +177,31 @@ export default function SizeSelector({
               });
             }
           }}
-          width={"90%"}
+          width={"fit-content"}
           fontSize={"1.6rem"}
-          className="primary-button"
+          p='1.4rem'
+          textTransform='uppercase'
+          rounded='full'
+          rightIcon={<IoBagCheckOutline/>}
+          px='5rem'
+          iconSpacing='1rem'
+          bg='white'
+          as={motion.button}
+          initial={{
+            scale:0
+          }}
+          animate={{
+            scale:1
+          }}
+          exit={{
+            scale:0
+          }}
+          // fontWeight='bold'
         >
           Buy
         </Button>
       </Grid>
     </Container>
+    </AnimatePresence>
   );
 }

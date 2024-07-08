@@ -7,7 +7,7 @@ export const collectionImages = {
   na: "/images/collections/na.png",
   cha: "/images/collections/cha.png"
 };
-
+export const filterJson = "/filter.json";
 export const brandLogo = "/";
 export const brandLogoWide = "/icons/latido-wide.png";
 export const datUrl =
