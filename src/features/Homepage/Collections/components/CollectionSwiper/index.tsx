@@ -6,13 +6,14 @@ import { collectionImages } from "@/constants/images";
 import { attachWithS3BaseUrl } from "@/utils/misc";
 import { useParams } from "next/navigation";
 import { AnimatePresence } from "framer-motion";
+import { useState } from "react";
 interface IProps {
   collection: ICategory[];
 }
 
 const CollectionSwiper = ({ collection }: IProps) => {
   const params = useParams();
-  const category = params.id as string;
+  const [activeCategory, setactiveCategory] = useState(() => params.id);
 
   return (
     <Flex
@@ -31,7 +32,7 @@ const CollectionSwiper = ({ collection }: IProps) => {
           display: "flex",
           overflowX: "scroll",
           gap: "2rem",
-          width: "100%",
+          width: "100%"
         }}
         className="collection_container"
       >
@@ -39,16 +40,22 @@ const CollectionSwiper = ({ collection }: IProps) => {
           image={collectionImages.latido}
           link={`/`}
           title={"All "}
-          isActive={!category}
+          isActive={!params.id}
+          onClick={() => {
+            setactiveCategory("");
+          }}
         />
-        {collection.map((el) => {
-          const isActive = el._id === category;
+        {collection.map(el => {
+          const isActive = el._id === activeCategory;
           return (
             <CollectionCard
               image={attachWithS3BaseUrl(el.image)}
               link={`/category/${el._id}`}
               title={el.title}
               isActive={isActive}
+              onClick={() => {
+                setactiveCategory(el._id);
+              }}
             />
           );
         })}

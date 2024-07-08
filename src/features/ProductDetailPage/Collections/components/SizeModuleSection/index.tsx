@@ -397,6 +397,7 @@ export default function SizeModuleSection({
           <ButtonComponent onOpen={onOpen} />
         </>
       ) : (
+        // null
         <ButtonComponent onOpen={onOpen} />
       )}
       <SizeModal

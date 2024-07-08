@@ -39,7 +39,7 @@ export default async function ProductDetail({ productId }: IProps) {
         <ProductImage secondaryImage={productDetail?.product_specification} />
         <LeatherSelection productDetail={productDetail} />
         <Box
-          background={appColor.black}
+          background={'rgba(0,0,0,0.8)'}
           width={"100%"}
           maxW="500px"
           padding={"2rem 0"}

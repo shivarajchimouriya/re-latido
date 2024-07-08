@@ -21,7 +21,7 @@ interface IRefProps {
 
 export default function Wheel(props: IProps) {
   const perspective = "center";
-  const wheelSize = 20;
+  const wheelSize = 15;
   const slides = props.length;
   const slideDegree = 360 / wheelSize;
   const slidesPerView = props.loop ? 9 : 1;
@@ -58,6 +58,7 @@ export default function Wheel(props: IProps) {
     },
     rubberband: !props.loop,
     mode: "free-snap",
+     
   });
 
   const [sliderRef, slider] = useKeenSlider(options.current);
@@ -95,12 +96,15 @@ export default function Wheel(props: IProps) {
     <div
       className={"wheel keen-slider wheel--perspective-" + perspective}
       ref={sliderRef}
+      style={{background:'none'}}
     >
       <div
         className="wheel__shadow-top"
         style={{
           transform: `translateZ(${radius}px)`,
           WebkitTransform: `translateZ(${radius}px)`,
+          background:"none",
+          backdropFilter:"blur(1px)"
         }}
       />
       <div className="wheel__inner">
@@ -128,6 +132,8 @@ export default function Wheel(props: IProps) {
         style={{
           transform: `translateZ(${radius}px)`,
           WebkitTransform: `translateZ(${radius}px)`,
+          background:"none",
+          backdropFilter:"blur(1px)"
         }}
       />
     </div>
