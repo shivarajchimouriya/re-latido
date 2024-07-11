@@ -1,4 +1,5 @@
 import PrimaryLayout from "@/components/Layout/PrimaryLayout";
+import Header from "@/components/Layout/PrimaryLayout/components/Header";
 import React, { ReactNode } from "react";
 
 interface IProps {
@@ -8,6 +9,8 @@ interface IProps {
 const Layout = ({ children }: IProps) => {
   return (
     <PrimaryLayout>
+      <Header />
+
       {children}
     </PrimaryLayout>
   );

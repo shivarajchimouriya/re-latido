@@ -21,6 +21,9 @@ import {
   IoArrowForwardOutline,
   IoClose,
 } from "react-icons/io5";
+import { Swiper, SwiperRef, SwiperSlide } from "swiper/react";
+import { EffectCreative } from "swiper/modules";
+import { closestIndexTo } from "date-fns";
 
 export default function ProductImage({ secondaryImage }: IProductImageProps) {
   const searchParams = useSearchParams();
@@ -45,7 +48,7 @@ export default function ProductImage({ secondaryImage }: IProductImageProps) {
     secondaryImage[imageIndex ? imageIndex : 0]?.secondary_image || [];
   const otherImages: string[] = images.slice(1) || [];
 
-  const ref = React.useRef<HTMLDivElement | null>(null);
+  const ref = React.useRef<SwiperRef | null>(null);
 
   const onNextClick = () => {
     if (selectedIndex === null) return;
@@ -65,9 +68,9 @@ export default function ProductImage({ secondaryImage }: IProductImageProps) {
 
   return (
     <>
-      <VStack pb=".2rem" w="full" overflow="hidden">
-        <HStack w="full" h="48dvh" px="1rem" position="relative">
-          <HStack
+      <VStack h='60vh' pb=".2rem" w="full" overflow="hidden">
+        <HStack w="full"  px="1rem" position="relative">
+          {/* <HStack
             flex="2"
             h="full"
             alignItems="center"
@@ -110,9 +113,9 @@ export default function ProductImage({ secondaryImage }: IProductImageProps) {
                 </Box>
               );
             })}
-          </VStack>
+          </VStack> */}
           <>
-            {/* <Swiper
+            <Swiper
             ref={ref}
             grabCursor={true}
             effect="creative"
@@ -127,25 +130,32 @@ export default function ProductImage({ secondaryImage }: IProductImageProps) {
                 translate: ["100%", 0, 0],
               },
             }}
-            modules={[EffectCreative]}
+            // modules={[EffectCreative]}
             className="mySwiper"
             onSlideChange={(val) => {
-              setSelectedIndex(val.activeIndex);
+              // setSelectedIndex(val.activeIndex);
             }}
           >
+            <AnimatePresence>
             {images?.map((image: string, index: number) => (
               <SwiperSlide key={image}>
-                <Box width="full" minH="80vh" bg="white">
+                <Box
+                
+                as={motion.div}
+                layoutId={`${index}`}
+                width="full" minH="80vh" bg="white" onClick={()=>setSelectedIndex(index)} >
                   <AppImage
                     src={image}
                     height={300 * 1.5}
                     width={1000}
                     alt="product image"
+                    style={{objectFit:"contain"}}
                   />
                 </Box>
               </SwiperSlide>
             ))}
-          </Swiper> */}
+            </AnimatePresence>
+          </Swiper>
           </>
         </HStack>
         <Flex

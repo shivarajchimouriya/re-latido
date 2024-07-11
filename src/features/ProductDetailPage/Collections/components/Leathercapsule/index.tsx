@@ -15,34 +15,39 @@ const Leathercapsule = ({
   name,
   onLeatherSelect,
   id,
-  isActive,
+  isActive
 }: IProps) => {
   return (
     <Button
-      h="9rem"
+      h="7rem"
       p=".6rem"
       rounded="md"
       onClick={() => onLeatherSelect(id)}
       display="grid"
       placeItems="center"
-      outline="1px solid rgba(0,0,0,0.08)"
+      // outline="1px solid rgba(0,0,0,0.08)"
       zIndex="5"
     >
       <AppImage
-        style={{ height: "100%", objectFit: "contain", marginTop: "-0.5rem" }}
+        style={{
+          height: "100%",
+          objectFit: "contain",
+          marginTop: "-0.5rem"
+        }}
         src={image}
         alt={name}
         height={100}
         width={100}
+        loading="eager"
       />
 
-      <Text
+      {/* <Text
         lineHeight="1rem"
         textAlign="center"
         fontWeight={isActive ? "semibold" : "base"}
       >
         {name}
-      </Text>
+      </Text> */}
     </Button>
   );
 };

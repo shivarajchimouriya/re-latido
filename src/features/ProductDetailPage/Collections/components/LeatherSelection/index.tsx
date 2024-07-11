@@ -8,8 +8,12 @@ import { leatherImage } from "@/constants/images";
 import { env } from "@/config/environment";
 import { AnimatePresence, motion } from "framer-motion";
 
+import "swiper/css/effect-coverflow";
 import { useOptimistic } from "react";
+import { Swiper, SwiperRef, SwiperSlide } from "swiper/react";
 
+import { EffectCoverflow, Pagination } from "swiper/modules";
+import { logger } from "@/utils/logger";
 interface IProps {
   productDetail: IProduct;
 }
@@ -28,28 +32,26 @@ export default function LeatherSelection({ productDetail }: IProps) {
 
   const selectedLeatherIndex = findIndex();
 
-  const onChange = useCallback(
-    (leatherId: string, productSpecsId: string) => {
-      if (lid === leatherId && psid === productSpecsId) {
-        return null;
-      }
-      const changeSearchParam = new URLSearchParams(searchParams.toString());
+  const onChange = useCallback((leatherId: string, productSpecsId: string) => {
+    if (lid === leatherId && psid === productSpecsId) {
+      return null;
+    }
+    const changeSearchParam = new URLSearchParams(searchParams.toString());
 
-      changeSearchParam.set("lid", leatherId);
-      changeSearchParam.set("psid", productSpecsId);
-      if (!leatherId || !productSpecsId) {
-        router.replace(`?${changeSearchParam.toString()}`, { scroll: true });
-      } else {
-        router.replace(`?${changeSearchParam.toString()}`, { scroll: true });
-      }
-    },
-    []
-  );
+    changeSearchParam.set("lid", leatherId);
+    changeSearchParam.set("psid", productSpecsId);
+    if (!leatherId || !productSpecsId) {
+      router.replace(`?${changeSearchParam.toString()}`, { scroll: true });
+    } else {
+      router.replace(`?${changeSearchParam.toString()}`, { scroll: true });
+    }
+  }, []);
 
   const [activeLeather, addOptimistic] = useState<number>(
     selectedLeatherIndex === -1 ? 0 : selectedLeatherIndex
   );
 
+  const [activeLeatherName, setActiveLeatherName] = useState("");
   const onLeatherSelect = (idx: number) => {
     addOptimistic(idx);
 
@@ -61,10 +63,21 @@ export default function LeatherSelection({ productDetail }: IProps) {
   useEffect(() => {
     onLeatherSelect(0);
   }, []);
+  const ref = React.useRef<SwiperRef | null>(null);
 
   return (
-    <VStack w="full" p="1rem">
-      <Text
+    <VStack w="full" h="15rem" p="1rem" position="relative">
+      <Box
+        position="absolute"
+        left="50%"
+        transform="translate(-50%,-60%)"
+        top="50%"
+        height="12rem"
+        rounded="full"
+        width="12rem"
+        bg="gray.100"
+      />
+      {/* <Text
         as="h2"
         textAlign="left"
         w="full"
@@ -73,8 +86,76 @@ export default function LeatherSelection({ productDetail }: IProps) {
         fontSize="medium"
       >
         select leather
-      </Text>
+      </Text> */}
+      <Swiper
+        style={{ width: "100%", height: "100%" }}
+        ref={ref}
+        grabCursor={true}
+        effect="coverflow"
+        centeredSlides={true}
+        observer={true}
+        spaceBetween={40}
+        observeParents={true}
+        slidesPerView={"auto"}
+        coverflowEffect={{
+          rotate: 1,
+          stretch: 0,
 
+          depth: 165,
+          modifier: 2,
+          slideShadows: false
+        }}
+        // modules={[EffectCreative]}
+        modules={[EffectCoverflow]}
+        className="mySwiper"
+        onSlideChange={(val) => {
+          logger.log("val", val);
+          onLeatherSelect(val.activeIndex);
+          const leatherName =
+            productDetail.product_specification[val.activeIndex].leather_id
+              .item_name;
+          setActiveLeatherName(leatherName);
+        }}
+      >
+        {productDetail.product_specification.map((el, i) => {
+          const isActive = i === activeLeather;
+          return (
+            <SwiperSlide
+              key={el._id}
+              style={{ width: "fit-content", height: "100%" }}
+            >
+              {" "}
+              <Box position="relative">
+                <Leathercapsule
+                  isActive={isActive}
+                  onLeatherSelect={onLeatherSelect}
+                  id={i}
+                  image={baseUrl + el?.leather_id?.ball_image || leatherImage}
+                  name={el.leather_id.item_name}
+                />
+                {/* <AnimatePresence>
+                {isActive && (
+                  <Box
+                    as={motion.div}
+                    layoutId="leather"
+                    position="absolute"
+                    w="100%"
+                    h="100%"
+                    inset="0"
+                    rounded="md"
+                    outline="1px solid gray"
+                    isolation="isolate"
+                    bgColor="gray.200"
+                  />
+                )}
+              </AnimatePresence> */}
+              </Box>
+            </SwiperSlide>
+          );
+        })}
+      </Swiper>
+
+      {/* 
       <Grid templateColumns="repeat(4,1fr)" gap="1rem" my="2rem">
         {productDetail.product_specification.map((el, i) => {
           const isActive = i === activeLeather;
@@ -106,7 +187,21 @@ export default function LeatherSelection({ productDetail }: IProps) {
             </Box>
           );
         })}
-      </Grid>
+      </Grid> */}
+
+      <AnimatePresence>
+        {" "}
+        <Text
+          w="full"
+          textAlign="center"
+          as={motion.p}
+          initial={{ y: "100%", opacity: 0 }}
+          animate={{ y: "0%", opacity: 1 }}
+          exit={{ y: "-100", opacity: 0 }}
+        >
+          {activeLeatherName}
+        </Text>
+      </AnimatePresence>
     </VStack>
   );
   // return (

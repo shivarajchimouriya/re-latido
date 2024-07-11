@@ -91,7 +91,6 @@ export default function RootLayout({
           <AuthProvider>
             <AppQueryProvider>
               <AppThemeProvider>
-                <Header />
                 {children}
               </AppThemeProvider>
             </AppQueryProvider>
