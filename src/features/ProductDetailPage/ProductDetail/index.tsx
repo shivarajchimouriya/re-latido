@@ -11,6 +11,7 @@ import { API } from "@/resources";
 import { logger } from "@/utils/logger";
 import SizeModuleSection from "../Collections/components/SizeModuleSection";
 import NotFound from "@/components/NotFound";
+import LeatherProvider from "../Context/LeatherContext";
 
 const getProductDetail = async (id: string) => {
   try {
@@ -36,8 +37,11 @@ export default async function ProductDetail({ productId }: IProps) {
           category={productDetail.category?.title}
           productId={productId}
         />
+        <LeatherProvider>
         <ProductImage secondaryImage={productDetail?.product_specification} />
         <LeatherSelection productDetail={productDetail} />
+       
+       </LeatherProvider>
         <Box
           background={'rgba(0,0,0,0.8)'}
           width={"100%"}

@@ -19,7 +19,7 @@ const Leathercapsule = ({
 }: IProps) => {
   return (
     <Button
-      h="7rem"
+      h="full"
       p=".6rem"
       rounded="md"
       onClick={() => onLeatherSelect(id)}

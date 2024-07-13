@@ -7,28 +7,36 @@ import {
   IconButton,
   Portal,
   VStack,
+  useDisclosure
 } from "@chakra-ui/react";
 import { IProductImageProps } from "./IProductImageProps";
 import AppImage from "@/components/AppImage";
 import { useSearchParams } from "next/navigation";
 import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
-
+import styles from "./productImage.module.css";
 import "swiper/css";
+import "swiper/css/pagination";
+
 import "swiper/css/effect-creative";
 import { AnimatePresence, motion } from "framer-motion";
 import {
   IoArrowBackSharp,
   IoArrowForwardOutline,
   IoClose,
+  IoMoonOutline
 } from "react-icons/io5";
 import { Swiper, SwiperRef, SwiperSlide } from "swiper/react";
-import { EffectCreative } from "swiper/modules";
+import { EffectCreative, Pagination } from "swiper/modules";
 import { closestIndexTo } from "date-fns";
+import { useActiveLeather } from "@/features/ProductDetailPage/Context/LeatherContext";
+import Image from "next/image";
+import { CiLight } from "react-icons/ci";
+import { BsFullscreen } from "react-icons/bs";
 
 export default function ProductImage({ secondaryImage }: IProductImageProps) {
-  const searchParams = useSearchParams();
-  const lid = searchParams.get("lid");
-  const psid = searchParams.get("psid");
+  const leather = useActiveLeather();
+  const lid = leather?.lid;
+  const psid = leather?.psid;
 
   const [selectedIndex, setSelectedIndex] = useState<null | number>(null);
 
@@ -46,12 +54,12 @@ export default function ProductImage({ secondaryImage }: IProductImageProps) {
 
   const images =
     secondaryImage[imageIndex ? imageIndex : 0]?.secondary_image || [];
-  const otherImages: string[] = images.slice(1) || [];
-
   const ref = React.useRef<SwiperRef | null>(null);
 
   const onNextClick = () => {
     if (selectedIndex === null) return;
+    ref.current?.swiper.slideNext();
+
     setSelectedIndex((prev) => {
       if (prev === null) return 0;
       return prev >= images.length - 1 ? 0 : prev + 1;
@@ -60,102 +68,146 @@ export default function ProductImage({ secondaryImage }: IProductImageProps) {
 
   const onPrevClick = () => {
     if (selectedIndex === null) return;
+    ref.current?.swiper.slidePrev();
+
     setSelectedIndex((prev) => {
       if (prev === null) return images.length - 1;
       return prev <= 0 ? images.length - 1 : prev - 1;
     });
   };
 
+  const { isOpen: isDarkMode, onToggle: toggleDarkMode } = useDisclosure();
+const darkBg='radial(circle at center, gray.700 0%, gray.800 50%, black 100%)'
+const lightBg='white'
   return (
     <>
-      <VStack h='60vh' pb=".2rem" w="full" overflow="hidden">
-        <HStack w="full"  px="1rem" position="relative">
-          {/* <HStack
-            flex="2"
-            h="full"
-            alignItems="center"
-            as={motion.div}
-            layoutId="0"
-          >
-            <AppImage
-              src={images[0]}
-              height={500}
-              width={500}
-              alt="product image"
-              style={{
-                objectFit: "contain",
-                height: "inherit",
+      <VStack
+        h="63vh"
+        pb=".2rem"
+        w="full"
+        overflow="hidden"
+        position="relative"
+      >
+        <AnimatePresence>
+        
+          {isDarkMode ? (
+            <IconButton
+            key={`${isDarkMode}`}
+              as={motion.button}
+              zIndex={10000}
+              initial={{ scale: 0 }}
+              animate={{ scale: 1 }}
+              exit={{ scale: 0 }}
+              fontSize="1.8rem"
+              icon={<CiLight />}
+              aria-label="toggle"
+              position="absolute"
+              top="0"
+              color={ isDarkMode? 'white':"black"}
+
+              p='1rem'
+              left="2rem"
+              onClick={(e) => {
+                e.stopPropagation();
+
+                toggleDarkMode();
               }}
-              onClick={() => setSelectedIndex(0)}
             />
-          </HStack>
-          <VStack
-            flex="1"
-            h="48dvh"
-            overflowY="scroll"
-            className={otherImages.length > 2 ? "maskSlider" : ""}
-          >
-            {otherImages?.map((el, i) => {
-              return (
-                <Box
-                  onClick={() => {
-                    setSelectedIndex(i + 1);
-                  }}
-                  as={motion.div}
-                  layoutId={`${i + 1}`}
-                >
-                  <AppImage
-                    src={el}
-                    height={500}
-                    width={500}
-                    alt={`product image -${i}`}
-                  />
-                </Box>
-              );
-            })}
-          </VStack> */}
+          ) : (
+            <IconButton
+              zIndex={10000}
+            key={`${isDarkMode}`}
+
+              as={motion.button}
+              initial={{ scale: 0 }}
+              animate={{ scale: 1 }}
+              exit={{ scale: 0 }}
+              fontSize="1.8rem"
+              icon={<IoMoonOutline />}
+              aria-label="toggle"
+              position="absolute"
+              p='1rem'
+              color={ isDarkMode? 'white':"black"}
+
+              
+              top="0"
+              left="2rem"
+              onClick={(e) => {
+                e.stopPropagation();
+
+                toggleDarkMode();
+              }}
+            />
+          )}
+        </AnimatePresence>
+
+        <IconButton
+          as={motion.div}
+          initial={{ scale: 0 }}
+          animate={{ scale: 1 }}
+          exit={{ scale: 0 }}
+          fontSize="1.7rem"
+              zIndex={10000}
+              color={ isDarkMode? 'white':"black"}
+
+          icon={<BsFullscreen />
+        }
+          aria-label="full screen"
+          position="absolute"
+          top="0"
+          p='1rem'
+          right="2rem"
+            onClick={() => {
+
+const currentIdx=ref.current?.swiper.activeIndex
+setSelectedIndex(currentIdx ?? 0)
+
+            }}
+        />
+
+        <HStack w="full" px="1rem" position="relative"  
+        transitionDuration='.4s'
+        bgGradient={isDarkMode?darkBg:lightBg}
+        
+        
+        >
           <>
             <Swiper
-            ref={ref}
-            grabCursor={true}
-            effect="creative"
-            observer={true}
-            observeParents={true}
-            creativeEffect={{
-              prev: {
-                shadow: true,
-                translate: [0, 0, -400],
-              },
-              next: {
-                translate: ["100%", 0, 0],
-              },
-            }}
-            // modules={[EffectCreative]}
-            className="mySwiper"
-            onSlideChange={(val) => {
-              // setSelectedIndex(val.activeIndex);
-            }}
-          >
-            <AnimatePresence>
-            {images?.map((image: string, index: number) => (
-              <SwiperSlide key={image}>
-                <Box
-                
-                as={motion.div}
-                layoutId={`${index}`}
-                width="full" minH="80vh" bg="white" onClick={()=>setSelectedIndex(index)} >
-                  <AppImage
+              ref={ref}
+              loop
+              pagination={{
+                clickable: true,
+                dynamicBullets: true,
+                bulletClass: styles.bul,
+                bulletActiveClass: styles.active_bul,
+                horizontalClass: styles.hor
+              }}
+              modules={[Pagination]}
+              // modules={[EffectCreative]}
+              // className="mySwiper"
+              onSlideChange={(val) => {
+                // setSelectedIndex(val.activeIndex);
+              }}
+              style={{ height: "100%" }}
+            >
+              {images?.map((image: string, index: number) => (
+                <SwiperSlide key={image} style={{ width: "100%" }}>
+                  <img
                     src={image}
-                    height={300 * 1.5}
-                    width={1000}
+                    onClick={() => setSelectedIndex(index)}
+                    height={800}
+                    width={600}
                     alt="product image"
-                    style={{objectFit:"contain"}}
+                    loading="eager"
+                    style={{
+                      objectFit: "contain",
+                      width: "100%",
+                      height: "100%"
+                    }}
                   />
-                </Box>
-              </SwiperSlide>
-            ))}
-            </AnimatePresence>
-          </Swiper>
+                </SwiperSlide>
+              ))}
+            </Swiper>
           </>
         </HStack>
         <Flex
@@ -166,24 +218,7 @@ export default function ProductImage({ secondaryImage }: IProductImageProps) {
           overflowX={"scroll"}
           justifyContent={images?.length > 5 ?? 0 ? "auto" : "center"}
           className="product_images"
-        >
-          {/* <div
-          style={{ display: "flex", gap: "1rem" }}
-          className="product_images"
-        >
-          {images?.map((image: string, index: number) => (
-            <Box onClick={() => handleClick(index)}>
-              <Avatar
-                selected={selectedIndex === index}
-                alt={`image ${index}`}
-                src={image}
-                height={20}
-                width={20}
-              />
-            </Box>
-          ))}
-        </div> */}
-        </Flex>
+        ></Flex>
       </VStack>
       <AnimatePresence>
         {selectedIndex !== null && (
@@ -233,7 +268,7 @@ export default function ProductImage({ secondaryImage }: IProductImageProps) {
                     style={{
                       height: "100%",
                       width: "100%",
-                      objectFit: "contain",
+                      objectFit: "contain"
                     }}
                     width={500}
                   />

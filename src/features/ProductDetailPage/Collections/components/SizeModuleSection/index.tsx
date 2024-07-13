@@ -231,7 +231,7 @@ export default function SizeModuleSection({
   };
 
   const handleFitChange = (e: string) => {
-    if (!urlHeight || !urlWeight) {
+    if ((nodeData?.nodes?.data?.length || 0 )<1   ) {
       onOpen();
     }
     setSelectedFit(e);
@@ -394,11 +394,9 @@ export default function SizeModuleSection({
           {!urlAge || !urlHeight || !urlWeight || nodeQueryLoading ? null : (
             <SizeRecommendationNotFound />
           )}
-          <ButtonComponent onOpen={onOpen} />
         </>
       ) : (
-        // null
-        <ButtonComponent onOpen={onOpen} />
+        null
       )}
       <SizeModal
         heightOptions={heightOptionsValues}

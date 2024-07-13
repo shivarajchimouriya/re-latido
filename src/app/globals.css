@@ -347,3 +347,15 @@ body {
   mask-image: linear-gradient(black 70%, transparent 100%);
   backdrop-filter: blur(0) !important;
 }
+
+@keyframes gradientShift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}

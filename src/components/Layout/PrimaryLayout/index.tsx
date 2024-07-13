@@ -11,7 +11,9 @@ const PrimaryLayout = ({ children }: IProps) => {
   return (
     <VStack w="full" h="full" justify="center" align="center">
       <Box className="my class" w="100%" height="auto" maxW="50rem">
-        <Box h="100dvh">{children}</Box>
+        <Box h="100dvh">
+          {children}
+        </Box>
       </Box>
       <Suspense fallback={<LoaderSkeleton h="4rem" />}>
         <Navbar />
