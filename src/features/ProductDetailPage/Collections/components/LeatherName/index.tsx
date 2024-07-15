@@ -13,24 +13,32 @@ import { BiRightArrow } from "react-icons/bi";
 import { text } from "stream/consumers";
 import { HiOutlineArrowSmallRight } from "react-icons/hi2";
 import LeatherModalblog from "../LeatherModalBlog";
+import { useActiveLeather } from "@/features/ProductDetailPage/Context/LeatherContext";
+import { BsInfoCircle } from "react-icons/bs";
 
 interface IProps extends StackProps {
   text: string;
 }
 
 const LeatherName = ({ text, ...rest }: IProps) => {
+  const leather = useActiveLeather();
+
+  const appMode=leather?.leatherMode;
+  const color=appMode==='dark'?"white":"black"
+
   return (
     <>
 
+<HStack  gap='1rem' alignItems='center' 
+        {...rest}
 
-      <HStack
+>      <HStack
         alignItems="center"
         gap=".5rem"
         h="2rem"
         w="fit-content"
         justify="center"
         position="relative"
-        {...rest}
       >
         <AnimatePresence mode="wait">
           <Box
@@ -43,10 +51,11 @@ const LeatherName = ({ text, ...rest }: IProps) => {
             initial={{ width: "0%" }}
             animate={{ width: "100%" }}
             exit={{ width: "0%" }}
-            bg="black"
+            bg={color}
           />
         </AnimatePresence>
         <AnimatePresence mode="wait">
+          <HStack>
           <Text
             key={text}
             h="fit-content"
@@ -58,6 +67,7 @@ const LeatherName = ({ text, ...rest }: IProps) => {
             justifyContent="center"
             fontWeight="bold"
             position="relative"
+            color={color}
           >
             {text.split("").map((char, index) => (
               <motion.span
@@ -73,8 +83,16 @@ const LeatherName = ({ text, ...rest }: IProps) => {
               </motion.span>
             ))}
           </Text>
+
+
+          </HStack>
         </AnimatePresence>
       </HStack>
+<BsInfoCircle fontSize='1.3rem' color={color} />
+
+</HStack>
+
+
     </>
   );
 };

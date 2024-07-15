@@ -23,13 +23,22 @@ export default function ProductName({
       borderBottom="1px solid"
       borderColor="#ebebeb"
     >
-      <Text fontWeight="bold" w="fit-content" as="h1" fontSize="1.4rem">
+      <Text
+        fontWeight="bold"
+        w="33%"
+        noOfLines={1}
+        overflow="hidden"
+        textOverflow="ellipsis"
+        as="h1"
+        fontSize="1.4rem"
+      >
         {productName}
       </Text>
-
-      <Link href="/">
-        <Logo />
-      </Link>
+      <HStack justify="center" w="33%">
+        <Link href="/">
+          <Logo />
+        </Link>
+      </HStack>
       <ShareButton />
     </HStack>
   );
