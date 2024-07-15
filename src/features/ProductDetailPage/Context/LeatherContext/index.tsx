@@ -1,5 +1,5 @@
 "use client";
-import React, { ReactNode, createContext, useContext, useState } from "react";
+import React, { ReactNode, createContext, useContext, useEffect, useState } from "react";
 
 interface ILeatherContext {
   activeLeather: string;
@@ -22,7 +22,13 @@ const LeatherProvider = ({ children }: IProps) => {
   const [activeLeather, setActiveLeather] = useState("");
   const [lid, setLid] = useState("");
   const [psid, setPsid] = useState("");
-  const [leatherMode, setLeatherMode] = useState<appModeType>(  ()=>localStorage.getItem("leatherMode") as appModeType |null ?? "light");
+  const [leatherMode, setLeatherMode] = useState<appModeType>(  "light");
+
+
+  useEffect(()=>{
+ const mode=localStorage.getItem("leatherMode") as appModeType |null ??"light";
+ setLeatherMode(mode)
+  },[])
 
   const changeActiveLeather = (leatherId: string) => {
     setActiveLeather(leatherId);
