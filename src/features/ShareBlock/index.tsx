@@ -16,6 +16,7 @@ import {
   FaTelegramPlane,
 } from "react-icons/fa";
 import useDeviceDetection from "@/hooks/client/useDeviceDetection";
+import { FaXTwitter } from "react-icons/fa6";
 
 interface IProps {
   isOpen: boolean;
@@ -36,7 +37,7 @@ const ShareBlock = ({ isOpen, onClose, url, title = "latido" }: IProps) => {
       shareUrl: `https://www.facebook.com/sharer/sharer.php?u=${url}`,
     },
     {
-      icon: <BsTwitterX />,
+      icon: <FaXTwitter />,
       link: "fb.com",
       color: "x",
       shareUrl: `https://twitter.com/intent/tweet?text=${title}&url=${url}`,

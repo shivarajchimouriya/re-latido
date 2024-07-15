@@ -1,5 +1,5 @@
 "use client";
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import {
   Box,
   Flex,
@@ -40,7 +40,7 @@ export default function ProductImage({ secondaryImage }: IProductImageProps) {
 
   const [selectedIndex, setSelectedIndex] = useState<null | number>(null);
 
-  let imageIndex = 0;
+const [imageIndex, setImageIndex] = useState(0)
 
   const findIndexOfImage = useMemo(() => {
     return secondaryImage.findIndex(
@@ -48,9 +48,12 @@ export default function ProductImage({ secondaryImage }: IProductImageProps) {
     );
   }, [lid]);
 
-  if (lid && psid) {
-    imageIndex = findIndexOfImage;
-  }
+  useEffect(()=>{
+    if (lid && psid) {
+      setImageIndex(findIndexOfImage);
+    }
+
+  },[lid])
 
   const images =
     secondaryImage[imageIndex ? imageIndex : 0]?.secondary_image || [];
@@ -75,10 +78,10 @@ export default function ProductImage({ secondaryImage }: IProductImageProps) {
       return prev <= 0 ? images.length - 1 : prev - 1;
     });
   };
-
-  const { isOpen: isDarkMode, onToggle: toggleDarkMode } = useDisclosure();
-const darkBg='radial(circle at center, gray.700 0%, gray.800 50%, black 100%)'
-const lightBg='white'
+const isDarkMode=leather?.leatherMode==='dark'
+ const appMode=leather?.leatherMode;
+  const bg=appMode==='dark'?"radial-gradient(circle at center, #1a1a1a 0%, #141414 50%, #0a0a0a 100%)":"radial-gradient(circle at center, #f0f0f0 0%, #e0e0e0 50%, #c0c0c0 100%)"
+  
   return (
     <>
       <VStack
@@ -110,7 +113,7 @@ const lightBg='white'
               onClick={(e) => {
                 e.stopPropagation();
 
-                toggleDarkMode();
+                leather?.toggleLeatherMode();
               }}
             />
           ) : (
@@ -134,8 +137,8 @@ const lightBg='white'
               left="2rem"
               onClick={(e) => {
                 e.stopPropagation();
+                leather?.toggleLeatherMode();
 
-                toggleDarkMode();
               }}
             />
           )}
@@ -167,7 +170,6 @@ setSelectedIndex(currentIdx ?? 0)
 
         <HStack w="full" px="1rem" position="relative"  
         transitionDuration='.4s'
-        bgGradient={isDarkMode?darkBg:lightBg}
         
         
         >
@@ -233,7 +235,7 @@ setSelectedIndex(currentIdx ?? 0)
               alignItems="center"
               zIndex={100000}
               w="full"
-              background="rgba(255,255,255,.8)"
+              bgGradient={bg}
               backdropFilter="auto"
               backdropBlur="5px"
               layoutId={`${selectedIndex}`}

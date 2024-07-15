@@ -27,7 +27,7 @@ export default function Menus({ onClose }: { onClose: () => void }) {
 
   const orders = {
     name: "my orders",
-    link: "https://wa.me/9779801154484",
+    link: "/orders",
     icon: <HiOutlineShoppingBag />,
     isExternal: true
   };
@@ -50,8 +50,7 @@ export default function Menus({ onClose }: { onClose: () => void }) {
             </Box>
           );
         })}
-      </Box>
-      {isLoggedIn && (
+      {isLoggedIn  && (
         <Box onClick={onClose} mb="1.6rem">
           <NavItem
             name={orders.name}
@@ -61,6 +60,7 @@ export default function Menus({ onClose }: { onClose: () => void }) {
           />
         </Box>
       )}
+      </Box>
     </Grid>
   );
 }

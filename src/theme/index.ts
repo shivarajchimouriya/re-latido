@@ -7,11 +7,12 @@ import { MenuTheme } from "./components/Menu";
 
 const appTheme: Partial<ChakraTheme> = extendBaseTheme({
   config: {
-    initialColorMode: "light",
+    initialColorMode: "light"
   },
   colors: appColor,
+
   fontSizes: {
-    fl: "1.2rem", //form  label
+    fl: "1.2rem" //form  label
   },
   components: {
     Stepper: {
@@ -19,15 +20,15 @@ const appTheme: Partial<ChakraTheme> = extendBaseTheme({
         separator: {
           bg: "var(--primary)",
           width: "4px",
-          height: "30px",
-        },
-      },
+          height: "30px"
+        }
+      }
     },
     Input: inputTheme,
     Button: ButtonStyles,
     Form: FormTheme,
-    Menu: MenuTheme,
-  },
+    Menu: MenuTheme
+  }
 });
 
 export const theme = appTheme;

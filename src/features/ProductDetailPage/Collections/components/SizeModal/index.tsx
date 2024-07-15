@@ -263,20 +263,7 @@ export default function SizeModal({
                     </Flex>
                   </Box>
                   <HStack mt={"6rem"}  w={"full"} gap={"1rem"}>
-                    <Button
-                      padding={"1.4rem 2rem"}
-                      fontWeight={"bold"}
-                      fontSize={"1.4rem"}
-                      bg="white"
-                      rounded="full"
-                      // className="primary-button"
-                      w={"full"}
-                      type="submit"
-                      onClick={handleSizeSubmit}
-                    >
-                      Submit
-                    </Button>
-                    <Button
+                      <Button
                       fontWeight={"bold"}
                       fontSize={"1.4rem"}
                       py='1.4rem'
@@ -290,6 +277,20 @@ export default function SizeModal({
                     >
                       Cancel
                     </Button>
+                    <Button
+                      padding={"1.4rem 2rem"}
+                      fontWeight={"bold"}
+                      fontSize={"1.4rem"}
+                      bg="white"
+                      rounded="full"
+                      // className="primary-button"
+                      w={"full"}
+                      type="submit"
+                      onClick={handleSizeSubmit}
+                    >
+                      Submit
+                    </Button>
+                  
                   </HStack>
                 </Box>
               </Box>

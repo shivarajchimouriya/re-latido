@@ -14,7 +14,7 @@ const ShareIcon = ({ color, icon, shareUrl }: IShare) => {
   return (
     <Center position="relative" h="7rem" w="7rem" role="group">
       <Button
-        fontSize="1.8rem"
+        fontSize="2.3rem"
         p=".7rem"
         backdropFilter="auto"
         backdropBlur="10px"
