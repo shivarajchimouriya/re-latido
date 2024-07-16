@@ -26,12 +26,13 @@ import {
   IoMoonOutline
 } from "react-icons/io5";
 import { Swiper, SwiperRef, SwiperSlide } from "swiper/react";
-import { EffectCreative, Pagination } from "swiper/modules";
+import { EffectCreative, Pagination, Zoom } from "swiper/modules";
 import { closestIndexTo } from "date-fns";
 import { useActiveLeather } from "@/features/ProductDetailPage/Context/LeatherContext";
 import Image from "next/image";
 import { CiLight } from "react-icons/ci";
 import { BsFullscreen } from "react-icons/bs";
+import { logger } from "@/utils/logger";
 
 export default function ProductImage({ secondaryImage }: IProductImageProps) {
   const leather = useActiveLeather();
@@ -39,21 +40,17 @@ export default function ProductImage({ secondaryImage }: IProductImageProps) {
   const psid = leather?.psid;
 
   const [selectedIndex, setSelectedIndex] = useState<null | number>(null);
-
-const [imageIndex, setImageIndex] = useState(0)
-
-  const findIndexOfImage = useMemo(() => {
-    return secondaryImage.findIndex(
-      (leather) => leather.leather_id._id === lid
-    );
-  }, [lid]);
-
+const [activeSlide, setActiveSlide] = useState(0)
+  const [imageIndex, setImageIndex] = useState(0);
+  
   useEffect(()=>{
-    if (lid && psid) {
-      setImageIndex(findIndexOfImage);
-    }
+    const findIndexOfImage = secondaryImage.findIndex(
+      (leather) => leather.leather_id._id === lid
+    )
 
+setImageIndex(findIndexOfImage)
   },[lid])
+
 
   const images =
     secondaryImage[imageIndex ? imageIndex : 0]?.secondary_image || [];
@@ -78,150 +75,135 @@ const [imageIndex, setImageIndex] = useState(0)
       return prev <= 0 ? images.length - 1 : prev - 1;
     });
   };
-const isDarkMode=leather?.leatherMode==='dark'
- const appMode=leather?.leatherMode;
-  const bg=appMode==='dark'?"radial-gradient(circle at center, #1a1a1a 0%, #141414 50%, #0a0a0a 100%)":"radial-gradient(circle at center, #f0f0f0 0%, #e0e0e0 50%, #c0c0c0 100%)"
-  
+  const isDarkMode = leather?.leatherMode === "dark";
+  const appMode = leather?.leatherMode;
+  const bg =
+    appMode === "dark"
+      ? "radial-gradient(circle at center, #1a1a1a 0%, #141414 50%, #0a0a0a 100%)"
+      : "radial-gradient(circle at center, white 0%, white 50%, white 100%)";
+
+      useEffect(()=>{
+        if(ref.current)
+ref.current?.swiper.slideTo(activeSlide)
+      },[activeSlide])
   return (
     <>
-      <VStack
+     <VStack
         h="63vh"
         pb=".2rem"
         w="full"
         overflow="hidden"
         position="relative"
       >
-        <AnimatePresence>
-        
-          {isDarkMode ? (
-            <IconButton
+      <AnimatePresence>
+        {isDarkMode ? (
+          <IconButton
             key={`${isDarkMode}`}
-              as={motion.button}
-              zIndex={10000}
-              initial={{ scale: 0 }}
-              animate={{ scale: 1 }}
-              exit={{ scale: 0 }}
-              fontSize="1.8rem"
-              icon={<CiLight />}
-              aria-label="toggle"
-              position="absolute"
-              top="0"
-              color={ isDarkMode? 'white':"black"}
+            as={motion.button}
+            zIndex={10000}
+            initial={{ scale: 0 }}
+            animate={{ scale: 1 }}
+            exit={{ scale: 0 }}
+            fontSize="1.8rem"
+            icon={<CiLight />}
+            aria-label="toggle"
+            position="absolute"
+            top="0"
+            color={isDarkMode ? "white" : "black"}
+            p="1rem"
+            left="1.5rem"
+            onClick={(e) => {
+              e.stopPropagation();
 
-              p='1rem'
-              left="2rem"
-              onClick={(e) => {
-                e.stopPropagation();
-
-                leather?.toggleLeatherMode();
-              }}
-            />
-          ) : (
-            <IconButton
-              zIndex={10000}
-            key={`${isDarkMode}`}
-
-              as={motion.button}
-              initial={{ scale: 0 }}
-              animate={{ scale: 1 }}
-              exit={{ scale: 0 }}
-              fontSize="1.8rem"
-              icon={<IoMoonOutline />}
-              aria-label="toggle"
-              position="absolute"
-              p='1rem'
-              color={ isDarkMode? 'white':"black"}
-
-              
-              top="0"
-              left="2rem"
-              onClick={(e) => {
-                e.stopPropagation();
-                leather?.toggleLeatherMode();
-
-              }}
-            />
-          )}
-        </AnimatePresence>
-
-        <IconButton
-          as={motion.div}
-          initial={{ scale: 0 }}
-          animate={{ scale: 1 }}
-          exit={{ scale: 0 }}
-          fontSize="1.7rem"
-              zIndex={10000}
-              color={ isDarkMode? 'white':"black"}
-
-          icon={<BsFullscreen />
-        }
-          aria-label="full screen"
-          position="absolute"
-          top="0"
-          p='1rem'
-          right="2rem"
-            onClick={() => {
-
-const currentIdx=ref.current?.swiper.activeIndex
-setSelectedIndex(currentIdx ?? 0)
-
+              leather?.toggleLeatherMode();
             }}
-        />
+          />
+        ) : (
+          <IconButton
+            zIndex={10000}
+            key={`${isDarkMode}`}
+            as={motion.button}
+            initial={{ scale: 0 }}
+            animate={{ scale: 1 }}
+            exit={{ scale: 0 }}
+            fontSize="1.8rem"
+            icon={<IoMoonOutline />}
+            aria-label="toggle"
+            position="absolute"
+            p="1rem"
+            color={isDarkMode ? "white" : "black"}
+            top="0"
+            left="1.5rem"
+            onClick={(e) => {
+              e.stopPropagation();
+              leather?.toggleLeatherMode();
+            }}
+          />
+        )}
+      </AnimatePresence>
 
-        <HStack w="full" px="1rem" position="relative"  
-        transitionDuration='.4s'
-        
-        
-        >
-          <>
-            <Swiper
-              ref={ref}
-              loop
-              pagination={{
-                clickable: true,
-                dynamicBullets: true,
-                bulletClass: styles.bul,
-                bulletActiveClass: styles.active_bul,
-                horizontalClass: styles.hor
-              }}
-              modules={[Pagination]}
-              // modules={[EffectCreative]}
-              // className="mySwiper"
-              onSlideChange={(val) => {
-                // setSelectedIndex(val.activeIndex);
-              }}
-              style={{ height: "100%" }}
-            >
-              {images?.map((image: string, index: number) => (
-                <SwiperSlide key={image} style={{ width: "100%" }}>
-                  <img
-                    src={image}
-                    onClick={() => setSelectedIndex(index)}
-                    height={800}
-                    width={600}
-                    alt="product image"
-                    loading="eager"
-                    style={{
-                      objectFit: "contain",
-                      width: "100%",
-                      height: "100%"
-                    }}
-                  />
-                </SwiperSlide>
-              ))}
-            </Swiper>
-          </>
-        </HStack>
-        <Flex
-          gap={"1.4rem"}
-          p={"1rem"}
-          width={"100%"}
-          height={"100%"}
-          overflowX={"scroll"}
-          justifyContent={images?.length > 5 ?? 0 ? "auto" : "center"}
-          className="product_images"
-        ></Flex>
-      </VStack>
+      <IconButton
+        as={motion.div}
+        initial={{ scale: 0 }}
+        animate={{ scale: 1 }}
+        exit={{ scale: 0 }}
+        fontSize="1.7rem"
+        zIndex={10000}
+        color={isDarkMode ? "white" : "black"}
+        icon={<BsFullscreen />}
+        aria-label="full screen"
+        position="absolute"
+        top="0"
+        p="1rem"
+        right="1.5rem"
+        onClick={() => {
+          const currentIdx = ref.current?.swiper.activeIndex;
+          setSelectedIndex(currentIdx ?? 0);
+        }}
+      />
+      {secondaryImage.map((el) => {
+        const isActive = el.leather_id._id === lid;
+
+        return (
+          <Swiper
+            ref={ref}
+            loop
+            pagination={{
+              clickable: true,
+              dynamicBullets: true,
+              bulletClass: styles.bul,
+              bulletActiveClass: styles.active_bul,
+              horizontalClass: styles.hor
+            }}
+            modules={[Pagination]}
+            // modules={[EffectCreative]}
+            // className="mySwiper"
+            onSlideChange={(val) => {
+              setActiveSlide(val.activeIndex);
+            }}
+            style={{ height: "100%", display: isActive ? "block" : "none" }}
+          >
+            {el?.secondary_image?.map((image: string, index: number) => (
+              <SwiperSlide key={image} style={{ width: "100%" }}>
+                <img
+                  src={image}
+                  onClick={() => setSelectedIndex(index)}
+                  height={800}
+                  width={600}
+                  alt="product image"
+                  loading="lazy"
+                  style={{
+                    objectFit: "contain",
+                    width: "100%",
+                    height: "100%"
+                  }}
+                />
+              </SwiperSlide>
+            ))}
+          </Swiper>
+        );
+      })}
+</VStack>
       <AnimatePresence>
         {selectedIndex !== null && (
           <Portal>
