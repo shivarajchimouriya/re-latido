@@ -26,7 +26,7 @@ import {
   IoMoonOutline
 } from "react-icons/io5";
 import { Swiper, SwiperRef, SwiperSlide } from "swiper/react";
-import { EffectCreative, Pagination } from "swiper/modules";
+import { EffectCreative, Pagination, Zoom } from "swiper/modules";
 import { closestIndexTo } from "date-fns";
 import { useActiveLeather } from "@/features/ProductDetailPage/Context/LeatherContext";
 import Image from "next/image";
@@ -40,20 +40,17 @@ export default function ProductImage({ secondaryImage }: IProductImageProps) {
   const psid = leather?.psid;
 
   const [selectedIndex, setSelectedIndex] = useState<null | number>(null);
-
+const [activeSlide, setActiveSlide] = useState(0)
   const [imageIndex, setImageIndex] = useState(0);
-
-  const findIndexOfImage = useMemo(() => {
-    return secondaryImage.findIndex(
+  
+  useEffect(()=>{
+    const findIndexOfImage = secondaryImage.findIndex(
       (leather) => leather.leather_id._id === lid
-    );
-  }, [lid]);
+    )
 
-  useEffect(() => {
-    if (lid && psid) {
-      setImageIndex(findIndexOfImage);
-    }
-  }, [lid]);
+setImageIndex(findIndexOfImage)
+  },[lid])
+
 
   const images =
     secondaryImage[imageIndex ? imageIndex : 0]?.secondary_image || [];
@@ -85,6 +82,10 @@ export default function ProductImage({ secondaryImage }: IProductImageProps) {
       ? "radial-gradient(circle at center, #1a1a1a 0%, #141414 50%, #0a0a0a 100%)"
       : "radial-gradient(circle at center, white 0%, white 50%, white 100%)";
 
+      useEffect(()=>{
+        if(ref.current)
+ref.current?.swiper.slideTo(activeSlide)
+      },[activeSlide])
   return (
     <>
      <VStack
@@ -178,7 +179,7 @@ export default function ProductImage({ secondaryImage }: IProductImageProps) {
             // modules={[EffectCreative]}
             // className="mySwiper"
             onSlideChange={(val) => {
-              // setSelectedIndex(val.activeIndex);
+              setActiveSlide(val.activeIndex);
             }}
             style={{ height: "100%", display: isActive ? "block" : "none" }}
           >
@@ -190,7 +191,7 @@ export default function ProductImage({ secondaryImage }: IProductImageProps) {
                   height={800}
                   width={600}
                   alt="product image"
-                  loading="eager"
+                  loading="lazy"
                   style={{
                     objectFit: "contain",
                     width: "100%",
