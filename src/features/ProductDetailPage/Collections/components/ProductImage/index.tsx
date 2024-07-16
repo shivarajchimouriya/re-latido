@@ -191,7 +191,7 @@ ref.current?.swiper.slideTo(activeSlide)
                   height={800}
                   width={600}
                   alt="product image"
-                  loading="lazy"
+                  loading="eager"
                   style={{
                     objectFit: "contain",
                     width: "100%",
