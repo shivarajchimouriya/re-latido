@@ -88,7 +88,7 @@ const LeatherName = ({ text, ...rest }: IProps) => {
           </HStack>
         </AnimatePresence>
       </HStack>
-<BsInfoCircle fontSize='1.3rem' color={color} />
+<BsInfoCircle fontSize='1.1rem' color={color} />
 
 </HStack>
 

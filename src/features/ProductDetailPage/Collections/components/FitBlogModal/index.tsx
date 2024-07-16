@@ -48,7 +48,11 @@ As Latido evolves, it remains committed to its core mission of cultural fusion, 
             </VStack>
           </Sheet.Content>
         </Sheet.Container>
-        <Sheet.Backdrop onTap={onClose}   />
+        <Sheet.Backdrop onTap={ (e)=> {
+e.stopPropagation()
+onClose()
+
+        }}   />
       </Sheet>
     </>
   );

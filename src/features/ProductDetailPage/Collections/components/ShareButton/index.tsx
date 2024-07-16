@@ -3,7 +3,7 @@ import { IconButton, useDisclosure } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 import { IoShareSocialOutline } from "react-icons/io5";
 import ShareBlock from "@/features/ShareBlock";
-import { PiPaperPlaneTilt, PiShareFat } from "react-icons/pi";
+import { PiPaperPlaneTilt, PiShareFat, PiShareFatLight } from "react-icons/pi";
 import { AiOutlineShareAlt } from "react-icons/ai";
 
 const ShareButton = () => {
@@ -21,7 +21,7 @@ const ShareButton = () => {
         aria-label="share"
         display='flex'
         justifyContent='end'
-        icon={<PiShareFat fontSize="2.5rem" onClick={onOpen} />}
+        icon={<PiShareFatLight fontSize="2.5rem" onClick={onOpen} />}
       />
       <ShareBlock isOpen={isOpen} onClose={onClose} url={url} />
     </>

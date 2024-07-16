@@ -94,7 +94,7 @@ export default function LeatherSelection({ productDetail }: IProps) {
     <>
       <LeatherModalblog blog="this is good" isOpen={isOpen} onClose={onClose} />
 
-      <VStack w="full" p="1rem" position="relative" gap="1rem">
+      <VStack w="full" p="1rem"  gap="1rem">
         <VStack justify="center" h="12rem" w="full" position="relative">
           <Box
             position="absolute"
