@@ -6,7 +6,8 @@ import { IoIosShareAlt } from "react-icons/io";
 import ShareButton from "../ShareButton";
 import Link from "next/link";
 import { MdOutlineChevronLeft } from "react-icons/md";
-
+import Logo from "@/components/Layout/PrimaryLayout/components/Header/components/Logo";
+import AppImage from "@/components/AppImage";
 export default function ProductName({
   productName,
   category,
@@ -14,34 +15,30 @@ export default function ProductName({
   categoryId
 }: IProductNameProps) {
   return (
-    <HStack w="100%" justify="space-between" p={"2rem"} py="1rem">
-      <Link href="/">
-        <IconButton
-          bg="gray.100"
-          rounded="full"
-          p=".3rem"
-          fontSize="2.5rem"
-          icon={<MdOutlineChevronLeft />}
-          aria-label="previous"
-        />
-      </Link>
-
-      <VStack alignItems="flex-start" spacing={0}>
-        {/* <Link href={`/category/${categoryId}`}>
-          <Text
-            as="h2"
-            color="rgb(112, 117, 128)"
-            textTransform="uppercase"
-            fontSize="xl"
-            fontWeight="semibold"
-          >
-            {category}
-          </Text>
-        </Link> */}
-        <Text fontWeight="bold" as="h1" fontSize="1.4rem">
-          {productName}
-        </Text>
-      </VStack>
+    <HStack
+      w="100%"
+      justify="space-between"
+      p={"2rem"}
+      py=".6rem"
+      borderBottom="1px solid"
+      borderColor="#ebebeb"
+    >
+      <Text
+        fontWeight="bold"
+        w="33%"
+        noOfLines={1}
+        overflow="hidden"
+        textOverflow="ellipsis"
+        as="h1"
+        fontSize="1.4rem"
+      >
+        {productName}
+      </Text>
+      <HStack justify="center" w="33%">
+        <Link href="/">
+          <Logo />
+        </Link>
+      </HStack>
       <ShareButton />
     </HStack>
   );

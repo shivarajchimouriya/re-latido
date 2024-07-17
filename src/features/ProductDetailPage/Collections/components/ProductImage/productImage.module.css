@@ -1,0 +1,24 @@
+.bul {
+  height: 0.3rem !important ;
+  width: 0.3rem !important;
+  background: rgb(161, 161, 161);
+  transition: 0.4s linear !important;
+  border-radius: 50%;
+}
+
+.hor {
+  height: 2rem !important;
+  width: 100% !important;
+  z-index: 10000 !important;
+  bottom: 3rem !important;
+  display: flex;
+  justify-content: center;
+  gap: 1rem !important;
+  align-items: center !important;
+}
+
+.active_bul {
+  height: 0.6rem !important;
+  width: 0.6rem !important;
+  background-color: black;
+}

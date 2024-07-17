@@ -10,6 +10,7 @@ import { Metadata } from "next";
 import { env } from "@/config/environment";
 import ProfileSkeleton from "@/features/ProfilePage/ProfileSkeleton";
 import { notFound } from "next/navigation";
+import LeatherProvider from "@/features/ProductDetailPage/Context/LeatherContext";
 
 export const generateStaticParams = async () => {
   const res = await API.Product.getAll({ params: { limit: 1000, page: 1 } });
@@ -70,9 +71,9 @@ export const generateMetadata = async ({
 export default function ProductDetail({ params }: IProps) {
   return (
     <ApolloWrapper>
-      <ProductDetailProvider>
+      <LeatherProvider>
         <ProductDetailPage productId={params.productId} />
-      </ProductDetailProvider>
+      </LeatherProvider>
     </ApolloWrapper>
   );
 }

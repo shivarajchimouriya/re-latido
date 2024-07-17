@@ -11,6 +11,8 @@ import { API } from "@/resources";
 import { logger } from "@/utils/logger";
 import SizeModuleSection from "../Collections/components/SizeModuleSection";
 import NotFound from "@/components/NotFound";
+import LeatherProvider from "../Context/LeatherContext";
+import ImageLeatherWrapper from "../Collections/components/ImageLeatherWrapper";
 
 const getProductDetail = async (id: string) => {
   try {
@@ -29,17 +31,19 @@ export default async function ProductDetail({ productId }: IProps) {
 
   return (
     <Container top="0" height="100vh" overflowY="scroll">
-      <VStack width="100%">
+      <VStack width="100%" gap='0' >
         <ProductName
           categoryId={productDetail.category._id}
           productName={productDetail.name}
           category={productDetail.category?.title}
           productId={productId}
         />
-        <ProductImage secondaryImage={productDetail?.product_specification} />
-        <LeatherSelection productDetail={productDetail} />
+        <ImageLeatherWrapper>
+          <ProductImage secondaryImage={productDetail?.product_specification} />
+          <LeatherSelection productDetail={productDetail} />
+        </ImageLeatherWrapper>
         <Box
-          background={'rgba(0,0,0,0.8)'}
+          background={"rgba(0,0,0,0.8)"}
           width={"100%"}
           maxW="500px"
           padding={"2rem 0"}

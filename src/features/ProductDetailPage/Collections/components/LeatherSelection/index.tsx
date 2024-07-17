@@ -1,6 +1,14 @@
 "use client";
 import { useRouter, useSearchParams } from "next/navigation";
-import { Box, Grid, Text, VStack } from "@chakra-ui/react";
+import {
+  Box,
+  Center,
+  Grid,
+  HStack,
+  Text,
+  VStack,
+  useDisclosure
+} from "@chakra-ui/react";
 import React, { useCallback, useEffect, useState } from "react";
 import { IProduct } from "@/resources/Product/interface";
 import Leathercapsule from "../Leathercapsule";
@@ -12,8 +20,16 @@ import "swiper/css/effect-coverflow";
 import { useOptimistic } from "react";
 import { Swiper, SwiperRef, SwiperSlide } from "swiper/react";
 
-import { EffectCoverflow, Pagination } from "swiper/modules";
+import {
+  Autoplay,
+  EffectCoverflow,
+  FreeMode,
+  Pagination
+} from "swiper/modules";
 import { logger } from "@/utils/logger";
+import { useActiveLeather } from "@/features/ProductDetailPage/Context/LeatherContext";
+import LeatherName from "../LeatherName";
+import LeatherModalblog from "../LeatherModalBlog";
 interface IProps {
   productDetail: IProduct;
 }
@@ -21,6 +37,7 @@ interface IProps {
 const baseUrl = env.S3_BASE_URL;
 export default function LeatherSelection({ productDetail }: IProps) {
   const router = useRouter();
+  const leather = useActiveLeather();
 
   const searchParams = useSearchParams();
   const lid = searchParams.get("lid");
@@ -36,15 +53,18 @@ export default function LeatherSelection({ productDetail }: IProps) {
     if (lid === leatherId && psid === productSpecsId) {
       return null;
     }
-    const changeSearchParam = new URLSearchParams(searchParams.toString());
+    leather?.setLid(leatherId);
+    leather?.setPsid(productSpecsId);
 
-    changeSearchParam.set("lid", leatherId);
-    changeSearchParam.set("psid", productSpecsId);
-    if (!leatherId || !productSpecsId) {
-      router.replace(`?${changeSearchParam.toString()}`, { scroll: true });
-    } else {
-      router.replace(`?${changeSearchParam.toString()}`, { scroll: true });
-    }
+    // const changeSearchParam = new URLSearchParams(searchParams.toString());
+
+    // changeSearchParam.set("lid", leatherId);
+    // changeSearchParam.set("psid", productSpecsId);
+    // if (!leatherId || !productSpecsId) {
+    //   router.replace(`?${changeSearchParam.toString()}`, { scroll: true });
+    // } else {
+    //   router.replace(`?${changeSearchParam.toString()}`, { scroll: true });
+    // }
   }, []);
 
   const [activeLeather, addOptimistic] = useState<number>(
@@ -54,6 +74,7 @@ export default function LeatherSelection({ productDetail }: IProps) {
   const [activeLeatherName, setActiveLeatherName] = useState("");
   const onLeatherSelect = (idx: number) => {
     addOptimistic(idx);
+    ref.current?.swiper?.slideTo(idx);
 
     const psidX = productDetail.product_specification[idx].leather_id?._id;
     const lidX = productDetail.product_specification[idx]._id;
@@ -61,190 +82,108 @@ export default function LeatherSelection({ productDetail }: IProps) {
   };
 
   useEffect(() => {
-    onLeatherSelect(0);
+    onLeatherSelect(Math.floor(productDetail.product_specification.length / 2));
+    ref.current?.swiper?.slideTo(
+      Math.floor(productDetail.product_specification.length / 2)
+    );
   }, []);
   const ref = React.useRef<SwiperRef | null>(null);
+  const { isOpen, onClose, onOpen } = useDisclosure();
 
   return (
-    <VStack w="full" h="15rem" p="1rem" position="relative">
-      <Box
-        position="absolute"
-        left="50%"
-        transform="translate(-50%,-60%)"
-        top="50%"
-        height="12rem"
-        rounded="full"
-        width="12rem"
-        bg="gray.100"
-      />
-      {/* <Text
-        as="h2"
-        textAlign="left"
-        w="full"
-        fontWeight="bold"
-        textTransform="capitalize"
-        fontSize="medium"
-      >
-        select leather
-      </Text> */}
-      <Swiper
-        style={{ width: "100%", height: "100%" }}
-        ref={ref}
-        grabCursor={true}
-        effect="coverflow"
-        centeredSlides={true}
-        observer={true}
-        spaceBetween={40}
-        observeParents={true}
-        slidesPerView={"auto"}
-        coverflowEffect={{
-          rotate: 1,
-          stretch: 0,
+    <>
+      <LeatherModalblog blog="this is good" isOpen={isOpen} onClose={onClose} />
 
-          depth: 165,
-          modifier: 2,
-          slideShadows: false
-        }}
-        // modules={[EffectCreative]}
-        modules={[EffectCoverflow]}
-        className="mySwiper"
-        onSlideChange={(val) => {
-          logger.log("val", val);
-          onLeatherSelect(val.activeIndex);
-          const leatherName =
-            productDetail.product_specification[val.activeIndex].leather_id
-              .item_name;
-          setActiveLeatherName(leatherName);
-        }}
-      >
-        {productDetail.product_specification.map((el, i) => {
-          const isActive = i === activeLeather;
-          return (
-            <SwiperSlide
-              key={el._id}
-              style={{ width: "fit-content", height: "100%" }}
-            >
-              {" "}
-              <Box position="relative">
-                <Leathercapsule
-                  isActive={isActive}
-                  onLeatherSelect={onLeatherSelect}
-                  id={i}
-                  image={baseUrl + el?.leather_id?.ball_image || leatherImage}
-                  name={el.leather_id.item_name}
-                />
-                {/* <AnimatePresence>
-                {isActive && (
-                  <Box
-                    as={motion.div}
-                    layoutId="leather"
-                    position="absolute"
-                    w="100%"
-                    h="100%"
-                    inset="0"
-                    rounded="md"
-                    outline="1px solid gray"
-                    isolation="isolate"
-                    bgColor="gray.200"
-                  />
-                )}
-              </AnimatePresence> */}
-              </Box>
-            </SwiperSlide>
-          );
-        })}
-      </Swiper>
+      <VStack w="full" p="1rem"  gap="1rem">
+        <VStack justify="center" h="12rem" w="full" position="relative">
+          <Box
+            position="absolute"
+            left="50%"
+            shadow="lg"
+            transform="translate(-50%,-50%)"
+            top="50%"
+            height="12rem"
+            rounded="full"
+            width="12rem"
+            bgGradient="radial(circle at center, gray.100 0%, gray.200 10%, white 100%)"
+            style={{
+        
+              animation: "gradientShift 10s ease infinite"
+            }}
+          />
+          <Swiper
+            style={{ width: "100%" }}
+            ref={ref}
+            grabCursor={true}
+            effect="coverflow"
+            centeredSlides={true}
+            observer={true}
+            spaceBetween={40}
+            observeParents={true}
+            slidesPerView={"auto"}
+            autoplay={{
+              delay: 4000,
+              pauseOnMouseEnter: true,
+              disableOnInteraction: true,
+              waitForTransition: true
+            }}
+            coverflowEffect={{
+              rotate: 1.1,
+              stretch: 0,
+              depth: 165,
+              modifier: 1.5,
+              slideShadows: false,
+              scale: 0.85
+            }}
+            modules={[EffectCoverflow, FreeMode, Autoplay]}
+            className="mySwiper"
+            onSlideChange={(val) => {
+              logger.log("val", val);
+              onLeatherSelect(val.activeIndex);
+              const leatherName =
+                productDetail.product_specification[val.activeIndex].leather_id
+                  .item_name;
+              setActiveLeatherName(leatherName);
+            }}
+          >
+            {productDetail.product_specification.map((el, i) => {
+              const isActive = i === activeLeather;
+              return (
+                <SwiperSlide
+                  key={el._id}
+                  style={{ width: "fit-content", height: "100%" }}
+                >
+                  
+                  <VStack
+                    justify="center"
+                    position="relative"
+                    onClick={() => {
+                      if (isActive) {
+                        onOpen();
+                      }
+                    }}
+                  >
+                    <Leathercapsule
+                      isActive={isActive}
+                      onLeatherSelect={(idx) => {
+                        onLeatherSelect(idx);
+                        ref.current?.swiper.slideTo(idx);
+                      }}
+                      id={i}
+                      image={
+                        baseUrl + el?.leather_id?.ball_image || leatherImage
+                      }
+                      name={el.leather_id.item_name}
+                    />
+                  </VStack>
+                </SwiperSlide>
+              );
+            })}
+          </Swiper>
+        </VStack>
 
-      {/* 
-      <Grid templateColumns="repeat(4,1fr)" gap="1rem" my="2rem">
-        {productDetail.product_specification.map((el, i) => {
-          const isActive = i === activeLeather;
-          return (
-            <Box position="relative">
-              <Leathercapsule
-                isActive={isActive}
-                onLeatherSelect={onLeatherSelect}
-                id={i}
-                image={baseUrl + el?.leather_id?.ball_image || leatherImage}
-                name={el.leather_id.item_name}
-              />
-              <AnimatePresence>
-                {isActive && (
-                  <Box
-                    as={motion.div}
-                    layoutId="leather"
-                    position="absolute"
-                    w="100%"
-                    h="100%"
-                    inset="0"
-                    rounded="md"
-                    outline="1px solid gray"
-                    isolation="isolate"
-                    bgColor="gray.200"
-                  />
-                )}
-              </AnimatePresence>
-            </Box>
-          );
-        })}
-      </Grid> */}
-
-      <AnimatePresence>
-        {" "}
-        <Text
-          w="full"
-          textAlign="center"
-          as={motion.p}
-          initial={{ y: "100%", opacity: 0 }}
-          animate={{ y: "0%", opacity: 1 }}
-          exit={{ y: "-100", opacity: 0 }}
-        >
-          {activeLeatherName}
-        </Text>
-      </AnimatePresence>
-    </VStack>
+        <LeatherName text={activeLeatherName} onClick={onOpen} />
+      </VStack>
+    </>
   );
-  // return (
-  //   <Box width="100%">
-  //     <Text
-  //       as="h3"
-  //       textTransform="uppercase"
-  //       fontWeight="medium"
-  //       fontSize={"1.4rem"}
-  //       color={appColor.base}
-  //       mx={8}
-  //     >
-  //       Select Your Leather
-  //     </Text>
-  //     <Swiper slidesPerView="auto" spaceBetween={25}>
-  //       <HStack overflow="X-auto" width="100%">
-  //         {productDetail?.product_specification &&
-  //           productDetail?.product_specification?.length > 0 && (
-  //             <Carousel3D
-  //               onChange={onChange}
-  //               selected={
-  //                 selectedLeatherIndex !== -1 ? selectedLeatherIndex : 0
-  //               }
-  //               images={productDetail?.product_specification?.map((ps: any) => {
-  //                 return {
-  //                   title: ps?.leather_id?.item_name,
-  //                   image:
-  //                     urlPrefix +
-  //                     (ps?.leather_id?.ball_image
-  //                       ? ps?.leather_id?.ball_image
-  //                       : ps?.leather_id?.icon
-  //                       ? ps?.leather_id?.icon
-  //                       : "public/inventory/category/MicrosoftTeams-image-(17)1692774476.png"),
-  //                   product_specification_id: ps?._id,
-  //                   leather_id: ps?.leather_id?._id,
-  //                   hardware: ps?.default_hardware,
-  //                   lining: ps?.default_lining,
-  //                 };
-  //               })}
-  //             />
-  //           )}
-  //       </HStack>
-  //     </Swiper>
-  //   </Box>
-  // );
 }
