@@ -44,6 +44,7 @@ export async function middleware(request: NextRequest) {
 
   if (url.pathname.startsWith("/test")) {
     console.log("next js req: ", NextRequest.toString());
+    console.log("\n\n\n\n\nurl\n", request.url);
     return NextResponse.redirect(request.url);
   }
 

@@ -8,13 +8,15 @@ export default function page() {
 
   const headersList = headers();
 
-  console.log("json header list: ", JSON.stringify(headersList));
+  if (headersList) {
+    console.log("json header list: ", JSON.stringify(headersList));
 
-  const headerHost = headersList.get("host");
-  const nextUrl = headersList.get("next-url");
+    const headerHost = headersList?.get("host");
+    const nextUrl = headersList?.get("next-url");
 
-  console.log("header host", headerHost);
-  console.log("next url: ", nextUrl);
+    console.log("header host", headerHost);
+    console.log("next url: ", nextUrl);
+  }
 
   return (
     <div

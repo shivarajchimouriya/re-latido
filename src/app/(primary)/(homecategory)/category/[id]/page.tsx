@@ -19,9 +19,10 @@ interface IProps {
 
 export async function generateStaticParams() {
   const homepageData = await API.Homepage.get({
-    params: { gender: GENDER.MALE, limit: 10, page: 1 },
+    params: { gender: GENDER.MALE, limit: 10, page: 1,},
   });
   const categories = homepageData.data.category;
+  logger.log("catgories",categories)
 
   return categories.map((cat) => ({
     id: cat._id,
@@ -31,6 +32,9 @@ export async function generateStaticParams() {
 export const generateMetadata = async ({
   params,
 }: IProps): Promise<Metadata> => {
+  try {
+    
+  
   const result = await API.Homepage.get({
     params: { gender: GENDER.MALE, limit: 10, page: 1 },
   });
@@ -52,7 +56,11 @@ export const generateMetadata = async ({
       url: env.SITE_URL + "/category" + params.id,
       images: [category.image],
     },
-  };
+  }
+}
+  catch (error) {
+    return {}
+  }
 };
 
 const Page = async ({ params }: IProps) => {
