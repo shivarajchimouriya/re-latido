@@ -42,9 +42,20 @@ export async function middleware(request: NextRequest) {
     }
   }
 
+  if (url.pathname.startsWith("/test")) {
+    console.log("next js req: ", NextRequest.toString());
+    return NextResponse.redirect(request.url);
+  }
+
   return response;
 }
 
 export const config = {
-  matcher: ["/auth/:path*", "/profile", "/orders/:path*", "/digital-invoice/:path*"],
+  matcher: [
+    "/auth/:path*",
+    "/profile",
+    "/orders/:path*",
+    "/digital-invoice/:path*",
+    "/test/cancel:path",
+  ],
 };
