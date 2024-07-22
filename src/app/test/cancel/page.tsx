@@ -1,22 +1,20 @@
 import React from "react";
-import { usePathname } from "next/navigation";
-import { headers } from "next/headers";
 
 export default function page() {
   // const url = usePathname();
   // console.log("url: ", url);
 
-  const headersList = headers();
+  // const headersList = headers();
 
-  if (headersList) {
-    console.log("json header list: ", JSON.stringify(headersList));
+  // if (headersList) {
+  //   console.log("json header list: ", JSON.stringify(headersList));
 
-    const headerHost = headersList?.get("host");
-    const nextUrl = headersList?.get("next-url");
+  //   const headerHost = headersList?.get("host");
+  //   const nextUrl = headersList?.get("next-url");
 
-    console.log("header host", headerHost);
-    console.log("next url: ", nextUrl);
-  }
+  //   console.log("header host", headerHost);
+  //   console.log("next url: ", nextUrl);
+  // }
 
   return (
     <div
