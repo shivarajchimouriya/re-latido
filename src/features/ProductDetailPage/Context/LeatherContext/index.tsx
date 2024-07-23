@@ -1,5 +1,12 @@
 "use client";
-import React, { ReactNode, createContext, useContext, useEffect, useState } from "react";
+import { useSearchParams } from "next/navigation";
+import React, {
+  ReactNode,
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 
 interface ILeatherContext {
   activeLeather: string;
@@ -13,22 +20,24 @@ interface ILeatherContext {
 }
 export type appModeType = "dark" | "light";
 
-const LeatherContext = createContext<ILeatherContext | null>(null);
+export const LeatherContext = createContext<ILeatherContext | null>(null);
 interface IProps {
   children: ReactNode;
 }
 
 const LeatherProvider = ({ children }: IProps) => {
+  const searchParams = useSearchParams();
+
   const [activeLeather, setActiveLeather] = useState("");
-  const [lid, setLid] = useState("");
-  const [psid, setPsid] = useState("");
-  const [leatherMode, setLeatherMode] = useState<appModeType>(  "light");
+  const [lid, setLid] = useState(searchParams.get("lid") || "");
+  const [psid, setPsid] = useState(searchParams.get("psid") || "");
+  const [leatherMode, setLeatherMode] = useState<appModeType>("light");
 
-
-  useEffect(()=>{
- const mode=localStorage.getItem("leatherMode") as appModeType |null ??"light";
- setLeatherMode(mode)
-  },[])
+  useEffect(() => {
+    const mode =
+      (localStorage.getItem("leatherMode") as appModeType | null) ?? "light";
+    setLeatherMode(mode);
+  }, []);
 
   const changeActiveLeather = (leatherId: string) => {
     setActiveLeather(leatherId);
@@ -55,7 +64,7 @@ const LeatherProvider = ({ children }: IProps) => {
         setLid,
         setPsid,
         leatherMode,
-        toggleLeatherMode
+        toggleLeatherMode,
       }}
     >
       {children}

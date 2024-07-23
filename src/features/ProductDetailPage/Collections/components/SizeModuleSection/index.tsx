@@ -1,6 +1,6 @@
 "use client";
 import { logger } from "@/utils/logger";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useContext, useEffect, useMemo, useState } from "react";
 import FitSelection from "../FitSelection";
 import ButtonComponent from "../Button";
 import SizeModal from "../SizeModal";
@@ -15,6 +15,10 @@ import SizeRecommendationLoader from "../SizeRecommendationLoader";
 import SizeRecommendationNotFound from "../SizeRecommendationNotFound";
 import Toast from "@/components/Toast";
 import useHandleErrorToast from "@/hooks/client/useAppToast";
+import {
+  LeatherContext,
+  useActiveLeather,
+} from "@/features/ProductDetailPage/Context/LeatherContext";
 
 export interface ISizeDetails {
   age: string;
@@ -30,8 +34,10 @@ export default function SizeModuleSection({
   productId: string;
   productName: string;
   productDetail: any;
-  }) {
+}) {
   const handleErrorToast = useHandleErrorToast();
+
+  const ctx = useActiveLeather();
   const toast = useToast();
   const PWA = "pwa";
   const router = useRouter();
@@ -41,13 +47,11 @@ export default function SizeModuleSection({
   const urlHeight = searchParams.get("height");
   const urlWeight = searchParams.get("weight");
 
-  const psid = searchParams.get("psid");
-  const lid = searchParams.get("lid");
   const s = searchParams.get("s");
   const urlFit = searchParams.get("fit");
 
   const findLeatherIndex = productDetail.product_specification.findIndex(
-    (val: any) => val?._id === psid
+    (val: any) => val?._id === ctx?.psid
   );
 
   const leatherDetails =
@@ -231,7 +235,7 @@ export default function SizeModuleSection({
   };
 
   const handleFitChange = (e: string) => {
-    if ((nodeData?.nodes?.data?.length || 0 )<1   ) {
+    if ((nodeData?.nodes?.data?.length || 0) < 1) {
       onOpen();
     }
     setSelectedFit(e);
@@ -252,15 +256,16 @@ export default function SizeModuleSection({
         (item) => item.attributes?.valueOne === selectedFit
       )
     ) || 0;
-
   useEffect(() => {
     const exactSelectedSpecs = productDetail?.product_specification?.find(
-      (ps: any) => ps?._id === psid
+      (ps: any) => ps?._id === ctx?.psid
     );
+
+    console.log("exact selected specs: ", exactSelectedSpecs);
     if (exactSelectedSpecs) {
       setSelectedSpecs(exactSelectedSpecs);
     }
-  }, [psid, selectedFit, sizeDetailSubmit]);
+  }, [ctx?.psid, selectedFit, sizeDetailSubmit]);
 
   useEffect(() => {
     getNodesCall(queryNodeValues);
@@ -272,7 +277,11 @@ export default function SizeModuleSection({
       return [el.size, el];
     })
   );
-  
+
+  console.log("range: ", range);
+
+  console.log("selected sepecs: ", selectedSpecs);
+
   const { token } = useGetTokens();
   const { mutateAsync, isPending } = useBuy();
   const handleBuyClick = async (price: number, srid: string) => {
@@ -288,7 +297,7 @@ export default function SizeModuleSection({
           currency: "Nrs",
           value: price,
         },
-        product_specification_id: psid as string,
+        product_specification_id: ctx?.psid as string,
         size_range_id: srid,
         leather_id: leatherDetails?.leather_id._id as string,
         size: Number(s) as number,
@@ -309,7 +318,14 @@ export default function SizeModuleSection({
     let hasURLPropError = false;
 
     const validateUrlProps = () => {
-      const incoming = [psid, lid, urlAge, urlFit, urlHeight, urlWeight];
+      const incoming = [
+        ctx?.psid,
+        ctx?.lid,
+        urlAge,
+        urlFit,
+        urlHeight,
+        urlWeight,
+      ];
       incoming.forEach((el) => {
         if (el === "undefined" || !el) {
           hasURLPropError = true;
@@ -341,7 +357,7 @@ export default function SizeModuleSection({
         localStorage.setItem("checkout", JSON.stringify(res?.data));
         router.push("/checkout");
       } catch (error) {
-        handleErrorToast(error)
+        handleErrorToast(error);
         logger.error(error);
       }
     }
@@ -395,9 +411,7 @@ export default function SizeModuleSection({
             <SizeRecommendationNotFound />
           )}
         </>
-      ) : (
-        null
-      )}
+      ) : null}
       <SizeModal
         heightOptions={heightOptionsValues}
         isOpen={isOpen}
