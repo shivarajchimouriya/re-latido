@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, Button, Container, VStack } from "@chakra-ui/react";
+import { Box, Button, Center, Container, VStack } from "@chakra-ui/react";
 import { IProps } from "./IProps";
 import ProductName from "../Collections/components/ProductName";
 import ProductImage from "../Collections/components/ProductImage";
@@ -13,6 +13,7 @@ import SizeModuleSection from "../Collections/components/SizeModuleSection";
 import NotFound from "@/components/NotFound";
 import LeatherProvider from "../Context/LeatherContext";
 import ImageLeatherWrapper from "../Collections/components/ImageLeatherWrapper";
+import ThreeDCard from "@/components/Cards/3dCard";
 
 const getProductDetail = async (id: string) => {
   try {
@@ -31,7 +32,10 @@ export default async function ProductDetail({ productId }: IProps) {
 
   return (
     <Container top="0" height="100vh" overflowY="scroll">
-      <VStack width="100%" gap='0' >
+      {/* <Center width="100%" height="500px">
+      <ThreeDCard />
+      </Center> */}
+      <VStack width="100%">
         <ProductName
           categoryId={productDetail.category._id}
           productName={productDetail.name}
