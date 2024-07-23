@@ -32,9 +32,9 @@ export default async function ProductDetail({ productId }: IProps) {
 
   return (
     <Container top="0" height="100vh" overflowY="scroll">
-      <Center width="100%" height="500px">
+      {/* <Center width="100%" height="500px">
       <ThreeDCard />
-      </Center>
+      </Center> */}
       <VStack width="100%">
         <ProductName
           categoryId={productDetail.category._id}
