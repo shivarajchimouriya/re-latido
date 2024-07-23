@@ -1,20 +1,21 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { logger } from "@/utils/logger";
+import { cookies, headers } from "next/headers";
 
-export default function page() {
-  // const url = usePathname();
-  // console.log("url: ", url);
+interface IProps {
+  params: string;
+}
 
-  // const headersList = headers();
+export default async function Page() {
 
-  // if (headersList) {
-  //   console.log("json header list: ", JSON.stringify(headersList));
 
-  //   const headerHost = headersList?.get("host");
-  //   const nextUrl = headersList?.get("next-url");
+  const headersList =  headers()
+  logger.log('headers',headersList)
 
-  //   console.log("header host", headerHost);
-  //   console.log("next url: ", nextUrl);
-  // }
+  // useEffect(() => {
+  //   console.log("window: ", window.location.href);
+  //   console.log("window path: ", window.location.pathname);
+  // }, []);
 
   return (
     <div

@@ -2,9 +2,13 @@ import { fetchAuthSession } from "aws-amplify/auth/server";
 import { NextRequest, NextResponse } from "next/server";
 import { AmplifyServer } from "aws-amplify/adapter-core";
 import { runWithAmplifyServerContext } from "./utils/serverContext";
+import { logger } from "./utils/logger";
 
 export async function middleware(request: NextRequest) {
+  logger.log("incoming url", request.url);
   const response = NextResponse.next();
+
+  console.log('form data', (await request.formData()).get('xmlmsg'))
 
   const url = new URL(request.url);
 
@@ -51,5 +55,6 @@ export const config = {
     "/profile",
     "/orders/:path*",
     "/digital-invoice/:path*",
+    "/test/cancel",
   ],
 };
