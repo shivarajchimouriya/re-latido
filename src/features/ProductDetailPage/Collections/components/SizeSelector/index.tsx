@@ -11,7 +11,6 @@ import {
 } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 import SizeCard from "../SizeCard";
-import { logger } from "@/utils/logger";
 import EditSizeCard from "../EditSizeCard";
 import { useSearchParams, useRouter } from "next/navigation";
 import Toast from "@/components/Toast";
@@ -103,10 +102,6 @@ export default function SizeSelector({
     }
   }, [activeFit]);
 
-  console.log("recommendation: ", recommendation);
-
-  console.log('size range: ', sizeRange);
-
   const intersection = recommendation?.map((el) => {
     if (sizeRange.has(el.attributes.output)) {
       return {
@@ -117,7 +112,6 @@ export default function SizeSelector({
     return null;
   });
 
-  console.log("intersection: ", intersection);
   return (
     <AnimatePresence>
       <Container my={"2rem"}>
@@ -135,8 +129,6 @@ export default function SizeSelector({
           <Box maxW="500px">
             <HStack gap="1rem" mx="2rem">
               {intersection?.map((node: any, i) => {
-
-                console.log('node: ', node);
                 if (!node?.attributes?.output) {
                   return null;
                 }
