@@ -103,6 +103,10 @@ export default function SizeSelector({
     }
   }, [activeFit]);
 
+  console.log("recommendation: ", recommendation);
+
+  console.log('size range: ', sizeRange);
+
   const intersection = recommendation?.map((el) => {
     if (sizeRange.has(el.attributes.output)) {
       return {
@@ -112,96 +116,107 @@ export default function SizeSelector({
     }
     return null;
   });
+
+  console.log("intersection: ", intersection);
   return (
     <AnimatePresence>
-    <Container my={"2rem"}>
-      <VStack>
-        <Text
-          className="recommended-size-text"
-          color={appColor.base}
-          fontSize={"1.6rem"}
-          fontWeight={"bold"}
-          textTransform="uppercase"
-        >
-          Recommended size for you
-        </Text>
+      <Container my={"2rem"}>
+        <VStack>
+          <Text
+            className="recommended-size-text"
+            color={appColor.base}
+            fontSize={"1.6rem"}
+            fontWeight={"bold"}
+            textTransform="uppercase"
+          >
+            Recommended size for you
+          </Text>
 
-        <Box maxW="500px">
-          <HStack gap="1rem" mx="2rem">
-            {intersection?.map((node: any, i) => {
-              if (!node?.attributes?.output) {
-                return null;
-              }
-              const recommendedSize = node?.attributes?.output;
-              const selected = node?.attributes?.output === fitData?.[0]?.size;
-              return (
-                <SizeCard
-                  key={i}
-                  recommendedSize={recommendedSize}
-                  selected={selected}
-                  onClick={() =>
-                    !selected && handleSizeCardClick(recommendedSize)
-                  }
-                />
-              );
-            })}
-            <EditSizeCard onOpen={onOpen} />
-          </HStack>
+          <Box maxW="500px">
+            <HStack gap="1rem" mx="2rem">
+              {intersection?.map((node: any, i) => {
+
+                console.log('node: ', node);
+                if (!node?.attributes?.output) {
+                  return null;
+                }
+                const recommendedSize = node?.attributes?.output;
+                const selected =
+                  node?.attributes?.output === fitData?.[0]?.size;
+                return (
+                  <SizeCard
+                    key={i}
+                    recommendedSize={recommendedSize}
+                    selected={selected}
+                    onClick={() =>
+                      !selected && handleSizeCardClick(recommendedSize)
+                    }
+                  />
+                );
+              })}
+              <EditSizeCard onOpen={onOpen} />
+            </HStack>
+          </Box>
+        </VStack>
+        <Box m="2rem">
+          <Text
+            width={"full"}
+            fontWeight="bold"
+            fontSize={"1.6rem"}
+            color="white"
+          >
+            {price ? `रु. ${Intl.NumberFormat().format(price)}` : null}
+          </Text>
         </Box>
-      </VStack>
-      <Box m="2rem">
-        <Text
-          width={"full"}
-          fontWeight="bold"
-          fontSize={"1.6rem"}
-          color="white"
-        >
-          {price ? `रु. ${Intl.NumberFormat().format(price)}` : null}
-        </Text>
-      </Box>
-      <Grid placeItems="center" mt="4rem" mb="2rem">
-        <Button
-          isLoading={isPending}
-          disabled={isPending}
-          isDisabled={isPending}
-          opacity={isPending ? 0.6 : 1}
-          onClick={() => {
-            if (price && sizeRangeId) {
-              handleBuyClick(price, sizeRangeId);
-            } else {
-              toast({
-                position: "top",
-                render: ({ onClose }) => {
-                  return <Toast onClose={onClose} status="error" message="Something went wrong." />;
-                },
-              });
-            }
-          }}
-          width={"fit-content"}
-          fontSize={"1.6rem"}
-          p='1.4rem'
-          textTransform='uppercase'
-          rounded='full'
-          rightIcon={<IoBagCheckOutline/>}
-          px='5rem'
-          iconSpacing='1rem'
-          bg='white'
-          as={motion.button}
-          initial={{
-            scale:0
-          }}
-          animate={{
-            scale:1
-          }}
-          exit={{
-            scale:0
-          }}
-          // fontWeight='bold'
-        >
-          Buy
-        </Button>
-      </Grid>
-    </Container>
+        <Grid placeItems="center" mt="4rem" mb="2rem">
+          <Button
+            isLoading={isPending}
+            disabled={isPending}
+            isDisabled={isPending}
+            opacity={isPending ? 0.6 : 1}
+            onClick={() => {
+              if (price && sizeRangeId) {
+                handleBuyClick(price, sizeRangeId);
+              } else {
+                toast({
+                  position: "top",
+                  render: ({ onClose }) => {
+                    return (
+                      <Toast
+                        onClose={onClose}
+                        status="error"
+                        message="Something went wrong."
+                      />
+                    );
+                  },
+                });
+              }
+            }}
+            width={"fit-content"}
+            fontSize={"1.6rem"}
+            p="1.4rem"
+            textTransform="uppercase"
+            rounded="full"
+            rightIcon={<IoBagCheckOutline />}
+            px="5rem"
+            iconSpacing="1rem"
+            bg="white"
+            as={motion.button}
+            initial={{
+              scale: 0,
+            }}
+            animate={{
+              scale: 1,
+            }}
+            exit={{
+              scale: 0,
+            }}
+            // fontWeight='bold'
+          >
+            Buy
+          </Button>
+        </Grid>
+      </Container>
     </AnimatePresence>
   );
 }

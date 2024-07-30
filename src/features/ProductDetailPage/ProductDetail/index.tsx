@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, Button, Center, Container, VStack } from "@chakra-ui/react";
+import { Box, Container, VStack } from "@chakra-ui/react";
 import { IProps } from "./IProps";
 import ProductName from "../Collections/components/ProductName";
 import ProductImage from "../Collections/components/ProductImage";
