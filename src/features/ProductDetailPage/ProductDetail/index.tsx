@@ -13,7 +13,7 @@ import SizeModuleSection from "../Collections/components/SizeModuleSection";
 import NotFound from "@/components/NotFound";
 import LeatherProvider from "../Context/LeatherContext";
 import ImageLeatherWrapper from "../Collections/components/ImageLeatherWrapper";
-import ThreeDCard from "@/components/Cards/3dCard";
+// import ThreeDCard from "@/components/Cards/3dCard";
 
 const getProductDetail = async (id: string) => {
   try {
