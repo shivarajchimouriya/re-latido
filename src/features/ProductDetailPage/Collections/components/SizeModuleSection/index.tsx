@@ -8,7 +8,7 @@ import { Button, useDisclosure, useToast } from "@chakra-ui/react";
 import { FIT_ENUM } from "../SizeModal/FitEnums";
 import { useGetNodesLazyQuery } from "@/GraphQl/Generated/graphql";
 import SizeSelector from "../SizeSelector";
-import { useSearchParams, useRouter, usePathname } from "next/navigation";
+import { useSearchParams, useRouter } from "next/navigation";
 import { useBuy } from "./data/useBuy";
 import { useGetTokens } from "@/hooks/client/useGetToken";
 import SizeRecommendationLoader from "../SizeRecommendationLoader";
@@ -47,7 +47,6 @@ export default function SizeModuleSection({
   const urlHeight = searchParams.get("height");
   const urlWeight = searchParams.get("weight");
 
-  const s = searchParams.get("s");
   const urlFit = searchParams.get("fit");
 
   const findLeatherIndex = productDetail.product_specification.findIndex(
@@ -61,6 +60,7 @@ export default function SizeModuleSection({
   const [heightOptionsValues, setHeightOptionsValues] = useState<string[]>([]);
   const [selectedFit, setSelectedFit] = useState(urlFit || "Regular Fit");
   const [selectedSpecs, setSelectedSpecs] = useState<any>();
+  const [selectedSize, setSelectedSize] = useState<number | null>(null);
 
   const heightOptions = () => {
     const height = [];
@@ -284,11 +284,16 @@ export default function SizeModuleSection({
   const { token } = useGetTokens();
   const { mutateAsync, isPending } = useBuy();
   const handleBuyClick = async (price: number, srid: string) => {
+    console.log("biy : ");
+    console.log("price: ", selectedSpecs);
+    console.log("srid: ", srid);
     if (!token) {
       sessionStorage.setItem("productUrl", window?.location?.href);
       router.push("/auth/login");
       return;
     }
+
+    console.log("context: ", ctx);
 
     const payload = {
       product_specification: {
@@ -299,7 +304,7 @@ export default function SizeModuleSection({
         product_specification_id: ctx?.psid as string,
         size_range_id: srid,
         leather_id: leatherDetails?.leather_id._id as string,
-        size: Number(s) as number,
+        size: Number(selectedSize) as number,
         pattern_package: nodeData?.nodes?.data[indexWithComfort]?.attributes
           ?.outputLevel as string,
       },
@@ -363,6 +368,7 @@ export default function SizeModuleSection({
   };
 
   const handleSizeCardClick = (val: number) => {
+    setSelectedSize(val);
     nodeData?.nodes?.data.forEach((fit: any) => {
       if (fit?.attributes?.output === val) {
         const dataToSearch = fit?.attributes?.attribute_values?.data;
@@ -416,6 +422,7 @@ export default function SizeModuleSection({
             handleSizeCardClick={handleSizeCardClick}
             isPending={isPending}
             intersection={intersection}
+            setSelectedSize={setSelectedSize}
           />
         );
       }
