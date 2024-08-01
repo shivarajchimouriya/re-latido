@@ -20,7 +20,7 @@ export interface IFit {
 export default function FittingSwiper({
   options,
   onChange,
-  selectedFit,
+  selectedFit
 }: TODO) {
   return (
     <Flex className="parent" w="auto" overflow="hidden" padding={"1rem 0"}>

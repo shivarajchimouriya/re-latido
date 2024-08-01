@@ -42,8 +42,7 @@ export default function FitSelection({
         fontSize={"1.4rem"}
         color={appColor.base}
         mx={8}
-        mb='2rem'
-
+        mb="2rem"
       >
         Fit Selection
       </Text>

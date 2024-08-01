@@ -76,7 +76,7 @@ export default function SizeModuleSection({
     heightOptions();
   }, []);
 
-  const [getNodes, { data: nodeData, loading: nodeQueryLoading }] =
+  const [getNodes, { data: nodeData, loading: nodeQueryLoading, called }] =
     useGetNodesLazyQuery({
       notifyOnNetworkStatusChange: true,
       fetchPolicy: "network-only",
@@ -235,7 +235,10 @@ export default function SizeModuleSection({
   };
 
   const handleFitChange = (e: string) => {
-    if ((nodeData?.nodes?.data?.length || 0) < 1) {
+    if (
+      (nodeData?.nodes?.data?.length || 0) < 1 ||
+      intersection?.[0] === null
+    ) {
       onOpen();
     }
     setSelectedFit(e);
@@ -261,7 +264,7 @@ export default function SizeModuleSection({
       (ps: any) => ps?._id === ctx?.psid
     );
 
-    console.log("exact selected specs: ", exactSelectedSpecs);
+    // console.log("exact selected specs: ", exactSelectedSpecs);
     if (exactSelectedSpecs) {
       setSelectedSpecs(exactSelectedSpecs);
     }
@@ -277,10 +280,6 @@ export default function SizeModuleSection({
       return [el.size, el];
     })
   );
-
-  console.log("range: ", range);
-
-  console.log("selected sepecs: ", selectedSpecs);
 
   const { token } = useGetTokens();
   const { mutateAsync, isPending } = useBuy();
@@ -382,6 +381,47 @@ export default function SizeModuleSection({
     });
   };
 
+  // console.log("url age: ", urlAge);
+  // console.log("url height: ", urlHeight);
+  // console.log("url weight: ", urlWeight);
+  // console.log("node data:  ", nodeData?.nodes?.data);
+  // console.log("ctx intersection: ", ctx?.intersection);
+  // console.log("is node query loading, ", nodeQueryLoading);
+
+  const intersection = nodeData?.nodes?.data?.map((el) => {
+    if (range.has(el?.attributes?.output)) {
+      return {
+        ...el,
+        price: range.get(el?.attributes?.output),
+      };
+    }
+    return null;
+  });
+  // logger.log("Intersection", intersection);
+  const ConditionalSizeRendering = () => {
+    if (urlAge && urlHeight && urlWeight) {
+      if (nodeQueryLoading) {
+        return <SizeRecommendationLoader />;
+      } else if (intersection?.[0] === null) {
+        return <SizeRecommendationNotFound />;
+      } else if ((nodeData?.nodes?.data?.length || 0) > 0) {
+        return (
+          <SizeSelector
+            sizeRange={range}
+            onOpen={onOpen}
+            activeFit={selectedFit}
+            fitData={fitData ? fitData : null}
+            recommendation={nodeData?.nodes?.data}
+            handleBuyClick={handleBuyClick}
+            handleSizeCardClick={handleSizeCardClick}
+            isPending={isPending}
+            intersection={intersection}
+          />
+        );
+      }
+    }
+  };
+
   return (
     <>
       <FitSelection
@@ -390,7 +430,7 @@ export default function SizeModuleSection({
         productId={productId}
       />
 
-      {nodeData?.nodes?.data?.length || 0 > 0 ? (
+      {/* {nodeData?.nodes?.data?.length || 0 > 0 ? (
         <>
           <SizeSelector
             sizeRange={range}
@@ -411,7 +451,10 @@ export default function SizeModuleSection({
             <SizeRecommendationNotFound />
           )}
         </>
-      ) : null}
+      ) : null} */}
+
+      <ConditionalSizeRendering />
+
       <SizeModal
         heightOptions={heightOptionsValues}
         isOpen={isOpen}

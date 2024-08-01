@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import {
   Box,
   Button,
@@ -7,23 +7,15 @@ import {
   Flex,
   HStack,
   IconButton,
-  Modal,
-  ModalBody,
-  ModalCloseButton,
-  ModalContent,
-  ModalFooter,
-  ModalHeader,
-  ModalOverlay,
-  Text
+  Text,
 } from "@chakra-ui/react";
 
 import Wheel from "../Wheel/index";
 import { appColor } from "@/theme/foundations/colors";
-import { ISizeDetails } from "../SizeModuleSection";
 import { useSearchParams } from "next/navigation";
 import { AnimatePresence, motion } from "framer-motion";
-import { BiCloset } from "react-icons/bi";
 import { CgClose } from "react-icons/cg";
+import { useRouter } from "next/navigation";
 
 interface IProps {
   isOpen: boolean;
@@ -62,7 +54,7 @@ export default function SizeModal({
   isOpen,
   onClose,
   heightOptions,
-  sizeDetailSubmit
+  sizeDetailSubmit,
 }: IProps) {
   const searchParams = useSearchParams();
 
@@ -75,6 +67,8 @@ export default function SizeModal({
   const urlAge = searchParams.get("age");
   const urlHeight = searchParams.get("height");
   const urlWeight = searchParams.get("weight");
+
+  const router = useRouter();
 
   const [height, setHeight] = useState<string | null>(
     urlHeight || localStorageData?.height || null
@@ -104,14 +98,27 @@ export default function SizeModal({
     }
     sizeDetailSubmit(height, weight, age);
 
+    const sizeQuery = new URLSearchParams(searchParams.toString());
+
+    if (!urlAge || !urlHeight || !urlWeight) {
+      sizeQuery.append("height", height);
+      sizeQuery.append("weight", weight);
+      sizeQuery.append("age", age);
+    } else {
+      sizeQuery.set("height", height);
+      sizeQuery.set("weight", weight);
+      sizeQuery.set("age", age);
+    }
+
     localStorage?.setItem(
       "sizing",
       JSON.stringify({
         height: height,
         weight: weight,
-        age: age
+        age: age,
       })
     );
+    router.replace(`?${sizeQuery.toString()}`);
   };
 
   return (
@@ -122,24 +129,20 @@ export default function SizeModal({
             <Box
               position="absolute"
               inset="0"
-              bg='rgba(0,0,0,0.8)'
+              bg="rgba(0,0,0,0.8)"
               backdropFilter="auto"
               // backdropBlur="2px"
               zIndex="10"
               onClick={onClose}
               as={motion.div}
               initial={{
-                opacity:0,
+                opacity: 0,
               }}
-
-
               animate={{
-                opacity:1,
-
+                opacity: 1,
               }}
               exit={{
-                opacity:0
-
+                opacity: 0,
               }}
             />
 
@@ -153,34 +156,29 @@ export default function SizeModal({
               }}
             >
               <Box
-              as={motion.div}
-
-
-              initial={{
-                x:"-100%",
-                // scale:0
-              
-              }}
-              animate={{
-                x:"0%",
-                transition:{
-                  bounce:false,
-                  duration:.5
-                }
-                
-                
-              }}
-              exit={{
-                x:"100%",
-                transition:{
-                  bounce:false
-                }
-              }}
+                as={motion.div}
+                initial={{
+                  x: "-100%",
+                  // scale:0
+                }}
+                animate={{
+                  x: "0%",
+                  transition: {
+                    bounce: false,
+                    duration: 0.5,
+                  },
+                }}
+                exit={{
+                  x: "100%",
+                  transition: {
+                    bounce: false,
+                  },
+                }}
                 h="fit-content"
                 bg={"rgba(0,0,0,0.6)"}
                 boxShadow={"lg"}
                 display={"grid"}
-                backdropFilter='auto'
+                backdropFilter="auto"
                 placeItems={"center"}
                 rounded={"1rem"}
                 m={4}
@@ -188,9 +186,9 @@ export default function SizeModal({
                 w="95%"
                 border={"1px solid var(--text-primary)"}
                 maxW="500px"
-                 onClick={(e) => {
-                e.stopPropagation();
-              }}
+                onClick={(e) => {
+                  e.stopPropagation();
+                }}
               >
                 <Box width={"97%"} my={8}>
                   <Flex
@@ -262,12 +260,12 @@ export default function SizeModal({
                       </Box>
                     </Flex>
                   </Box>
-                  <HStack mt={"6rem"}  w={"full"} gap={"1rem"}>
-                      <Button
+                  <HStack mt={"6rem"} w={"full"} gap={"1rem"}>
+                    <Button
                       fontWeight={"bold"}
                       fontSize={"1.4rem"}
-                      py='1.4rem'
-                      px='2rem'
+                      py="1.4rem"
+                      px="2rem"
                       color={appColor.base}
                       rounded="full"
                       // className="outline-button"
@@ -290,7 +288,6 @@ export default function SizeModal({
                     >
                       Submit
                     </Button>
-                  
                   </HStack>
                 </Box>
               </Box>

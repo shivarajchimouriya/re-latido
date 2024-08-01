@@ -16,6 +16,8 @@ import { useSearchParams, useRouter } from "next/navigation";
 import Toast from "@/components/Toast";
 import { IoBagCheckOutline } from "react-icons/io5";
 import { AnimatePresence, motion } from "framer-motion";
+import { useActiveLeather } from "@/features/ProductDetailPage/Context/LeatherContext";
+import { logger } from "@/utils/logger";
 export const availableSizes = [
   {
     name: "XXXS",
@@ -69,6 +71,7 @@ export default function SizeSelector({
   handleSizeCardClick,
   activeFit,
   isPending,
+  intersection,
 }: {
   fitData: any;
   recommendation?: any[];
@@ -78,6 +81,7 @@ export default function SizeSelector({
   handleSizeCardClick: (val: number) => void;
   activeFit: string;
   isPending: boolean;
+  intersection: any;
 }) {
   const params = useSearchParams();
   const router = useRouter();
@@ -86,12 +90,13 @@ export default function SizeSelector({
   const [sizeRangeId, setSizeRangeId] = useState<string>();
 
   useEffect(() => {
-    const elementThatMatches = intersection?.find((el) => {
+    const elementThatMatches = intersection?.find((el: any) => {
       return el?.attributes?.output === fitData?.[0]?.size;
     });
+    logger.log("elements that matches", elementThatMatches);
 
     setPrice(elementThatMatches?.price?.price?.[0]?.value);
-    setSizeRangeId(elementThatMatches?.price._id);
+    setSizeRangeId(elementThatMatches?.price?._id);
   }, [fitData]);
 
   useEffect(() => {
@@ -102,16 +107,9 @@ export default function SizeSelector({
     }
   }, [activeFit]);
 
-  const intersection = recommendation?.map((el) => {
-    if (sizeRange.has(el.attributes.output)) {
-      return {
-        ...el,
-        price: sizeRange.get(el.attributes.output),
-      };
-    }
+  if (!intersection) {
     return null;
-  });
-
+  }
   return (
     <AnimatePresence>
       <Container my={"2rem"}>
@@ -128,7 +126,7 @@ export default function SizeSelector({
 
           <Box maxW="500px">
             <HStack gap="1rem" mx="2rem">
-              {intersection?.map((node: any, i) => {
+              {intersection?.map((node: any, i: number) => {
                 if (!node?.attributes?.output) {
                   return null;
                 }
@@ -160,54 +158,56 @@ export default function SizeSelector({
             {price ? `रु. ${Intl.NumberFormat().format(price)}` : null}
           </Text>
         </Box>
-        <Grid placeItems="center" mt="4rem" mb="2rem">
-          <Button
-            isLoading={isPending}
-            disabled={isPending}
-            isDisabled={isPending}
-            opacity={isPending ? 0.6 : 1}
-            onClick={() => {
-              if (price && sizeRangeId) {
-                handleBuyClick(price, sizeRangeId);
-              } else {
-                toast({
-                  position: "top",
-                  render: ({ onClose }) => {
-                    return (
-                      <Toast
-                        onClose={onClose}
-                        status="error"
-                        message="Something went wrong."
-                      />
-                    );
-                  },
-                });
-              }
-            }}
-            width={"fit-content"}
-            fontSize={"1.6rem"}
-            p="1.4rem"
-            textTransform="uppercase"
-            rounded="full"
-            rightIcon={<IoBagCheckOutline />}
-            px="5rem"
-            iconSpacing="1rem"
-            bg="white"
-            as={motion.button}
-            initial={{
-              scale: 0,
-            }}
-            animate={{
-              scale: 1,
-            }}
-            exit={{
-              scale: 0,
-            }}
-            // fontWeight='bold'
-          >
-            Buy
-          </Button>
-        </Grid>
+        {price && (
+          <Grid placeItems="center" mt="4rem" mb="2rem">
+            <Button
+              isLoading={isPending}
+              disabled={isPending}
+              isDisabled={isPending}
+              opacity={isPending ? 0.6 : 1}
+              onClick={() => {
+                if (price && sizeRangeId) {
+                  handleBuyClick(price, sizeRangeId);
+                } else {
+                  toast({
+                    position: "top",
+                    render: ({ onClose }) => {
+                      return (
+                        <Toast
+                          onClose={onClose}
+                          status="error"
+                          message="Something went wrong."
+                        />
+                      );
+                    },
+                  });
+                }
+              }}
+              width={"fit-content"}
+              fontSize={"1.6rem"}
+              p="1.4rem"
+              textTransform="uppercase"
+              rounded="full"
+              rightIcon={<IoBagCheckOutline />}
+              px="5rem"
+              iconSpacing="1rem"
+              bg="white"
+              as={motion.button}
+              initial={{
+                scale: 0,
+              }}
+              animate={{
+                scale: 1,
+              }}
+              exit={{
+                scale: 0,
+              }}
+              // fontWeight='bold'
+            >
+              Buy
+            </Button>
+          </Grid>
+        )}
       </Container>
     </AnimatePresence>
   );

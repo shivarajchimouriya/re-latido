@@ -17,6 +17,8 @@ interface ILeatherContext {
   changeLeather: (leatherId: string) => void;
   leatherMode: appModeType;
   toggleLeatherMode: () => void;
+  intersection: any;
+  setIntersection: (el: any) => void;
 }
 export type appModeType = "dark" | "light";
 
@@ -32,6 +34,7 @@ const LeatherProvider = ({ children }: IProps) => {
   const [lid, setLid] = useState(searchParams.get("lid") || "");
   const [psid, setPsid] = useState(searchParams.get("psid") || "");
   const [leatherMode, setLeatherMode] = useState<appModeType>("light");
+  const [intersection, setIntersection] = useState<any>([]);
 
   useEffect(() => {
     const mode =
@@ -65,6 +68,8 @@ const LeatherProvider = ({ children }: IProps) => {
         setPsid,
         leatherMode,
         toggleLeatherMode,
+        intersection,
+        setIntersection,
       }}
     >
       {children}
