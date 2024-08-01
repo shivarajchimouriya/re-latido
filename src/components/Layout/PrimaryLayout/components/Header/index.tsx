@@ -1,9 +1,6 @@
 import { Flex } from "@chakra-ui/react";
 import React from "react";
-import BackButton from "./components/BackButton";
 import Logo from "./components/Logo";
-import Search from "./components/Search";
-import Chat from "./components/Chat";
 import HamburgerMenu from "./components/Hamburger";
 import Gender from "./components/Gender";
 const Header = () => {
