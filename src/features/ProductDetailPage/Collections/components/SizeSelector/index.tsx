@@ -72,6 +72,7 @@ export default function SizeSelector({
   activeFit,
   isPending,
   intersection,
+  setSelectedSize,
 }: {
   fitData: any;
   recommendation?: any[];
@@ -82,6 +83,7 @@ export default function SizeSelector({
   activeFit: string;
   isPending: boolean;
   intersection: any;
+  setSelectedSize: (val: number) => void;
 }) {
   const params = useSearchParams();
   const router = useRouter();
@@ -133,6 +135,9 @@ export default function SizeSelector({
                 const recommendedSize = node?.attributes?.output;
                 const selected =
                   node?.attributes?.output === fitData?.[0]?.size;
+                if (selected) {
+                  setSelectedSize(fitData?.[0]?.size);
+                }
                 return (
                   <SizeCard
                     key={i}
