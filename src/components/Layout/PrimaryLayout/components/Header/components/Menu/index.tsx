@@ -21,15 +21,15 @@ export default function Menus({ onClose }: { onClose: () => void }) {
       name: "message us",
       link: "https://wa.me/9779801154484",
       icon: <FaWhatsapp />,
-      isExternal: true
-    }
+      isExternal: true,
+    },
   ];
 
   const orders = {
     name: "my orders",
     link: "/orders",
     icon: <HiOutlineShoppingBag />,
-    isExternal: true
+    isExternal: false,
   };
 
   return (
@@ -50,16 +50,16 @@ export default function Menus({ onClose }: { onClose: () => void }) {
             </Box>
           );
         })}
-      {isLoggedIn  && (
-        <Box onClick={onClose} mb="1.6rem">
-          <NavItem
-            name={orders.name}
-            link={orders.link}
-            icon={orders.icon}
-            isExternal={orders.isExternal}
-          />
-        </Box>
-      )}
+        {isLoggedIn && (
+          <Box onClick={onClose} mb="1.6rem">
+            <NavItem
+              name={orders.name}
+              link={orders.link}
+              icon={orders.icon}
+              isExternal={orders.isExternal}
+            />
+          </Box>
+        )}
       </Box>
     </Grid>
   );
