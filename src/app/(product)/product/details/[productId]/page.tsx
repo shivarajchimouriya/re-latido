@@ -12,6 +12,8 @@ import ProfileSkeleton from "@/features/ProfilePage/ProfileSkeleton";
 import { notFound } from "next/navigation";
 import LeatherProvider from "@/features/ProductDetailPage/Context/LeatherContext";
 
+export const revalidate = 15;
+
 export const generateStaticParams = async () => {
   const res = await API.Product.getAll({ params: { limit: 1000, page: 1 } });
   const allProducts = res.data.data;
