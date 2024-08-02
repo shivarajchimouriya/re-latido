@@ -4,6 +4,7 @@ import Script from "next/script";
 import React from "react";
 
 const AnalyticsProvider = () => {
+  console.log('envs: ', env.GA_ID, env.CLARITY_ID)
   return (
     <>
       <Script
