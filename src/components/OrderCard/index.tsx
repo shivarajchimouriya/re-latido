@@ -21,6 +21,7 @@ interface IProps {
   hideDaysLeft?: boolean;
   orderIdentity?: string;
   isInvoice?: boolean;
+  noLink?: boolean;
 }
 
 export default function OrderCard({
@@ -39,6 +40,7 @@ export default function OrderCard({
   hideProgress,
   hideDaysLeft,
   isInvoice,
+  noLink,
 }: IProps) {
   const router = useRouter();
   let today = new Date().toISOString();
@@ -71,9 +73,11 @@ export default function OrderCard({
         cursor: "pointer",
       }}
       onClick={() => {
-        isInvoice
-          ? router.push(`digital-invoice/detail/${orderIdentity}`)
-          : router.push(`orders/details/${orderIdentity}`);
+        if (!noLink) {
+          isInvoice
+            ? router.push(`digital-invoice/detail/${orderIdentity}`)
+            : router.push(`orders/details/${orderIdentity}`);
+        }
       }}
     >
       <Flex
