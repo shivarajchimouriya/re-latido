@@ -14,7 +14,8 @@ const SecondaryHeader = () => {
   return (
     <Flex
       className="header"
-      w="100%"
+      width="full"
+      maxW="500px"
       justify="space-between"
       align="center"
       pr="2rem"
