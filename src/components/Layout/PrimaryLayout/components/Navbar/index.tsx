@@ -2,6 +2,7 @@
 import {
   Box,
   Circle,
+  Container,
   Flex,
   HStack,
   IconButton,
@@ -52,7 +53,7 @@ const Navbar = () => {
   const ref = useRef<HTMLDivElement | null>(null);
 
   return (
-    <>
+    <Container maxW="500px" w="full">
       <Appendix onClick={onOpen} />
       {/* <Flex
           position="fixed"
@@ -151,6 +152,7 @@ const Navbar = () => {
               bottom="0"
               width="100%"
               height="50rem"
+              maxWidth="50rem"
               py="2rem"
               pb="1rem"
               onPan={(e: PointerEvent, info: PanInfo) => {
@@ -166,6 +168,7 @@ const Navbar = () => {
               <VStack
                 w="95%"
                 h="100%"
+                maxWidth="48rem"
                 position="relative"
                 overflow="hidden"
                 as={motion.div}
@@ -197,7 +200,7 @@ const Navbar = () => {
           </>
         )}
       </AnimatePresence>
-    </>
+    </Container>
   );
 };
 

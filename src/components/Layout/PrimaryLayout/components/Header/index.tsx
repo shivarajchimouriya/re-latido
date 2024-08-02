@@ -7,7 +7,7 @@ const Header = () => {
   return (
     <Flex
       className="header"
-      w="100%"
+      w="full"
       justify="space-between"
       align="center"
       pr="2rem"
@@ -20,6 +20,7 @@ const Header = () => {
       zIndex={100}
       borderBottom="1px solid rgba(0,0,0,0.2)"
       height="5rem"
+      maxW="500px"
       position="fixed"
       top="0"
     >

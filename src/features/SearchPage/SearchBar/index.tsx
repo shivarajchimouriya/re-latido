@@ -53,6 +53,7 @@ const SearchBar = () => {
     >
       <Flex
         w="95%"
+        maxW="500px"
         rounded="full"
         justify="space-between"
         p="1rem"
