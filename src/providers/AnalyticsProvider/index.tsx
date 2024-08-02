@@ -3,7 +3,7 @@ import { env } from "@/config/environment";
 import Script from "next/script";
 import React from "react";
 
-const AnalyticsProvider = ({ GA_TRACKING_ID }: { GA_TRACKING_ID: string }) => {
+const AnalyticsProvider = () => {
   return (
     <>
       <Script
@@ -33,7 +33,7 @@ const AnalyticsProvider = ({ GA_TRACKING_ID }: { GA_TRACKING_ID: string }) => {
           function gtag(){dataLayer.push(arguments);}
           gtag('js', new Date());
 
-          gtag('config', "${GA_TRACKING_ID}");
+          gtag('config', "${env.GA_ID}");
         `,
         }}
       ></Script>
