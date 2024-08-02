@@ -37,6 +37,7 @@ const ShippingDetails = () => {
     getValues,
     register,
     setError,
+    trigger,
     formState: { errors, isSubmitting },
   } = useForm<IForm>({
     resolver: zodResolver(formSchema),
@@ -88,13 +89,13 @@ const ShippingDetails = () => {
     };
 
     try {
+      await trigger();
       const res = await mutateAsync({ data: formReqdata, token });
-      setValue(formReqdata?.shipping_details);
 
-      localStorage.setItem("checkout",JSON.stringify(res.data))
+      localStorage.setItem("checkout", JSON.stringify(res.data));
       router.push("/checkout?tab=payment");
     } catch (error) {
-      handleErrorToast(error)
+      handleErrorToast(error);
       logger.log("error", error);
     }
   };
@@ -105,7 +106,7 @@ const ShippingDetails = () => {
     <VStack w="full" align="start">
       <Box textTransform="uppercase" fontSize="3xl" p="1rem" w="full">
         <Text> shipping </Text>
-        <Text fontWeight="bold"> DEtails </Text>
+        <Text fontWeight="bold"> Details </Text>
       </Box>
 
       <VStack
@@ -236,6 +237,7 @@ const ShippingDetails = () => {
           fontSize="1.4rem"
           bg="black"
           color="white"
+          textTransform="capitalize"
           type="submit"
           isLoading={isSubmitting}
         >

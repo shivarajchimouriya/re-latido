@@ -45,13 +45,13 @@ export default function SwipeCard({
             onClick={(e) => {
               e.preventDefault();
               e.stopPropagation();
-              onOpen();
+              // onOpen();
             }}
           >
             <Text textTransform="uppercase" fontSize="1.2rem" fontWeight="bold">
               {fit?.label}
             </Text>
-            <BsInfoCircle fontSize="1.3rem" />
+            {/* <BsInfoCircle fontSize="1.3rem" /> */}
           </HStack>
           {/* <Button>
 
