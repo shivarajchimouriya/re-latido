@@ -58,7 +58,7 @@ export default function SizeModuleSection({
 
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [heightOptionsValues, setHeightOptionsValues] = useState<string[]>([]);
-  const [selectedFit, setSelectedFit] = useState(urlFit || "Regular Fit");
+  const [selectedFit, setSelectedFit] = useState(urlFit || "Regular");
   const [selectedSpecs, setSelectedSpecs] = useState<any>();
   const [selectedSize, setSelectedSize] = useState<number | null>(null);
 
@@ -229,6 +229,16 @@ export default function SizeModuleSection({
       sizeQuery.set("age", age);
     }
     router.replace(`?${sizeQuery.toString()}`, { scroll: false });
+
+    localStorage?.setItem(
+      "sizing",
+      JSON.stringify({
+        height: height,
+        weight: weight,
+        age: age,
+      })
+    );
+
     getNodesCall(queryNodeValues);
     getMultipleNodesCall(queryNodeValues);
     onClose();
@@ -241,7 +251,15 @@ export default function SizeModuleSection({
     ) {
       onOpen();
     }
+    const fitQuery = new URLSearchParams(searchParams.toString());
     setSelectedFit(e);
+
+    if (!urlFit) {
+      fitQuery.append("fit", e);
+    } else {
+      fitQuery.set("fit", e);
+    }
+    router.replace(`?${fitQuery.toString()}`);
   };
 
   const fitData = multipleNodeData?.nodes?.data?.map((item: any) => {
@@ -263,8 +281,6 @@ export default function SizeModuleSection({
     const exactSelectedSpecs = productDetail?.product_specification?.find(
       (ps: any) => ps?._id === ctx?.psid
     );
-
-    // console.log("exact selected specs: ", exactSelectedSpecs);
     if (exactSelectedSpecs) {
       setSelectedSpecs(exactSelectedSpecs);
     }
@@ -283,17 +299,14 @@ export default function SizeModuleSection({
 
   const { token } = useGetTokens();
   const { mutateAsync, isPending } = useBuy();
+
   const handleBuyClick = async (price: number, srid: string) => {
-    console.log("biy : ");
-    console.log("price: ", selectedSpecs);
-    console.log("srid: ", srid);
     if (!token) {
+      logger.warn("no token");
       sessionStorage.setItem("productUrl", window?.location?.href);
       router.push("/auth/login");
       return;
     }
-
-    console.log("context: ", ctx);
 
     const payload = {
       product_specification: {
@@ -326,9 +339,9 @@ export default function SizeModuleSection({
         ctx?.psid,
         ctx?.lid,
         urlAge,
-        urlFit,
         urlHeight,
         urlWeight,
+        urlFit,
       ];
       incoming.forEach((el) => {
         if (el === "undefined" || !el) {
@@ -380,19 +393,19 @@ export default function SizeModuleSection({
           });
           const valueFromData = dataToSearch?.[index]?.attributes?.valueOne;
           if (valueFromData) {
+            const fitQuery = new URLSearchParams(searchParams.toString());
             setSelectedFit(valueFromData);
+            if (!urlFit) {
+              fitQuery.append("fit", valueFromData);
+            } else {
+              fitQuery.set("fit", valueFromData);
+            }
+            router.replace(`?${fitQuery.toString()}`);
           }
         }
       }
     });
   };
-
-  // console.log("url age: ", urlAge);
-  // console.log("url height: ", urlHeight);
-  // console.log("url weight: ", urlWeight);
-  // console.log("node data:  ", nodeData?.nodes?.data);
-  // console.log("ctx intersection: ", ctx?.intersection);
-  // console.log("is node query loading, ", nodeQueryLoading);
 
   const intersection = nodeData?.nodes?.data?.map((el) => {
     if (range.has(el?.attributes?.output)) {
@@ -403,14 +416,14 @@ export default function SizeModuleSection({
     }
     return null;
   });
-  // logger.log("Intersection", intersection);
   const ConditionalSizeRendering = () => {
     if (urlAge && urlHeight && urlWeight) {
       if (nodeQueryLoading) {
         return <SizeRecommendationLoader />;
-      } else if (intersection?.[0] === null) {
-        return <SizeRecommendationNotFound />;
-      } else if ((nodeData?.nodes?.data?.length || 0) > 0) {
+      } else if (
+        (nodeData?.nodes?.data?.length || 0) > 0 &&
+        intersection?.[0] !== null
+      ) {
         return (
           <SizeSelector
             sizeRange={range}
@@ -425,6 +438,8 @@ export default function SizeModuleSection({
             setSelectedSize={setSelectedSize}
           />
         );
+      } else {
+        return <SizeRecommendationNotFound />;
       }
     }
   };

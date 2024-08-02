@@ -15,7 +15,6 @@ import { appColor } from "@/theme/foundations/colors";
 import { useSearchParams } from "next/navigation";
 import { AnimatePresence, motion } from "framer-motion";
 import { CgClose } from "react-icons/cg";
-import { useRouter } from "next/navigation";
 
 interface IProps {
   isOpen: boolean;
@@ -68,8 +67,6 @@ export default function SizeModal({
   const urlHeight = searchParams.get("height");
   const urlWeight = searchParams.get("weight");
 
-  const router = useRouter();
-
   const [height, setHeight] = useState<string | null>(
     urlHeight || localStorageData?.height || null
   );
@@ -97,28 +94,6 @@ export default function SizeModal({
       return null;
     }
     sizeDetailSubmit(height, weight, age);
-
-    const sizeQuery = new URLSearchParams(searchParams.toString());
-
-    if (!urlAge || !urlHeight || !urlWeight) {
-      sizeQuery.append("height", height);
-      sizeQuery.append("weight", weight);
-      sizeQuery.append("age", age);
-    } else {
-      sizeQuery.set("height", height);
-      sizeQuery.set("weight", weight);
-      sizeQuery.set("age", age);
-    }
-
-    localStorage?.setItem(
-      "sizing",
-      JSON.stringify({
-        height: height,
-        weight: weight,
-        age: age,
-      })
-    );
-    router.replace(`?${sizeQuery.toString()}`);
   };
 
   return (

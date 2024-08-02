@@ -12,12 +12,9 @@ import {
 import React, { useEffect, useState } from "react";
 import SizeCard from "../SizeCard";
 import EditSizeCard from "../EditSizeCard";
-import { useSearchParams, useRouter } from "next/navigation";
 import Toast from "@/components/Toast";
 import { IoBagCheckOutline } from "react-icons/io5";
-import { AnimatePresence, motion } from "framer-motion";
-import { useActiveLeather } from "@/features/ProductDetailPage/Context/LeatherContext";
-import { logger } from "@/utils/logger";
+import { AnimatePresence } from "framer-motion";
 export const availableSizes = [
   {
     name: "XXXS",
@@ -85,8 +82,6 @@ export default function SizeSelector({
   intersection: any;
   setSelectedSize: (val: number) => void;
 }) {
-  const params = useSearchParams();
-  const router = useRouter();
   const toast = useToast();
   const [price, setPrice] = useState<number>();
   const [sizeRangeId, setSizeRangeId] = useState<string>();
@@ -95,125 +90,118 @@ export default function SizeSelector({
     const elementThatMatches = intersection?.find((el: any) => {
       return el?.attributes?.output === fitData?.[0]?.size;
     });
-    logger.log("elements that matches", elementThatMatches);
 
     setPrice(elementThatMatches?.price?.price?.[0]?.value);
     setSizeRangeId(elementThatMatches?.price?._id);
   }, [fitData]);
-
-  useEffect(() => {
-    if (activeFit) {
-      const newUrlSearchParams = new URLSearchParams(params);
-      newUrlSearchParams.set("fit", activeFit);
-      router.replace(`?${newUrlSearchParams}`, { scroll: false });
-    }
-  }, [activeFit]);
 
   if (!intersection) {
     return null;
   }
   return (
     <AnimatePresence>
-      <Container my={"2rem"}>
-        <VStack>
-          <Text
-            className="recommended-size-text"
-            color={appColor.base}
-            fontSize={"1.6rem"}
-            fontWeight={"bold"}
-            textTransform="uppercase"
-          >
-            Recommended size for you
-          </Text>
-
-          <Box maxW="500px">
-            <HStack gap="1rem" mx="2rem">
-              {intersection?.map((node: any, i: number) => {
-                if (!node?.attributes?.output) {
-                  return null;
-                }
-                const recommendedSize = node?.attributes?.output;
-                const selected =
-                  node?.attributes?.output === fitData?.[0]?.size;
-                if (selected) {
-                  setSelectedSize(fitData?.[0]?.size);
-                }
-                return (
-                  <SizeCard
-                    key={i}
-                    recommendedSize={recommendedSize}
-                    selected={selected}
-                    onClick={() =>
-                      !selected && handleSizeCardClick(recommendedSize)
-                    }
-                  />
-                );
-              })}
-              <EditSizeCard onOpen={onOpen} />
-            </HStack>
-          </Box>
-        </VStack>
-        <Box m="2rem">
-          <Text
-            width={"full"}
-            fontWeight="bold"
-            fontSize={"1.6rem"}
-            color="white"
-          >
-            {price ? `रु. ${Intl.NumberFormat().format(price)}` : null}
-          </Text>
-        </Box>
-        {price && (
-          <Grid placeItems="center" mt="4rem" mb="2rem">
-            <Button
-              isLoading={isPending}
-              disabled={isPending}
-              isDisabled={isPending}
-              opacity={isPending ? 0.6 : 1}
-              onClick={() => {
-                if (price && sizeRangeId) {
-                  handleBuyClick(price, sizeRangeId);
-                } else {
-                  toast({
-                    position: "top",
-                    render: ({ onClose }) => {
-                      return (
-                        <Toast
-                          onClose={onClose}
-                          status="error"
-                          message="Something went wrong."
-                        />
-                      );
-                    },
-                  });
-                }
-              }}
-              width={"fit-content"}
+      {intersection?.[0] !== null && (
+        <Container my={"2rem"}>
+          <VStack>
+            <Text
+              className="recommended-size-text"
+              color={appColor.base}
               fontSize={"1.6rem"}
-              p="1.4rem"
+              fontWeight={"bold"}
               textTransform="uppercase"
-              rounded="full"
-              rightIcon={<IoBagCheckOutline />}
-              px="5rem"
-              iconSpacing="1rem"
-              bg="white"
-              as={motion.button}
-              initial={{
-                scale: 0,
-              }}
-              animate={{
-                scale: 1,
-              }}
-              exit={{
-                scale: 0,
-              }}
-              // fontWeight='bold'
             >
-              Buy
-            </Button>
-          </Grid>
-        )}
-      </Container>
+              Recommended size for you
+            </Text>
+
+            <Box maxW="500px">
+              <HStack gap="1rem" mx="2rem">
+                {intersection?.map((node: any, i: number) => {
+                  if (!node?.attributes?.output) {
+                    return null;
+                  }
+                  const recommendedSize = node?.attributes?.output;
+                  const selected =
+                    node?.attributes?.output === fitData?.[0]?.size;
+                  if (selected) {
+                    setSelectedSize(fitData?.[0]?.size);
+                  }
+                  return (
+                    <SizeCard
+                      key={i}
+                      recommendedSize={recommendedSize}
+                      selected={selected}
+                      onClick={() =>
+                        !selected && handleSizeCardClick(recommendedSize)
+                      }
+                    />
+                  );
+                })}
+                <EditSizeCard onOpen={onOpen} />
+              </HStack>
+            </Box>
+          </VStack>
+          <Box m="2rem">
+            <Text
+              width={"full"}
+              fontWeight="bold"
+              fontSize={"1.6rem"}
+              color="white"
+            >
+              {price ? `रु. ${Intl.NumberFormat().format(price)}` : null}
+            </Text>
+          </Box>
+          {price && (
+            <Grid placeItems="center" mt="4rem" mb="2rem">
+              <Button
+                isLoading={isPending}
+                disabled={isPending}
+                isDisabled={isPending}
+                opacity={isPending ? 0.6 : 1}
+                onClick={() => {
+                  if (price && sizeRangeId) {
+                    handleBuyClick(price, sizeRangeId);
+                  } else {
+                    toast({
+                      position: "top",
+                      render: ({ onClose }) => {
+                        return (
+                          <Toast
+                            onClose={onClose}
+                            status="error"
+                            message="Something went wrong."
+                          />
+                        );
+                      },
+                    });
+                  }
+                }}
+                width={"fit-content"}
+                fontSize={"1.6rem"}
+                p="1.4rem"
+                textTransform="uppercase"
+                rounded="full"
+                rightIcon={<IoBagCheckOutline />}
+                px="5rem"
+                iconSpacing="1rem"
+                bg="white"
+                // as={motion.button}
+                // initial={{
+                //   scale: 0,
+                // }}
+                // animate={{
+                //   scale: 1,
+                // }}
+                // exit={{
+                //   scale: 0,
+                // }}
+                // fontWeight='bold'
+              >
+                Buy
+              </Button>
+            </Grid>
+          )}
+        </Container>
+      )}
     </AnimatePresence>
   );
 }
