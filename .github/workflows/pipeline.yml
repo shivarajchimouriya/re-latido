@@ -1,0 +1,75 @@
+name: Build and Deploy
+
+on:
+  push:
+    branches:
+      - dev
+
+jobs:
+  building-pipeline:
+    name: ${{ github.ref }} building
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [21.5.0]
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Use node version ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version}}
+          cache: "npm"
+
+      - name: Cache Yarn dependencies
+        uses: actions/cache@v2
+        with:
+          path: |
+            ~/.cache/yarn
+            node_modules
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-
+
+      - run: yarn install
+      - run: |
+          echo "${{ secrets.PROD_ENV }}">.env
+
+      - run: yarn run build
+
+      - name: Set environment variables
+        run: |
+          if [ "${{ github.ref }}" == "refs/heads/dev" ]; then
+            echo "HOST_DNS=${{ secrets.DEV_HOST_DNS }}" >> $GITHUB_ENV
+            echo "HOST_USERNAME=${{ secrets.DEV_HOST_USERNAME }}" >> $GITHUB_ENV
+            echo "HOST_PORT=3001 >> $GITHUB_ENV
+            echo "APP_NAME=re-latido-dev" >> $GITHUB_ENV
+            echo "HOST_SSH_KEY<<EOF" >> $GITHUB_ENV
+            echo "${{ secrets.LATIDO_DEV_SSH_KEY }}" >> $GITHUB_ENV
+            echo "EOF" >> $GITHUB_ENV
+
+      - name: rsync deployments
+        uses: burnett01/rsync-deployments@master
+        with:
+          switches: -avzr --delete
+          path: ./
+          remote_path: /home/ubuntu/re-latido-dev/
+          remote_host: ${{ env.HOST_DNS }}
+          remote_user: ${{ env.HOST_USERNAME }}
+          remote_key: ${{ env.HOST_SSH_KEY }}
+
+      - name: Start pm2 using ssh
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ env.HOST_DNS }}
+          username: ${{ env.HOST_USERNAME }}
+          key: ${{ env.HOST_SSH_KEY }}
+          script: |
+            export NVM_DIR=~/.nvm
+            source ~/.nvm/nvm.sh
+            cd /home/ubuntu/"${{ env.APP_NAME }}"/
+            pm2 delete "${{ env.APP_NAME }}"
+            pm2 start yarn --name "${{ env.APP_NAME }}" -- start --port "${{ env.HOST_PORT }}"
+            pm2 save
