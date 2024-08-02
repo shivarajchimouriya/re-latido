@@ -17,17 +17,17 @@ interface IProps {
   };
 }
 
-export async function generateStaticParams() {
-  const homepageData = await API.Homepage.get({
-    params: { gender: GENDER.MALE, limit: 10, page: 1,},
-  });
-  const categories = homepageData.data.category;
-  logger.log("catgories",categories)
+// export async function generateStaticParams() {
+//   const homepageData = await API.Homepage.get({
+//     params: { gender: GENDER.MALE, limit: 10, page: 1,},
+//   });
+//   const categories = homepageData.data.category;
+//   logger.log("catgories",categories)
 
-  return categories.map((cat) => ({
-    id: cat._id,
-  }));
-}
+//   return categories.map((cat) => ({
+//     id: cat._id,
+//   }));
+// }
 
 export const generateMetadata = async ({
   params,

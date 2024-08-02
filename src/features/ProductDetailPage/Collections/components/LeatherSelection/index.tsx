@@ -1,14 +1,6 @@
 "use client";
 import { useRouter, useSearchParams } from "next/navigation";
-import {
-  Box,
-  Center,
-  Grid,
-  HStack,
-  Text,
-  VStack,
-  useDisclosure,
-} from "@chakra-ui/react";
+import { Box, VStack, useDisclosure } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 import { IProduct } from "@/resources/Product/interface";
 import Leathercapsule from "../Leathercapsule";
@@ -18,13 +10,7 @@ import { env } from "@/config/environment";
 import "swiper/css/effect-coverflow";
 import { Swiper, SwiperRef, SwiperSlide } from "swiper/react";
 
-import {
-  Autoplay,
-  EffectCoverflow,
-  FreeMode,
-  Pagination,
-} from "swiper/modules";
-import { logger } from "@/utils/logger";
+import { Autoplay, EffectCoverflow, FreeMode } from "swiper/modules";
 import { useActiveLeather } from "@/features/ProductDetailPage/Context/LeatherContext";
 import LeatherName from "../LeatherName";
 import LeatherModalblog from "../LeatherModalBlog";
@@ -71,7 +57,9 @@ export default function LeatherSelection({ productDetail }: IProps) {
     selectedLeatherIndex ? selectedLeatherIndex : 0
   );
 
-  const [activeLeatherName, setActiveLeatherName] = useState("");
+  const [activeLeatherName, setActiveLeatherName] = useState(
+    productDetail.product_specification[0].leather_id.item_name || ""
+  );
   const onLeatherSelect = (idx: number) => {
     idx = idx >= 0 ? idx : 0;
 
@@ -139,7 +127,6 @@ export default function LeatherSelection({ productDetail }: IProps) {
             modules={[EffectCoverflow, FreeMode, Autoplay]}
             className="mySwiper"
             onSlideChange={(val) => {
-              logger.log("val", val);
               onLeatherSelect(val.activeIndex);
               const leatherName =
                 productDetail.product_specification[val.activeIndex].leather_id
@@ -182,7 +169,7 @@ export default function LeatherSelection({ productDetail }: IProps) {
           </Swiper>
         </VStack>
 
-        <LeatherName text={activeLeatherName} onClick={onOpen} />
+        <LeatherName text={activeLeatherName} />
       </VStack>
     </>
   );

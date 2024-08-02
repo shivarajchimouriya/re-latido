@@ -86,13 +86,13 @@ export default function ProductImage({ secondaryImage }: IProductImageProps) {
   return (
     <>
       <VStack
-        h="63vh"
+        h="65vh"
         pb=".2rem"
         w="full"
         overflow="hidden"
         position="relative"
       >
-        <AnimatePresence>
+        {/* <AnimatePresence>
           {isDarkMode ? (
             <IconButton
               key={`${isDarkMode}`}
@@ -111,7 +111,6 @@ export default function ProductImage({ secondaryImage }: IProductImageProps) {
               left="1.5rem"
               onClick={(e) => {
                 e.stopPropagation();
-
                 leather?.toggleLeatherMode();
               }}
             />
@@ -137,7 +136,7 @@ export default function ProductImage({ secondaryImage }: IProductImageProps) {
               }}
             />
           )}
-        </AnimatePresence>
+        </AnimatePresence> */}
 
         <IconButton
           as={motion.div}
@@ -181,11 +180,11 @@ export default function ProductImage({ secondaryImage }: IProductImageProps) {
               style={{ height: "100%", display: isActive ? "block" : "none" }}
             >
               {el?.secondary_image?.map((image: string, index: number) => (
-                <SwiperSlide key={image} style={{ width: "100%" }}>
+                <SwiperSlide key={image} style={{ width: "100%" }} >
                   <img
                     src={image}
                     onClick={() => setSelectedIndex(index)}
-                    height={800}
+                    height={600}
                     width={600}
                     alt="product image"
                     loading="eager"

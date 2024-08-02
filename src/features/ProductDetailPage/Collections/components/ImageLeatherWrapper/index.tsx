@@ -10,13 +10,13 @@ interface IProps {
 const ImageLeatherWrapper = ({ children }: IProps) => {
   const leather = useActiveLeather();
 
-  const appMode=leather?.leatherMode;
-  const bg=appMode==='dark'?"radial-gradient(circle at center, #1a1a1a 0%, #141414 50%, #0a0a0a 100%)":"white"
+  const appMode = leather?.leatherMode;
+  const bg =
+    appMode === "dark"
+      ? "radial-gradient(circle at center, #1a1a1a 0%, #141414 50%, #0a0a0a 100%)"
+      : "white";
   return (
-    <Box
-      w="full"
-      bgGradient={bg}
-    >
+    <Box w="full" bgGradient={bg}>
       {children}
     </Box>
   );

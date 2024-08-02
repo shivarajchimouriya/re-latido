@@ -20,7 +20,7 @@ const ProductList1 = ({ products }: IProps) => {
           const showPlaylist = i === 4;
           return (
             <>
-              {showPlaylist && <SpotifyCard showPlaylist={showPlaylist} />}
+              {/* {showPlaylist && <SpotifyCard showPlaylist={showPlaylist} />} */}
               <ProductCard isFirstCard={isFirst} product={el} key={el.name} />
             </>
           );
