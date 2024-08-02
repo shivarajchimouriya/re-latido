@@ -57,6 +57,7 @@ export default function OrderDetailsPage({ orderId }: IProps) {
           quantity={1}
           hideProgress={true}
           hideDaysLeft={true}
+          noLink={true}
         />
 
         <Text
