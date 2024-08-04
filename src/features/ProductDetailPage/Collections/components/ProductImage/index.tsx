@@ -86,13 +86,13 @@ export default function ProductImage({ secondaryImage }: IProductImageProps) {
   return (
     <>
       <VStack
-        h="65vh"
+        minH="65vh"
         pb=".2rem"
         w="full"
         overflow="hidden"
         position="relative"
       >
-        {/* <AnimatePresence>
+        <AnimatePresence>
           {isDarkMode ? (
             <IconButton
               key={`${isDarkMode}`}
@@ -136,7 +136,7 @@ export default function ProductImage({ secondaryImage }: IProductImageProps) {
               }}
             />
           )}
-        </AnimatePresence> */}
+        </AnimatePresence>
 
         <IconButton
           as={motion.div}

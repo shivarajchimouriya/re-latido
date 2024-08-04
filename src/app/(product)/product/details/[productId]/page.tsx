@@ -17,7 +17,7 @@ export const revalidate = 15;
 export const generateStaticParams = async () => {
   const res = await API.Product.getAll({ params: { limit: 1000, page: 1 } });
   const allProducts = res.data.data;
-  return allProducts.slice(0, 35).map((el) => {
+  return allProducts.map((el) => {
     return {
       productId: el._id,
     };

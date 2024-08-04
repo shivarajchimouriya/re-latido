@@ -144,11 +144,11 @@ export default function LeatherSelection({ productDetail }: IProps) {
                   <VStack
                     justify="center"
                     position="relative"
-                    onClick={() => {
-                      if (isActive) {
-                        onOpen();
-                      }
-                    }}
+                    // onClick={() => {
+                    //   if (isActive) {
+                    //     onOpen();
+                    //   }
+                    // }}
                   >
                     <Leathercapsule
                       isActive={isActive}

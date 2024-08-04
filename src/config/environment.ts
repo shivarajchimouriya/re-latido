@@ -16,4 +16,6 @@ export const env = {
   BUCKET_NAME: process.env.BUCKET_NAME || process.env.NEXT_PUBLIC_BUCKET_NAME,
   BUCKET_REGION:
     process.env.BUCKET_REGION || process.env.NEXT_PUBLIC_BUCKET_REGION,
+  CLARITY_ID: process.env.NEXT_PUBLIC_CLARITY_ID,
+  GA_ID: process.env.NEXT_PUBLIC_GA_ID
 };

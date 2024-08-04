@@ -24,5 +24,7 @@ namespace NodeJS {
     NEXT_PUBLIC_BUCKET_NAME: string;
     BUCKET_REGION: string;
     NEXT_PUBLIC_BUCKET_REGION: string;
+    NEXT_PUBLIC_CLARITY_ID: string,
+    NEXT_PUBLIC_GA_ID: string
   }
 }
