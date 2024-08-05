@@ -50,7 +50,7 @@ jobs:
         with:
           switches: -avzr --delete
           path: ./
-          remote_path: /home/ubuntu/re-latido-test/
+          remote_path: /home/ubuntu/re-latido-prod/
           remote_host: ${{ env.HOST_IP }}
           remote_user: ${{ env.HOST_USERNAME }}
           remote_key: ${{ env.HOST_SSH_KEY }}
