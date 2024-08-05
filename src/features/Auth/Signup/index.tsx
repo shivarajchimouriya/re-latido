@@ -212,6 +212,7 @@ const Signup = () => {
                 <Autocomplete
                   style={{
                     padding: "1rem 0",
+                    borderRadius: "0",
                   }}
                   className="google_autocomplete"
                   apiKey={env.GOOGLE_API_KEY}
