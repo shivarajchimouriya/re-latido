@@ -23,17 +23,21 @@ jobs:
           node-version: ${{ matrix.node-version}}
           cache: "npm"
 
-      - name: Cache pnpm dependencies
-        uses: actions/cache@v2
+      - uses: pnpm/action-setup@v4
+        name: Install pnpm
         with:
-          path: |
-            ~/.cache/pnpm
-            node_modules
-          key: ${{ runner.os }}-pnpm-${{ hashFiles('**/pnpm-lock.yaml') }}
-          restore-keys: |
-            ${{ runner.os }}-pnpm-
+          version: 8
+          run_install: false
 
-      - run: pnpm install
+      - name: Install Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: "pnpm"
+
+      - name: Install dependencies
+        run: pnpm install
+
       - run: |
           echo "${{ secrets.PROD_ENV }}">.env
       - run: pnpm run build
@@ -53,7 +57,7 @@ jobs:
         with:
           switches: -avzr --delete
           path: ./
-          remote_path: /home/ubuntu/re-latido-dev/
+          remote_path: /home/ubuntu/re-latido-test/
           remote_host: ${{ env.HOST_IP }}
           remote_user: ${{ env.HOST_USERNAME }}
           remote_key: ${{ env.HOST_SSH_KEY }}
