@@ -10,7 +10,7 @@ const baseStyle = definePartsStyle({
 
 });
 const underline = definePartsStyle({
-    
+
     field: {
         transitionDuration: ".4s",
         w: "full",
@@ -18,8 +18,9 @@ const underline = definePartsStyle({
         bg: 'transparent',
         borderBottomStyle: " solid ",
         borderBottomWidth: "1px",
-        borderBottomColor:"black",
-        transition: "border", 
+        borderBottomColor: "black",
+        transition: "border",
+        borderRadius: "0",
         _active: {
             outline: "none"
         },
