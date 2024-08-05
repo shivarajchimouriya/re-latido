@@ -196,6 +196,7 @@ const ShippingDetails = () => {
                   className="google_autocomplete"
                   style={{
                     padding: "1rem 0",
+                    borderRadius: "0"
                   }}
                   onChange={onChange}
                   onPlaceSelected={(place) => {
