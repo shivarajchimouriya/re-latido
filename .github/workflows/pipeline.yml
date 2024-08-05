@@ -40,9 +40,9 @@ jobs:
             echo "HOST_USERNAME=${{ secrets.HOST_USERNAME }}" >> $GITHUB_ENV
             echo "HOST_PORT=3001 >> $GITHUB_ENV
             echo "APP_NAME=re-latido-prod" >> $GITHUB_ENV
-            echo "HOST_SSH_KEY<<EOF" >> $GITHUB_ENV
+            echo "HOST_SSH_KEY<<EOF"  >> $GITHUB_ENV
             echo "${{ secrets.HOST_SSH_KEY }}" >> $GITHUB_ENV
-            echo "EOF" >> $GITHUB_ENV
+            echo "EOF"  >> $GITHUB_ENV
 
       - name: rsync deployments
         uses: burnett01/rsync-deployments@master
