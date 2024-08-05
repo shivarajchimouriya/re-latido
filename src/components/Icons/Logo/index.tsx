@@ -4,8 +4,8 @@ const LogoIcon = () => {
   return (
     <svg
       aria-label="home page logo"
-      width="31"
-      height="34"
+      width="23.25"
+      height="25.5"
       viewBox="0 0 31 34"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
