@@ -14,7 +14,7 @@ import {
 } from "@chakra-ui/react";
 import styles from "./filterbox.module.css";
 
-import React, { ReactElement, useState } from "react";
+import React, { ReactElement, useEffect, useState } from "react";
 import { Grid, Pagination } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css/pagination";
@@ -30,6 +30,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useCategories } from "@/hooks/server/useCategories";
 import Link from "next/link";
 import { IoSearchOutline } from "react-icons/io5";
+import { getCookie } from "cookies-next";
 
 interface IProps {
   onClose: () => void;
@@ -47,13 +48,11 @@ const FilterBox = ({ onClose }: IProps) => {
   const router = useRouter();
   const [rangeValues, setRangeValues] = useState([lowerLimit, upperLimit]);
   const [activeCat, setActiveCat] = useState(activeCategory || "");
-  const storedGender = localStorage.getItem("gender") as
-    | "male"
-    | "female"
-    | null;
+
+  const genderCookie = getCookie("gender") as string;
 
   const [SelectedGender, setSelectedGender] = useState<"male" | "female">(
-    searchedGender ?? storedGender ?? "female"
+    genderCookie === "female" ? genderCookie : "male"
   );
 
   const handleCatClick = (catName: string) => {
@@ -335,7 +334,3 @@ const FilterBox = ({ onClose }: IProps) => {
 };
 
 export default FilterBox;
-
-// https://isydwbl5r3.execute-api.ap-south-1.amazonaws.com/prod/mobile_home?page=1&limit=1&gender=male&priceLowerLimit=0&priceUpperLimit=10000
-// https://isydwbl5r3.execute-api.ap-south-1.amazonaws.com/prod/mobile_home?gender=male&priceLowerLimit=0&priceUpperLimit=89000&collections=637c9f9abed49a0008ce0dcb?page=1&limit=10000
-// https://isydwbl5r3.execute-api.ap-south-1.amazonaws.com/prod/client_product?gender=female&priceLowerLimit=21000&priceUpperLimit=64000&collections=637de6398ed77c00088b4df5

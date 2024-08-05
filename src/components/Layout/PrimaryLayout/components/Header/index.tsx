@@ -1,4 +1,4 @@
-import { Flex } from "@chakra-ui/react";
+import { Flex, HStack, Text } from "@chakra-ui/react";
 import React from "react";
 import Logo from "./components/Logo";
 import HamburgerMenu from "./components/Hamburger";
@@ -24,8 +24,9 @@ const Header = () => {
       position="fixed"
       top="0"
     >
-      {/* <BackButton /> */}
-      <HamburgerMenu />
+      <HStack gap="1rem">
+        <HamburgerMenu />
+      </HStack>
       <Logo />
       <Gender />
     </Flex>

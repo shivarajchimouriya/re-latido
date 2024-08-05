@@ -2,6 +2,7 @@
 import {
   Box,
   Button,
+  HStack,
   Menu,
   MenuButton,
   MenuItem,
@@ -9,12 +10,19 @@ import {
   Text,
 } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
-import { IoMaleOutline, IoFemaleOutline } from "react-icons/io5";
+import {
+  IoMaleOutline,
+  IoFemaleOutline,
+  IoMale,
+  IoFemale,
+} from "react-icons/io5";
 import { getCookie, setCookie } from "cookies-next";
 
 import { gender as GENDER } from "@/enums/index";
 import { genderType } from "@/features/Homepage/ProductListings";
 import { PiUserSwitch } from "react-icons/pi";
+import { TbSwitchVertical } from "react-icons/tb";
+import { RiArrowDropDownLine } from "react-icons/ri";
 
 export default function Gender() {
   const [currentGender, setCurrentGender] = useState<genderType | null>(null);
@@ -38,14 +46,14 @@ export default function Gender() {
 
   return (
     <Menu>
-      <MenuButton as={Button}>
-        <Box height="fit-content">
-          <PiUserSwitch fontSize="1.8rem" />
-        </Box>
+      <MenuButton as={Button} rounded="xl">
+        <HStack height="fit-content">
+          <Text fontSize="1.6rem">{isMale ? <IoMale /> : <IoFemale />}</Text>
+        </HStack>
       </MenuButton>
       <MenuList>
         <MenuItem onClick={() => handleMenuClick(GENDER.MALE)}>
-          <IoMaleOutline fontSize="1.6rem" />
+          <IoMale fontSize="1.6rem" />
           <Text
             fontWeight={isMale ? "semibold" : ""}
             textTransform="capitalize"
@@ -57,7 +65,7 @@ export default function Gender() {
           onClick={() => handleMenuClick(GENDER.FEMALE)}
           textTransform="capitalize"
         >
-          <IoFemaleOutline fontSize="1.6rem" />
+          <IoFemale fontSize="1.6rem" />
           <Text fontWeight={isFemale ? "semibold" : ""}>{GENDER.FEMALE}</Text>
         </MenuItem>
       </MenuList>
