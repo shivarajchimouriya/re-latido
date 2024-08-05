@@ -3,7 +3,7 @@ name: Build and Deploy
 on:
   push:
     branches:
-      - dev
+      - prod
 
 jobs:
   building-pipeline:
@@ -36,18 +36,16 @@ jobs:
       - run: yarn install
       - run: |
           echo "${{ secrets.PROD_ENV }}">.env
-
       - run: yarn run build
-
       - name: Set environment variables
         run: |
-          if [ "${{ github.ref }}" == "refs/heads/dev" ]; then
-            echo "HOST_DNS=${{ secrets.DEV_HOST_DNS }}" >> $GITHUB_ENV
-            echo "HOST_USERNAME=${{ secrets.DEV_HOST_USERNAME }}" >> $GITHUB_ENV
+          if [ "${{ github.ref }}" == "refs/heads/prod" ]; then
+            echo "HOST_IP=${{ secrets.HOST_IP }}" >> $GITHUB_ENV
+            echo "HOST_USERNAME=${{ secrets.HOST_USERNAME }}" >> $GITHUB_ENV
             echo "HOST_PORT=3001 >> $GITHUB_ENV
-            echo "APP_NAME=re-latido-dev" >> $GITHUB_ENV
+            echo "APP_NAME=re-latido-prod" >> $GITHUB_ENV
             echo "HOST_SSH_KEY<<EOF" >> $GITHUB_ENV
-            echo "${{ secrets.LATIDO_DEV_SSH_KEY }}" >> $GITHUB_ENV
+            echo "${{ secrets.HOST_SSH_KEY }}" >> $GITHUB_ENV
             echo "EOF" >> $GITHUB_ENV
 
       - name: rsync deployments
@@ -56,14 +54,14 @@ jobs:
           switches: -avzr --delete
           path: ./
           remote_path: /home/ubuntu/re-latido-dev/
-          remote_host: ${{ env.HOST_DNS }}
+          remote_host: ${{ env.HOST_IP }}
           remote_user: ${{ env.HOST_USERNAME }}
           remote_key: ${{ env.HOST_SSH_KEY }}
 
       - name: Start pm2 using ssh
         uses: appleboy/ssh-action@master
         with:
-          host: ${{ env.HOST_DNS }}
+          host: ${{ env.HOST_IP }}
           username: ${{ env.HOST_USERNAME }}
           key: ${{ env.HOST_SSH_KEY }}
           script: |
