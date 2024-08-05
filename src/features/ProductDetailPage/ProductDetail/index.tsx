@@ -27,8 +27,10 @@ const getProductDetail = async (id: string) => {
 export default async function ProductDetail({ productId }: IProps) {
   const data = await getProductDetail(productId);
 
+  
   const productDetail = data?.data?.productDetail;
   if (!productDetail) return <NotFound />;
+  logger.log("product detail data: ", data?.data.productDetail.product_specification);
 
   return (
     <Container top="0" height="100vh" overflowY="scroll">

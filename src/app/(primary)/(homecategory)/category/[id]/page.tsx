@@ -28,7 +28,7 @@ interface IProps {
 //     id: cat._id,
 //   }));
 // }
-export const revalidate = 15
+// export const revalidate = 15
 
 export const generateMetadata = async ({
   params,
