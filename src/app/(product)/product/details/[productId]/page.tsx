@@ -24,7 +24,7 @@ import LeatherProvider from "@/features/ProductDetailPage/Context/LeatherContext
 
 const getProductDetail = async (id: string) => {
   try {
-    const res = await API.Product.byID(id);
+    const res = await API.Product.byID(id,{options:{cache:"no-store"}});
     return res;
   } catch (error) {
     logger.log("Error", error);

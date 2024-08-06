@@ -1,46 +1,45 @@
 import { apiURLs } from "@/constants/apiUrls";
-import {
-  APIService,
-  IFetchOptions,
-  apiService,
-} from "@/lib/requester";
+import { APIService, IFetchOptions, apiService } from "@/lib/requester";
 import {
   IProductDetailResponse,
   IProductFilterReq,
   IProductResponse,
   IResponseProductByCategory,
   IResposneFIlteredProduct,
-  ISearchResponse,
+  ISearchResponse
 } from "./interface";
 
 class Product {
-  constructor(private apiService: APIService) { }
+  constructor(private apiService: APIService) {}
 
   getAll(options?: IFetchOptions) {
-    return this.apiService.get<IProductResponse>({ url: apiURLs.product.all, options });
+    return this.apiService.get<IProductResponse>({
+      url: apiURLs.product.all,
+      options
+    });
   }
   byCategory(id: string, options: IFetchOptions) {
     return this.apiService.get<IResponseProductByCategory>({
       url: apiURLs.category.byId(id),
       options
     });
-
   }
   filter(filter: IProductFilterReq) {
     return this.apiService.get<IResposneFIlteredProduct>({
       url: apiURLs.filter,
-      options: { params: { ...filter } },
+      options: { params: { ...filter } }
     });
   }
   getTopRated(options: IFetchOptions) {
     return this.apiService.get<ISearchResponse>({
       url: apiURLs.search,
-      options,
+      options
     });
   }
-  byID(id: string) {
+  byID(id: string, options?: IFetchOptions) {
     return this.apiService.get<IProductDetailResponse>({
       url: apiURLs.product.byId(id),
+      options
     });
   }
 }
