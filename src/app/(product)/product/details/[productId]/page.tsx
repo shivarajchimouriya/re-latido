@@ -11,7 +11,6 @@ import { env } from "@/config/environment";
 import ProfileSkeleton from "@/features/ProfilePage/ProfileSkeleton";
 import { notFound } from "next/navigation";
 import LeatherProvider from "@/features/ProductDetailPage/Context/LeatherContext";
-
 // export const generateStaticParams = async () => {
 //   const res = await API.Product.getAll({ params: { limit: 1000, page: 1 } });
 //   const allProducts = res.data.data;
@@ -21,6 +20,7 @@ import LeatherProvider from "@/features/ProductDetailPage/Context/LeatherContext
 //     };
 //   });
 // };
+export const dynamic='force-dynamic'
 
 const getProductDetail = async (id: string) => {
   try {
