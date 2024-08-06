@@ -39,7 +39,7 @@ jobs:
           echo "HOST_IP=${{ secrets.HOST_IP }}" >> $GITHUB_ENV
           echo "HOST_USERNAME=${{ secrets.HOST_USERNAME }}" >> $GITHUB_ENV
           echo "HOST_PORT=3001" >> $GITHUB_ENV
-          echo "APP_NAME=re-latido-prod" >> $GITHUB_ENV
+          echo "APP_NAME=${{ env.APP_NAME }}" >> $GITHUB_ENV
           echo "HOST_SSH_KEY<<EOF" >> $GITHUB_ENV
           echo "${{ secrets.HOST_SSH_KEY }}" >> $GITHUB_ENV
           echo "EOF" >> $GITHUB_ENV
@@ -48,9 +48,9 @@ jobs:
       - name: rsync deployments
         uses: burnett01/rsync-deployments@master
         with:
-          switches: -avzr --delete
+          switches: -avzc
           path: ./
-          remote_path: /home/ubuntu/re-latido-prod/
+          remote_path: /home/ubuntu/latido-consumer/"${{ env.APP_NAME }}"/
           remote_host: ${{ env.HOST_IP }}
           remote_user: ${{ env.HOST_USERNAME }}
           remote_key: ${{ env.HOST_SSH_KEY }}
@@ -64,9 +64,9 @@ jobs:
           script: |
             export NVM_DIR=~/.nvm
             source ~/.nvm/nvm.sh
-            cd /home/ubuntu/"${{ env.APP_NAME }}"/
+            cd /home/ubuntu/latido-consumer/"${{ env.APP_NAME }}"/
             which pnpm || echo "pnpm not found"
             pnpm --version || echo "pnpm version check failed"
             pm2 delete "${{ env.APP_NAME }}" || echo "No existing process to delete"
-            PATH="$PATH:$HOME/.local/share/pnpm" pm2 start pnpm --name "${{ env.APP_NAME }}" -- start --port "${{ env.HOST_PORT }}"
+            pm2 start pnpm --name "${{ env.APP_NAME }}" -- start --port "${{ env.HOST_PORT }}"
             pm2 save
