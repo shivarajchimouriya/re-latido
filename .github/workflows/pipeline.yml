@@ -38,7 +38,7 @@ jobs:
           if [ "${{ github.ref }}" == "refs/heads/prod" ]; then
           echo "HOST_IP=${{ secrets.HOST_IP }}" >> $GITHUB_ENV
           echo "HOST_USERNAME=${{ secrets.HOST_USERNAME }}" >> $GITHUB_ENV
-          echo "HOST_PORT=3001" >> $GITHUB_ENV
+          echo "HOST_PORT=3000" >> $GITHUB_ENV
           echo "APP_NAME=${{ env.APP_NAME }}" >> $GITHUB_ENV
           echo "HOST_SSH_KEY<<EOF" >> $GITHUB_ENV
           echo "${{ secrets.HOST_SSH_KEY }}" >> $GITHUB_ENV
