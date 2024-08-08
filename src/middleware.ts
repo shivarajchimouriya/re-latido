@@ -2,10 +2,27 @@ import { fetchAuthSession } from "aws-amplify/auth/server";
 import { NextRequest, NextResponse } from "next/server";
 import { AmplifyServer } from "aws-amplify/adapter-core";
 import { runWithAmplifyServerContext } from "./utils/serverContext";
+import { cookies, headers } from "next/headers";
+import { logger } from "./utils/logger";
+
+// const forwarded = req.headers["x-forwarded-for"];
+//   const ip = forwarded
+//     ? forwarded.split(/, /)[0]
+//     : req.connection.remoteAddress;
+//   return {
+//     props: {
+//       ip,
+//     },
+//   };
 
 export async function middleware(request: NextRequest) {
+
+  const response = NextResponse.next();
+  let tempIp = headers().get("X-Forwarded-For");
+  response.cookies.set("ip", tempIp as string || "")
+  // cookies().set("ip", tempIp as string || "");
+
   try {
-    const response = NextResponse.next();
     const url = new URL(request.url);
 
     const authenticated = await runWithAmplifyServerContext({
@@ -33,6 +50,7 @@ export async function middleware(request: NextRequest) {
     }
     if (!authenticated) {
       if (
+        url.pathname.startsWith("/") ||
         url.pathname.startsWith("/profile") ||
         url.pathname.startsWith("/orders") ||
         url.pathname.startsWith("/digital-invoice") ||

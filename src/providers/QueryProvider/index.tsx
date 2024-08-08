@@ -4,8 +4,9 @@ import {
   dehydrate,
   QueryClient,
   QueryClientProvider,
-  useQuery
+  useQuery,
 } from "@tanstack/react-query";
+import { getCookie } from "cookies-next";
 interface IProps {
   children: ReactNode;
 }
@@ -13,10 +14,13 @@ interface IProps {
 const AppQueryProvider = ({ children }: IProps) => {
   const [queryClient] = useState(() => new QueryClient());
 
+  const cookie = getCookie("ip");
+  if (cookie) {
+    console.log("cookie: ", cookie);
+  }
+
   return (
-    <QueryClientProvider client={queryClient}>
-      {children}
-    </QueryClientProvider>
+    <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
   );
 };
 
