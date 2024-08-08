@@ -1,19 +1,18 @@
-'use client';
+"use client";
 
-import React, { ReactNode } from 'react';
-import { ChakraBaseProvider } from '@chakra-ui/react';
-import { theme } from '@/theme';
+import React, { ReactNode } from "react";
+import { ChakraBaseProvider } from "@chakra-ui/react";
+import { theme } from "@/theme";
+import useLocation from "@/hooks/client/useLocation";
 
 interface IProps {
   children: ReactNode;
 }
 
 function AppThemeProvider({ children }: IProps) {
-  return (
-    <ChakraBaseProvider theme={theme}>
-      {children}
-    </ChakraBaseProvider>
-  );
+  const { country, error, isLoading } = useLocation();
+  console.log("country: ", country, "error: ", error, "isLoading: ", isLoading);
+  return <ChakraBaseProvider theme={theme}>{children}</ChakraBaseProvider>;
 }
 
 export default AppThemeProvider;
