@@ -40,6 +40,6 @@ export async function POST(req: NextRequest) {
 
     } catch (error) {
         logger.error("Error fetching API: ", error);
-        return NextResponse.json({ message: "Something went wrong" }, { status: 500 });
+        return NextResponse.json({ message: "Something went wrong", error: error }, { status: 500 });
     }
 }
