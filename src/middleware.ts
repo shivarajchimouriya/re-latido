@@ -32,6 +32,7 @@ async function fetchIpLocation(ip_address: string) {
         "Content-Type":"application/json"
       }
     });
+    logger.log("FetchIp Location",res)
     if (res.ok) {
       const data: ApiResponse = await res.json();
       return data;
@@ -46,20 +47,20 @@ async function fetchIpLocation(ip_address: string) {
 
 export async function middleware(request: NextRequest) {
 
-  const response = NextResponse.next();
-  const tempIp = headers().get("x-forwarded-for")?.split(",")[0];
-  console.log('ip from middleware: ', tempIp);
-  if (tempIp) {
-    console.log('if condition run for IP: ', tempIp);
-    const data = await fetchIpLocation(tempIp);
-    console.log('data from middleware: ', data);
-    if (data) {
-      response.cookies.set("country-data", JSON.stringify(data));
-      console.log('ccokie set: ', JSON.stringify(data))
-    }
-  }
-
+  
   try {
+    const response = NextResponse.next();
+    const tempIp = headers().get("x-forwarded-for")?.split(",")[0];
+    console.log('ip from middleware: ', tempIp);
+    if (tempIp) {
+      console.log('if condition run for IP: ', tempIp);
+      const data = await fetchIpLocation(tempIp);
+      console.log('data from middleware: ', data);
+      if (data) {
+        response.cookies.set("country-data", JSON.stringify(data));
+        console.log('ccokie set: ', JSON.stringify(data))
+      }
+    }
     const url = new URL(request.url);
 
     const authenticated = await runWithAmplifyServerContext({
