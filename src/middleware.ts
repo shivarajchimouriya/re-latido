@@ -4,22 +4,54 @@ import { AmplifyServer } from "aws-amplify/adapter-core";
 import { runWithAmplifyServerContext } from "./utils/serverContext";
 import { cookies, headers } from "next/headers";
 import { logger } from "./utils/logger";
+import { apiURLs } from "./constants/apiUrls";
+import { env } from "./config/environment";
 
-// const forwarded = req.headers["x-forwarded-for"];
-//   const ip = forwarded
-//     ? forwarded.split(/, /)[0]
-//     : req.connection.remoteAddress;
-//   return {
-//     props: {
-//       ip,
-//     },
-//   };
+interface ApiResponse {
+  ip: string;
+  country_code: string;
+  country_name: string;
+  region_name: string;
+  city_name: string;
+  latitude: number;
+  longitude: number;
+  zip_code: string;
+  time_zone: string;
+  asn: string;
+  as: string;
+  is_proxy: boolean;
+}
+
+async function fetchIpLocation(ip_address: string) {
+  try {
+    const apiUrl = apiURLs.getLocationByIp.locationIp;
+    const res = await fetch(`${env.SITE_URL}${apiUrl}`, {
+      method: "POST",
+      body: JSON.stringify({ ip_address: ip_address })
+    });
+    if (res.ok) {
+      const data: ApiResponse = await res.json();
+      return data;
+    }
+    else {
+      throw new Error("something went wrong")
+    }
+  } catch (error) {
+    console.error("Error: ", error)
+  }
+}
 
 export async function middleware(request: NextRequest) {
 
   const response = NextResponse.next();
-  let tempIp = headers().get("X-Forwarded-For");
-  response.cookies.set("ip", tempIp?.split(",")[0] as string || "");
+  const tempIp = headers().get("X-Forwarded-For")?.split(",")[0] as string;
+  console.log('ip from middleware: ', tempIp);
+  const data = await fetchIpLocation(tempIp);
+  console.log('data from middleware: ', data);
+  if (data) {
+    response.cookies.set("country-data", JSON.stringify(data));
+    console.log('ccokie set: ', JSON.stringify(data))
+  }
 
   try {
     const url = new URL(request.url);
