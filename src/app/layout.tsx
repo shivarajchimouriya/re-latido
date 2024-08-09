@@ -13,6 +13,7 @@ import NextTopLoader from "nextjs-toploader";
 import Header from "@/components/Layout/PrimaryLayout/components/Header";
 import JsonLd from "@/features/JsonLd";
 import AnalyticsProvider from "@/providers/AnalyticsProvider";
+import { headers } from "next/headers";
 const APP_NAME = "Latido";
 const APP_DEFAULT_TITLE = "Latido";
 const APP_TITLE_TEMPLATE = "Latido";
@@ -91,11 +92,11 @@ export default function RootLayout({
           <NextTopLoader color="red" showSpinner={false} />
           <AnalyticsProvider />
 
-          <AuthProvider>
-            <AppQueryProvider>
+          <AppQueryProvider>
+            <AuthProvider>
               <AppThemeProvider>{children}</AppThemeProvider>
-            </AppQueryProvider>
-          </AuthProvider>
+            </AuthProvider>
+          </AppQueryProvider>
         </div>
       </body>
     </html>

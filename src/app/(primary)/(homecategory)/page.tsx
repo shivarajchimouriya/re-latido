@@ -15,6 +15,7 @@ export default async function Home() {
   //   }
   // }
   const gender = await getServerCookie();
+
   return (
     <VStack>
       <ProductListings gender={gender} />

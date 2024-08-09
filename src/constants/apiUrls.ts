@@ -27,4 +27,8 @@ export const apiURLs = {
   invoiceDetails: {
     byId: (id: string) => `/client_order/${id}`,
   },
+  // next api route
+  getLocationByIp: {
+    locationIp: "/api/location-ip"
+  }
 };
