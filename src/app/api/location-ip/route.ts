@@ -19,9 +19,12 @@ interface ApiResponse {
 }
 
 export async function POST(req: NextRequest) {
+    console.log('incoming url: ', req.url);
     const apiUrl = `https://api.ip2location.io/?key=${env.IP2LOCATION_KEY}&ip=`;
     const body = await req.json();
     const ip_address = body.ip_address;
+
+    console.log('ip from api : ', ip_address);
 
     if (!ip_address) {
         return NextResponse.json({ message: "Ip not provided" }, { status: 400 });
@@ -29,6 +32,8 @@ export async function POST(req: NextRequest) {
 
     try {
         const response = await fetch(`${apiUrl}${ip_address}`);
+
+        console.log('response form api: ', response);
 
         if (!response.ok) {
             throw new Error("Something went wrong!");

@@ -23,26 +23,31 @@ interface ApiResponse {
 }
 
 async function fetchIpLocation(ip_address: string) {
-  try {
-    const apiUrl = apiURLs.getLocationByIp.locationIp;
-    const res = await fetch(`${env.SITE_URL}${apiUrl}`, {
-      method: "POST",
-      body: JSON.stringify({ ip_address: ip_address }),
-      headers: {
-        "Content-Type": "application/json"
-      }
-    });
-    logger.log("FetchIp Location", res)
-    if (res.ok) {
-      const data: ApiResponse = await res.json();
-      return data;
+  const apiUrl = `https://api.ip2location.io/?key=${env.IP2LOCATION_KEY}&ip=`;
+
+    console.log('ip from api : ', ip_address);
+
+    if (!ip_address) {
+        return NextResponse.json({ message: "Ip not provided" }, { status: 400 });
     }
-    else {
-      throw new Error(JSON.stringify(res))
+
+    try {
+        const response = await fetch(`${apiUrl}${ip_address}`);
+
+        console.log('response form api: ', response);
+
+        if (!response.ok) {
+            throw new Error("Something went wrong!");
+        }
+
+        const data: ApiResponse = await response.json();
+
+        return data
+
+    } catch (error) {
+      throw new Error("Something went wrong!");
+      
     }
-  } catch (error) {
-    console.error("Error: ", error)
-  }
 }
 
 export async function middleware(request: NextRequest) {
