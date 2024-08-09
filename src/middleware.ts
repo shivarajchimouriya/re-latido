@@ -19,8 +19,7 @@ export async function middleware(request: NextRequest) {
 
   const response = NextResponse.next();
   let tempIp = headers().get("X-Forwarded-For");
-  response.cookies.set("ip", tempIp as string || "")
-  // cookies().set("ip", tempIp as string || "");
+  response.cookies.set("ip", tempIp?.split(",")[0] as string || "");
 
   try {
     const url = new URL(request.url);

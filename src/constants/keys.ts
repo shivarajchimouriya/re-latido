@@ -14,3 +14,7 @@ export const queryKeys = {
 export const mutationKeys = {
   CHECK_USER: "check_user",
 };
+
+export const nextApiKeys = {
+  LOCATION: "location"
+}

@@ -14,11 +14,6 @@ interface IProps {
 const AppQueryProvider = ({ children }: IProps) => {
   const [queryClient] = useState(() => new QueryClient());
 
-  const cookie = getCookie("ip");
-  if (cookie) {
-    console.log("cookie: ", cookie);
-  }
-
   return (
     <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
   );

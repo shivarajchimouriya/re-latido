@@ -17,5 +17,6 @@ export const env = {
   BUCKET_REGION:
     process.env.BUCKET_REGION || process.env.NEXT_PUBLIC_BUCKET_REGION,
   CLARITY_ID: process.env.NEXT_PUBLIC_CLARITY_ID,
-  GA_ID: process.env.NEXT_PUBLIC_GA_ID
+  GA_ID: process.env.NEXT_PUBLIC_GA_ID,
+  IP2LOCATION_KEY: process.env.IP2LOCATION_KEY
 };

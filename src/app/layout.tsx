@@ -92,11 +92,11 @@ export default function RootLayout({
           <NextTopLoader color="red" showSpinner={false} />
           <AnalyticsProvider />
 
-          <AuthProvider>
-            <AppQueryProvider>
+          <AppQueryProvider>
+            <AuthProvider>
               <AppThemeProvider>{children}</AppThemeProvider>
-            </AppQueryProvider>
-          </AuthProvider>
+            </AuthProvider>
+          </AppQueryProvider>
         </div>
       </body>
     </html>
