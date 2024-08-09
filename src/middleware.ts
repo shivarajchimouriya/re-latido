@@ -29,10 +29,10 @@ async function fetchIpLocation(ip_address: string) {
       method: "POST",
       body: JSON.stringify({ ip_address: ip_address }),
       headers: {
-        "Content-Type":"application/json"
+        "Content-Type": "application/json"
       }
     });
-    logger.log("FetchIp Location",res)
+    logger.log("FetchIp Location", res)
     if (res.ok) {
       const data: ApiResponse = await res.json();
       return data;
@@ -47,10 +47,10 @@ async function fetchIpLocation(ip_address: string) {
 
 export async function middleware(request: NextRequest) {
 
-  
+
   try {
     const response = NextResponse.next();
-    const tempIp = headers().get("x-forwarded-for")?.split(",")[0];
+    const tempIp = headers()?.get("x-forwarded-for")?.split(",")[0];
     console.log('ip from middleware: ', tempIp);
     if (tempIp) {
       console.log('if condition run for IP: ', tempIp);
