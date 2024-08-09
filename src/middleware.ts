@@ -34,7 +34,7 @@ async function fetchIpLocation(ip_address: string) {
       return data;
     }
     else {
-      throw new Error("something went wrong")
+      throw new Error(JSON.stringify(res))
     }
   } catch (error) {
     console.error("Error: ", error)
