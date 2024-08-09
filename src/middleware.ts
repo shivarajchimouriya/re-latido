@@ -44,13 +44,16 @@ async function fetchIpLocation(ip_address: string) {
 export async function middleware(request: NextRequest) {
 
   const response = NextResponse.next();
-  const tempIp = headers().get("X-Forwarded-For")?.split(",")[0] as string;
+  const tempIp = headers().get("x-forwarded-for")?.split(",")[0];
   console.log('ip from middleware: ', tempIp);
-  const data = await fetchIpLocation(tempIp);
-  console.log('data from middleware: ', data);
-  if (data) {
-    response.cookies.set("country-data", JSON.stringify(data));
-    console.log('ccokie set: ', JSON.stringify(data))
+  if (tempIp) {
+    console.log('if condition run for IP: ', tempIp);
+    const data = await fetchIpLocation(tempIp);
+    console.log('data from middleware: ', data);
+    if (data) {
+      response.cookies.set("country-data", JSON.stringify(data));
+      console.log('ccokie set: ', JSON.stringify(data))
+    }
   }
 
   try {
