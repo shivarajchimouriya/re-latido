@@ -27,7 +27,10 @@ async function fetchIpLocation(ip_address: string) {
     const apiUrl = apiURLs.getLocationByIp.locationIp;
     const res = await fetch(`${env.SITE_URL}${apiUrl}`, {
       method: "POST",
-      body: JSON.stringify({ ip_address: ip_address })
+      body: JSON.stringify({ ip_address: ip_address }),
+      headers: {
+        "Content-Type":"application/json"
+      }
     });
     if (res.ok) {
       const data: ApiResponse = await res.json();
